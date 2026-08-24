@@ -185,6 +185,7 @@ def read_tabular_file(filepath):
     datasets = []
 
     if ext in ('.xlsx', '.xlsm'):
+        read_success = False
         try:
             import openpyxl
             wb = openpyxl.load_workbook(filepath, read_only=True, data_only=True)
@@ -199,8 +200,43 @@ def read_tabular_file(filepath):
                     if parsed_rows:
                         datasets.append((sname, parsed_rows))
             wb.close()
-        except Exception as e:
-            print(f"[!] Warning reading {filepath} with openpyxl: {e}")
+            read_success = True
+        except Exception:
+            pass
+
+        if not read_success:
+            try:
+                import zipfile, xml.etree.ElementTree as ET
+                with zipfile.ZipFile(filepath, 'r') as z:
+                    ss_tree = ET.fromstring(z.read('xl/sharedStrings.xml')) if 'xl/sharedStrings.xml' in z.namelist() else None
+                    ss = []
+                    if ss_tree is not None:
+                        for si in ss_tree.findall('{http://schemas.openxmlformats.org/spreadsheetml/2006/main}si'):
+                            ss.append(''.join([n.text for n in si.iter() if n.text]))
+                    
+                    # Read sheet1
+                    sheet_names = [n for n in z.namelist() if n.startswith('xl/worksheets/sheet') and n.endswith('.xml')]
+                    for sn in sheet_names:
+                        sheet_tree = ET.fromstring(z.read(sn))
+                        matrix = []
+                        for r_node in sheet_tree.findall('.//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}row'):
+                            row = []
+                            for c_node in r_node.findall('{http://schemas.openxmlformats.org/spreadsheetml/2006/main}c'):
+                                t_attr = c_node.attrib.get('t')
+                                v_node = c_node.find('{http://schemas.openxmlformats.org/spreadsheetml/2006/main}v')
+                                val = v_node.text if v_node is not None else ''
+                                if t_attr == 's' and val != '':
+                                    try: val = ss[int(val)]
+                                    except: pass
+                                row.append(val)
+                            if any(c != '' for c in row):
+                                matrix.append(row)
+                        if matrix:
+                            parsed_rows = extract_rows_from_matrix(matrix)
+                            if parsed_rows:
+                                datasets.append((sn, parsed_rows))
+            except Exception as e:
+                print(f"[!] Warning reading {filepath} with XML fallback: {e}")
     else:
         with open(filepath, 'rb') as f:
             raw_bytes = f.read()
