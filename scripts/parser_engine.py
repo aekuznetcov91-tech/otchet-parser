@@ -4,6 +4,8 @@ import re
 import csv
 import json
 import datetime
+import zipfile
+import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 
 if sys.platform == 'win32':
@@ -159,7 +161,7 @@ def extract_rows_from_matrix(matrix):
             ('СТАДИЯСДЕЛКИ' in row_str and 'ТОВАР' in row_str) or
             ('БИТРИКС' in row_str and 'КАМ' in row_str) or
             ('ДАТА' in row_str and 'ЦЕНААВТО' in row_str) or
-            ('CLIENTID' in row_str and 'ПАРТНЕР' in row_str) or
+            ('CLIENTID' in row_str and ('ПАРТНЕР' in row_str or 'BI' in row_str or 'LINK' in row_str or 'SOURCE' in row_str)) or
             ('SALEMONTH' in row_str and 'PREPAYMONTH' in row_str)
         ):
             header_idx = i
@@ -180,92 +182,118 @@ def extract_rows_from_matrix(matrix):
             result.append(row_dict)
     return result
 
+def read_xlsx_xml(filepath):
+    ns = '{http://schemas.openxmlformats.org/spreadsheetml/2006/main}'
+    datasets = []
+    try:
+        with zipfile.ZipFile(filepath, 'r') as z:
+            # 1. Read shared strings
+            ss = []
+            if 'xl/sharedStrings.xml' in z.namelist():
+                tree = ET.fromstring(z.read('xl/sharedStrings.xml'))
+                for si in tree.findall(f'{ns}si'):
+                    text_parts = [t.text for t in si.iter(f'{ns}t') if t.text]
+                    ss.append("".join(text_parts))
+
+            # 2. Find sheets
+            sheet_files = [n for n in z.namelist() if n.startswith('xl/worksheets/sheet') and n.endswith('.xml')]
+            for sname in sheet_files:
+                sheet_tree = ET.fromstring(z.read(sname))
+                matrix = []
+                for r_node in sheet_tree.findall(f'.//{ns}row'):
+                    row_dict = {}
+                    max_col = 0
+                    for c_node in r_node.findall(f'{ns}c'):
+                        r_ref = c_node.attrib.get('r', '')
+                        col_match = re.match(r'([A-Z]+)', r_ref)
+                        if col_match:
+                            col_str = col_match.group(1)
+                            col_idx = 0
+                            for ch in col_str:
+                                col_idx = col_idx * 26 + (ord(ch) - ord('A') + 1)
+                            col_idx -= 1
+                        else:
+                            col_idx = max_col
+
+                        max_col = max(max_col, col_idx + 1)
+
+                        t_attr = c_node.attrib.get('t')
+                        v_node = c_node.find(f'{ns}v')
+                        val = v_node.text if v_node is not None else ""
+                        
+                        if t_attr == 's' and val != '':
+                            try: val = ss[int(val)]
+                            except (IndexError, ValueError): pass
+                        elif t_attr == 'inlineStr':
+                            is_node = c_node.find(f'{ns}is')
+                            if is_node is not None:
+                                val = "".join(t.text for t in is_node.iter(f'{ns}t') if t.text)
+
+                        row_dict[col_idx] = val
+
+                    if row_dict:
+                        row_list = [row_dict.get(i, "") for i in range(max(row_dict.keys()) + 1)]
+                        matrix.append(row_list)
+
+                if matrix:
+                    parsed = extract_rows_from_matrix(matrix)
+                    if parsed:
+                        datasets.append((os.path.basename(sname), parsed))
+    except Exception as e:
+        print(f"[!] Warning reading XML from {filepath}: {e}")
+    return datasets
+
 def read_tabular_file(filepath):
     ext = os.path.splitext(filepath)[1].lower()
-    datasets = []
-
     if ext in ('.xlsx', '.xlsm'):
-        read_success = False
+        datasets = read_xlsx_xml(filepath)
+        if datasets:
+            return datasets
+        # Fallback to openpyxl if XML direct read failed
         try:
             import openpyxl
             wb = openpyxl.load_workbook(filepath, read_only=True, data_only=True)
             for sname in wb.sheetnames:
                 ws = wb[sname]
-                matrix = []
-                for row in ws.iter_rows(values_only=True):
-                    if any(cell is not None for cell in row):
-                        matrix.append(list(row))
-                if matrix:
-                    parsed_rows = extract_rows_from_matrix(matrix)
-                    if parsed_rows:
-                        datasets.append((sname, parsed_rows))
+                matrix = [list(r) for r in ws.iter_rows(values_only=True) if any(cell is not None for cell in r)]
+                parsed = extract_rows_from_matrix(matrix)
+                if parsed:
+                    datasets.append((sname, parsed))
             wb.close()
-            read_success = True
+            return datasets
         except Exception:
-            pass
+            return []
 
-        if not read_success:
-            try:
-                import zipfile, xml.etree.ElementTree as ET
-                with zipfile.ZipFile(filepath, 'r') as z:
-                    ss_tree = ET.fromstring(z.read('xl/sharedStrings.xml')) if 'xl/sharedStrings.xml' in z.namelist() else None
-                    ss = []
-                    if ss_tree is not None:
-                        for si in ss_tree.findall('{http://schemas.openxmlformats.org/spreadsheetml/2006/main}si'):
-                            ss.append(''.join([n.text for n in si.iter() if n.text]))
-                    
-                    # Read sheet1
-                    sheet_names = [n for n in z.namelist() if n.startswith('xl/worksheets/sheet') and n.endswith('.xml')]
-                    for sn in sheet_names:
-                        sheet_tree = ET.fromstring(z.read(sn))
-                        matrix = []
-                        for r_node in sheet_tree.findall('.//{http://schemas.openxmlformats.org/spreadsheetml/2006/main}row'):
-                            row = []
-                            for c_node in r_node.findall('{http://schemas.openxmlformats.org/spreadsheetml/2006/main}c'):
-                                t_attr = c_node.attrib.get('t')
-                                v_node = c_node.find('{http://schemas.openxmlformats.org/spreadsheetml/2006/main}v')
-                                val = v_node.text if v_node is not None else ''
-                                if t_attr == 's' and val != '':
-                                    try: val = ss[int(val)]
-                                    except: pass
-                                row.append(val)
-                            if any(c != '' for c in row):
-                                matrix.append(row)
-                        if matrix:
-                            parsed_rows = extract_rows_from_matrix(matrix)
-                            if parsed_rows:
-                                datasets.append((sn, parsed_rows))
-            except Exception as e:
-                print(f"[!] Warning reading {filepath} with XML fallback: {e}")
+    # Handle HTML table or CSV
+    datasets = []
+    with open(filepath, 'rb') as f:
+        raw_bytes = f.read()
+
+    encoding = 'windows-1251'
+    if raw_bytes.startswith(b'\xef\xbb\xbf'):
+        encoding = 'utf-8-sig'
+    elif b'charset=utf-8' in raw_bytes[:500].lower() or b'charset="utf-8"' in raw_bytes[:500].lower():
+        encoding = 'utf-8'
+
+    try:
+        text = raw_bytes.decode(encoding)
+    except Exception:
+        text = raw_bytes.decode('windows-1251', errors='ignore')
+
+    if '<table' in text.lower() or '<tr' in text.lower():
+        p = HtmlTableParser()
+        p.feed(text)
+        parsed_rows = extract_rows_from_matrix(p.rows)
+        if parsed_rows:
+            datasets.append(('main', parsed_rows))
     else:
-        with open(filepath, 'rb') as f:
-            raw_bytes = f.read()
-
-        encoding = 'windows-1251'
-        if raw_bytes.startswith(b'\xef\xbb\xbf'):
-            encoding = 'utf-8-sig'
-        elif b'charset=utf-8' in raw_bytes[:500].lower() or b'charset="utf-8"' in raw_bytes[:500].lower():
-            encoding = 'utf-8'
-
-        try:
-            text = raw_bytes.decode(encoding)
-        except Exception:
-            text = raw_bytes.decode('windows-1251', errors='ignore')
-
-        if '<table' in text.lower() or '<tr' in text.lower():
-            p = HtmlTableParser()
-            p.feed(text)
-            parsed_rows = extract_rows_from_matrix(p.rows)
-            if parsed_rows:
-                datasets.append(('main', parsed_rows))
-        else:
-            sample = text[:2048]
-            delimiter = ';' if sample.count(';') > sample.count(',') else ','
-            reader = csv.reader(text.splitlines(), delimiter=delimiter)
-            matrix = [r for r in reader if any(r)]
-            parsed_rows = extract_rows_from_matrix(matrix)
-            if parsed_rows:
-                datasets.append(('main', parsed_rows))
+        sample = text[:2048]
+        delimiter = ';' if sample.count(';') > sample.count(',') else ','
+        reader = csv.reader(text.splitlines(), delimiter=delimiter)
+        matrix = [r for r in reader if any(r)]
+        parsed_rows = extract_rows_from_matrix(matrix)
+        if parsed_rows:
+            datasets.append(('main', parsed_rows))
 
     return datasets
 
@@ -276,7 +304,7 @@ def identify_data_type(rows):
     
     if ('СТАДИЯСДЕЛКИ' in headers_str and ('ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ' in headers_str or 'ТОВАР' in headers_str or 'КОМИССИЯСДЕЛКИРУБ' in headers_str)) or ('SALEMONTH' in headers_str and 'PREPAYMONTH' in headers_str):
         return "deals"
-    if 'EVENTNAME' in headers_str or ('ДАТА' in headers_str and 'ЦЕНААВТО' in headers_str) or ('CLIENTID' in headers_str and ('ПАРТНЕР' in headers_str or 'BI' in headers_str)):
+    if 'EVENTNAME' in headers_str or ('ДАТА' in headers_str and 'ЦЕНААВТО' in headers_str) or ('CLIENTID' in headers_str and ('ПАРТНЕР' in headers_str or 'BI' in headers_str or 'LINK' in headers_str or 'SOURCE' in headers_str)):
         return "leads"
     if 'БИТРИКС' in headers_str or ('КАМ' in headers_str and 'BI' in headers_str):
         return "directory"
@@ -536,4 +564,3 @@ def run_pipeline():
 
 if __name__ == '__main__':
     run_pipeline()
-
