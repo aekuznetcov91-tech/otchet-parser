@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СберАвто | Сквозная воронка продаж по брендам</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Chartjs Plugin Datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0B1319; color: #F1F5F9; }
+        
+        /* Sber Ecosystem Accents */
+        .sber-gradient { background: linear-gradient(135deg, #107C41 0%, #21A038 50%, #00B074 100%); }
+        .sber-gradient-text { background: linear-gradient(135deg, #21A038 0%, #00D084 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .sber-glow { box-shadow: 0 0 25px rgba(33, 160, 56, 0.25); }
+        .sber-card { background: rgba(16, 27, 35, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 20px; }
+        .sber-card:hover { border-color: rgba(33, 160, 56, 0.3); }
+        
+        .tab-btn { background: #13222B; color: #94A3B8; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .tab-btn:hover { background: #1A2F3B; color: #F8FAFC; border-color: rgba(33, 160, 56, 0.3); }
+        .tab-btn.active { background: linear-gradient(135deg, #107C41 0%, #21A038 100%); color: #FFFFFF; font-weight: 700; border-color: #21A038; box-shadow: 0 4px 16px rgba(33, 160, 56, 0.35); }
+        
+        .chart-legend-item:hover { background-color: rgba(33, 160, 56, 0.08); }
+        .badge-sber { background: rgba(33, 160, 56, 0.12); color: #00D084; border: 1px solid rgba(33, 160, 56, 0.3); }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- Sber Corporate Header -->
+        <div class="sber-card p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden">
+            <div class="absolute -right-16 -top-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Sber Gradient Logo Circle -->
+                <div class="w-12 h-12 rounded-2xl sber-gradient flex items-center justify-center shadow-lg sber-glow shrink-0">
+                    <svg viewBox="0 0 24 24" width="26" height="26" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="m8.5 12 2.5 2.5 5-5"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                            Сбер<span class="text-[#00D084]">Авто</span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-semibold tracking-normal">Воронка продаж</span>
+                        </h1>
+                        <span class="px-2.5 py-1 bg-amber-500/10 text-amber-300 border border-amber-500/20 rounded-lg text-xs font-medium flex items-center gap-1.5">
+                            <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i> Обновлено: <span id="headerUpdateDate" class="font-bold">19.08.2026 в 23:59</span>
+                        </span>
+                    </div>
+                    <p class="text-slate-400 text-sm mt-1">Август 2026 г. | Сквозной клиентский путь: Витрина ➔ CRM Лиды ➔ Кредитный калькулятор ➔ Развилка (ДЦ / ФДЦ) ➔ Реализация (без МП2)</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 text-xs font-semibold items-center">
+                <a href="index.html" class="px-3.5 py-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Главный дашборд
+                </a>
+
+                <span class="px-3 py-1.5 badge-sber rounded-xl flex items-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> МП2 исключен
+                </span>
+                <span class="px-3 py-1.5 bg-slate-800/80 text-slate-300 border border-slate-700 rounded-xl flex items-center gap-1.5">
+                    <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i> 6 брендов
+                </span>
+            </div>
+        </div>
+
+        <!-- Brand Selector Tabs (Sber Pills) -->
+        <div class="flex overflow-x-auto pb-2 gap-2 scrollbar-none">
+            <button onclick="selectBrand('ALL')" id="tab-ALL" class="tab-btn active px-5 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap">
+                📊 Сводное сравнение
+            </button>
+            <button onclick="selectBrand('JETOUR')" id="tab-JETOUR" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap">
+                JETOUR
+            </button>
+            <button onclick="selectBrand('LADA')" id="tab-LADA" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap">
+                LADA
+            </button>
+            <button onclick="selectBrand('TENET')" id="tab-TENET" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap">
+                TENET
+            </button>
+            <button onclick="selectBrand('CHANGAN')" id="tab-CHANGAN" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap">
+                CHANGAN
+            </button>
+            <button onclick="selectBrand('GAC')" id="tab-GAC" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap">
+                GAC
+            </button>
+            <button onclick="selectBrand('SOLARIS')" id="tab-SOLARIS" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-medium transition whitespace-nowrap">
+                SOLARIS
+            </button>
+        </div>
+
+        <!-- Summary KPI Cards -->
+        <div id="kpiCards" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+
+        <!-- Dynamic Content Section -->
+        <div id="dynamicView" class="space-y-6"></div>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels);
+
+        const rawData = {"JETOUR": {"brand": "JETOUR", "leads": 1409, "qual": 651, "calc_total": 732, "calc_matched": 273, "offer_total": 558, "offer_matched": 216, "dealer": 82, "fdc_app": 136, "fdc_appr": 75, "deals_total_all": 559, "mp2_count": 437, "mp2_rev": 16961050.78000003, "deals_no_mp2": 122, "rev_no_mp2": 5267000.2299999995, "deals_by_b2c": {"Online": 29, "ФДЦ": 49, "МП3": 18, "Передача лида": 21, "МП1": 5}, "rev_by_b2c": {"Online": 1228136.0299999998, "ФДЦ": 2201816.7, "МП3": 747327.86, "Передача лида": 881359.0000000001, "МП1": 208360.64}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 1287, "Без источника": 103, "Органика СБОЛ": 6, "Органика СберАвто": 13}}, "TENET": {"brand": "TENET", "leads": 567, "qual": 258, "calc_total": 292, "calc_matched": 105, "offer_total": 213, "offer_matched": 91, "dealer": 47, "fdc_app": 27, "fdc_appr": 13, "deals_total_all": 10, "mp2_count": 1, "mp2_rev": 39278.69, "deals_no_mp2": 9, "rev_no_mp2": 488257.82, "deals_by_b2c": {"Передача лида": 6, "ФДЦ": 2, "Online": 1}, "rev_by_b2c": {"Передача лида": 186603.76, "ФДЦ": 228867.17, "Online": 72786.89}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 542, "Органика СБОЛ": 5, "Без источника": 10, "Органика СберАвто": 10}}, "CHANGAN": {"brand": "CHANGAN", "leads": 546, "qual": 152, "calc_total": 77, "calc_matched": 41, "offer_total": 60, "offer_matched": 33, "dealer": 20, "fdc_app": 14, "fdc_appr": 2, "deals_total_all": 21, "mp2_count": 19, "mp2_rev": 780077.0399999999, "deals_no_mp2": 2, "rev_no_mp2": 80819.68, "deals_by_b2c": {"Передача лида": 2}, "rev_by_b2c": {"Передача лида": 80819.68}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 538, "Органика СБОЛ": 1, "Без источника": 7}}, "GAC": {"brand": "GAC", "leads": 337, "qual": 115, "calc_total": 76, "calc_matched": 38, "offer_total": 51, "offer_matched": 27, "dealer": 17, "fdc_app": 9, "fdc_appr": 3, "deals_total_all": 61, "mp2_count": 56, "mp2_rev": 3742826.2199999993, "deals_no_mp2": 5, "rev_no_mp2": 354961.89, "deals_by_b2c": {"Online": 3, "МП1": 1, "ФДЦ": 1}, "rev_by_b2c": {"Online": 217590.17, "МП1": 43697.95, "ФДЦ": 93673.77}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 325, "Без источника": 4, "Органика СБОЛ": 4, "Органика СберАвто": 4}}, "SOLARIS": {"brand": "SOLARIS", "leads": 29, "qual": 11, "calc_total": 75, "calc_matched": 2, "offer_total": 44, "offer_matched": 2, "dealer": 1, "fdc_app": 1, "fdc_appr": 0, "deals_total_all": 78, "mp2_count": 68, "mp2_rev": 2339892.589999999, "deals_no_mp2": 10, "rev_no_mp2": 444822.96, "deals_by_b2c": {"Передача лида": 3, "МП3": 1, "Online": 4, "ФДЦ": 2}, "rev_by_b2c": {"Передача лида": 133708.2, "МП3": 46721.31, "Online": 183614.76, "ФДЦ": 80778.69}, "src_breakdown": {"Без источника": 4, "ОМ + Баннеры + Лендинги": 20, "Органика СберАвто": 4, "Органика СБОЛ": 1}}, "LADA": {"brand": "LADA", "leads": 1667, "qual": 640, "calc_total": 711, "calc_matched": 325, "offer_total": 530, "offer_matched": 258, "dealer": 98, "fdc_app": 153, "fdc_appr": 64, "deals_total_all": 153, "mp2_count": 68, "mp2_rev": 738917.9299999991, "deals_no_mp2": 85, "rev_no_mp2": 1681826.78, "deals_by_b2c": {"ФДЦ": 24, "Передача лида": 18, "ФДЦ+ГП": 32, "Online": 5, "МП3": 6}, "rev_by_b2c": {"ФДЦ": 492316.62, "Передача лида": 345692.62000000005, "ФДЦ+ГП": 681510.16, "Online": 80741.81, "МП3": 81565.57}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 1558, "Органика СБОЛ": 10, "Без источника": 82, "Органика СберАвто": 17}}};
+
+        // Sber Brand Color Palette
+        const brandColors = ['#21A038', '#00B074', '#0097A7', '#2E5BFF', '#7928CA', '#FF9900'];
+
+        function fmtNum(n) {
+            return (n || 0).toLocaleString('ru-RU');
+        }
+
+        function fmtRub(n) {
+            return fmtNum(Math.round(n)) + ' ₽';
+        }
+
+        function selectBrand(brand) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + brand).classList.add('active');
+
+            if (brand === 'ALL') {
+                document.getElementById('headerUpdateDate').innerText = rawData.OVERALL_LATEST_DATE || '19.08.2026 в 23:59';
+                renderComparisonView();
+            } else {
+                document.getElementById('headerUpdateDate').innerText = rawData[brand].latest_lead_date || '19.08.2026';
+                renderSingleBrandView(brand);
+            }
+            lucide.createIcons();
+        }
+
+        function renderComparisonView() {
+            const brands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS'];
+            
+            let totLeads = 0, totQual = 0, totCalc = 0, totOffers = 0, totDeals = 0, totRev = 0;
+            brands.forEach(b => {
+                const d = rawData[b];
+                totLeads += d.leads;
+                totQual += d.qual;
+                totCalc += d.calc_total;
+                totOffers += d.offer_total;
+                totDeals += d.deals_no_mp2;
+                totRev += d.rev_no_mp2;
+            });
+
+            document.getElementById('kpiCards').innerHTML = `
+                <div class="sber-card p-4">
+                    <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i data-lucide="user-plus" class="w-3.5 h-3.5 text-blue-400"></i> Новых лидов</p>
+                    <p class="text-2xl font-extrabold text-white mt-1">${fmtNum(totLeads)}</p>
+                    <p class="text-[11px] text-emerald-400 mt-0.5 font-medium">Квалиф: ${((totQual/totLeads)*100).toFixed(1)}%</p>
+                </div>
+                <div class="sber-card p-4">
+                    <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i data-lucide="calculator" class="w-3.5 h-3.5 text-amber-400"></i> Расчетов кредита</p>
+                    <p class="text-2xl font-extrabold text-amber-400 mt-1">${fmtNum(totCalc)}</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">В Calculate</p>
+                </div>
+                <div class="sber-card p-4">
+                    <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i data-lucide="send" class="w-3.5 h-3.5 text-purple-400"></i> Офферов клиентам</p>
+                    <p class="text-2xl font-extrabold text-purple-400 mt-1">${fmtNum(totOffers)}</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">${((totOffers/totCalc)*100).toFixed(1)}% от расчетов</p>
+                </div>
+                <div class="sber-card p-4">
+                    <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-cyan-400"></i> Передано в ДЦ</p>
+                    <p class="text-2xl font-extrabold text-cyan-400 mt-1">${fmtNum(brands.reduce((s,b)=>s+rawData[b].dealer,0))}</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Лидов направлено</p>
+                </div>
+                <div class="sber-card p-4 border-emerald-500/30 bg-emerald-950/20">
+                    <p class="text-xs text-emerald-400 font-medium flex items-center gap-1.5"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-400"></i> Сделок (без МП2)</p>
+                    <p class="text-2xl font-black text-[#00D084] mt-1">${fmtNum(totDeals)}</p>
+                    <p class="text-[11px] text-emerald-400/80 mt-0.5 font-semibold">CR ${((totDeals/totLeads)*100).toFixed(2)}% от лидов</p>
+                </div>
+                <div class="sber-card p-4 border-emerald-500/30 bg-emerald-950/20">
+                    <p class="text-xs text-emerald-400 font-medium flex items-center gap-1.5"><i data-lucide="coins" class="w-3.5 h-3.5 text-emerald-400"></i> Выручка (без МП2)</p>
+                    <p class="text-2xl font-black text-[#00D084] mt-1">${fmtRub(totRev)}</p>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Ср. маржа: ${fmtRub(totRev/totDeals)}</p>
+                </div>
+            `;
+
+            let tableRows = '';
+            brands.forEach((b, idx) => {
+                const d = rawData[b];
+                const crQual = ((d.qual / d.leads) * 100).toFixed(1) + '%';
+                const crOffer = ((d.offer_total / d.calc_total) * 100).toFixed(1) + '%';
+                const crDeal = ((d.deals_no_mp2 / d.leads) * 100).toFixed(2) + '%';
+                const color = brandColors[idx];
+                tableRows += `
+                    <tr class="border-b border-slate-800/80 hover:bg-emerald-950/20 transition cursor-pointer" onclick="selectBrand('${b}')">
+                        <td class="py-3 px-4 font-bold text-white flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${color}"></span>
+                            ${b}
+                        </td>
+                        <td class="py-3 px-4 text-right font-medium">${fmtNum(d.leads)}</td>
+                        <td class="py-3 px-4 text-right text-slate-300">${fmtNum(d.qual)} <span class="text-xs text-slate-500">(${crQual})</span></td>
+                        <td class="py-3 px-4 text-right text-amber-400 font-medium">${fmtNum(d.calc_total)}</td>
+                        <td class="py-3 px-4 text-right text-purple-400 font-medium">${fmtNum(d.offer_total)} <span class="text-xs text-slate-500">(${crOffer})</span></td>
+                        <td class="py-3 px-4 text-right text-cyan-400 font-medium">${fmtNum(d.dealer)}</td>
+                        <td class="py-3 px-4 text-right text-teal-400 font-medium">${fmtNum(d.fdc_app)} / ${fmtNum(d.fdc_appr)}</td>
+                        <td class="py-3 px-4 text-right font-bold text-[#00D084]">${fmtNum(d.deals_no_mp2)} <span class="text-xs text-emerald-400 font-normal">(${crDeal})</span></td>
+                        <td class="py-3 px-4 text-right font-black text-[#00D084]">${fmtRub(d.rev_no_mp2)}</td>
+                        <td class="py-3 px-4 text-right text-slate-500 text-xs">${fmtNum(d.mp2_count)} шт.</td>
+                    </tr>
+                `;
+            });
+
+            // Sber HTML Legends
+            let leadsLegendHtml = '<div class="space-y-1.5 w-full mt-4">';
+            let revLegendHtml = '<div class="space-y-1.5 w-full mt-4">';
+
+            brands.forEach((b, idx) => {
+                const d = rawData[b];
+                const color = brandColors[idx];
+                const leadPct = ((d.leads / totLeads) * 100).toFixed(1) + '%';
+                const revPct = ((d.rev_no_mp2 / totRev) * 100).toFixed(1) + '%';
+
+                leadsLegendHtml += `
+                    <div class="chart-legend-item flex items-center justify-between text-xs py-1 px-2 rounded-xl cursor-pointer transition" onclick="selectBrand('${b}')">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${color}"></span>
+                            <span class="font-medium text-slate-200">${b}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-white">${fmtNum(d.leads)} лидов</span>
+                            <span class="px-2 py-0.5 bg-slate-800/90 text-emerald-400 border border-emerald-500/20 rounded-md text-[11px] font-bold min-w-[46px] text-right">${leadPct}</span>
+                        </div>
+                    </div>
+                `;
+
+                revLegendHtml += `
+                    <div class="chart-legend-item flex items-center justify-between text-xs py-1 px-2 rounded-xl cursor-pointer transition" onclick="selectBrand('${b}')">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${color}"></span>
+                            <span class="font-medium text-slate-200">${b}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-white">${fmtRub(d.rev_no_mp2)}</span>
+                            <span class="px-2 py-0.5 bg-emerald-950/60 text-[#00D084] border border-emerald-500/30 rounded-md text-[11px] font-bold min-w-[46px] text-right">${revPct}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            leadsLegendHtml += '</div>';
+            revLegendHtml += '</div>';
+
+            document.getElementById('dynamicView').innerHTML = `
+                <div class="sber-card p-6 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-[#00D084]"></i>
+                            Сводная матрица воронки по брендам (Август 2026)
+                        </h2>
+                        <span class="text-xs text-slate-400">Нажмите на строку бренда для перехода к детализации</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs uppercase bg-slate-900/80 text-slate-400 border-b border-slate-800">
+                                <tr>
+                                    <th class="py-3 px-4">Бренд</th>
+                                    <th class="py-3 px-4 text-right">Лиды CRM</th>
+                                    <th class="py-3 px-4 text-right">Квалификация</th>
+                                    <th class="py-3 px-4 text-right">Расчеты</th>
+                                    <th class="py-3 px-4 text-right">Офферы</th>
+                                    <th class="py-3 px-4 text-right">В ДЦ</th>
+                                    <th class="py-3 px-4 text-right">ФДЦ (Заяв/Одобр)</th>
+                                    <th class="py-3 px-4 text-right text-emerald-400">Сделки (без МП2)</th>
+                                    <th class="py-3 px-4 text-right text-emerald-400">Выручка</th>
+                                    <th class="py-3 px-4 text-right text-slate-500">Искл. МП2</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${tableRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 2 Charts Sber Style -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="sber-card p-6 flex flex-col items-center">
+                        <div class="w-full flex justify-between items-center mb-2">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-400"></i>
+                                Сплит лидов CRM по брендам
+                            </h3>
+                            <span class="text-xs font-bold text-emerald-400">${fmtNum(totLeads)} лидов (100%)</span>
+                        </div>
+                        <div class="h-60 w-full relative flex items-center justify-center">
+                            <canvas id="leadsSplitChart"></canvas>
+                        </div>
+                        ${leadsLegendHtml}
+                    </div>
+
+                    <div class="sber-card p-6 flex flex-col items-center">
+                        <div class="w-full flex justify-between items-center mb-2">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i data-lucide="coins" class="w-4 h-4 text-[#00D084]"></i>
+                                Сплит выручки без МП2 по брендам
+                            </h3>
+                            <span class="text-xs font-bold text-[#00D084]">${fmtRub(totRev)} (100%)</span>
+                        </div>
+                        <div class="h-60 w-full relative flex items-center justify-center">
+                            <canvas id="revSplitChart"></canvas>
+                        </div>
+                        ${revLegendHtml}
+                    </div>
+                </div>
+            `;
+
+            setTimeout(() => {
+                new Chart(document.getElementById('leadsSplitChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: brands,
+                        datasets: [{
+                            data: brands.map(b => rawData[b].leads),
+                            backgroundColor: brandColors,
+                            borderWidth: 3,
+                            borderColor: '#101B23'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '68%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(ctx) {
+                                        const val = ctx.parsed;
+                                        const pct = ((val / totLeads) * 100).toFixed(1) + '%';
+                                        return ` ${ctx.label}: ${fmtNum(val)} лидов (${pct})`;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: '#FFFFFF',
+                                font: { weight: 'bold', size: 11 },
+                                textShadowColor: 'rgba(0, 0, 0, 0.7)',
+                                textShadowBlur: 4,
+                                formatter: (val) => {
+                                    const pct = (val / totLeads) * 100;
+                                    return pct >= 4 ? pct.toFixed(0) + '%' : '';
+                                }
+                            }
+                        }
+                    }
+                });
+
+                new Chart(document.getElementById('revSplitChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: brands,
+                        datasets: [{
+                            data: brands.map(b => rawData[b].rev_no_mp2),
+                            backgroundColor: brandColors,
+                            borderWidth: 3,
+                            borderColor: '#101B23'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '68%',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(ctx) {
+                                        const val = ctx.parsed;
+                                        const pct = ((val / totRev) * 100).toFixed(1) + '%';
+                                        return ` ${ctx.label}: ${fmtRub(val)} (${pct})`;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: '#FFFFFF',
+                                font: { weight: 'bold', size: 11 },
+                                textShadowColor: 'rgba(0, 0, 0, 0.7)',
+                                textShadowBlur: 4,
+                                formatter: (val) => {
+                                    const pct = (val / totRev) * 100;
+                                    return pct >= 4 ? pct.toFixed(0) + '%' : '';
+                                }
+                            }
+                        }
+                    }
+                });
+            }, 50);
+        }
+
+        function renderSingleBrandView(brand) {
+            const d = rawData[brand];
+            
+            document.getElementById('kpiCards').innerHTML = `
+                <div class="sber-card p-4">
+                    <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i data-lucide="user-plus" class="w-3.5 h-3.5 text-blue-400"></i> Новых лидов CRM</p>
+                    <p class="text-2xl font-black text-white mt-1">${fmtNum(d.leads)}</p>
+                    <p class="text-[11px] text-emerald-400 mt-0.5">Квалиф: ${((d.qual/d.leads)*100).toFixed(1)}%</p>
+                </div>
+                <div class="sber-card p-4">
+                    <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i data-lucide="calculator" class="w-3.5 h-3.5 text-amber-400"></i> Расчетов кредита</p>
+                    <p class="text-2xl font-black text-amber-400 mt-1">${fmtNum(d.calc_total)}</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">${d.calc_matched} совпало по ID</p>
+                </div>
+                <div class="sber-card p-4">
+                    <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i data-lucide="send" class="w-3.5 h-3.5 text-purple-400"></i> Отправлено офферов</p>
+                    <p class="text-2xl font-black text-purple-400 mt-1">${fmtNum(d.offer_total)}</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">${((d.offer_total/d.calc_total)*100).toFixed(1)}% от расчетов</p>
+                </div>
+                <div class="sber-card p-4">
+                    <p class="text-xs text-slate-400 font-medium flex items-center gap-1.5"><i data-lucide="building-2" class="w-3.5 h-3.5 text-cyan-400"></i> Передано в ДЦ</p>
+                    <p class="text-2xl font-black text-cyan-400 mt-1">${fmtNum(d.dealer)}</p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">В дилерскую сеть</p>
+                </div>
+                <div class="sber-card p-4 border-emerald-500/30 bg-emerald-950/20">
+                    <p class="text-xs text-emerald-400 font-medium flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-400"></i> Сделок (без МП2)</p>
+                    <p class="text-2xl font-black text-[#00D084] mt-1">${fmtNum(d.deals_no_mp2)}</p>
+                    <p class="text-[11px] text-emerald-400/80 mt-0.5 font-bold">CR ${((d.deals_no_mp2/d.leads)*100).toFixed(2)}% от лидов</p>
+                </div>
+                <div class="sber-card p-4 border-emerald-500/30 bg-emerald-950/20">
+                    <p class="text-xs text-emerald-400 font-medium flex items-center gap-1.5"><i data-lucide="coins" class="w-3.5 h-3.5 text-emerald-400"></i> Выручка (без МП2)</p>
+                    <p class="text-2xl font-black text-[#00D084] mt-1">${fmtRub(d.rev_no_mp2)}</p>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Ср. чек: ${d.deals_no_mp2 > 0 ? fmtRub(d.rev_no_mp2/d.deals_no_mp2) : '0 ₽'}</p>
+                </div>
+            `;
+
+            let b2cRows = '';
+            for (let ch in d.deals_by_b2c) {
+                const chCount = d.deals_by_b2c[ch];
+                const chRev = d.rev_by_b2c[ch];
+                const pctDeals = ((chCount / d.deals_no_mp2) * 100).toFixed(1) + '%';
+                const pctRev = d.rev_no_mp2 > 0 ? ((chRev / d.rev_no_mp2) * 100).toFixed(1) + '%' : '0%';
+                b2cRows += `
+                    <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60 text-sm">
+                        <span class="text-slate-200 font-medium flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            ${ch}
+                        </span>
+                        <div class="flex items-center gap-3">
+                            <span class="font-bold text-white">${chCount} шт. <span class="text-xs text-slate-400">(${pctDeals})</span></span>
+                            <span class="text-xs text-[#00D084] font-bold bg-emerald-950/50 border border-emerald-500/20 px-2 py-0.5 rounded-lg">${fmtRub(chRev)} <span class="text-slate-400 font-normal">(${pctRev})</span></span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            let srcRows = '';
+            for (let s in d.src_breakdown) {
+                const sCount = d.src_breakdown[s];
+                const sPct = ((sCount / d.leads) * 100).toFixed(1) + '%';
+                srcRows += `
+                    <div class="flex justify-between items-center py-2.5 border-b border-slate-800/60 text-sm">
+                        <span class="text-slate-300 font-medium">${s}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-white">${sCount} лидов</span>
+                            <span class="text-xs text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-2 py-0.5 rounded-lg font-bold min-w-[44px] text-right">${sPct}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('dynamicView').innerHTML = `
+                <!-- Funnel Architecture Visual -->
+                <div class="sber-card p-6 space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i data-lucide="git-merge" class="w-5 h-5 text-[#00D084]"></i>
+                            Сквозная архитектура воронки: ${brand}
+                        </h2>
+                        <span class="text-xs text-slate-400">Свежий лид: <b class="text-amber-300 font-bold">${d.latest_lead_date}</b> | Исключено МП2: ${d.mp2_count} шт. (${fmtRub(d.mp2_rev)})</span>
+                    </div>
+
+                    <!-- Steps 7-10 -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-800">
+                            <span class="text-xs text-blue-400 font-bold uppercase tracking-wider">Этап 7</span>
+                            <h4 class="text-sm font-bold text-white mt-1">Новый лид в CRM</h4>
+                            <p class="text-xl font-black text-white mt-2">${fmtNum(d.leads)} лидов</p>
+                            <p class="text-xs text-slate-500 mt-1">100% входящий поток</p>
+                        </div>
+                        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-800">
+                            <span class="text-xs text-emerald-400 font-bold uppercase tracking-wider">Этап 8</span>
+                            <h4 class="text-sm font-bold text-white mt-1">Квалификация</h4>
+                            <p class="text-xl font-black text-white mt-2">${fmtNum(d.qual)} лидов</p>
+                            <p class="text-xs text-emerald-400 mt-1 font-semibold">${((d.qual/d.leads)*100).toFixed(1)}% целевых</p>
+                        </div>
+                        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-800">
+                            <span class="text-xs text-amber-400 font-bold uppercase tracking-wider">Этап 9</span>
+                            <h4 class="text-sm font-bold text-white mt-1">Расчет кредита</h4>
+                            <p class="text-xl font-black text-amber-400 mt-2">${fmtNum(d.calc_total)} расчетов</p>
+                            <p class="text-xs text-slate-500 mt-1">${((d.calc_total/d.qual)*100).toFixed(1)}% от квалиф.</p>
+                        </div>
+                        <div class="bg-slate-900/70 p-4 rounded-2xl border border-slate-800">
+                            <span class="text-xs text-purple-400 font-bold uppercase tracking-wider">Этап 10</span>
+                            <h4 class="text-sm font-bold text-white mt-1">Оффер отправлен</h4>
+                            <p class="text-xl font-black text-purple-400 mt-2">${fmtNum(d.offer_total)} офферов</p>
+                            <p class="text-xs text-slate-500 mt-1">${((d.offer_total/d.calc_total)*100).toFixed(1)}% от расчетов</p>
+                        </div>
+                    </div>
+
+                    <!-- Branching 11A / 11B -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                        <!-- Branch 1: Dealer -->
+                        <div class="bg-cyan-950/20 p-5 rounded-2xl border border-cyan-500/20 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-cyan-300 text-sm flex items-center gap-2">
+                                    <i data-lucide="building-2" class="w-4 h-4"></i> ВЕТКА 1. ДИЛЕРСКАЯ СЕТЬ (ДЦ)
+                                </h3>
+                                <span class="branch-badge bg-cyan-500/20 text-cyan-300">Передача лида</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-400">11.А. Передан в ДЦ:</span>
+                                    <span class="font-bold text-white">${fmtNum(d.dealer)} чел. <span class="text-xs text-cyan-400 font-semibold">(${d.offer_total > 0 ? ((d.dealer/d.offer_total)*100).toFixed(1) : 0}% от офферов)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm pt-2 border-t border-cyan-500/10">
+                                    <span class="text-emerald-300 font-medium">Сделки Передача лида:</span>
+                                    <span class="font-black text-[#00D084]">${d.deals_by_b2c['Передача лида'] || 0} шт. <span class="text-xs text-slate-300 font-normal">(${fmtRub(d.rev_by_b2c['Передача лида'] || 0)})</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Branch 2: FDC -->
+                        <div class="bg-emerald-950/30 p-5 rounded-2xl border border-emerald-500/30 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-bold text-emerald-300 text-sm flex items-center gap-2">
+                                    <i data-lucide="credit-card" class="w-4 h-4"></i> ВЕТКА 2. ОНЛАЙН-КРЕДИТ (ФДЦ)
+                                </h3>
+                                <span class="branch-badge bg-emerald-500/20 text-[#00D084]">ФДЦ</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-400">11.Б. Подана заявка ФДЦ:</span>
+                                    <span class="font-bold text-white">${fmtNum(d.fdc_app)} чел. <span class="text-xs text-emerald-400 font-semibold">(${d.offer_total > 0 ? ((d.fdc_app/d.offer_total)*100).toFixed(1) : 0}% от офферов)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-400">11.В. Одобрение ФДЦ:</span>
+                                    <span class="font-bold text-emerald-300">${fmtNum(d.fdc_appr)} чел. <span class="text-xs text-emerald-400">(${d.fdc_app > 0 ? ((d.fdc_appr/d.fdc_app)*100).toFixed(1) : 0}% от заявок)</span></span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm pt-2 border-t border-emerald-500/20">
+                                    <span class="text-emerald-300 font-medium">Сделки ФДЦ (Выдачи):</span>
+                                    <span class="font-black text-[#00D084]">${(d.deals_by_b2c['ФДЦ'] || 0) + (d.deals_by_b2c['ФДЦ+ГП'] || 0)} шт. <span class="text-xs text-slate-300 font-normal">(${fmtRub((d.rev_by_b2c['ФДЦ'] || 0) + (d.rev_by_b2c['ФДЦ+ГП'] || 0))})</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2 Side Columns: Structure of Deals & Lead Sources -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Structure of Deals -->
+                    <div class="sber-card p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i data-lucide="check-square" class="w-4 h-4 text-[#00D084]"></i>
+                                Реализация сделок ${brand} (без МП2)
+                            </h3>
+                            <span class="text-xs font-bold text-[#00D084]">${fmtNum(d.deals_no_mp2)} авто (100%)</span>
+                        </div>
+                        <div class="space-y-1">
+                            ${b2cRows || '<p class="text-sm text-slate-500">Нет сделок</p>'}
+                        </div>
+                    </div>
+
+                    <!-- Lead Sources -->
+                    <div class="sber-card p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i data-lucide="filter" class="w-4 h-4 text-blue-400"></i>
+                                Источники лидов ${brand} (data 2)
+                            </h3>
+                            <span class="text-xs font-bold text-blue-400">${fmtNum(d.leads)} лидов (100%)</span>
+                        </div>
+                        <div class="space-y-1">
+                            ${srcRows || '<p class="text-sm text-slate-500">Нет данных</p>'}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.onload = () => {
+            renderComparisonView();
+        };
+    </script>
+</body>
+</html>
