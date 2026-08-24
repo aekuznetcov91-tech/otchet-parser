@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2C Data Parser (Excel to JSON)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+    <style>
+        .dropzone { border: 2px dashed #cbd5e1; transition: all 0.2s; }
+        .dropzone.dragover { border-color: #3b82f6; background-color: #eff6ff; }
+    </style>
+</head>
+<body class="bg-slate-50 p-6 md:p-10 font-sans text-slate-800 min-h-screen flex flex-col items-center">
+
+    <div class="max-w-3xl w-full bg-white rounded-2xl shadow-sm p-8">
+        <h1 class="text-2xl font-bold text-blue-900 mb-2">Генератор data.json</h1>
+        <p class="text-slate-500 mb-8 text-sm">Загрузите сырые Excel или CSV файлы. Скрипт сам найдет шапку таблицы (даже если она не на первой строке), распознает кодировку Битрикса и сформирует готовый JSON. Можно загружать файлы по одному!</p>
+
+        <!-- Dropzone -->
+        <div id="dropzone" class="dropzone rounded-xl p-10 text-center cursor-pointer mb-6 flex flex-col items-center justify-center">
+            <svg class="w-12 h-12 text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+            <p class="font-medium text-slate-600">Перетащите файлы сюда или нажмите для выбора</p>
+            <p class="text-xs text-slate-400 mt-2">Поддерживаются .xlsx, .xls, .csv</p>
+            <input type="file" id="fileInput" multiple accept=".xlsx, .xls, .csv" class="hidden">
+        </div>
+
+        <!-- File Status -->
+        <div id="statusList" class="space-y-2 mb-8 text-sm"></div>
+
+        <!-- Action Buttons -->
+        <!-- Action Buttons -->
+        <div class="space-y-3">
+            <button id="generateBtn" disabled class="w-full py-3 rounded-lg font-bold text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm flex items-center justify-center gap-2">
+                <span>⚡ Сгенерировать и сохранить JSON</span>
+            </button>
+            <button id="downloadUnmatchedBtn" class="w-full py-3 rounded-lg font-bold text-white bg-orange-600 hover:bg-orange-700 transition-colors shadow-sm hidden items-center justify-center gap-2">
+                <span>⚠️ Скачать обновленный Справочник партнеров</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const dropzone = document.getElementById('dropzone');
+        const statusList = document.getElementById('statusList');
+        const generateBtn = document.getElementById('generateBtn');
+
+        let rawData = { deals: null, leads: null, directory: null };
+
+        // Prevent default drag behaviors on window to stop file downloading
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            window.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('dragover', (e) => { e.preventDefault(); dropzone.classList.add('dragover'); });
+        dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        async function handleFiles(files) {
+            for (let file of files) {
+                try {
+                    const data = await readExcel(file);
+                    if (data && data.length > 0) {
+                        identifyAndStoreData(file.name, data);
+                    } else {
+                        addStatusItem(`error_${Date.now()}`, `⚠️ Файл ${file.name}: Таблица или известные заголовки не найдены.`, 'text-orange-700 bg-orange-50 border-orange-200');
+                    }
+                } catch (err) {
+                    addStatusItem(`error_${Date.now()}`, `❌ Ошибка чтения ${file.name}`, 'text-red-700 bg-red-50 border-red-200');
+                }
+            }
+            checkReadyState();
+        }
+
+        function readExcel(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        let workbook;
+                        
+                        const isCSV = file.name.toLowerCase().endsWith('.csv');
+                        
+                        let isHTML = false;
+                        // Skip UTF-8 BOM (0xEF 0xBB 0xBF) and whitespace when detecting HTML
+                        for (let i = 0; i < Math.min(data.length, 10); i++) {
+                            if (data[i] === 60) { isHTML = true; break; } // '<'
+                            if ([239, 187, 191, 9, 10, 13, 32].includes(data[i])) continue; // BOM + whitespace
+                            break; 
+                        }
+                        
+                        if (isCSV || isHTML) {
+                            // Auto-detect encoding: check for UTF-8 BOM or charset declaration
+                            let encoding = 'windows-1251';
+                            // UTF-8 BOM present
+                            if (data.length >= 3 && data[0] === 239 && data[1] === 187 && data[2] === 191) {
+                                encoding = 'utf-8';
+                            } else {
+                                // Check for charset=UTF-8 in the first 500 bytes
+                                const probe = new TextDecoder('ascii').decode(data.slice(0, Math.min(500, data.length)));
+                                if (/charset\s*=\s*["']?utf-8/i.test(probe)) {
+                                    encoding = 'utf-8';
+                                }
+                            }
+                            const text = new TextDecoder(encoding).decode(data);
+                            workbook = XLSX.read(text, { type: 'string', raw: true, cellDates: false });
+                        } else {
+                            workbook = XLSX.read(data, { type: 'array', raw: true, cellDates: false });
+                        }
+                        
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        const aoa = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                        let headerRowIndex = -1;
+                        
+                        for (let i = 0; i < Math.min(20, aoa.length); i++) {
+                            const rowText = String((aoa[i] || []).join('')).toUpperCase().replace(/[^A-ZА-Я0-9]/gi, '');
+                            if (
+                                rowText.includes('ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ') || 
+                                rowText.includes('EVENTNAME') || 
+                                (rowText.includes('БИТРИКС') && rowText.includes('ПОЧТА')) 
+                            ) {
+                                headerRowIndex = i;
+                                break;
+                            }
+                        }
+
+                        if (headerRowIndex !== -1) {
+                            const jsonData = XLSX.utils.sheet_to_json(worksheet, { range: headerRowIndex, defval: "", raw: true });
+                            resolve(jsonData);
+                        } else {
+                            resolve([]); 
+                        }
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.onerror = reject;
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        function identifyAndStoreData(filename, data) {
+            const headers = Object.keys(data[0]).join('').toUpperCase().replace(/[^A-ZА-Я0-9]/gi, '');
+
+            if (headers.includes('СТАДИЯСДЕЛКИ') && headers.includes('ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ')) {
+                rawData.deals = data;
+                addStatusItem('deals', `✅ Сделки загружены (${data.length} строк) [${filename}]`, 'text-emerald-700 bg-emerald-50 border-emerald-200');
+            } 
+            else if (headers.includes('EVENTNAME') || (headers.includes('ДАТА') && headers.includes('ЦЕНААВТО'))) {
+                rawData.leads = data;
+                addStatusItem('leads', `✅ Лиды загружены (${data.length} строк) [${filename}]`, 'text-emerald-700 bg-emerald-50 border-emerald-200');
+            } 
+            else if (headers.includes('БИТРИКС') || headers.includes('КАМ')) {
+                rawData.directory = data;
+                addStatusItem('directory', `✅ Справочник загружен (${data.length} строк) [${filename}]`, 'text-emerald-700 bg-emerald-50 border-emerald-200');
+            } 
+            else {
+                addStatusItem(`error_${Date.now()}`, `⚠️ Файл ${filename} не распознан.`, 'text-orange-700 bg-orange-50 border-orange-200');
+            }
+        }
+
+        function addStatusItem(id, text, colorClasses) {
+            let el = document.getElementById('status_' + id);
+            if (!el) {
+                el = document.createElement('div');
+                el.id = 'status_' + id;
+                statusList.appendChild(el);
+            }
+            el.className = `p-3 rounded-lg border font-medium shadow-sm transition-all ${colorClasses}`;
+            el.innerText = text;
+        }
+
+        function checkReadyState() {
+            if (rawData.deals) {
+                generateBtn.disabled = false;
+            }
+        }
+        
+        function getExactVal(row, ...searchKeys) {
+            const rowKeys = Object.keys(row);
+            for (let rk of rowKeys) {
+                const cleanRk = String(rk).toUpperCase().replace(/[^A-ZА-Я0-9]/gi, '');
+                for (let sk of searchKeys) {
+                    const cleanSk = String(sk).toUpperCase().replace(/[^A-ZА-Я0-9]/gi, '');
+                    if (cleanRk === cleanSk) return row[rk];
+                }
+            }
+            return undefined;
+        }
+
+        function normalizeBrand(tovarStr) {
+            const t = String(tovarStr || "").toUpperCase();
+            if (t.includes("DASHING") || t.includes("X70 PLUS") || t.includes("JETOUR")) return "JETOUR";
+            if (t.includes("LADA") || t.includes("ЛАДА")) return "LADA";
+            if (t.includes("HAVAL")) return "HAVAL";
+            if (t.includes("SOLARIS")) return "SOLARIS";
+            if (t.includes("CHANGAN")) return "CHANGAN";
+            if (t.includes("G B K") || t.includes("GEELY") || t.includes("BELGEE") || t.includes("KNEWSTAR")) return "G B K";
+            if (t.includes("SOUEAST")) return "SOUEAST";
+            if (t.includes("GAC")) return "GAC";
+            if (t.includes("TENET") || t.includes("CHERY")) return "TENET";
+            if (t.includes("HONGQI")) return "HONGQI";
+            if (t.includes("XCITE")) return "XCITE";
+            if (t.includes("МОСКВИЧ")) return "МОСКВИЧ";
+            if (t.includes("OMODA")) return "OMODA";
+            if (t.includes("KIA")) return "KIA";
+            
+            const words = t.split(/[\s,/-]+/);
+            return words[0] || "НЕИЗВЕСТНЫЙ БРЕНД";
+        }
+
+        function parseCustomDate(dateValue) {
+            if (dateValue == null || dateValue === "") return null; 
+            
+            if (dateValue instanceof Date) return dateValue;
+            
+            if (typeof dateValue === 'number') {
+                return new Date(Math.round((dateValue - 25569) * 86400 * 1000));
+            }
+
+            let ds = String(dateValue).trim();
+            if (ds === "") return null;
+
+            let datePart = ds.split(/[\sT]/)[0]; 
+            
+            if (datePart.includes('/')) {
+                let parts = datePart.split('/');
+                if (parts.length === 3) {
+                    let m = parseInt(parts[0], 10);
+                    let d = parseInt(parts[1], 10);
+                    let y = parseInt(parts[2], 10);
+                    if (y < 100) y += 2000;
+                    if (m > 12) return new Date(y, d - 1, m);
+                    return new Date(y, m - 1, d);
+                }
+            }
+
+            if (datePart.includes('.') || datePart.includes('-')) {
+                let parts = datePart.split(/[.-]/);
+                if (parts.length === 3) {
+                    let first = parseInt(parts[0], 10);
+                    let second = parseInt(parts[1], 10);
+                    let third = parseInt(parts[2], 10);
+                    if (parts[0].length === 4) return new Date(first, second - 1, third);
+                    
+                    let y = third;
+                    if (y < 100) y += 2000;
+                    return new Date(y, second - 1, first); 
+                }
+            }
+            
+            let fallback = new Date(ds);
+            return isNaN(fallback.getTime()) ? null : fallback;
+        }
+
+        function dateToExcelSerial(dDate) {
+            if (!dDate || isNaN(dDate.getTime())) return 0;
+            return Math.floor((dDate - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000));
+        }
+
+        generateBtn.addEventListener('click', async () => {
+            if (!rawData.deals) return;
+
+            const kamDictBitrix = {};
+            const kamDictBI = {};
+            const kamDictSber = {};
+            
+            const originalDirectoryRows = [];
+            const newBitrixPartners = new Set();
+            const newBIPartners = new Set();
+            const newSberContacts = new Set();
+
+            if (rawData.directory) {
+                rawData.directory.forEach(r => {
+                    const bitrix = String(getExactVal(r, 'БИТРИКС') || "").trim();
+                    const bi = String(getExactVal(r, 'BI') || "").trim();
+                    const kam = String(getExactVal(r, 'КАМ') || "").trim();
+                    const pochta = String(getExactVal(r, 'ПОЧТА') || "").trim();
+
+                    if (bitrix) kamDictBitrix[bitrix.toLowerCase()] = kam;
+                    if (bi) kamDictBI[bi.toLowerCase()] = kam;
+                    if (pochta) kamDictSber[pochta.toLowerCase()] = kam;
+
+                    originalDirectoryRows.push({ bitrix, bi, kam, pochta });
+                });
+            }
+
+            const sys_db = [];
+            const sys_db_partners = [];
+            
+            rawData.deals.forEach(row => {
+                const tovar = String(getExactVal(row, 'ТОВАР') || "").toUpperCase();
+                
+                // === ЖЕСТКАЯ ЗАЧИСТКА ДОП. ПРОДУКТОВ ===
+                const isAux = tovar.includes("КРЕДИТ") ||
+                              tovar.includes("КАСКО") ||
+                              tovar.includes("ОСАГО") ||
+                              tovar.includes("ГАП") ||
+                              tovar.includes("СТРАХОВ") ||
+                              tovar.includes("СЕРТИФИКАТ");
+
+                // Если это КАСКО, Кредит Сбер, ОСАГО или ФИНКАСКО — не пускаем строку в вычисления
+                if (isAux) return; 
+
+                const b2c = String(getExactVal(row, 'ТИПСДЕЛКИB2C') || "");
+                const price = parseFloat(getExactVal(row, 'ФИНАЛЬНАЯЦЕНАB2C', 'ЦЕНА') || 0);
+                const comm = parseFloat(getExactVal(row, 'КОМИССИЯСДЕЛКИРУБ') || 0);
+                const manager = String(getExactVal(row, 'МЕНЕДЖЕРСДЕЛКИ') || "Не указан");
+                const stage = String(getExactVal(row, 'СТАДИЯСДЕЛКИ') || "").toUpperCase();
+                
+                let vin = String(getExactVal(row, 'VIN', 'VINНОМЕР') || "");
+                if (!vin) {
+                    const words = tovar.split(/\s+/);
+                    const lastWord = words[words.length - 1];
+                    if (lastWord && lastWord.length > 10 && /[A-Z0-9]/.test(lastWord)) {
+                        vin = lastWord;
+                    } else {
+                        vin = String(getExactVal(row, 'ID') || ""); 
+                    }
+                }
+                
+                const rawDealDate = getExactVal(row, 'ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ');
+                const rawPrepayDate = getExactVal(row, 'ДАТАВНЕСЕНИЯПРЕДОПЛАТЫРОЗНИЦА', 'ДАТАПОЛУЧЕНИЯАВАНСА') || rawDealDate;
+
+                const isPrepay = tovar.includes("ВНЕСЕНИЕ АВАНСА");
+                const isSale = stage.includes("ЗАКРЫТО И РЕАЛИЗОВАН") && !isPrepay;
+                const isWait = !isSale && !isPrepay;
+
+                const dDealDate = parseCustomDate(rawDealDate);
+                const dPrepayDate = parseCustomDate(rawPrepayDate);
+
+                const dealMonthStr = dDealDate ? `${dDealDate.getFullYear()}-${String(dDealDate.getMonth() + 1).padStart(2, '0')}` : "";
+                const prepayMonthStr = dPrepayDate ? `${dPrepayDate.getFullYear()}-${String(dPrepayDate.getMonth() + 1).padStart(2, '0')}` : "";
+
+                const b2cUpper = b2c.toUpperCase().replace(/\s+/g, '');
+                let chartGroup = "Новые авто";
+                if (b2cUpper.includes("МП1") || b2cUpper.includes("МП2") || b2cUpper.includes("МП3") || b2cUpper.includes("ВХОДЯЩАЯЗАЯВКА") || b2cUpper.includes("PARTNER")) {
+                    chartGroup = "Partners";
+                }
+                
+                const finalBrand = normalizeBrand(tovar);
+
+                // Выручка считается только для реальных продаж авто
+                const finalRevenue = (isSale && comm > 0) ? parseFloat((comm / 1.22).toFixed(2)) : 0;
+
+                sys_db.push({
+                    "SaleMonth": isSale ? dealMonthStr : "",
+                    "PrepayMonth": isPrepay ? prepayMonthStr : "",
+                    "Brand": isPrepay ? "ВНЕСЕНИЕ" : finalBrand,
+                    "B2C": b2c,
+                    "SaleQty": isSale ? 1 : 0,
+                    "Price": isSale ? price : 0,
+                    "Comm": isSale ? comm : 0,
+                    "PrepayQty": isPrepay ? 1 : 0,
+                    "WaitQty": isWait ? 1 : 0,
+                    "WaitMonth": isWait ? dealMonthStr : "",
+                    "DealDate": dateToExcelSerial(dDealDate),
+                    "Manager": manager,
+                    "SeniorManager": String(getExactVal(row, 'ОТВЕТСТВЕННЫЙЗАСДЕЛКУСТАРШИЙ', 'СТАРШИЙ') || "Без старшего"),
+                    "PrepayDate": dateToExcelSerial(dPrepayDate),
+                    "Revenue": finalRevenue,
+                    "VIN": String(vin).trim(),
+                    "ChartGroup": chartGroup
+                });
+
+                const partner = String(getExactVal(row, 'КОМПАНИЯНАЗВАНИЕКОМПАНИИ', 'КОМПАНИЯ') || "").trim();
+                if (partner) {
+                    const normalizedPartner = partner.toLowerCase();
+                    const kamPartner = kamDictBitrix[normalizedPartner] || "";
+                    if (!kamPartner) newBitrixPartners.add(partner);
+                    
+                    if (isSale) {
+                        sys_db_partners.push({ Month: dealMonthStr, Partner: partner, KAM: kamPartner, Type: "Сделка", Qty: 1, B2C: b2c, Brand: finalBrand });
+                    } else if (isPrepay) {
+                        sys_db_partners.push({ Month: prepayMonthStr, Partner: partner, KAM: kamPartner, Type: "Предоплата", Qty: 1 });
+                    } else if (isWait) {
+                        sys_db_partners.push({ Month: dealMonthStr, Partner: partner, KAM: kamPartner, Type: "Без сделки", Qty: 1 });
+                    }
+                }
+            });
+
+            if (rawData.leads) {
+                const seenLeadClients = new Set();
+                rawData.leads.forEach(row => {
+                    const eventName = String(getExactVal(row, 'EVENTNAME', 'ИМЯСОБЫТИЯ') || "").trim();
+                    if (eventName !== "Отправка лида") return;
+
+                    const clientId = String(getExactVal(row, 'CLIENTID', 'IDКЛИЕНТА', 'ID') || "").trim();
+                    if (clientId && seenLeadClients.has(clientId)) return;
+                    if (clientId) seenLeadClients.add(clientId);
+
+                    const partner = String(getExactVal(row, 'BI', 'ПАРТНЕР') || "").trim();
+                    if (!partner) return; 
+
+                    let kam = "";
+                    const normalizedPartner = partner.toLowerCase();
+                    
+                    if (normalizedPartner === "сберавто" || normalizedPartner.includes("сбер авто")) {
+                        const contactName = String(getExactVal(row, 'НАЗВАНИЕКОНТАКТА', 'КОНТАКТ') || "").trim();
+                        if (contactName) {
+                            kam = kamDictSber[contactName.toLowerCase()] || "";
+                            if (!kam) newSberContacts.add(contactName);
+                        } else {
+                            if (!kam) newBIPartners.add(partner);
+                        }
+                    } else {
+                        kam = kamDictBI[normalizedPartner] || "";
+                        if (!kam) newBIPartners.add(partner);
+                    }
+                    
+                    const dateVal = parseCustomDate(getExactVal(row, 'ДАТА'));
+                    const monthStr = dateVal ? `${dateVal.getFullYear()}-${String(dateVal.getMonth() + 1).padStart(2, '0')}` : "";
+
+                    sys_db_partners.push({
+                        Month: monthStr,
+                        Partner: partner,
+                        KAM: kam,
+                        Type: "Лид",
+                        Qty: 1
+                    });
+                });
+            }
+
+            const outputData = {
+                "sys_db": sys_db,
+                "sys_db_partners": sys_db_partners 
+            };
+
+            const jsonString = JSON.stringify(outputData, null, 2);
+            
+            // --- SHOW UNMATCHED BUTTON IF NEEDED ---
+            const totalNew = newBitrixPartners.size + newBIPartners.size + newSberContacts.size;
+            let statusMsg = `✅ Файл успешно сохранен!`;
+            if (totalNew > 0) {
+                statusMsg += `\nВнимание: найдено ${totalNew} новых партнеров/контактов без КАМа! Скачайте обновленный справочник.`;
+                const unBtn = document.getElementById('downloadUnmatchedBtn');
+                if (unBtn) {
+                    unBtn.classList.remove('hidden');
+                    unBtn.classList.add('flex');
+                    unBtn.onclick = () => {
+                        const exportRows = [...originalDirectoryRows];
+                        
+                        newBitrixPartners.forEach(p => {
+                            if (!exportRows.some(r => r.bitrix.toLowerCase() === p.toLowerCase())) {
+                                exportRows.push({ bitrix: p, bi: "", kam: "", pochta: "" });
+                            }
+                        });
+                        newBIPartners.forEach(p => {
+                            if (!exportRows.some(r => r.bi.toLowerCase() === p.toLowerCase())) {
+                                exportRows.push({ bitrix: "", bi: p, kam: "", pochta: "" });
+                            }
+                        });
+                        newSberContacts.forEach(p => {
+                            if (!exportRows.some(r => r.pochta.toLowerCase() === p.toLowerCase())) {
+                                exportRows.push({ bitrix: "", bi: "СберАвто", kam: "", pochta: p });
+                            }
+                        });
+
+                        exportRows.sort((a, b) => {
+                            const countA = (a.bitrix ? 1 : 0) + (a.bi ? 1 : 0) + (a.kam ? 1 : 0) + (a.pochta ? 1 : 0);
+                            const countB = (b.bitrix ? 1 : 0) + (b.bi ? 1 : 0) + (b.kam ? 1 : 0) + (b.pochta ? 1 : 0);
+                            if (countA !== countB) return countB - countA;
+                            return a.bitrix.localeCompare(b.bitrix);
+                        });
+
+                        const escapeCSV = (str) => `"${String(str).replace(/"/g, '""')}"`;
+                        const lines = ["Битрикс;BI;КАМ;Почта"];
+                        exportRows.forEach(r => {
+                            lines.push(`${escapeCSV(r.bitrix)};${escapeCSV(r.bi)};${escapeCSV(r.kam)};${escapeCSV(r.pochta)}`);
+                        });
+
+                        const blob = new Blob(["\uFEFF" + lines.join("\n")], { type: 'text/csv;charset=utf-8;' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'Обновленный_Справочник_Партнеров.csv';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    };
+                }
+            }
+
+            // Function to show status text
+            const showStatus = () => {
+                const deployStatus = document.getElementById('deployStatus');
+                if (deployStatus) {
+                    deployStatus.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'border-red-200');
+                    deployStatus.classList.add('bg-emerald-50', 'text-emerald-700', 'border-emerald-200');
+                    deployStatus.innerHTML = statusMsg.replace(/\n/g, '<br>');
+                } else {
+                    alert(statusMsg);
+                }
+            };
+            
+            // --- SAVE JSON ---
+            try {
+                if ('showSaveFilePicker' in window) {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'data.json',
+                        types: [{
+                            description: 'JSON Files',
+                            accept: { 'application/json': ['.json'] },
+                        }],
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(jsonString);
+                    await writable.close();
+                    
+                    showStatus();
+                } else {
+                    throw new Error("File System Access API not supported");
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    console.error("Save error:", err);
+                    // Fallback to standard download if picker is unsupported or failed
+                    const blob = new Blob([jsonString], {type: "application/json"});
+                    const url = URL.createObjectURL(blob);
+                    const downloadAnchorNode = document.createElement('a');
+                    downloadAnchorNode.href = url;
+                    downloadAnchorNode.download = "data.json";
+                    document.body.appendChild(downloadAnchorNode);
+                    downloadAnchorNode.click();
+                    document.body.removeChild(downloadAnchorNode);
+                    URL.revokeObjectURL(url);
+                    
+                    showStatus();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

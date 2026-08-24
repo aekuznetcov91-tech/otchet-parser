@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2C Analytics Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        body { background-color: #f1f5f9; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 1.25rem; margin-bottom: 1.25rem; }
+        .tab-btn.active { border-bottom: 3px solid #3b82f6; color: #1e3a8a; font-weight: 700; }
+        .tab-btn { color: #6b7280; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; cursor: pointer; padding-bottom: 8px; }
+        .tab-btn:hover { color: #3b82f6; }
+        table { border-collapse: collapse; width: 100%; font-size: 0.8rem; }
+        th { background-color: #1e3a8a; color: white; padding: 8px 10px; text-align: left; border: 1px solid #cbd5e1; font-weight: 600; white-space: nowrap; font-size: 0.78rem; }
+        td { padding: 6px 10px; border: 1px solid #e2e8f0; color: #334155; }
+        tr:hover { background-color: #f1f5f9; }
+        tr.group-header td { background-color: #e0e7ff; font-weight: 700; font-size: 0.85rem; color: #1e3a8a; border-bottom: 2px solid #3b82f6; }
+        .table-total { background-color: #22c55e !important; color: white !important; font-weight: bold; }
+        .table-subtotal { background-color: #e2e8f0; font-weight: bold; }
+        .search-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 12px 6px 34px; font-size: 0.82rem; width: 220px; transition: border-color 0.2s; outline: none; }
+        .search-box:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
+        .copy-btn { display: inline-flex; align-items: center; gap: 4px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 5px 10px; font-size: 0.75rem; color: #475569; cursor: pointer; transition: all 0.15s; font-weight: 500; }
+        .copy-btn:hover { background: #3b82f6; color: white; border-color: #3b82f6; }
+        .kpi-card { border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 1rem 1.25rem; border-left: 4px solid; }
+        .vin-error { color: #ef4444; font-weight: 700; cursor: help; }
+
+        /* Custom chart legend styling */
+        .chart-legend-item { display: flex; align-items: center; justify-content: space-between; padding: 4px 8px; border-radius: 6px; font-size: 0.78rem; transition: background 0.15s; }
+        .chart-legend-item:hover { background: #f8fafc; }
+    </style>
+</head>
+<body class="p-4 md:p-6 text-gray-800">
+
+    <!-- HEADER -->
+    <div class="flex flex-col md:flex-row justify-between items-center mb-5 bg-white p-4 rounded-xl shadow-sm">
+        <h1 class="text-xl font-bold text-blue-900 mb-3 md:mb-0 flex items-center gap-2">
+            <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-600"></i> B2C Analytics Dashboard
+        </h1>
+        <div class="flex items-center gap-3">
+            <label for="monthFilter" class="font-semibold text-gray-600 text-sm">Период:</label>
+            <select id="monthFilter" class="bg-yellow-50 border border-yellow-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 p-2 font-bold cursor-pointer transition-colors hover:bg-yellow-100 shadow-sm"></select>
+            
+            <!-- КНОПКА ПРИНУДИТЕЛЬНОГО ОБНОВЛЕНИЯ ДАННЫХ -->
+            <button onclick="forceDataUpdate(this)" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-2 rounded-lg font-bold transition-colors flex items-center gap-1 text-sm shadow-sm border border-blue-200">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i> Обновить
+            </button>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="flex space-x-5 mb-5 border-b border-gray-200 overflow-x-auto pb-1">
+        <button onclick="switchTab('tab-dashboard', this)" class="tab-btn active flex items-center gap-1.5 whitespace-nowrap text-sm">
+            <i data-lucide="pie-chart" class="w-4 h-4"></i> Диаграмма</button>
+        <button onclick="switchTab('tab-dynamics', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
+            <i data-lucide="trending-up" class="w-4 h-4"></i> Динамика</button>
+        <button onclick="switchTab('tab-dyn-months', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
+            <i data-lucide="calendar-days" class="w-4 h-4"></i> Динамика месяцы</button>
+        <button onclick="switchTab('tab-partners', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
+            <i data-lucide="handshake" class="w-4 h-4"></i> Партнеры</button>
+        <button onclick="switchTab('tab-managers', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
+            <i data-lucide="users" class="w-4 h-4"></i> Менеджеры</button>
+        <button onclick="switchTab('tab-details', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
+            <i data-lucide="clock" class="w-4 h-4"></i> В ожидании</button>
+    </div>
+
+    <!-- ==================== TAB: DIAGRAM ==================== -->
+    <div id="tab-dashboard" class="tab-content block">
+        <!-- KPI ROW 1: MAIN STATS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-5">
+            <div class="kpi-card border-blue-500 bg-white !mb-0">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Сделки (шт)</p>
+                <p id="kpiSales" class="text-3xl font-black text-gray-800 mt-1">0</p>
+            </div>
+            <div class="kpi-card border-orange-500 bg-white !mb-0">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Авансы (шт)</p>
+                <p id="kpiPrepays" class="text-3xl font-black text-gray-800 mt-1">0</p>
+            </div>
+            <div class="kpi-card border-purple-500 bg-white !mb-0">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Средний чек Тотал</p>
+                <p id="kpiCheck" class="text-3xl font-black text-gray-800 mt-1">0 ₽</p>
+                <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
+                    <span class="text-gray-500">Китай: <span id="kpiCheckChina" class="font-bold text-gray-700">0</span></span>
+                    <span class="text-gray-500">Lada: <span id="kpiCheckLada" class="font-bold text-gray-700">0</span></span>
+                </div>
+            </div>
+            <div class="kpi-card border-green-500 bg-white !mb-0">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">ARPU Тотал (без НДС)</p>
+                <p id="kpiArpu" class="text-3xl font-black text-gray-800 mt-1">0 ₽</p>
+                <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
+                    <span class="text-gray-500">Китай: <span id="kpiArpuChina" class="font-bold text-gray-700">0</span></span>
+                    <span class="text-gray-500">Lada: <span id="kpiArpuLada" class="font-bold text-gray-700">0</span></span>
+                </div>
+            </div>
+            <div class="kpi-card border-emerald-600 bg-white !mb-0">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Выручка Тотал (без НДС)</p>
+                <p id="kpiRevTotal" class="text-3xl font-black text-emerald-700 mt-1">0 ₽</p>
+                <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
+                    <span class="text-gray-500">Китай: <span id="kpiRevChina" class="font-bold text-gray-700">0 ₽</span></span>
+                    <span class="text-gray-500">Lada: <span id="kpiRevLada" class="font-bold text-gray-700">0 ₽</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLES + DIAGRAMS ROW (Side by Side in 1 row) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+            <!-- BLOCK 1: BRANDS -->
+            <div class="card !p-4 flex flex-col justify-between" id="cardPieBrands">
+                <div class="flex items-center justify-between border-b pb-3 mb-3">
+                    <h2 class="text-base font-bold text-gray-700 uppercase tracking-wide flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i> Сплит по брендам
+                    </h2>
+                    <button onclick="copyCardToClipboard('chartContainerBrands', this)" class="copy-btn">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Скопировать
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <div class="md:col-span-5 border-r border-gray-100 pr-2">
+                        <div id="tableDashBrands"></div>
+                    </div>
+                    <div class="md:col-span-7 flex flex-row items-center justify-center p-2 rounded-xl bg-white w-full" id="chartContainerBrands">
+                        <div class="relative w-[55%] h-[250px]">
+                            <canvas id="pieBrands"></canvas>
+                        </div>
+                        <div id="legendPieBrands" class="w-[45%] pl-3 space-y-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOCK 2: B2C -->
+            <div class="card !p-4 flex flex-col justify-between" id="cardPieB2C">
+                <div class="flex items-center justify-between border-b pb-3 mb-3">
+                    <h2 class="text-base font-bold text-gray-700 uppercase tracking-wide flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i> Тип сделки B2C
+                    </h2>
+                    <button onclick="copyCardToClipboard('chartContainerB2C', this)" class="copy-btn">
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Скопировать
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <div class="md:col-span-5 border-r border-gray-100 pr-2">
+                        <div id="tableDashB2C"></div>
+                    </div>
+                    <div class="md:col-span-7 flex flex-row items-center justify-center p-2 rounded-xl bg-white w-full" id="chartContainerB2C">
+                        <div class="relative w-[55%] h-[250px]">
+                            <canvas id="pieB2C"></canvas>
+                        </div>
+                        <div id="legendPieB2C" class="w-[45%] pl-3 space-y-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="text-base font-bold text-gray-600 mb-3 text-center uppercase tracking-wide">Динамика: Partners (МП и Входящие)</h2>
+            <div class="relative h-[340px]"><canvas id="chartPartners"></canvas></div>
+        </div>
+        <div class="card">
+            <h2 class="text-base font-bold text-gray-600 mb-3 text-center uppercase tracking-wide">Динамика: Новые Авто (Остальные каналы B2C)</h2>
+            <div class="relative h-[340px]"><canvas id="chartNewAuto"></canvas></div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB: DYNAMICS ==================== -->
+    <div id="tab-dynamics" class="tab-content hidden">
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">ОПЕРАТИВНАЯ ДИНАМИКА БРЕНДОВ</h2>
+                <div class="flex items-center gap-2">
+                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchOpDyn" type="text" class="search-box" placeholder="Поиск..." oninput="filterTable(this, 'tableOpDyn')"></div>
+                    <button class="copy-btn" onclick="copyTableToClipboard('tableOpDyn')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tableOpDyn"></div>
+        </div>
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">ТИП СДЕЛКИ (B2C) ПО МАРКАМ</h2>
+                <div class="flex items-center gap-2">
+                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchB2CBrands" type="text" class="search-box" placeholder="Поиск..." oninput="filterTable(this, 'tableB2CBrands')"></div>
+                    <button class="copy-btn" onclick="copyTableToClipboard('tableB2CBrands')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tableB2CBrands"></div>
+        </div>
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">СТРУКТУРА СДЕЛОК B2C ВНУТРИ БРЕНДА (%)</h2>
+                <div class="flex items-center gap-2">
+                    <button class="copy-btn" onclick="copyTableToClipboard('tableB2CStruct')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tableB2CStruct"></div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB: DYNAMICS MONTHS ==================== -->
+    <div id="tab-dyn-months" class="tab-content hidden">
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">ПОНЕДЕЛЬНОЕ СРАВНЕНИЕ</h2>
+                <div class="flex items-center gap-2">
+                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchWeekComp" type="text" class="search-box" placeholder="Поиск..." oninput="filterTable(this, 'tableWeekComp')"></div>
+                    <button class="copy-btn" onclick="copyTableToClipboard('tableWeekComp')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tableWeekComp"></div>
+        </div>
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">ПОНЕДЕЛЬНАЯ ДИНАМИКА ПО ТИПАМ B2C (шт.)</h2>
+                <div class="flex items-center gap-2">
+                    <button class="copy-btn" onclick="copyTableToClipboard('tableWeekB2C')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tableWeekB2C"></div>
+        </div>
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">ИСТОРИЧЕСКАЯ ПОМЕСЯЧНАЯ ДИНАМИКА</h2>
+                <div class="flex items-center gap-2">
+                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchHistDyn" type="text" class="search-box" placeholder="Поиск..." oninput="filterTable(this, 'tableHistDyn')"></div>
+                    <button class="copy-btn" onclick="copyTableToClipboard('tableHistDyn')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tableHistDyn"></div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB: PARTNERS ==================== -->
+    <div id="tab-partners" class="tab-content hidden">
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">Сводка по активным партнерам</h2>
+                <div class="flex items-center gap-2">
+                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchPartners" type="text" class="search-box" placeholder="Поиск партнера..." oninput="filterTable(this, 'tablePartnersContainer')"></div>
+                    <button class="copy-btn" onclick="copyTableToClipboard('tablePartnersContainer')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tablePartnersContainer"></div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB: MANAGERS ==================== -->
+    <div id="tab-managers" class="tab-content hidden">
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">Показатели менеджеров (по группам)</h2>
+                <div class="flex items-center gap-2">
+                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchManagers" type="text" class="search-box" placeholder="Поиск менеджера..." oninput="filterTable(this, 'tableManagersContainer')"></div>
+                    <button class="copy-btn" onclick="copyTableToClipboard('tableManagersContainer')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tableManagersContainer"></div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB: WAITING ==================== -->
+    <div id="tab-details" class="tab-content hidden">
+        <div class="card overflow-x-auto">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-lg font-bold text-gray-800">Клиенты в ожидании (по брендам)</h2>
+                <div class="flex items-center gap-2">
+                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchWaiting" type="text" class="search-box" placeholder="Поиск..." oninput="filterTable(this, 'tableWaitingContainer')"></div>
+                    <button class="copy-btn" onclick="copyTableToClipboard('tableWaitingContainer')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+                </div>
+            </div>
+            <div id="tableWaitingContainer"></div>
+        </div>
+    </div>
+
+    <script>
+    // ====================================================================
+    // B2C Analytics Dashboard
+    // ====================================================================
+    Chart.register(ChartDataLabels);
+    let db = [], dbPartners = [];
+
+    const fmtNum = (num) => Math.round(num || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    const fmtPct = (num) => (Math.round((num || 0) * 100)) + "%";
+    const fmtRub = (num) => fmtNum(num) + " ₽";
+
+    function excelToJSDate(serial) {
+        if (!serial || serial === 0) return null;
+        let utc_days = Math.floor(serial - 25569);
+        return new Date(utc_days * 86400 * 1000 + (new Date().getTimezoneOffset() * 60000));
+    }
+
+    function formatDateDMY(dateStr) {
+        if (!dateStr) return "";
+        let d = excelToJSDate(dateStr);
+        if (!d) return "";
+        return d.getDate().toString().padStart(2,'0') + "." + (d.getMonth()+1).toString().padStart(2,'0') + "." + d.getFullYear();
+    }
+
+    function renderVin(vin) {
+        if (!vin) return "";
+        if (vin.length < 17) return `<span class="vin-error" title="VIN length < 17">${vin}</span>`;
+        return vin;
+    }
+
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.remove('hidden');
+        btn.classList.add('active');
+    }
+
+    function filterTable(input, targetId) {
+        let val = input.value.toLowerCase();
+        let container = document.getElementById(targetId);
+        if (!container) return;
+        let table = container.querySelector('table') || container;
+        if (table.tagName !== 'TABLE') { table = table.querySelector('table'); if (!table) return; }
+        let rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            let text = row.textContent.toLowerCase();
+            row.style.display = text.includes(val) ? '' : 'none';
+        });
+    }
+
+    /**
+     * Умный поиск: создает <datalist> из уникальных значений ячеек таблицы
+     * и привязывает его к указанному input.
+     * @param {string} inputId — id текстового поля поиска
+     * @param {string} targetContainerId — id контейнера, внутри которого находится таблица
+     */
+    function setupSmartSearch(inputId, targetContainerId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const container = document.getElementById(targetContainerId);
+        if (!container) return;
+        const table = container.querySelector('table') || (container.tagName === 'TABLE' ? container : null);
+        if (!table) return;
+
+        // Генерируем уникальный id для datalist
+        const datalistId = 'dl-' + inputId;
+
+        // Удаляем предыдущий datalist, если он уже был создан (для пересоздания при смене периода)
+        const existing = document.getElementById(datalistId);
+        if (existing) existing.remove();
+
+        // Собираем уникальные текстовые значения из ячеек <td>
+        const values = new Set();
+        table.querySelectorAll('tbody td').forEach(td => {
+            const text = td.textContent.trim();
+            // Пропускаем пустые, чисто числовые и слишком короткие значения
+            if (text && text.length > 1 && !/^[\d\s₽%.,]+$/.test(text)) {
+                values.add(text);
+            }
+        });
+
+        // Создаем datalist и наполняем option'ами
+        const datalist = document.createElement('datalist');
+        datalist.id = datalistId;
+        Array.from(values).sort((a, b) => a.localeCompare(b, 'ru')).forEach(val => {
+            const option = document.createElement('option');
+            option.value = val;
+            datalist.appendChild(option);
+        });
+
+        // Вставляем datalist в DOM и связываем с input
+        input.parentElement.appendChild(datalist);
+        input.setAttribute('list', datalistId);
+        input.setAttribute('autocomplete', 'off');
+    }
+
+    function copyTableToClipboard(targetId) {
+        let container = document.getElementById(targetId);
+        if (!container) return;
+        let table = container.querySelector('table');
+        if (!table) return;
+        let tsv = "";
+        for (let row of table.rows) {
+            let rowData = [];
+            for (let cell of row.cells) {
+                rowData.push(cell.innerText.replace(/\n/g, ' '));
+            }
+            tsv += rowData.join("\t") + "\n";
+        }
+        navigator.clipboard.writeText(tsv).then(() => {
+            let btn = event.target.closest('.copy-btn');
+            let orig = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i> Готово!';
+            btn.style.background = '#22c55e'; btn.style.color = 'white'; btn.style.borderColor = '#22c55e';
+            setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; lucide.createIcons(); }, 1500);
+        });
+    }
+
+    async function loadData() {
+        try {
+            const res = await fetch('data.json?v=' + new Date().getTime());
+            if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+            const data = await res.json();
+            db = data.sys_db || [];
+            dbPartners = data.sys_db_partners || [];
+            initDropdown();
+        } catch (error) { 
+            alert("Error loading data.json! " + error.message);
+            console.error("Fetch error:", error);
+        }
+    }
+
+    function initDropdown() {
+        const months = new Set();
+        db.forEach(r => {
+            if (r.SaleMonth && r.SaleMonth.length > 2) months.add(r.SaleMonth);
+            if (r.PrepayMonth && r.PrepayMonth.length > 2) months.add(r.PrepayMonth);
+        });
+        const sortedMonths = Array.from(months).sort().reverse();
+        const select = document.getElementById('monthFilter');
+        select.innerHTML = '<option value="Весь период">Весь период</option>';
+        sortedMonths.forEach(m => select.innerHTML += `<option value="${m}">${m}</option>`);
+        let def = sortedMonths.length > 0 ? sortedMonths[0] : "Весь период";
+        select.value = def;
+        select.addEventListener('change', (e) => updateAllTabs(e.target.value));
+        updateAllTabs(def);
+    }
+
+    function updateAllTabs(period) {
+        const isAll = (period === "Весь период");
+        const filterM = period;
+
+        const sDb = db.filter(r => r.SaleQty > 0 && (isAll || r.SaleMonth === filterM));
+        const pDb = db.filter(r => r.PrepayQty > 0 && (isAll || r.PrepayMonth === filterM));
+
+        let tS = sDb.length, tP = pDb.length;
+        document.getElementById('kpiSales').innerText = fmtNum(tS);
+        document.getElementById('kpiPrepays').innerText = fmtNum(tP);
+
+        let revTotal = 0, revChina = 0, revLada = 0;
+        sDb.forEach(r => {
+            let rv = r.Revenue || 0;
+            revTotal += rv;
+            if (r.Brand === 'LADA') revLada += rv;
+            else revChina += rv;
+        });
+        document.getElementById('kpiRevTotal').innerText = fmtRub(revTotal);
+        document.getElementById('kpiRevChina').innerText = fmtRub(revChina);
+        document.getElementById('kpiRevLada').innerText = fmtRub(revLada);
+
+        let cntCh = 0, cntLa = 0, pCh = 0, pLa = 0, pTot = 0;
+        sDb.forEach(r => {
+            pTot += r.Price;
+            if (r.Brand === 'LADA') { cntLa++; pLa += r.Price; }
+            else { cntCh++; pCh += r.Price; }
+        });
+        document.getElementById('kpiArpu').innerText = tS > 0 ? fmtRub(revTotal / tS) : '0 ₽';
+        document.getElementById('kpiArpuChina').innerText = cntCh > 0 ? fmtNum(revChina / cntCh) : '0';
+        document.getElementById('kpiArpuLada').innerText = cntLa > 0 ? fmtNum(revLada / cntLa) : '0';
+        document.getElementById('kpiCheck').innerText = tS > 0 ? fmtRub(pTot / tS) : '0 ₽';
+        document.getElementById('kpiCheckChina').innerText = cntCh > 0 ? fmtNum(pCh / cntCh) : '0';
+        document.getElementById('kpiCheckLada').innerText = cntLa > 0 ? fmtNum(pLa / cntLa) : '0';
+
+        renderDashTables(sDb);
+        let y, m;
+        if (isAll) { let n = new Date(); y = n.getFullYear(); m = n.getMonth(); }
+        else { let p = period.split('-'); y = parseInt(p[0]); m = parseInt(p[1]) - 1; }
+        updateLineChart('chartPartners', null, 'Partners', sDb, pDb, y, m);
+        updateLineChart('chartNewAuto', null, 'Новые авто', sDb, pDb, y, m);
+        updatePieChart('pieBrands', null, getTopBrands(sDb), 'Сплит по брендам');
+        updatePieChart('pieB2C', null, getB2CSplit(sDb), 'Тип сделки B2C');
+
+        renderDynamicsTab(sDb, pDb, isAll);
+        renderDynMonthsTab(sDb, isAll, period);
+        renderPartnersTable(filterM, isAll);
+        renderManagersTable(filterM, isAll);
+        renderWaitingTable(filterM, isAll);
+
+        initTableSorting();
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function renderDashTables(sDb) {
+        let br = {}, b2c = {};
+        sDb.forEach(r => { br[r.Brand] = (br[r.Brand]||0)+1; b2c[r.B2C||"(пусто)"] = (b2c[r.B2C||"(пусто)"]||0)+1; });
+        const makeHtml = (dict, t1, t2) => {
+            let sorted = Object.entries(dict).sort((a,b)=>b[1]-a[1]);
+            let tot = sorted.reduce((s,x)=>s+x[1],0);
+            let h = `<table><thead><tr><th>${t1}</th><th>${t2}</th></tr></thead><tbody>`;
+            sorted.forEach(x => h+=`<tr><td class="font-bold">${x[0]}</td><td>${fmtNum(x[1])}</td></tr>`);
+            return h + `<tr><td class="table-subtotal">Общий итог</td><td class="table-subtotal">${fmtNum(tot)}</td></tr></tbody></table>`;
+        };
+        document.getElementById('tableDashBrands').innerHTML = makeHtml(br, "Марка авто", "Количество");
+        document.getElementById('tableDashB2C').innerHTML = makeHtml(b2c, "Тип сделки B2C", "Количество");
+    }
+
+    function renderDynamicsTab(sDb, pDb, isAll) {
+        let maxDateVal = Math.max(...db.map(r => r.DealDate || 0));
+        let maxDate = excelToJSDate(maxDateVal) || new Date();
+        let day = maxDate.getDay();
+        let diffToMon = maxDate.getDate() - day + (day === 0 ? -6 : 1);
+        let prevWeekEnd = new Date(maxDate); prevWeekEnd.setDate(diffToMon - 1);
+        let prevWeekStart = new Date(prevWeekEnd); prevWeekStart.setDate(prevWeekEnd.getDate() - 6);
+
+        let lWS = prevWeekStart.getTime(), lWE = prevWeekEnd.getTime();
+        let sDbLW = db.filter(r => r.SaleQty > 0 && excelToJSDate(r.DealDate)?.getTime() >= lWS && excelToJSDate(r.DealDate)?.getTime() <= lWE);
+        let pDbLW = db.filter(r => r.PrepayQty > 0 && excelToJSDate(r.PrepayDate)?.getTime() >= lWS && excelToJSDate(r.PrepayDate)?.getTime() <= lWE);
+
+        let brandsSet = new Set(sDb.map(r => r.Brand));
+        let brands = Array.from(brandsSet).sort();
+        let b2cSet = new Set(sDb.map(r => r.B2C || "(пусто)"));
+        let b2cArr = Array.from(b2cSet).sort();
+
+        const calcMet = (data, pData, b, metricIdx) => {
+            let s = data.filter(r => b ? r.Brand === b : true);
+            let p = pData.filter(r => b ? r.Brand === b : true);
+            let tS = s.length, tP = p.length;
+            let rev = 0, pr = 0;
+            s.forEach(r => { rev += (r.Revenue || 0); pr += r.Price; });
+            if (metricIdx === 0) return tS;
+            if (metricIdx === 1) return tS > 0 ? (pr / tS) : 0;
+            if (metricIdx === 2) return tS > 0 ? (rev / tS) : 0;  
+            if (metricIdx === 3) return tP;
+        };
+
+        let h1 = `<table id="tableOpDyn"><thead><tr><th>Показатель</th><th>Период</th><th class="table-subtotal">Тотал</th>`;
+        brands.forEach(b => h1 += `<th>${b}</th>`); h1 += `</tr></thead><tbody>`;
+        let metrics = ["Кол-во продаж (шт.)", "Средний чек (руб.)", "ARPU (без НДС)", "Кол-во предоплат"];
+        metrics.forEach((met, i) => {
+            h1 += `<tr><td rowspan="2" class="font-bold border-r">${met}</td><td>Прошлая неделя</td><td class="font-bold">${fmtNum(calcMet(sDbLW, pDbLW, null, i))}</td>`;
+            brands.forEach(b => h1 += `<td>${fmtNum(calcMet(sDbLW, pDbLW, b, i))}</td>`); h1 += `</tr>`;
+            h1 += `<tr><td>Выбранный период</td><td class="font-bold bg-gray-50">${fmtNum(calcMet(sDb, pDb, null, i))}</td>`;
+            brands.forEach(b => h1 += `<td class="bg-gray-50">${fmtNum(calcMet(sDb, pDb, b, i))}</td>`); h1 += `</tr>`;
+        });
+        document.getElementById('tableOpDyn').innerHTML = h1 + `</tbody></table>`;
+        setupSmartSearch('searchOpDyn', 'tableOpDyn');
+
+        let h2 = `<table id="tableB2CBrands"><thead><tr><th>Тип сделки B2C</th><th class="table-subtotal">Тотал</th>`;
+        let h3 = `<table id="tableB2CStruct"><thead><tr><th>Тип сделки B2C</th><th class="table-subtotal">Тотал</th>`;
+        brands.forEach(b => { h2 += `<th>${b}</th>`; h3 += `<th>${b}</th>`; });
+        h2 += `</tr></thead><tbody>`; h3 += `</tr></thead><tbody>`;
+
+        let b2cTotals = {}, brandTotals = {};
+        b2cArr.forEach(t => b2cTotals[t] = 0);
+        brands.forEach(b => brandTotals[b] = sDb.filter(r => r.Brand === b).length);
+        let grandTotal = sDb.length;
+
+        b2cArr.forEach(t => {
+            let rowCount = sDb.filter(r => (r.B2C||"(пусто)") === t).length;
+            b2cTotals[t] = rowCount;
+            h2 += `<tr><td class="font-bold">${t}</td><td class="font-bold bg-gray-50">${fmtNum(rowCount)}</td>`;
+            h3 += `<tr><td class="font-bold">${t}</td><td class="font-bold bg-gray-50">${grandTotal > 0 ? fmtPct(rowCount/grandTotal) : "0%"}</td>`;
+            brands.forEach(b => {
+                let cell = sDb.filter(r => (r.B2C||"(пусто)") === t && r.Brand === b).length;
+                h2 += `<td>${fmtNum(cell)}</td>`;
+                h3 += `<td>${brandTotals[b] > 0 ? fmtPct(cell/brandTotals[b]) : "0%"}</td>`;
+            });
+            h2 += `</tr>`; h3 += `</tr>`;
+        });
+        h2 += `<tr class="table-total"><td>ИТОГО (шт.)</td><td>${fmtNum(grandTotal)}</td>`;
+        h3 += `<tr class="table-total"><td>ДОЛЯ БРЕНДА</td><td>100%</td>`;
+        brands.forEach(b => {
+            h2 += `<td>${fmtNum(brandTotals[b])}</td>`;
+            h3 += `<td>${fmtPct(brandTotals[b]/grandTotal)}</td>`;
+        });
+        document.getElementById('tableB2CBrands').innerHTML = h2 + `</tr></tbody></table>`;
+        document.getElementById('tableB2CStruct').innerHTML = h3 + `</tr></tbody></table>`;
+        setupSmartSearch('searchB2CBrands', 'tableB2CBrands');
+    }
+
+    function renderDynMonthsTab(sDb, isAll, period) {
+        let hDb = db.filter(r => r.SaleQty > 0 || r.PrepayQty > 0);
+        let hData = {};
+        hDb.forEach(r => {
+            let b = r.Brand || "N/A"; let m = (r.SaleMonth || r.PrepayMonth || "N/A").replace("'", "");
+            let k = b + "|" + m;
+            if (!hData[k]) hData[k] = {s:0, rev:0, pr:0, p:0, b, m};
+            if (r.SaleQty > 0) { hData[k].s++; hData[k].rev += (r.Revenue||0); hData[k].pr += r.Price; }
+            if (r.PrepayQty > 0) hData[k].p++;
+        });
+        let histRows = Object.values(hData).sort((a,b) => a.b.localeCompare(b.b) || a.m.localeCompare(b.m));
+        let hHist = `<table id="tableHistDyn"><thead><tr><th>Марка авто</th><th>Месяц</th><th>Кол-во продаж</th><th>Средний чек</th><th>ARPU (без НДС)</th><th>Предоплат</th></tr></thead><tbody>`;
+        histRows.forEach(r => {
+            hHist += `<tr><td class="font-bold">${r.b}</td><td>${r.m}</td><td>${fmtNum(r.s)}</td>
+            <td>${r.s>0?fmtNum(r.pr/r.s):0}</td><td>${r.s>0?fmtNum(r.rev/r.s):0}</td><td>${fmtNum(r.p)}</td></tr>`;
+        });
+        document.getElementById('tableHistDyn').innerHTML = hHist + `</tbody></table>`;
+        setupSmartSearch('searchHistDyn', 'tableHistDyn');
+
+        let dates = sDb.map(r => excelToJSDate(r.DealDate)).filter(d => d);
+        if (dates.length === 0) return;
+
+        let minD, maxD;
+        if (isAll) {
+            minD = new Date(Math.min(...dates)); maxD = new Date(Math.max(...dates));
+        } else {
+            let [y, m] = period.split('-');
+            minD = new Date(parseInt(y), parseInt(m)-1, 1);
+            maxD = new Date(parseInt(y), parseInt(m), 0);
+        }
+
+        let weeks = [], cur = new Date(minD), wNum = 1;
+        while (cur <= maxD) {
+            let ws = new Date(cur);
+            let dayOfWeek = cur.getDay();
+            let monday = cur.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+            ws = new Date(cur); ws.setDate(monday);
+            if (ws < minD) ws = new Date(minD);
+            let we = new Date(ws); we.setDate(ws.getDate() + 6);
+            if (we > maxD) we = new Date(maxD);
+
+            let sStr = `${ws.getDate().toString().padStart(2,'0')}.${(ws.getMonth()+1).toString().padStart(2,'0')}`;
+            let eStr = `${we.getDate().toString().padStart(2,'0')}.${(we.getMonth()+1).toString().padStart(2,'0')}`;
+            weeks.push({ l: `Неделя ${wNum}`, s: sStr + "-" + eStr, start: ws.getTime(), end: we.getTime() + 86399000 });
+            cur = new Date(we); cur.setDate(we.getDate() + 1); wNum++;
+        }
+
+        let hWComp = `<table id="tableWeekComp"><thead><tr><th>Метрика</th>`;
+        let hWB2C = `<table id="tableWeekB2C"><thead><tr><th>Тип сделки B2C</th>`;
+        weeks.forEach(w => {
+            hWComp += `<th>${w.l}<br><span style="font-weight:normal;font-size:0.72rem">${w.s}</span></th>`;
+            hWB2C += `<th>${w.l}<br><span style="font-weight:normal;font-size:0.72rem">${w.s}</span></th>`;
+        });
+        hWComp += `</tr></thead><tbody>`; hWB2C += `</tr></thead><tbody>`;
+
+        const compMets = ["ARPU китай", "ARPU Лада", "ARPU тотал", "Средний чек китай", "Средний чек лада", "Средний чек тотал"];
+        compMets.forEach((met, i) => {
+            hWComp += `<tr><td class="font-bold">${met}</td>`;
+            weeks.forEach(w => {
+                let wD = sDb.filter(r => { let d = excelToJSDate(r.DealDate)?.getTime(); return d >= w.start && d <= w.end; });
+                let t = wD.length, pr = 0, rev = 0, revLa = 0, cntLa = 0, prLa = 0, revCh = 0, cntCh = 0, prCh = 0;
+                wD.forEach(r => {
+                    rev += (r.Revenue || 0); pr += r.Price;
+                    if (r.Brand === 'LADA') { revLa += (r.Revenue||0); prLa += r.Price; cntLa++; }
+                    else { revCh += (r.Revenue||0); prCh += r.Price; cntCh++; }
+                });
+                let v = 0;
+                if (i === 0) v = cntCh > 0 ? (revCh / cntCh) : 0;   
+                if (i === 1) v = cntLa > 0 ? (revLa / cntLa) : 0;     
+                if (i === 2) v = t > 0 ? (rev / t) : 0;              
+                if (i === 3) v = cntCh > 0 ? (prCh / cntCh) : 0;
+                if (i === 4) v = cntLa > 0 ? (prLa / cntLa) : 0;
+                if (i === 5) v = t > 0 ? (pr / t) : 0;
+                hWComp += `<td>${fmtNum(v)}</td>`;
+            });
+            hWComp += `</tr>`;
+        });
+
+        let b2cSet = new Set(sDb.map(r => r.B2C || "(пусто)"));
+        Array.from(b2cSet).sort().forEach(b2c => {
+            hWB2C += `<tr><td class="font-bold">${b2c}</td>`;
+            weeks.forEach(w => {
+                let c = sDb.filter(r => (r.B2C||"(пусто)") === b2c && excelToJSDate(r.DealDate)?.getTime() >= w.start && excelToJSDate(r.DealDate)?.getTime() <= w.end).length;
+                hWB2C += `<td>${fmtNum(c)}</td>`;
+            });
+            hWB2C += `</tr>`;
+        });
+        document.getElementById('tableWeekComp').innerHTML = hWComp + `</tbody></table>`;
+        document.getElementById('tableWeekB2C').innerHTML = hWB2C + `</tbody></table>`;
+        setupSmartSearch('searchWeekComp', 'tableWeekComp');
+    }
+
+    function renderPartnersTable(filterM, isAll) {
+        let pStats = {};
+        let pKAM = {};
+
+        dbPartners.filter(r => isAll || r.Month === filterM).forEach(r => {
+            let p = r.Partner; if (!p) return;
+            if (!pStats[p]) pStats[p] = { deals: 0, prepays: 0, leads: 0, waiting: 0, b2c: {}, brandSplit: {} };
+            if (r.KAM) pKAM[p] = r.KAM;
+
+            if (r.Type === "Сделка" || r.Type === "Deal") {
+                pStats[p].deals += (r.Qty || 0);
+                let b2cKey = r.B2C || "(пусто)";
+                pStats[p].b2c[b2cKey] = (pStats[p].b2c[b2cKey] || 0) + (r.Qty || 0);
+                if (r.Brand) pStats[p].brandSplit[r.Brand] = (pStats[p].brandSplit[r.Brand] || 0) + (r.Qty || 0);
+            }
+            else if (r.Type === "Предоплата" || r.Type === "Prepay") pStats[p].prepays += (r.Qty || 0);
+            else if (r.Type === "Лид" || r.Type === "Lead") pStats[p].leads += (r.Qty || 0);
+            else if (r.Type === "Без сделки" || r.Type === "No deal") pStats[p].waiting += (r.Qty || 0);
+        });
+
+        let allB2C = new Set();
+        Object.values(pStats).forEach(s => Object.keys(s.b2c).forEach(k => allB2C.add(k)));
+        let b2cColumns = Array.from(allB2C).sort();
+
+        let sorted = Object.keys(pStats).sort((a, b) => pStats[b].deals - pStats[a].deals);
+
+        let html = `<table id="tablePartners"><thead><tr>
+            <th>Компания</th><th>KAM</th><th>Передачи (Лиды)</th><th>Передачи без предоплаты</th>`;
+        b2cColumns.forEach(b => html += `<th>${b}</th>`);
+        html += `<th>Тотал сделок</th><th>Кол-во предоплат</th><th>В ожидании</th><th>Сплит по брендам</th></tr></thead><tbody>`;
+
+        let ts=0, tl=0, tp=0, tw=0, tB2C = {};
+        b2cColumns.forEach(b => tB2C[b] = 0);
+
+        sorted.forEach(p => {
+            let s = pStats[p];
+            if (s.deals === 0 && s.leads === 0 && s.prepays === 0) return;
+            ts += s.deals; tl += s.leads; tp += s.prepays; tw += s.waiting;
+            b2cColumns.forEach(b => tB2C[b] += (s.b2c[b] || 0));
+
+            let splitParts = Object.entries(s.brandSplit).map(([b,c]) => `${b} (${c})`).join(", ");
+            let noPrepayLeads = Math.max(0, s.leads - s.prepays);
+
+            html += `<tr>
+                <td class="font-semibold">${p}</td>
+                <td class="text-gray-500 text-xs">${pKAM[p] || ""}</td>
+                <td>${fmtNum(s.leads)}</td>
+                <td class="text-orange-600">${fmtNum(noPrepayLeads)}</td>`;
+            b2cColumns.forEach(b => html += `<td>${fmtNum(s.b2c[b] || 0)}</td>`);
+            html += `<td class="font-bold text-blue-600">${fmtNum(s.deals)}</td>
+                <td>${fmtNum(s.prepays)}</td>
+                <td class="text-orange-500">${fmtNum(s.waiting)}</td>
+                <td class="text-xs text-gray-500">${splitParts}</td></tr>`;
+        });
+
+        html += `<tr class="table-total"><td>ИТОГО</td><td></td><td>${fmtNum(tl)}</td><td></td>`;
+        b2cColumns.forEach(b => html += `<td>${fmtNum(tB2C[b])}</td>`);
+        html += `<td>${fmtNum(ts)}</td><td>${fmtNum(tp)}</td><td>${fmtNum(tw)}</td><td></td></tr>`;
+        document.getElementById('tablePartnersContainer').innerHTML = html + `</tbody></table>`;
+        setupSmartSearch('searchPartners', 'tablePartnersContainer');
+    }
+
+    function renderManagersTable(filterM, isAll) {
+        let mStats = {};
+        db.forEach(r => {
+            let mgr = r.Manager || "Не указан";
+            if (!mStats[mgr]) mStats[mgr] = { s: 0, p: 0, senior: r.SeniorManager || "Без старшего" };
+            if (r.SaleQty > 0 && (isAll || r.SaleMonth === filterM)) mStats[mgr].s += r.SaleQty;
+            if (r.PrepayQty > 0 && (isAll || r.PrepayMonth === filterM)) mStats[mgr].p += r.PrepayQty;
+        });
+
+        let groups = {};
+        Object.entries(mStats).forEach(([mgr, data]) => {
+            let sen = data.senior;
+            if (!groups[sen]) groups[sen] = [];
+            groups[sen].push({ name: mgr, s: data.s, p: data.p });
+        });
+
+        Object.values(groups).forEach(g => g.sort((a, b) => b.s - a.s));
+
+        let sortedGroups = Object.entries(groups).sort((a, b) => {
+            let tA = a[1].reduce((s, x) => s + x.s, 0);
+            let tB = b[1].reduce((s, x) => s + x.s, 0);
+            return tB - tA;
+        });
+
+        let html = `<table id="tableManagers"><thead><tr><th>Менеджер</th><th>Сделки (шт)</th><th>Предоплаты (шт)</th></tr></thead><tbody>`;
+        let grandS = 0, grandP = 0;
+
+        sortedGroups.forEach(([sen, members]) => {
+            let gS = members.reduce((s, x) => s + x.s, 0);
+            let gP = members.reduce((s, x) => s + x.p, 0);
+            grandS += gS; grandP += gP;
+
+            html += `<tr class="group-header"><td colspan="3">Группа: ${sen}</td></tr>`;
+
+            members.forEach(m => {
+                if (m.s === 0 && m.p === 0) return;
+                html += `<tr><td class="font-semibold pl-6">${m.name}</td><td class="font-bold text-blue-600">${fmtNum(m.s)}</td><td>${fmtNum(m.p)}</td></tr>`;
+            });
+
+            html += `<tr class="table-subtotal"><td>ИТОГО (${sen})</td><td>${fmtNum(gS)}</td><td>${fmtNum(gP)}</td></tr>`;
+        });
+
+        html += `<tr class="table-total"><td>ОБЩИЙ ИТОГ</td><td>${fmtNum(grandS)}</td><td>${fmtNum(grandP)}</td></tr>`;
+        document.getElementById('tableManagersContainer').innerHTML = html + `</tbody></table>`;
+        setupSmartSearch('searchManagers', 'tableManagersContainer');
+    }
+
+    function renderWaitingTable(filterM, isAll) {
+        let wStats = {};
+        db.forEach(r => { if (r.WaitQty > 0 && (isAll || r.WaitMonth === filterM)) { let b = r.Brand || "Неизвестно"; wStats[b] = (wStats[b]||0) + r.WaitQty; }});
+        let sorted = Object.keys(wStats).sort((a, b) => wStats[b] - wStats[a]);
+        let html = `<table id="tableWaiting"><thead><tr><th>Марка Авто</th><th>Клиенты в ожидании</th></tr></thead><tbody>`, tw = 0;
+        sorted.forEach(b => { tw += wStats[b]; html += `<tr><td class="font-semibold">${b}</td><td class="text-orange-500 font-bold">${fmtNum(wStats[b])}</td></tr>`;});
+        document.getElementById('tableWaitingContainer').innerHTML = html + `<tr class="table-total"><td>ВСЕГО</td><td>${fmtNum(tw)}</td></tr></tbody></table>`;
+        setupSmartSearch('searchWaiting', 'tableWaitingContainer');
+    }
+
+    function updateLineChart(canvasId, chartInst, groupName, salesDb, prepayDb, year, month) {
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const labels = [], dataSales = [], dataPrepays = [], dataWeekends = [];
+        let maxVal = 0;
+        for (let d = 1; d <= daysInMonth; d++) {
+            labels.push(`${d.toString().padStart(2, '0')}.${(month + 1).toString().padStart(2, '0')}`);
+            let sC = salesDb.filter(r => { let date = excelToJSDate(r.DealDate); return r.ChartGroup === groupName && date && date.getDate()===d && date.getMonth()===month && date.getFullYear()===year; }).length;
+            let pC = prepayDb.filter(r => { let date = excelToJSDate(r.PrepayDate); return r.ChartGroup === groupName && date && date.getDate()===d && date.getMonth()===month && date.getFullYear()===year; }).length;
+            dataSales.push(sC); dataPrepays.push(pC);
+            if (sC > maxVal) maxVal = sC; if (pC > maxVal) maxVal = pC;
+            let jsDate = new Date(year, month, d); dataWeekends.push((jsDate.getDay() === 0 || jsDate.getDay() === 6) ? 1 : 0);
+        }
+        const wH = maxVal > 0 ? maxVal * 1.2 : 10;
+        const sW = dataWeekends.map(w => w === 1 ? wH : 0);
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        if (window[canvasId + 'Inst']) window[canvasId + 'Inst'].destroy();
+        window[canvasId + 'Inst'] = new Chart(ctx, {
+            type: 'line',
+            data: { labels, datasets: [
+                { label: 'Сделки', data: dataSales, borderColor: '#4472c4', backgroundColor: '#4472c4', borderWidth: 2, tension: 0, order: 1, datalabels: { display: (c) => c.dataset.data[c.dataIndex] > 0, align: 'top', anchor: 'top', color: '#4472c4', font: { weight: 'bold', size: 11 } } },
+                { label: 'Предоплаты', data: dataPrepays, borderColor: '#ed7d31', backgroundColor: '#ed7d31', borderWidth: 2, tension: 0, order: 2, datalabels: { display: (c) => c.dataset.data[c.dataIndex] > 0, align: 'bottom', anchor: 'bottom', color: '#ed7d31', font: { weight: 'bold', size: 11 } } },
+                { type: 'bar', label: 'Выходные', data: sW, backgroundColor: 'rgba(230,230,230,0.4)', barPercentage: 1.0, categoryPercentage: 1.0, order: 3, datalabels: { display: false } }
+            ]},
+            options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { position: 'right', labels: { usePointStyle: true, padding: 16 } } }, scales: { y: { beginAtZero: true, suggestedMax: wH, grid: { color: '#f1f5f9' } }, x: { grid: { display: false } } } }
+        });
+    }
+
+    function getTopBrands(salesDb) {
+        let counts = {}; salesDb.forEach(r => counts[r.Brand] = (counts[r.Brand]||0)+1);
+        let sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+        let top = sorted.slice(0,7), others = sorted.slice(7).reduce((sum,item)=>sum+item[1],0);
+        if (others > 0) top.push(['Другие', others]); return top;
+    }
+
+    function getB2CSplit(salesDb) {
+        let counts = {}; salesDb.forEach(r => { let b2c = r.B2C || "(пусто)"; counts[b2c] = (counts[b2c]||0)+1; });
+        return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+    }
+
+    const MODERN_PALETTE = [
+        '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', 
+        '#ec4899', '#06b6d4', '#f97316', '#64748b',
+        '#6366f1', '#14b8a6', '#d97706', '#a855f7'
+    ];
+
+    function updatePieChart(canvasId, chartInst, dataEntries, titleText) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        if (window[canvasId + 'Inst']) window[canvasId + 'Inst'].destroy();
+
+        const labels = dataEntries.map(e => e[0]);
+        const dataValues = dataEntries.map(e => e[1]);
+        const total = dataValues.reduce((a, b) => a + b, 0);
+
+        const colors = MODERN_PALETTE.slice(0, dataEntries.length);
+        while (colors.length < dataEntries.length) {
+            colors.push('#' + Math.floor(Math.random()*16777215).toString(16));
+        }
+
+        window[canvasId + 'Inst'] = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: colors,
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const val = context.parsed;
+                                const pct = total > 0 ? ((val / total) * 100).toFixed(1) + '%' : '0%';
+                                return ` ${context.label}: ${fmtNum(val)} шт (${pct})`;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#ffffff',
+                        font: { weight: '900', size: 12 },
+                        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+                        textShadowBlur: 4,
+                        formatter: (value) => {
+                            if (total === 0 || value === 0) return '';
+                            const pct = (value / total) * 100;
+                            return pct >= 3.5 ? pct.toFixed(0) + '%' : '';
+                        }
+                    }
+                }
+            }
+        });
+
+        // Render Custom Legend on the Right
+        const legendContainerId = canvasId === 'pieBrands' ? 'legendPieBrands' : 'legendPieB2C';
+        const legendEl = document.getElementById(legendContainerId);
+        if (legendEl) {
+            let legHtml = '<div class="space-y-1">';
+            dataEntries.forEach((item, idx) => {
+                const label = item[0];
+                const val = item[1];
+                const pct = total > 0 ? ((val / total) * 100).toFixed(1) + '%' : '0%';
+                const color = colors[idx];
+                legHtml += `
+                    <div class="chart-legend-item flex items-center justify-between text-xs py-0.5 px-1.5 rounded hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${color}"></span>
+                            <span class="font-medium text-gray-700 break-words" title="${label}">${label}</span>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0 ml-2">
+                            <span class="font-bold text-gray-800">${fmtNum(val)}</span>
+                            <span class="text-xs text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded font-semibold min-w-[42px] text-right">${pct}</span>
+                        </div>
+                    </div>`;
+            });
+            legHtml += '</div>';
+            legendEl.innerHTML = legHtml;
+        }
+    }
+
+    async function copyCardToClipboard(cardId, btn) {
+        const cardEl = document.getElementById(cardId);
+        if (!cardEl) return;
+        const origContent = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Копирование...';
+        btn.disabled = true;
+
+        try {
+            const canvas = await html2canvas(cardEl, {
+                scale: 2,
+                backgroundColor: null,
+                logging: false,
+                useCORS: true,
+                ignoreElements: (element) => element.tagName === 'BUTTON'
+            });
+
+            canvas.toBlob(async (blob) => {
+                try {
+                    const item = new ClipboardItem({ 'image/png': blob });
+                    await navigator.clipboard.write([item]);
+                    btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i> Скопировано!';
+                    btn.style.background = '#22c55e';
+                    btn.style.color = 'white';
+                    btn.style.borderColor = '#22c55e';
+                } catch (err) {
+                    alert('Не удалось скопировать напрямую в буфер. Убедитесь, что даны разрешения для браузера.');
+                }
+                setTimeout(() => {
+                    btn.innerHTML = origContent;
+                    btn.style.background = '';
+                    btn.style.color = '';
+                    btn.style.borderColor = '';
+                    btn.disabled = false;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                }, 2000);
+            }, 'image/png');
+        } catch (e) {
+            console.error(e);
+            btn.innerHTML = origContent;
+            btn.disabled = false;
+        }
+    }
+
+    // --- ПРИНУДИТЕЛЬНОЕ ОБНОВЛЕНИЕ ДАННЫХ ---
+    async function forceDataUpdate(btn) {
+        const icon = btn.querySelector('i');
+        icon.classList.add('animate-spin'); 
+        btn.disabled = true;
+        try {
+            await loadData(); 
+            const currentFilter = document.getElementById('monthFilter').value;
+            updateAllTabs(currentFilter); 
+        } catch(e) {
+            console.error(e);
+        }
+        setTimeout(() => {
+            icon.classList.remove('animate-spin');
+            btn.disabled = false;
+        }, 500); 
+    }
+
+    // --- INIT TABLE SORTING ---
+    function initTableSorting() {
+        document.querySelectorAll('table').forEach(table => {
+            // Skip complex tables if they contain rowspan in tbody (e.g. tableOpDyn)
+            if (table.querySelector('tbody td[rowspan]')) return;
+
+            table.querySelectorAll('thead th').forEach((th, index) => {
+                // Ignore if it already has a sort button
+                if (th.querySelector('.sort-btn')) return;
+
+                th.style.cursor = 'pointer';
+                th.classList.add('hover:bg-gray-100', 'transition-colors', 'relative', 'select-none');
+                
+                // Keep the text, but wrap it and add the icon
+                const originalText = th.innerHTML;
+                th.innerHTML = `<div class="flex items-center gap-1">${originalText} <i data-lucide="arrow-up" class="w-3.5 h-3.5 text-gray-300 sort-btn shrink-0"></i></div>`;
+                
+                th.addEventListener('click', () => {
+                    const tbody = table.querySelector('tbody');
+                    if (!tbody) return;
+                    
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    // Isolate subtotals/totals to keep them at the bottom
+                    const totalRows = rows.filter(r => {
+                        const txt = r.textContent.toLowerCase();
+                        return txt.includes('итого') || r.querySelector('.table-subtotal') || r.classList.contains('table-total') || txt.includes('общий итог');
+                    });
+                    const dataRows = rows.filter(r => !totalRows.includes(r));
+
+                    // Default user request: click sorts largest to smallest (descending)
+                    const isDesc = th.classList.contains('sorted-desc');
+                    
+                    // Reset all other headers in this table
+                    table.querySelectorAll('th').forEach(h => {
+                        h.classList.remove('sorted-desc', 'sorted-asc');
+                        const icon = h.querySelector('.sort-btn');
+                        if (icon) {
+                            icon.setAttribute('data-lucide', 'arrow-up');
+                            icon.classList.remove('text-blue-600');
+                            icon.classList.add('text-gray-300');
+                        }
+                    });
+
+                    // Toggle direction (if it was already desc, make it asc, otherwise desc)
+                    const dir = isDesc ? 1 : -1; // -1 = desc, 1 = asc
+                    if (isDesc) {
+                        th.classList.add('sorted-asc');
+                    } else {
+                        th.classList.add('sorted-desc');
+                    }
+                    
+                    const activeIcon = th.querySelector('.sort-btn');
+                    if (activeIcon) {
+                        activeIcon.setAttribute('data-lucide', isDesc ? 'arrow-down' : 'arrow-up');
+                        activeIcon.classList.remove('text-gray-300');
+                        activeIcon.classList.add('text-blue-600');
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                    }
+
+                    dataRows.sort((a, b) => {
+                        let aCell = a.children[index] ? a.children[index].textContent.trim() : '';
+                        let bCell = b.children[index] ? b.children[index].textContent.trim() : '';
+                        
+                        // Clean for numeric sorting
+                        let aNumStr = aCell.replace(/\s/g, '').replace(/,/g, '.').replace(/[^\d.-]/g, '');
+                        let bNumStr = bCell.replace(/\s/g, '').replace(/,/g, '.').replace(/[^\d.-]/g, '');
+                        
+                        let aNum = parseFloat(aNumStr);
+                        let bNum = parseFloat(bNumStr);
+
+                        if (!isNaN(aNum) && !isNaN(bNum) && aNumStr !== '' && bNumStr !== '') {
+                            return (aNum - bNum) * dir;
+                        }
+                        return aCell.localeCompare(bCell, 'ru') * dir;
+                    });
+
+                    // Re-append rows
+                    dataRows.forEach(r => tbody.appendChild(r));
+                    totalRows.forEach(r => tbody.appendChild(r));
+                });
+            });
+        });
+    }
+
+    // --- INIT ---
+    window.onload = () => { loadData(); if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 100); };
+    </script>
+</body>
+</html>
