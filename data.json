@@ -1,82 +1,6 @@
 {
   "sys_db": [
     {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 0.0,
-      "VIN": "528536",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "2026-08",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "МП2",
-      "SaleQty": 1,
-      "Price": 3720000.0,
-      "Comm": 74400.0,
-      "PrepayQty": 0,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 60983.61,
-      "VIN": "EC3TEUMB7T0002671",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "2026-08",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "ФДЦ",
-      "SaleQty": 1,
-      "Price": 2050000.0,
-      "Comm": 41000.0,
-      "PrepayQty": 0,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Григорян Михаил",
-      "SeniorManager": "Москот Владислав",
-      "PrepayDate": 46258,
-      "Revenue": 33606.56,
-      "VIN": "EC3DCUFD0TC014491",
-      "ChartGroup": "Новые авто"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "ФДЦ",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Григорян Михаил",
-      "SeniorManager": "Москот Владислав",
-      "PrepayDate": 46258,
-      "Revenue": 0.0,
-      "VIN": "528514",
-      "ChartGroup": "Новые авто"
-    },
-    {
       "SaleMonth": "2026-08",
       "PrepayMonth": "",
       "Brand": "JETOUR",
@@ -282,44 +206,6 @@
       "SeniorManager": "Гамаюнов Вячеслав",
       "PrepayDate": 46258,
       "Revenue": 0.0,
-      "VIN": "528362",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "2026-08",
-      "PrepayMonth": "",
-      "Brand": "GAC",
-      "B2C": "МП2",
-      "SaleQty": 1,
-      "Price": 4595000.0,
-      "Comm": 91900.0,
-      "PrepayQty": 0,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 75327.87,
-      "VIN": "LMGJU3G84T1066548",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 0.0,
       "VIN": "528338",
       "ChartGroup": "Partners"
     },
@@ -378,44 +264,6 @@
       "PrepayDate": 46258,
       "Revenue": 34426.23,
       "VIN": "EC3DCUFD9TC010360",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 0.0,
-      "VIN": "528322",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "2026-08",
-      "PrepayMonth": "",
-      "Brand": "SOLARIS",
-      "B2C": "МП2",
-      "SaleQty": 1,
-      "Price": 2469000.0,
-      "Comm": 20000.0,
-      "PrepayQty": 0,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 16393.44,
-      "VIN": "Z94C341BBSR276125",
       "ChartGroup": "Partners"
     },
     {
@@ -873,44 +721,6 @@
       "Revenue": 0.0,
       "VIN": "528116",
       "ChartGroup": "Новые авто"
-    },
-    {
-      "SaleMonth": "2026-08",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "МП2",
-      "SaleQty": 1,
-      "Price": 4200000.0,
-      "Comm": 30000.0,
-      "PrepayQty": 0,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 24590.16,
-      "VIN": "EC3TDUMA8T0004679",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 0.0,
-      "VIN": "528086",
-      "ChartGroup": "Partners"
     },
     {
       "SaleMonth": "2026-08",
@@ -1499,44 +1309,6 @@
       "PrepayDate": 46257,
       "Revenue": 0.0,
       "VIN": "527546",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "2026-08",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "МП2",
-      "SaleQty": 1,
-      "Price": 4060000.0,
-      "Comm": 30000.0,
-      "PrepayQty": 0,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 24590.16,
-      "VIN": "EC3TDUMA8T0004262",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 0.0,
-      "VIN": "527522",
       "ChartGroup": "Partners"
     },
     {
@@ -3057,44 +2829,6 @@
       "PrepayDate": 46258,
       "Revenue": 0.0,
       "VIN": "526782",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "2026-08",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "МП2",
-      "SaleQty": 1,
-      "Price": 2400000.0,
-      "Comm": 48000.0,
-      "PrepayQty": 0,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 39344.26,
-      "VIN": "EC3DLUFD4TC013215",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46258,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46258,
-      "Revenue": 0.0,
-      "VIN": "526780",
       "ChartGroup": "Partners"
     },
     {
@@ -8570,82 +8304,6 @@
       "ChartGroup": "Partners"
     },
     {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "G B K",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "Y4K8722D1TB312768",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523750",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "EC37CUSM0TC005874",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523748",
-      "ChartGroup": "Partners"
-    },
-    {
       "SaleMonth": "2026-08",
       "PrepayMonth": "",
       "Brand": "JETOUR",
@@ -8681,44 +8339,6 @@
       "PrepayDate": 46252,
       "Revenue": 0.0,
       "VIN": "523742",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "G B K",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "Y4K8722D3TB312433",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523740",
       "ChartGroup": "Partners"
     },
     {
@@ -8874,44 +8494,6 @@
       "ChartGroup": "Partners"
     },
     {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "EC37CUSM5TC007085",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523686",
-      "ChartGroup": "Partners"
-    },
-    {
       "SaleMonth": "2026-08",
       "PrepayMonth": "",
       "Brand": "SOUEAST",
@@ -9023,44 +8605,6 @@
       "PrepayDate": 46253,
       "Revenue": 0.0,
       "VIN": "523664",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "GAC",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "LMGJU3G81T1066281",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523660",
       "ChartGroup": "Partners"
     },
     {
@@ -9254,44 +8798,6 @@
       "ChartGroup": "Partners"
     },
     {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "МП3",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Саушев Владимир",
-      "SeniorManager": "Восконян Алексей",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "EC37CUSMXTC006174",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП3",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Саушев Владимир",
-      "SeniorManager": "Восконян Алексей",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523586",
-      "ChartGroup": "Partners"
-    },
-    {
       "SaleMonth": "2026-08",
       "PrepayMonth": "",
       "Brand": "SOLARIS",
@@ -9482,44 +8988,6 @@
       "ChartGroup": "Partners"
     },
     {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "LADA",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "XTAFS045LT1573541",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523540",
-      "ChartGroup": "Partners"
-    },
-    {
       "SaleMonth": "2026-08",
       "PrepayMonth": "",
       "Brand": "LADA",
@@ -9536,44 +9004,6 @@
       "PrepayDate": 46252,
       "Revenue": 24368.85,
       "VIN": "XTARS045LV1588149",
-      "ChartGroup": "Новые авто"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "JETOUR",
-      "B2C": "Online",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Горбунов Роман",
-      "SeniorManager": "Восконян Алексей",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523510",
-      "ChartGroup": "Новые авто"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "Online",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Горбунов Роман",
-      "SeniorManager": "Восконян Алексей",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523510",
       "ChartGroup": "Новые авто"
     },
     {
@@ -9612,63 +9042,6 @@
       "PrepayDate": 46252,
       "Revenue": 0.0,
       "VIN": "523488",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "GAC",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "LMGAE3G59S1004144",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "SOLARIS",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "Z94C251BBSR196931",
-      "ChartGroup": "Partners"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "МП2",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Фокин Борис",
-      "SeniorManager": "Гамаюнов Вячеслав",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523468",
       "ChartGroup": "Partners"
     },
     {
@@ -9726,44 +9099,6 @@
       "PrepayDate": 46252,
       "Revenue": 47540.98,
       "VIN": "XZGEF04A0TA311581",
-      "ChartGroup": "Новые авто"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "",
-      "Brand": "JELAND",
-      "B2C": "Online",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 0,
-      "WaitQty": 1,
-      "WaitMonth": "2026-08",
-      "DealDate": 46259,
-      "Manager": "Саушев Владимир",
-      "SeniorManager": "Восконян Алексей",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "EDXDD21B5TG020899",
-      "ChartGroup": "Новые авто"
-    },
-    {
-      "SaleMonth": "",
-      "PrepayMonth": "2026-08",
-      "Brand": "ВНЕСЕНИЕ",
-      "B2C": "Online",
-      "SaleQty": 0,
-      "Price": 0,
-      "Comm": 0,
-      "PrepayQty": 1,
-      "WaitQty": 0,
-      "WaitMonth": "",
-      "DealDate": 46259,
-      "Manager": "Саушев Владимир",
-      "SeniorManager": "Восконян Алексей",
-      "PrepayDate": 46259,
-      "Revenue": 0.0,
-      "VIN": "523428",
       "ChartGroup": "Новые авто"
     },
     {
@@ -11344,22 +10679,22 @@
       "ChartGroup": "Partners"
     },
     {
-      "SaleMonth": "2026-08",
+      "SaleMonth": "",
       "PrepayMonth": "",
       "Brand": "JETOUR",
       "B2C": "Online",
-      "SaleQty": 1,
-      "Price": 2460000.0,
-      "Comm": 49200.0,
+      "SaleQty": 0,
+      "Price": 0,
+      "Comm": 0,
       "PrepayQty": 0,
-      "WaitQty": 0,
-      "WaitMonth": "",
+      "WaitQty": 1,
+      "WaitMonth": "2026-08",
       "DealDate": 46258,
       "Manager": "Григорян Михаил",
       "SeniorManager": "Москот Владислав",
       "PrepayDate": 46258,
-      "Revenue": 40327.87,
-      "VIN": "EC37LUSM0SC003511",
+      "Revenue": 0.0,
+      "VIN": "EC37LUSM5TC005482",
       "ChartGroup": "Новые авто"
     },
     {
@@ -100514,42 +99849,6 @@
   "sys_db_partners": [
     {
       "Month": "2026-08",
-      "Partner": "ONLINE АО \"БАРС АВТО\"",
-      "KAM": "",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE АО \"БАРС АВТО\"",
-      "KAM": "",
-      "Type": "Сделка",
-      "Qty": 1,
-      "B2C": "МП2",
-      "Brand": "JETOUR",
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "Online ООО \"АРКОНТ В\"",
-      "KAM": "",
-      "Type": "Сделка",
-      "Qty": 1,
-      "B2C": "ФДЦ",
-      "Brand": "JETOUR",
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "Online ООО \"АРКОНТ В\"",
-      "KAM": "",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
       "Partner": "ONLINE ООО \"ФРЕШ-К\"",
       "KAM": "Андрей Кузнецов",
       "Type": "Сделка",
@@ -100642,24 +99941,6 @@
     },
     {
       "Month": "2026-08",
-      "Partner": "ГК Автодом / (ООО \"ДЦ АЛТУФЬЕВО\")",
-      "KAM": "",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ГК Автодом / (ООО \"ДЦ АЛТУФЬЕВО\")",
-      "KAM": "",
-      "Type": "Сделка",
-      "Qty": 1,
-      "B2C": "МП2",
-      "Brand": "GAC",
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
       "Partner": "ООО \"МАРКАР ГРУПП\" ONLINE",
       "KAM": "Алексей Чихарев",
       "Type": "Предоплата",
@@ -100692,24 +99973,6 @@
       "Qty": 1,
       "B2C": "МП2",
       "Brand": "JETOUR",
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE АВТОГЕРМЕС-ЗАПАД (ООО \"АВТОГЕРМЕС-ЗАПАД\")",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE АВТОГЕРМЕС-ЗАПАД (ООО \"АВТОГЕРМЕС-ЗАПАД\")",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Сделка",
-      "Qty": 1,
-      "B2C": "МП2",
-      "Brand": "SOLARIS",
       "Date": 46258
     },
     {
@@ -100926,24 +100189,6 @@
       "Month": "2026-08",
       "Partner": "ООО \"АЛАРМ-КОМТРАНС\" online",
       "KAM": "Светлана Дариенко",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE ООО \"АМКАПИТАЛ\"",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Сделка",
-      "Qty": 1,
-      "B2C": "МП2",
-      "Brand": "JETOUR",
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE ООО \"АМКАПИТАЛ\"",
-      "KAM": "Андрей Кузнецов",
       "Type": "Предоплата",
       "Qty": 1,
       "Date": 46258
@@ -101233,24 +100478,6 @@
       "Type": "Предоплата",
       "Qty": 1,
       "Date": 46257
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE ООО \"АМКАПИТАЛ\"",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Сделка",
-      "Qty": 1,
-      "B2C": "МП2",
-      "Brand": "JETOUR",
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE ООО \"АМКАПИТАЛ\"",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46258
     },
     {
       "Month": "2026-08",
@@ -101972,24 +101199,6 @@
       "Month": "2026-08",
       "Partner": "ООО \"ВАЖНАЯ ПЕРСОНА-АВТО\" ONLINE",
       "KAM": "",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"НЕВААВТО\" online",
-      "KAM": "Светлана Дариенко",
-      "Type": "Сделка",
-      "Qty": 1,
-      "B2C": "МП2",
-      "Brand": "JETOUR",
-      "Date": 46258
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"НЕВААВТО\" online",
-      "KAM": "Светлана Дариенко",
       "Type": "Предоплата",
       "Qty": 1,
       "Date": 46258
@@ -104616,38 +103825,6 @@
     },
     {
       "Month": "2026-08",
-      "Partner": "АО \"РОЛЬФ\" ONLINE",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "АО \"РОЛЬФ\" ONLINE",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE ООО \"АМКАПИТАЛ\"",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE ООО \"АМКАПИТАЛ\"",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
       "Partner": "ONLINE ООО \"АВТОМИР\" Симферополь",
       "KAM": "",
       "Type": "Сделка",
@@ -104663,22 +103840,6 @@
       "Type": "Предоплата",
       "Qty": 1,
       "Date": 46252
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "АО \"РОЛЬФ\" ONLINE",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "АО \"РОЛЬФ\" ONLINE",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
     },
     {
       "Month": "2026-08",
@@ -104756,22 +103917,6 @@
     },
     {
       "Month": "2026-08",
-      "Partner": "ООО \"АЛАРМ-КОМТРАНС\" online",
-      "KAM": "Светлана Дариенко",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"АЛАРМ-КОМТРАНС\" online",
-      "KAM": "Светлана Дариенко",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
       "Partner": "ООО \"ДИНАМИКА АРХАНГЕЛЬСК\" ONLINE",
       "KAM": "",
       "Type": "Сделка",
@@ -104823,22 +103968,6 @@
       "Type": "Предоплата",
       "Qty": 1,
       "Date": 46253
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ГК Автодом / (ООО \"ДЦ АЛТУФЬЕВО\")",
-      "KAM": "",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ГК Автодом / (ООО \"ДЦ АЛТУФЬЕВО\")",
-      "KAM": "",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
     },
     {
       "Month": "2026-08",
@@ -104932,22 +104061,6 @@
     },
     {
       "Month": "2026-08",
-      "Partner": "ООО \"НЕВААВТО\" online",
-      "KAM": "Светлана Дариенко",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"НЕВААВТО\" online",
-      "KAM": "Светлана Дариенко",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
       "Partner": "ONLINE ООО \"ВОСТОК-АВТО ЖУКОВА",
       "KAM": "Светлана Дариенко",
       "Type": "Сделка",
@@ -105038,22 +104151,6 @@
     },
     {
       "Month": "2026-08",
-      "Partner": "ONLINE ЮНИКОР (ООО \"ЮНИКОР\")",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ONLINE ЮНИКОР (ООО \"ЮНИКОР\")",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
       "Partner": "ООО \"ТРАНСФОР Г. КРАСНОДАР\" ONLINE",
       "KAM": "Валерия Солдатова",
       "Type": "Сделка",
@@ -105061,22 +104158,6 @@
       "B2C": "Передача лида",
       "Brand": "LADA",
       "Date": 46252
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"САРМАТ\" online",
-      "KAM": "Светлана Дариенко",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"САРМАТ\" online",
-      "KAM": "Светлана Дариенко",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
     },
     {
       "Month": "2026-08",
@@ -105095,30 +104176,6 @@
       "Type": "Предоплата",
       "Qty": 1,
       "Date": 46252
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"АВТОПОЛЕ Н\" online",
-      "KAM": "Светлана Дариенко",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"АВТОМИР-ТРЕЙД\" online",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "ООО \"АВТОМИР-ТРЕЙД\" online",
-      "KAM": "Андрей Кузнецов",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
     },
     {
       "Month": "2026-08",
@@ -105147,22 +104204,6 @@
       "B2C": "Передача лида",
       "Brand": "HAVAL",
       "Date": 46252
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "Online ГК Диалог \\ ООО \"Управляющая компания Диалог\"",
-      "KAM": "Алексей Чихарев",
-      "Type": "Без сделки",
-      "Qty": 1,
-      "Date": 46259
-    },
-    {
-      "Month": "2026-08",
-      "Partner": "Online ГК Диалог \\ ООО \"Управляющая компания Диалог\"",
-      "KAM": "Алексей Чихарев",
-      "Type": "Предоплата",
-      "Qty": 1,
-      "Date": 46259
     },
     {
       "Month": "2026-08",
@@ -105916,17 +104957,15 @@
     },
     {
       "Month": "2026-08",
-      "Partner": "ЗАО \"АВТОХОЛДИНГ\" LUCKY MOTORS ONLINE",
+      "Partner": "ONLINE ООО \"АВТОБАН-ВОСТОК\"",
       "KAM": "",
-      "Type": "Сделка",
+      "Type": "Без сделки",
       "Qty": 1,
-      "B2C": "Online",
-      "Brand": "JETOUR",
       "Date": 46258
     },
     {
       "Month": "2026-08",
-      "Partner": "ЗАО \"АВТОХОЛДИНГ\" LUCKY MOTORS ONLINE",
+      "Partner": "ONLINE ООО \"АВТОБАН-ВОСТОК\"",
       "KAM": "",
       "Type": "Предоплата",
       "Qty": 1,
@@ -148543,6 +147582,14 @@
       "Date": 46258
     },
     {
+      "Month": "2026-08",
+      "Partner": "DSS",
+      "KAM": "",
+      "Type": "Лид",
+      "Qty": 1,
+      "Date": 46259
+    },
+    {
       "Month": "2026-07",
       "Partner": "Fresh Auto",
       "KAM": "Андрей Кузнецов",
@@ -151093,6 +150140,14 @@
       "Type": "Лид",
       "Qty": 1,
       "Date": 46256
+    },
+    {
+      "Month": "2026-08",
+      "Partner": "ONLINE Диалог Авто КЗН АЛМТВСК НАБ.ЧЛН",
+      "KAM": "Алексей Чихарев",
+      "Type": "Лид",
+      "Qty": 1,
+      "Date": 46259
     },
     {
       "Month": "2026-07",
@@ -153949,6 +153004,14 @@
       "Type": "Лид",
       "Qty": 1,
       "Date": 46258
+    },
+    {
+      "Month": "2026-08",
+      "Partner": "ONLINE ФДЦ Автопрестиж",
+      "KAM": "Алексей Чихарев",
+      "Type": "Лид",
+      "Qty": 1,
+      "Date": 46259
     },
     {
       "Month": "2026-07",
@@ -157701,6 +156764,14 @@
       "Type": "Лид",
       "Qty": 1,
       "Date": 46258
+    },
+    {
+      "Month": "2026-08",
+      "Partner": "БорисХоф",
+      "KAM": "",
+      "Type": "Лид",
+      "Qty": 1,
+      "Date": 46259
     },
     {
       "Month": "2026-08",
@@ -161911,6 +160982,14 @@
       "Date": 46258
     },
     {
+      "Month": "2026-08",
+      "Partner": "Приоритет_Автогермес",
+      "KAM": "Андрей Кузнецов",
+      "Type": "Лид",
+      "Qty": 1,
+      "Date": 46259
+    },
+    {
       "Month": "2026-07",
       "Partner": "Приоритет_Автопрестиж",
       "KAM": "",
@@ -164391,6 +163470,14 @@
       "Date": 46258
     },
     {
+      "Month": "2026-08",
+      "Partner": "СберАвто",
+      "KAM": "",
+      "Type": "Лид",
+      "Qty": 1,
+      "Date": 46259
+    },
+    {
       "Month": "2026-07",
       "Partner": "СитиДрайв",
       "KAM": "",
@@ -164784,37 +163871,2045 @@
     "sbol_offer_success_show": 2269
   },
   "brand_funnel": {
-    "OVERALL_LATEST_DATE": "25.08.2026 в 10:00",
+    "OVERALL_LATEST_DATE": "25.08.2026 в 12:00",
+    "months": [
+      "2026-08",
+      "2026-07",
+      "all"
+    ],
+    "by_month": {
+      "2026-08": {
+        "month": "2026-08",
+        "month_label": "Август 2026",
+        "brands": {
+          "JETOUR": {
+            "brand": "JETOUR",
+            "vitrina": {
+              "fileName": "Джетур август.png",
+              "brand": "JETOUR",
+              "month": "2026-08",
+              "steps": [
+                197658,
+                29885,
+                3840,
+                3756,
+                2413,
+                2356
+              ],
+              "page_view": 197658,
+              "car_card_show": 29885,
+              "car_card_click": 3840,
+              "offer_show": 3756,
+              "offer_click": 2413,
+              "offer_success": 2356
+            },
+            "leads": 1409,
+            "qual": 592,
+            "calc_total": 676,
+            "calc_matched": 270,
+            "offer_total": 500,
+            "offer_matched": 200,
+            "dealer": 113,
+            "fdc_app": 141,
+            "fdc_appr": 78,
+            "deals_total_all": 585,
+            "mp2_count": 456,
+            "mp2_rev": 17745409.71,
+            "deals_no_mp2": 129,
+            "rev_no_mp2": 5558664.17,
+            "deals_by_b2c": {
+              "Online": 35,
+              "ФДЦ": 50,
+              "МП3": 18,
+              "Передача лида": 21,
+              "МП1": 5
+            },
+            "rev_by_b2c": {
+              "Online": 1493365.54,
+              "ФДЦ": 2228251.13,
+              "МП3": 747327.86,
+              "Передача лида": 881359.0,
+              "МП1": 208360.64
+            },
+            "arpu_no_mp2": 43090.42,
+            "arpu_total": 39836.02,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 1296,
+              "Без источника": 70,
+              "Органика СберАвто": 28,
+              "Органика СБОЛ": 14
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "LADA": {
+            "brand": "LADA",
+            "vitrina": {
+              "fileName": "Лада август.png",
+              "brand": "LADA",
+              "month": "2026-08",
+              "steps": [
+                197687,
+                39176,
+                4071,
+                3973,
+                2413,
+                2356
+              ],
+              "page_view": 197687,
+              "car_card_show": 39176,
+              "car_card_click": 4071,
+              "offer_show": 3973,
+              "offer_click": 2413,
+              "offer_success": 2356
+            },
+            "leads": 1667,
+            "qual": 700,
+            "calc_total": 800,
+            "calc_matched": 320,
+            "offer_total": 592,
+            "offer_matched": 237,
+            "dealer": 133,
+            "fdc_app": 167,
+            "fdc_appr": 92,
+            "deals_total_all": 157,
+            "mp2_count": 69,
+            "mp2_rev": 747114.65,
+            "deals_no_mp2": 88,
+            "rev_no_mp2": 1721325.96,
+            "deals_by_b2c": {
+              "ФДЦ": 25,
+              "МП3": 7,
+              "Online": 6,
+              "Передача лида": 18,
+              "ФДЦ+ГП": 32
+            },
+            "rev_by_b2c": {
+              "ФДЦ": 506660.06,
+              "МП3": 96639.34,
+              "Online": 90823.78,
+              "Передача лида": 345692.62,
+              "ФДЦ+ГП": 681510.16
+            },
+            "arpu_no_mp2": 19560.52,
+            "arpu_total": 15722.55,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 1534,
+              "Без источника": 83,
+              "Органика СберАвто": 33,
+              "Органика СБОЛ": 17
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "TENET": {
+            "brand": "TENET",
+            "vitrina": {
+              "fileName": "Тенет август.png",
+              "brand": "TENET",
+              "month": "2026-08",
+              "steps": [
+                197615,
+                18956,
+                2155,
+                2101,
+                1290,
+                1267
+              ],
+              "page_view": 197615,
+              "car_card_show": 18956,
+              "car_card_click": 2155,
+              "offer_show": 2101,
+              "offer_click": 1290,
+              "offer_success": 1267
+            },
+            "leads": 567,
+            "qual": 238,
+            "calc_total": 272,
+            "calc_matched": 109,
+            "offer_total": 201,
+            "offer_matched": 80,
+            "dealer": 45,
+            "fdc_app": 57,
+            "fdc_appr": 31,
+            "deals_total_all": 12,
+            "mp2_count": 1,
+            "mp2_rev": 39278.69,
+            "deals_no_mp2": 11,
+            "rev_no_mp2": 552167.66,
+            "deals_by_b2c": {
+              "Передача лида": 8,
+              "ФДЦ": 2,
+              "Online": 1
+            },
+            "rev_by_b2c": {
+              "Передача лида": 250513.6,
+              "ФДЦ": 228867.17,
+              "Online": 72786.89
+            },
+            "arpu_no_mp2": 50197.06,
+            "arpu_total": 49287.2,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 522,
+              "Без источника": 28,
+              "Органика СберАвто": 11,
+              "Органика СБОЛ": 6
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "CHANGAN": {
+            "brand": "CHANGAN",
+            "vitrina": {
+              "fileName": "Чанган август.png",
+              "brand": "CHANGAN",
+              "month": "2026-08",
+              "steps": [
+                197635,
+                22958,
+                2247,
+                2186,
+                1360,
+                1315
+              ],
+              "page_view": 197635,
+              "car_card_show": 22958,
+              "car_card_click": 2247,
+              "offer_show": 2186,
+              "offer_click": 1360,
+              "offer_success": 1315
+            },
+            "leads": 546,
+            "qual": 229,
+            "calc_total": 262,
+            "calc_matched": 105,
+            "offer_total": 194,
+            "offer_matched": 78,
+            "dealer": 44,
+            "fdc_app": 55,
+            "fdc_appr": 30,
+            "deals_total_all": 22,
+            "mp2_count": 20,
+            "mp2_rev": 830239.34,
+            "deals_no_mp2": 2,
+            "rev_no_mp2": 80819.68,
+            "deals_by_b2c": {
+              "Передача лида": 2
+            },
+            "rev_by_b2c": {
+              "Передача лида": 80819.68
+            },
+            "arpu_no_mp2": 40409.84,
+            "arpu_total": 41411.77,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 502,
+              "Без источника": 27,
+              "Органика СберАвто": 11,
+              "Органика СБОЛ": 5
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "GAC": {
+            "brand": "GAC",
+            "vitrina": {
+              "fileName": "ГАК август.png",
+              "brand": "GAC",
+              "month": "2026-08",
+              "steps": [
+                191515,
+                19375,
+                1551,
+                1496,
+                912,
+                885
+              ],
+              "page_view": 191515,
+              "car_card_show": 19375,
+              "car_card_click": 1551,
+              "offer_show": 1496,
+              "offer_click": 912,
+              "offer_success": 885
+            },
+            "leads": 337,
+            "qual": 142,
+            "calc_total": 162,
+            "calc_matched": 65,
+            "offer_total": 120,
+            "offer_matched": 48,
+            "dealer": 27,
+            "fdc_app": 34,
+            "fdc_appr": 19,
+            "deals_total_all": 67,
+            "mp2_count": 61,
+            "mp2_rev": 4114926.21,
+            "deals_no_mp2": 6,
+            "rev_no_mp2": 430863.53,
+            "deals_by_b2c": {
+              "Передача лида": 1,
+              "Online": 3,
+              "МП1": 1,
+              "ФДЦ": 1
+            },
+            "rev_by_b2c": {
+              "Передача лида": 75901.64,
+              "Online": 217590.17,
+              "МП1": 43697.95,
+              "ФДЦ": 93673.77
+            },
+            "arpu_no_mp2": 71810.59,
+            "arpu_total": 67847.61,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 310,
+              "Без источника": 17,
+              "Органика СберАвто": 7,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "SOLARIS": {
+            "brand": "SOLARIS",
+            "vitrina": {
+              "fileName": "Солярис август.png",
+              "brand": "SOLARIS",
+              "month": "2026-08",
+              "steps": [
+                197650,
+                16692,
+                1353,
+                1323,
+                696,
+                682
+              ],
+              "page_view": 197650,
+              "car_card_show": 16692,
+              "car_card_click": 1353,
+              "offer_show": 1323,
+              "offer_click": 696,
+              "offer_success": 682
+            },
+            "leads": 290,
+            "qual": 122,
+            "calc_total": 139,
+            "calc_matched": 56,
+            "offer_total": 103,
+            "offer_matched": 41,
+            "dealer": 23,
+            "fdc_app": 29,
+            "fdc_appr": 16,
+            "deals_total_all": 79,
+            "mp2_count": 69,
+            "mp2_rev": 2356286.03,
+            "deals_no_mp2": 10,
+            "rev_no_mp2": 444822.96,
+            "deals_by_b2c": {
+              "Передача лида": 3,
+              "МП3": 1,
+              "Online": 4,
+              "ФДЦ": 2
+            },
+            "rev_by_b2c": {
+              "Передача лида": 133708.2,
+              "МП3": 46721.31,
+              "Online": 183614.76,
+              "ФДЦ": 80778.69
+            },
+            "arpu_no_mp2": 44482.3,
+            "arpu_total": 35457.08,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 267,
+              "Без источника": 14,
+              "Органика СберАвто": 6,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "SOUEAST": {
+            "brand": "SOUEAST",
+            "vitrina": {
+              "fileName": "Соуист август.png",
+              "brand": "SOUEAST",
+              "month": "2026-08",
+              "steps": [
+                197620,
+                16771,
+                1757,
+                1716,
+                1038,
+                1013
+              ],
+              "page_view": 197620,
+              "car_card_show": 16771,
+              "car_card_click": 1757,
+              "offer_show": 1716,
+              "offer_click": 1038,
+              "offer_success": 1013
+            },
+            "leads": 310,
+            "qual": 130,
+            "calc_total": 149,
+            "calc_matched": 60,
+            "offer_total": 110,
+            "offer_matched": 44,
+            "dealer": 25,
+            "fdc_app": 31,
+            "fdc_appr": 17,
+            "deals_total_all": 85,
+            "mp2_count": 66,
+            "mp2_rev": 2339016.3,
+            "deals_no_mp2": 19,
+            "rev_no_mp2": 691163.93,
+            "deals_by_b2c": {
+              "ФДЦ": 9,
+              "МП1": 1,
+              "Online": 8,
+              "Передача лида": 1
+            },
+            "rev_by_b2c": {
+              "ФДЦ": 314459.01,
+              "МП1": 44262.3,
+              "Online": 292295.08,
+              "Передача лида": 40147.54
+            },
+            "arpu_no_mp2": 36377.05,
+            "arpu_total": 35649.18,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 285,
+              "Без источника": 16,
+              "Органика СберАвто": 6,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "BELGEE": {
+            "brand": "BELGEE",
+            "vitrina": {
+              "fileName": "Белджи август.png",
+              "brand": "BELGEE",
+              "month": "2026-08",
+              "steps": [
+                197681,
+                13157,
+                1004,
+                979,
+                572,
+                564
+              ],
+              "page_view": 197681,
+              "car_card_show": 13157,
+              "car_card_click": 1004,
+              "offer_show": 979,
+              "offer_click": 572,
+              "offer_success": 564
+            },
+            "leads": 280,
+            "qual": 118,
+            "calc_total": 134,
+            "calc_matched": 54,
+            "offer_total": 99,
+            "offer_matched": 40,
+            "dealer": 22,
+            "fdc_app": 28,
+            "fdc_appr": 15,
+            "deals_total_all": 0,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 0,
+            "rev_no_mp2": 0,
+            "deals_by_b2c": {},
+            "rev_by_b2c": {},
+            "arpu_no_mp2": 0,
+            "arpu_total": 0,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 258,
+              "Без источника": 14,
+              "Органика СберАвто": 6,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "GEELY": {
+            "brand": "GEELY",
+            "vitrina": {
+              "fileName": "Джили август.png",
+              "brand": "GEELY",
+              "month": "2026-08",
+              "steps": [
+                197685,
+                7825,
+                441,
+                428,
+                265,
+                262
+              ],
+              "page_view": 197685,
+              "car_card_show": 7825,
+              "car_card_click": 441,
+              "offer_show": 428,
+              "offer_click": 265,
+              "offer_success": 262
+            },
+            "leads": 280,
+            "qual": 118,
+            "calc_total": 134,
+            "calc_matched": 54,
+            "offer_total": 99,
+            "offer_matched": 40,
+            "dealer": 22,
+            "fdc_app": 28,
+            "fdc_appr": 15,
+            "deals_total_all": 0,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 0,
+            "rev_no_mp2": 0,
+            "deals_by_b2c": {},
+            "rev_by_b2c": {},
+            "arpu_no_mp2": 0,
+            "arpu_total": 0,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 258,
+              "Без источника": 14,
+              "Органика СберАвто": 6,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "HAVAL": {
+            "brand": "HAVAL",
+            "vitrina": {
+              "fileName": "Хавал август.png",
+              "brand": "HAVAL",
+              "month": "2026-08",
+              "steps": [
+                197626,
+                24539,
+                2468,
+                2385,
+                1453,
+                1413
+              ],
+              "page_view": 197626,
+              "car_card_show": 24539,
+              "car_card_click": 2468,
+              "offer_show": 2385,
+              "offer_click": 1453,
+              "offer_success": 1413
+            },
+            "leads": 450,
+            "qual": 189,
+            "calc_total": 216,
+            "calc_matched": 86,
+            "offer_total": 160,
+            "offer_matched": 64,
+            "dealer": 36,
+            "fdc_app": 45,
+            "fdc_appr": 25,
+            "deals_total_all": 2,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 2,
+            "rev_no_mp2": 134016.39,
+            "deals_by_b2c": {
+              "Online": 1,
+              "Передача лида": 1
+            },
+            "rev_by_b2c": {
+              "Online": 86475.41,
+              "Передача лида": 47540.98
+            },
+            "arpu_no_mp2": 67008.2,
+            "arpu_total": 67008.2,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 414,
+              "Без источника": 22,
+              "Органика СберАвто": 9,
+              "Органика СБОЛ": 4
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "JAECOO": {
+            "brand": "JAECOO",
+            "vitrina": {
+              "fileName": "Джейленд август.png",
+              "brand": "JAECOO",
+              "month": "2026-08",
+              "steps": [
+                197663,
+                2709,
+                234,
+                229,
+                146,
+                144
+              ],
+              "page_view": 197663,
+              "car_card_show": 2709,
+              "car_card_click": 234,
+              "offer_show": 229,
+              "offer_click": 146,
+              "offer_success": 144
+            },
+            "leads": 210,
+            "qual": 88,
+            "calc_total": 101,
+            "calc_matched": 40,
+            "offer_total": 75,
+            "offer_matched": 30,
+            "dealer": 17,
+            "fdc_app": 21,
+            "fdc_appr": 12,
+            "deals_total_all": 2,
+            "mp2_count": 2,
+            "mp2_rev": 100000.0,
+            "deals_no_mp2": 0,
+            "rev_no_mp2": 0,
+            "deals_by_b2c": {},
+            "rev_by_b2c": {},
+            "arpu_no_mp2": 0,
+            "arpu_total": 50000.0,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 193,
+              "Без источника": 10,
+              "Органика СберАвто": 4,
+              "Органика СБОЛ": 2
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "OMODA": {
+            "brand": "OMODA",
+            "vitrina": {
+              "fileName": "Омода август.png",
+              "brand": "OMODA",
+              "month": "2026-08",
+              "steps": [
+                197670,
+                8771,
+                929,
+                910,
+                567,
+                554
+              ],
+              "page_view": 197670,
+              "car_card_show": 8771,
+              "car_card_click": 929,
+              "offer_show": 910,
+              "offer_click": 567,
+              "offer_success": 554
+            },
+            "leads": 210,
+            "qual": 88,
+            "calc_total": 101,
+            "calc_matched": 40,
+            "offer_total": 75,
+            "offer_matched": 30,
+            "dealer": 17,
+            "fdc_app": 21,
+            "fdc_appr": 12,
+            "deals_total_all": 6,
+            "mp2_count": 2,
+            "mp2_rev": 49180.32,
+            "deals_no_mp2": 4,
+            "rev_no_mp2": 204098.36,
+            "deals_by_b2c": {
+              "ФДЦ": 2,
+              "Online": 2
+            },
+            "rev_by_b2c": {
+              "ФДЦ": 108196.72,
+              "Online": 95901.64
+            },
+            "arpu_no_mp2": 51024.59,
+            "arpu_total": 42213.11,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 193,
+              "Без источника": 10,
+              "Органика СберАвто": 4,
+              "Органика СБОЛ": 2
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "МОСКВИЧ": {
+            "brand": "МОСКВИЧ",
+            "vitrina": {
+              "fileName": "Москвич август.png",
+              "brand": "МОСКВИЧ",
+              "month": "2026-08",
+              "steps": [
+                197691,
+                6979,
+                360,
+                354,
+                223,
+                216
+              ],
+              "page_view": 197691,
+              "car_card_show": 6979,
+              "car_card_click": 360,
+              "offer_show": 354,
+              "offer_click": 223,
+              "offer_success": 216
+            },
+            "leads": 110,
+            "qual": 46,
+            "calc_total": 53,
+            "calc_matched": 21,
+            "offer_total": 39,
+            "offer_matched": 16,
+            "dealer": 9,
+            "fdc_app": 11,
+            "fdc_appr": 6,
+            "deals_total_all": 0,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 0,
+            "rev_no_mp2": 0,
+            "deals_by_b2c": {},
+            "rev_by_b2c": {},
+            "arpu_no_mp2": 0,
+            "arpu_total": 0,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 101,
+              "Без источника": 6,
+              "Органика СберАвто": 2,
+              "Органика СБОЛ": 1
+            },
+            "latest_lead_date": "25.08.2026"
+          }
+        }
+      },
+      "2026-07": {
+        "month": "2026-07",
+        "month_label": "Июль 2026",
+        "brands": {
+          "JETOUR": {
+            "brand": "JETOUR",
+            "vitrina": {
+              "fileName": "Джетур июль.png",
+              "brand": "JETOUR",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                35925,
+                4616,
+                4522,
+                2950,
+                2890
+              ],
+              "page_view": 218984,
+              "car_card_show": 35925,
+              "car_card_click": 4616,
+              "offer_show": 4522,
+              "offer_click": 2950,
+              "offer_success": 2890
+            },
+            "leads": 1550,
+            "qual": 651,
+            "calc_total": 744,
+            "calc_matched": 298,
+            "offer_total": 551,
+            "offer_matched": 220,
+            "dealer": 124,
+            "fdc_app": 155,
+            "fdc_appr": 85,
+            "deals_total_all": 988,
+            "mp2_count": 613,
+            "mp2_rev": 22220075.46,
+            "deals_no_mp2": 375,
+            "rev_no_mp2": 14686773.25,
+            "deals_by_b2c": {
+              "Online": 126,
+              "МП3": 11,
+              "Передача лида": 52,
+              "МП1": 31,
+              "ФДЦ": 151,
+              "Не указан": 4
+            },
+            "rev_by_b2c": {
+              "Online": 5032130.06,
+              "МП3": 391680.32,
+              "Передача лида": 1965125.34,
+              "МП1": 1212806.05,
+              "ФДЦ": 5943392.15,
+              "Не указан": 141639.33
+            },
+            "arpu_no_mp2": 39164.73,
+            "arpu_total": 37355.11,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 1426,
+              "Без источника": 78,
+              "Органика СберАвто": 31,
+              "Органика СБОЛ": 16
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "LADA": {
+            "brand": "LADA",
+            "vitrina": {
+              "fileName": "Лада июль.png",
+              "brand": "LADA",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                37999,
+                3699,
+                3609,
+                2194,
+                2114
+              ],
+              "page_view": 218984,
+              "car_card_show": 37999,
+              "car_card_click": 3699,
+              "offer_show": 3609,
+              "offer_click": 2194,
+              "offer_success": 2114
+            },
+            "leads": 1720,
+            "qual": 722,
+            "calc_total": 826,
+            "calc_matched": 330,
+            "offer_total": 611,
+            "offer_matched": 244,
+            "dealer": 138,
+            "fdc_app": 172,
+            "fdc_appr": 95,
+            "deals_total_all": 171,
+            "mp2_count": 81,
+            "mp2_rev": 801219.14,
+            "deals_no_mp2": 90,
+            "rev_no_mp2": 1639561.09,
+            "deals_by_b2c": {
+              "Передача лида": 21,
+              "ФДЦ+ГП": 32,
+              "Online": 7,
+              "ФДЦ": 29,
+              "МП1": 1
+            },
+            "rev_by_b2c": {
+              "Передача лида": 345354.48,
+              "ФДЦ+ГП": 549557.35,
+              "Online": 123092.54,
+              "ФДЦ": 613360.0,
+              "МП1": 8196.72
+            },
+            "arpu_no_mp2": 18217.35,
+            "arpu_total": 14273.57,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 1582,
+              "Без источника": 86,
+              "Органика СберАвто": 34,
+              "Органика СБОЛ": 17
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "TENET": {
+            "brand": "TENET",
+            "vitrina": {
+              "fileName": "Тенет июль.png",
+              "brand": "TENET",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                25069,
+                2395,
+                2335,
+                1363,
+                1337
+              ],
+              "page_view": 218984,
+              "car_card_show": 25069,
+              "car_card_click": 2395,
+              "offer_show": 2335,
+              "offer_click": 1363,
+              "offer_success": 1337
+            },
+            "leads": 567,
+            "qual": 238,
+            "calc_total": 272,
+            "calc_matched": 109,
+            "offer_total": 201,
+            "offer_matched": 80,
+            "dealer": 45,
+            "fdc_app": 57,
+            "fdc_appr": 31,
+            "deals_total_all": 22,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 22,
+            "rev_no_mp2": 1526640.16,
+            "deals_by_b2c": {
+              "Передача лида": 7,
+              "Online": 6,
+              "ФДЦ": 9
+            },
+            "rev_by_b2c": {
+              "Передача лида": 271609.84,
+              "Online": 441433.6,
+              "ФДЦ": 813596.72
+            },
+            "arpu_no_mp2": 69392.73,
+            "arpu_total": 69392.73,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 522,
+              "Без источника": 28,
+              "Органика СберАвто": 11,
+              "Органика СБОЛ": 6
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "CHANGAN": {
+            "brand": "CHANGAN",
+            "vitrina": {
+              "fileName": "Чанган июль.png",
+              "brand": "CHANGAN",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                28865,
+                2654,
+                2591,
+                1597,
+                1563
+              ],
+              "page_view": 218984,
+              "car_card_show": 28865,
+              "car_card_click": 2654,
+              "offer_show": 2591,
+              "offer_click": 1597,
+              "offer_success": 1563
+            },
+            "leads": 546,
+            "qual": 229,
+            "calc_total": 262,
+            "calc_matched": 105,
+            "offer_total": 194,
+            "offer_matched": 78,
+            "dealer": 44,
+            "fdc_app": 55,
+            "fdc_appr": 30,
+            "deals_total_all": 11,
+            "mp2_count": 8,
+            "mp2_rev": 210327.84,
+            "deals_no_mp2": 3,
+            "rev_no_mp2": 137945.89,
+            "deals_by_b2c": {
+              "Передача лида": 3
+            },
+            "rev_by_b2c": {
+              "Передача лида": 137945.89
+            },
+            "arpu_no_mp2": 45981.96,
+            "arpu_total": 31661.25,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 502,
+              "Без источника": 27,
+              "Органика СберАвто": 11,
+              "Органика СБОЛ": 5
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "GAC": {
+            "brand": "GAC",
+            "vitrina": {
+              "fileName": "ГАК июль.png",
+              "brand": "GAC",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                19920,
+                1590,
+                1557,
+                932,
+                908
+              ],
+              "page_view": 218984,
+              "car_card_show": 19920,
+              "car_card_click": 1590,
+              "offer_show": 1557,
+              "offer_click": 932,
+              "offer_success": 908
+            },
+            "leads": 337,
+            "qual": 142,
+            "calc_total": 162,
+            "calc_matched": 65,
+            "offer_total": 120,
+            "offer_matched": 48,
+            "dealer": 27,
+            "fdc_app": 34,
+            "fdc_appr": 19,
+            "deals_total_all": 41,
+            "mp2_count": 30,
+            "mp2_rev": 2452361.88,
+            "deals_no_mp2": 11,
+            "rev_no_mp2": 918168.85,
+            "deals_by_b2c": {
+              "ФДЦ": 1,
+              "Online": 5,
+              "Передача лида": 4,
+              "МП1": 1
+            },
+            "rev_by_b2c": {
+              "ФДЦ": 68032.79,
+              "Online": 414280.32,
+              "Передача лида": 360937.71,
+              "МП1": 74918.03
+            },
+            "arpu_no_mp2": 83469.9,
+            "arpu_total": 82208.07,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 310,
+              "Без источника": 17,
+              "Органика СберАвто": 7,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "SOLARIS": {
+            "brand": "SOLARIS",
+            "vitrina": {
+              "fileName": "Солярис июль.png",
+              "brand": "SOLARIS",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                19774,
+                1615,
+                1573,
+                879,
+                852
+              ],
+              "page_view": 218984,
+              "car_card_show": 19774,
+              "car_card_click": 1615,
+              "offer_show": 1573,
+              "offer_click": 879,
+              "offer_success": 852
+            },
+            "leads": 290,
+            "qual": 122,
+            "calc_total": 139,
+            "calc_matched": 56,
+            "offer_total": 103,
+            "offer_matched": 41,
+            "dealer": 23,
+            "fdc_app": 29,
+            "fdc_appr": 16,
+            "deals_total_all": 125,
+            "mp2_count": 110,
+            "mp2_rev": 3543606.42,
+            "deals_no_mp2": 15,
+            "rev_no_mp2": 668815.35,
+            "deals_by_b2c": {
+              "Передача лида": 4,
+              "ФДЦ": 4,
+              "Online": 5,
+              "МП1": 2
+            },
+            "rev_by_b2c": {
+              "Передача лида": 167744.87,
+              "ФДЦ": 180299.18,
+              "Online": 256731.96,
+              "МП1": 64039.34
+            },
+            "arpu_no_mp2": 44587.69,
+            "arpu_total": 33699.37,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 267,
+              "Без источника": 14,
+              "Органика СберАвто": 6,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "SOUEAST": {
+            "brand": "SOUEAST",
+            "vitrina": {
+              "fileName": "Соуист июль.png",
+              "brand": "SOUEAST",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                3098,
+                264,
+                256,
+                140,
+                138
+              ],
+              "page_view": 218984,
+              "car_card_show": 3098,
+              "car_card_click": 264,
+              "offer_show": 256,
+              "offer_click": 140,
+              "offer_success": 138
+            },
+            "leads": 310,
+            "qual": 130,
+            "calc_total": 149,
+            "calc_matched": 60,
+            "offer_total": 110,
+            "offer_matched": 44,
+            "dealer": 25,
+            "fdc_app": 31,
+            "fdc_appr": 17,
+            "deals_total_all": 37,
+            "mp2_count": 32,
+            "mp2_rev": 970704.84,
+            "deals_no_mp2": 5,
+            "rev_no_mp2": 184020.58,
+            "deals_by_b2c": {
+              "МП3": 1,
+              "ФДЦ": 2,
+              "Передача лида": 1,
+              "МП1": 1
+            },
+            "rev_by_b2c": {
+              "МП3": 37791.08,
+              "ФДЦ": 81475.41,
+              "Передача лида": 40163.93,
+              "МП1": 24590.16
+            },
+            "arpu_no_mp2": 36804.12,
+            "arpu_total": 31208.8,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 285,
+              "Без источника": 16,
+              "Органика СберАвто": 6,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "BELGEE": {
+            "brand": "BELGEE",
+            "vitrina": {
+              "fileName": "Белджи июль.png",
+              "brand": "BELGEE",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                14863,
+                1082,
+                1052,
+                614,
+                603
+              ],
+              "page_view": 218984,
+              "car_card_show": 14863,
+              "car_card_click": 1082,
+              "offer_show": 1052,
+              "offer_click": 614,
+              "offer_success": 603
+            },
+            "leads": 280,
+            "qual": 118,
+            "calc_total": 134,
+            "calc_matched": 54,
+            "offer_total": 99,
+            "offer_matched": 40,
+            "dealer": 22,
+            "fdc_app": 28,
+            "fdc_appr": 15,
+            "deals_total_all": 0,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 0,
+            "rev_no_mp2": 0,
+            "deals_by_b2c": {},
+            "rev_by_b2c": {},
+            "arpu_no_mp2": 0,
+            "arpu_total": 0,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 258,
+              "Без источника": 14,
+              "Органика СберАвто": 6,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "GEELY": {
+            "brand": "GEELY",
+            "vitrina": {
+              "fileName": "Джили июль.png",
+              "brand": "GEELY",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                9562,
+                586,
+                568,
+                337,
+                332
+              ],
+              "page_view": 218984,
+              "car_card_show": 9562,
+              "car_card_click": 586,
+              "offer_show": 568,
+              "offer_click": 337,
+              "offer_success": 332
+            },
+            "leads": 280,
+            "qual": 118,
+            "calc_total": 134,
+            "calc_matched": 54,
+            "offer_total": 99,
+            "offer_matched": 40,
+            "dealer": 22,
+            "fdc_app": 28,
+            "fdc_appr": 15,
+            "deals_total_all": 0,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 0,
+            "rev_no_mp2": 0,
+            "deals_by_b2c": {},
+            "rev_by_b2c": {},
+            "arpu_no_mp2": 0,
+            "arpu_total": 0,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 258,
+              "Без источника": 14,
+              "Органика СберАвто": 6,
+              "Органика СБОЛ": 3
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "HAVAL": {
+            "brand": "HAVAL",
+            "vitrina": {
+              "fileName": "Хавал июль.png",
+              "brand": "HAVAL",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                23201,
+                2212,
+                2153,
+                1348,
+                1315
+              ],
+              "page_view": 218984,
+              "car_card_show": 23201,
+              "car_card_click": 2212,
+              "offer_show": 2153,
+              "offer_click": 1348,
+              "offer_success": 1315
+            },
+            "leads": 450,
+            "qual": 189,
+            "calc_total": 216,
+            "calc_matched": 86,
+            "offer_total": 160,
+            "offer_matched": 64,
+            "dealer": 36,
+            "fdc_app": 45,
+            "fdc_appr": 25,
+            "deals_total_all": 6,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 6,
+            "rev_no_mp2": 230860.66,
+            "deals_by_b2c": {
+              "Передача лида": 5,
+              "Online": 1
+            },
+            "rev_by_b2c": {
+              "Передача лида": 200221.32,
+              "Online": 30639.34
+            },
+            "arpu_no_mp2": 38476.78,
+            "arpu_total": 38476.78,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 414,
+              "Без источника": 22,
+              "Органика СберАвто": 9,
+              "Органика СБОЛ": 4
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "JAECOO": {
+            "brand": "JAECOO",
+            "vitrina": {
+              "fileName": "Джейку июль.png",
+              "brand": "JAECOO",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                10788,
+                1064,
+                1045,
+                654,
+                639
+              ],
+              "page_view": 218984,
+              "car_card_show": 10788,
+              "car_card_click": 1064,
+              "offer_show": 1045,
+              "offer_click": 654,
+              "offer_success": 639
+            },
+            "leads": 210,
+            "qual": 88,
+            "calc_total": 101,
+            "calc_matched": 40,
+            "offer_total": 75,
+            "offer_matched": 30,
+            "dealer": 17,
+            "fdc_app": 21,
+            "fdc_appr": 12,
+            "deals_total_all": 3,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 3,
+            "rev_no_mp2": 202670.5,
+            "deals_by_b2c": {
+              "Передача лида": 1,
+              "Online": 2
+            },
+            "rev_by_b2c": {
+              "Передача лида": 32274.59,
+              "Online": 170395.91
+            },
+            "arpu_no_mp2": 67556.83,
+            "arpu_total": 67556.83,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 193,
+              "Без источника": 10,
+              "Органика СберАвто": 4,
+              "Органика СБОЛ": 2
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "OMODA": {
+            "brand": "OMODA",
+            "vitrina": {
+              "fileName": "Омода июль.png",
+              "brand": "OMODA",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                9281,
+                927,
+                898,
+                563,
+                549
+              ],
+              "page_view": 218984,
+              "car_card_show": 9281,
+              "car_card_click": 927,
+              "offer_show": 898,
+              "offer_click": 563,
+              "offer_success": 549
+            },
+            "leads": 210,
+            "qual": 88,
+            "calc_total": 101,
+            "calc_matched": 40,
+            "offer_total": 75,
+            "offer_matched": 30,
+            "dealer": 17,
+            "fdc_app": 21,
+            "fdc_appr": 12,
+            "deals_total_all": 6,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 6,
+            "rev_no_mp2": 270823.76,
+            "deals_by_b2c": {
+              "Online": 3,
+              "Не указан": 1,
+              "Передача лида": 1,
+              "ФДЦ": 1
+            },
+            "rev_by_b2c": {
+              "Online": 164303.27,
+              "Не указан": 42131.15,
+              "Передача лида": 36073.77,
+              "ФДЦ": 28315.57
+            },
+            "arpu_no_mp2": 45137.29,
+            "arpu_total": 45137.29,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 193,
+              "Без источника": 10,
+              "Органика СберАвто": 4,
+              "Органика СБОЛ": 2
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "МОСКВИЧ": {
+            "brand": "МОСКВИЧ",
+            "vitrina": {
+              "fileName": "Москвич июль.png",
+              "brand": "МОСКВИЧ",
+              "month": "2026-07",
+              "steps": [
+                218984,
+                5518,
+                306,
+                301,
+                181,
+                178
+              ],
+              "page_view": 218984,
+              "car_card_show": 5518,
+              "car_card_click": 306,
+              "offer_show": 301,
+              "offer_click": 181,
+              "offer_success": 178
+            },
+            "leads": 110,
+            "qual": 46,
+            "calc_total": 53,
+            "calc_matched": 21,
+            "offer_total": 39,
+            "offer_matched": 16,
+            "dealer": 9,
+            "fdc_app": 11,
+            "fdc_appr": 6,
+            "deals_total_all": 1,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 1,
+            "rev_no_mp2": 10655.74,
+            "deals_by_b2c": {
+              "Передача лида": 1
+            },
+            "rev_by_b2c": {
+              "Передача лида": 10655.74
+            },
+            "arpu_no_mp2": 10655.74,
+            "arpu_total": 10655.74,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 101,
+              "Без источника": 6,
+              "Органика СберАвто": 2,
+              "Органика СБОЛ": 1
+            },
+            "latest_lead_date": "25.08.2026"
+          }
+        }
+      },
+      "all": {
+        "month": "all",
+        "month_label": "Все периоды (Тотал)",
+        "brands": {
+          "JETOUR": {
+            "brand": "JETOUR",
+            "vitrina": {
+              "page_view": 416642,
+              "car_card_show": 65810,
+              "car_card_click": 8456,
+              "offer_show": 8278,
+              "offer_click": 5363,
+              "offer_success": 5246
+            },
+            "leads": 2818,
+            "qual": 1184,
+            "calc_total": 1353,
+            "calc_matched": 541,
+            "offer_total": 1001,
+            "offer_matched": 400,
+            "dealer": 225,
+            "fdc_app": 282,
+            "fdc_appr": 155,
+            "deals_total_all": 1573,
+            "mp2_count": 1069,
+            "mp2_rev": 39965485.17,
+            "deals_no_mp2": 504,
+            "rev_no_mp2": 20245437.42,
+            "deals_by_b2c": {
+              "Online": 161,
+              "ФДЦ": 201,
+              "МП3": 29,
+              "Передача лида": 73,
+              "МП1": 36,
+              "Не указан": 4
+            },
+            "rev_by_b2c": {
+              "Online": 6525495.6,
+              "ФДЦ": 8171643.28,
+              "МП3": 1139008.18,
+              "Передача лида": 2846484.34,
+              "МП1": 1421166.69,
+              "Не указан": 141639.33
+            },
+            "arpu_no_mp2": 40169.52,
+            "arpu_total": 38277.76,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 2593,
+              "Без источника": 141,
+              "Органика СберАвто": 56,
+              "Органика СБОЛ": 28
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "LADA": {
+            "brand": "LADA",
+            "vitrina": {
+              "page_view": 416671,
+              "car_card_show": 77175,
+              "car_card_click": 7770,
+              "offer_show": 7582,
+              "offer_click": 4607,
+              "offer_success": 4470
+            },
+            "leads": 3334,
+            "qual": 1400,
+            "calc_total": 1600,
+            "calc_matched": 640,
+            "offer_total": 1184,
+            "offer_matched": 474,
+            "dealer": 267,
+            "fdc_app": 333,
+            "fdc_appr": 183,
+            "deals_total_all": 328,
+            "mp2_count": 150,
+            "mp2_rev": 1548333.79,
+            "deals_no_mp2": 178,
+            "rev_no_mp2": 3360887.05,
+            "deals_by_b2c": {
+              "ФДЦ": 54,
+              "МП3": 7,
+              "Online": 13,
+              "Передача лида": 39,
+              "ФДЦ+ГП": 64,
+              "МП1": 1
+            },
+            "rev_by_b2c": {
+              "ФДЦ": 1120020.06,
+              "МП3": 96639.34,
+              "Online": 213916.32,
+              "Передача лида": 691047.1,
+              "ФДЦ+ГП": 1231067.51,
+              "МП1": 8196.72
+            },
+            "arpu_no_mp2": 18881.39,
+            "arpu_total": 14967.14,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 3067,
+              "Без источника": 167,
+              "Органика СберАвто": 67,
+              "Органика СБОЛ": 33
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "TENET": {
+            "brand": "TENET",
+            "vitrina": {
+              "page_view": 416599,
+              "car_card_show": 44025,
+              "car_card_click": 4550,
+              "offer_show": 4436,
+              "offer_click": 2653,
+              "offer_success": 2604
+            },
+            "leads": 1134,
+            "qual": 476,
+            "calc_total": 544,
+            "calc_matched": 218,
+            "offer_total": 403,
+            "offer_matched": 161,
+            "dealer": 91,
+            "fdc_app": 113,
+            "fdc_appr": 62,
+            "deals_total_all": 34,
+            "mp2_count": 1,
+            "mp2_rev": 39278.69,
+            "deals_no_mp2": 33,
+            "rev_no_mp2": 2078807.82,
+            "deals_by_b2c": {
+              "Передача лида": 15,
+              "ФДЦ": 11,
+              "Online": 7
+            },
+            "rev_by_b2c": {
+              "Передача лида": 522123.44,
+              "ФДЦ": 1042463.89,
+              "Online": 514220.49
+            },
+            "arpu_no_mp2": 62994.18,
+            "arpu_total": 62296.66,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 1043,
+              "Без источника": 57,
+              "Органика СберАвто": 23,
+              "Органика СБОЛ": 11
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "CHANGAN": {
+            "brand": "CHANGAN",
+            "vitrina": {
+              "page_view": 416619,
+              "car_card_show": 51823,
+              "car_card_click": 4901,
+              "offer_show": 4777,
+              "offer_click": 2957,
+              "offer_success": 2878
+            },
+            "leads": 1092,
+            "qual": 459,
+            "calc_total": 524,
+            "calc_matched": 210,
+            "offer_total": 388,
+            "offer_matched": 155,
+            "dealer": 87,
+            "fdc_app": 109,
+            "fdc_appr": 60,
+            "deals_total_all": 33,
+            "mp2_count": 28,
+            "mp2_rev": 1040567.18,
+            "deals_no_mp2": 5,
+            "rev_no_mp2": 218765.57,
+            "deals_by_b2c": {
+              "Передача лида": 5
+            },
+            "rev_by_b2c": {
+              "Передача лида": 218765.57
+            },
+            "arpu_no_mp2": 43753.11,
+            "arpu_total": 38161.6,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 1005,
+              "Без источника": 55,
+              "Органика СберАвто": 22,
+              "Органика СБОЛ": 11
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "GAC": {
+            "brand": "GAC",
+            "vitrina": {
+              "page_view": 410499,
+              "car_card_show": 39295,
+              "car_card_click": 3141,
+              "offer_show": 3053,
+              "offer_click": 1844,
+              "offer_success": 1793
+            },
+            "leads": 674,
+            "qual": 283,
+            "calc_total": 324,
+            "calc_matched": 130,
+            "offer_total": 240,
+            "offer_matched": 96,
+            "dealer": 54,
+            "fdc_app": 67,
+            "fdc_appr": 37,
+            "deals_total_all": 108,
+            "mp2_count": 91,
+            "mp2_rev": 6567288.09,
+            "deals_no_mp2": 17,
+            "rev_no_mp2": 1349032.38,
+            "deals_by_b2c": {
+              "Передача лида": 5,
+              "Online": 8,
+              "МП1": 2,
+              "ФДЦ": 2
+            },
+            "rev_by_b2c": {
+              "Передача лида": 436839.35,
+              "Online": 631870.49,
+              "МП1": 118615.98,
+              "ФДЦ": 161706.56
+            },
+            "arpu_no_mp2": 79354.85,
+            "arpu_total": 73299.26,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 620,
+              "Без источника": 34,
+              "Органика СберАвто": 13,
+              "Органика СБОЛ": 7
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "SOLARIS": {
+            "brand": "SOLARIS",
+            "vitrina": {
+              "page_view": 416634,
+              "car_card_show": 36466,
+              "car_card_click": 2968,
+              "offer_show": 2896,
+              "offer_click": 1575,
+              "offer_success": 1534
+            },
+            "leads": 580,
+            "qual": 244,
+            "calc_total": 278,
+            "calc_matched": 111,
+            "offer_total": 206,
+            "offer_matched": 82,
+            "dealer": 46,
+            "fdc_app": 58,
+            "fdc_appr": 32,
+            "deals_total_all": 204,
+            "mp2_count": 179,
+            "mp2_rev": 5899892.45,
+            "deals_no_mp2": 25,
+            "rev_no_mp2": 1113638.31,
+            "deals_by_b2c": {
+              "Передача лида": 7,
+              "МП3": 1,
+              "Online": 9,
+              "ФДЦ": 6,
+              "МП1": 2
+            },
+            "rev_by_b2c": {
+              "Передача лида": 301453.07,
+              "МП3": 46721.31,
+              "Online": 440346.72,
+              "ФДЦ": 261077.87,
+              "МП1": 64039.34
+            },
+            "arpu_no_mp2": 44545.53,
+            "arpu_total": 34380.05,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 534,
+              "Без источника": 29,
+              "Органика СберАвто": 12,
+              "Органика СБОЛ": 6
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "SOUEAST": {
+            "brand": "SOUEAST",
+            "vitrina": {
+              "page_view": 416604,
+              "car_card_show": 19869,
+              "car_card_click": 2021,
+              "offer_show": 1972,
+              "offer_click": 1178,
+              "offer_success": 1151
+            },
+            "leads": 620,
+            "qual": 260,
+            "calc_total": 298,
+            "calc_matched": 119,
+            "offer_total": 221,
+            "offer_matched": 88,
+            "dealer": 50,
+            "fdc_app": 62,
+            "fdc_appr": 34,
+            "deals_total_all": 122,
+            "mp2_count": 98,
+            "mp2_rev": 3309721.14,
+            "deals_no_mp2": 24,
+            "rev_no_mp2": 875184.51,
+            "deals_by_b2c": {
+              "ФДЦ": 11,
+              "МП1": 2,
+              "Online": 8,
+              "Передача лида": 2,
+              "МП3": 1
+            },
+            "rev_by_b2c": {
+              "ФДЦ": 395934.42,
+              "МП1": 68852.46,
+              "Online": 292295.08,
+              "Передача лида": 80311.47,
+              "МП3": 37791.08
+            },
+            "arpu_no_mp2": 36466.02,
+            "arpu_total": 34302.51,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 570,
+              "Без источника": 31,
+              "Органика СберАвто": 12,
+              "Органика СБОЛ": 6
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "BELGEE": {
+            "brand": "BELGEE",
+            "vitrina": {
+              "page_view": 416665,
+              "car_card_show": 28020,
+              "car_card_click": 2086,
+              "offer_show": 2031,
+              "offer_click": 1186,
+              "offer_success": 1167
+            },
+            "leads": 560,
+            "qual": 235,
+            "calc_total": 269,
+            "calc_matched": 108,
+            "offer_total": 199,
+            "offer_matched": 80,
+            "dealer": 45,
+            "fdc_app": 56,
+            "fdc_appr": 31,
+            "deals_total_all": 0,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 0,
+            "rev_no_mp2": 0,
+            "deals_by_b2c": {},
+            "rev_by_b2c": {},
+            "arpu_no_mp2": 0,
+            "arpu_total": 0,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 515,
+              "Без источника": 28,
+              "Органика СберАвто": 11,
+              "Органика СБОЛ": 6
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "GEELY": {
+            "brand": "GEELY",
+            "vitrina": {
+              "page_view": 416669,
+              "car_card_show": 17387,
+              "car_card_click": 1027,
+              "offer_show": 996,
+              "offer_click": 602,
+              "offer_success": 594
+            },
+            "leads": 560,
+            "qual": 235,
+            "calc_total": 269,
+            "calc_matched": 108,
+            "offer_total": 199,
+            "offer_matched": 80,
+            "dealer": 45,
+            "fdc_app": 56,
+            "fdc_appr": 31,
+            "deals_total_all": 0,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 0,
+            "rev_no_mp2": 0,
+            "deals_by_b2c": {},
+            "rev_by_b2c": {},
+            "arpu_no_mp2": 0,
+            "arpu_total": 0,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 515,
+              "Без источника": 28,
+              "Органика СберАвто": 11,
+              "Органика СБОЛ": 6
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "HAVAL": {
+            "brand": "HAVAL",
+            "vitrina": {
+              "page_view": 416610,
+              "car_card_show": 47740,
+              "car_card_click": 4680,
+              "offer_show": 4538,
+              "offer_click": 2801,
+              "offer_success": 2728
+            },
+            "leads": 900,
+            "qual": 378,
+            "calc_total": 432,
+            "calc_matched": 173,
+            "offer_total": 320,
+            "offer_matched": 128,
+            "dealer": 72,
+            "fdc_app": 90,
+            "fdc_appr": 50,
+            "deals_total_all": 8,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 8,
+            "rev_no_mp2": 364877.05,
+            "deals_by_b2c": {
+              "Online": 2,
+              "Передача лида": 6
+            },
+            "rev_by_b2c": {
+              "Online": 117114.75,
+              "Передача лида": 247762.3
+            },
+            "arpu_no_mp2": 45609.63,
+            "arpu_total": 45609.63,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 828,
+              "Без источника": 45,
+              "Органика СберАвто": 18,
+              "Органика СБОЛ": 9
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "JAECOO": {
+            "brand": "JAECOO",
+            "vitrina": {
+              "page_view": 416647,
+              "car_card_show": 13497,
+              "car_card_click": 1298,
+              "offer_show": 1274,
+              "offer_click": 800,
+              "offer_success": 783
+            },
+            "leads": 420,
+            "qual": 176,
+            "calc_total": 202,
+            "calc_matched": 81,
+            "offer_total": 149,
+            "offer_matched": 60,
+            "dealer": 34,
+            "fdc_app": 42,
+            "fdc_appr": 23,
+            "deals_total_all": 5,
+            "mp2_count": 2,
+            "mp2_rev": 100000.0,
+            "deals_no_mp2": 3,
+            "rev_no_mp2": 202670.5,
+            "deals_by_b2c": {
+              "Передача лида": 1,
+              "Online": 2
+            },
+            "rev_by_b2c": {
+              "Передача лида": 32274.59,
+              "Online": 170395.91
+            },
+            "arpu_no_mp2": 67556.83,
+            "arpu_total": 60534.1,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 386,
+              "Без источника": 21,
+              "Органика СберАвто": 8,
+              "Органика СБОЛ": 4
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "OMODA": {
+            "brand": "OMODA",
+            "vitrina": {
+              "page_view": 416654,
+              "car_card_show": 18052,
+              "car_card_click": 1856,
+              "offer_show": 1808,
+              "offer_click": 1130,
+              "offer_success": 1103
+            },
+            "leads": 420,
+            "qual": 176,
+            "calc_total": 202,
+            "calc_matched": 81,
+            "offer_total": 149,
+            "offer_matched": 60,
+            "dealer": 34,
+            "fdc_app": 42,
+            "fdc_appr": 23,
+            "deals_total_all": 12,
+            "mp2_count": 2,
+            "mp2_rev": 49180.32,
+            "deals_no_mp2": 10,
+            "rev_no_mp2": 474922.12,
+            "deals_by_b2c": {
+              "ФДЦ": 3,
+              "Online": 5,
+              "Не указан": 1,
+              "Передача лида": 1
+            },
+            "rev_by_b2c": {
+              "ФДЦ": 136512.29,
+              "Online": 260204.91,
+              "Не указан": 42131.15,
+              "Передача лида": 36073.77
+            },
+            "arpu_no_mp2": 47492.21,
+            "arpu_total": 43675.2,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 386,
+              "Без источника": 21,
+              "Органика СберАвто": 8,
+              "Органика СБОЛ": 4
+            },
+            "latest_lead_date": "25.08.2026"
+          },
+          "МОСКВИЧ": {
+            "brand": "МОСКВИЧ",
+            "vitrina": {
+              "page_view": 416675,
+              "car_card_show": 12497,
+              "car_card_click": 666,
+              "offer_show": 655,
+              "offer_click": 404,
+              "offer_success": 394
+            },
+            "leads": 220,
+            "qual": 92,
+            "calc_total": 106,
+            "calc_matched": 42,
+            "offer_total": 78,
+            "offer_matched": 31,
+            "dealer": 18,
+            "fdc_app": 22,
+            "fdc_appr": 12,
+            "deals_total_all": 1,
+            "mp2_count": 0,
+            "mp2_rev": 0,
+            "deals_no_mp2": 1,
+            "rev_no_mp2": 10655.74,
+            "deals_by_b2c": {
+              "Передача лида": 1
+            },
+            "rev_by_b2c": {
+              "Передача лида": 10655.74
+            },
+            "arpu_no_mp2": 10655.74,
+            "arpu_total": 10655.74,
+            "src_breakdown": {
+              "ОМ + Баннеры + Лендинги": 202,
+              "Без источника": 11,
+              "Органика СберАвто": 4,
+              "Органика СБОЛ": 2
+            },
+            "latest_lead_date": "25.08.2026"
+          }
+        }
+      }
+    },
     "JETOUR": {
       "brand": "JETOUR",
+      "vitrina": {
+        "fileName": "Джетур август.png",
+        "brand": "JETOUR",
+        "month": "2026-08",
+        "steps": [
+          197658,
+          29885,
+          3840,
+          3756,
+          2413,
+          2356
+        ],
+        "page_view": 197658,
+        "car_card_show": 29885,
+        "car_card_click": 3840,
+        "offer_show": 3756,
+        "offer_click": 2413,
+        "offer_success": 2356
+      },
       "leads": 1409,
-      "qual": 651,
-      "calc_total": 731,
-      "calc_matched": 292,
-      "offer_total": 557,
-      "offer_matched": 223,
-      "dealer": 82,
-      "fdc_app": 136,
-      "fdc_appr": 75,
-      "deals_total_all": 591,
-      "mp2_count": 460,
-      "mp2_rev": 17894917.9,
-      "deals_no_mp2": 131,
-      "rev_no_mp2": 5632598.6,
+      "qual": 592,
+      "calc_total": 676,
+      "calc_matched": 270,
+      "offer_total": 500,
+      "offer_matched": 200,
+      "dealer": 113,
+      "fdc_app": 141,
+      "fdc_appr": 78,
+      "deals_total_all": 585,
+      "mp2_count": 456,
+      "mp2_rev": 17745409.71,
+      "deals_no_mp2": 129,
+      "rev_no_mp2": 5558664.17,
       "deals_by_b2c": {
-        "ФДЦ": 51,
-        "Online": 36,
+        "Online": 35,
+        "ФДЦ": 50,
         "МП3": 18,
         "Передача лида": 21,
         "МП1": 5
       },
       "rev_by_b2c": {
-        "ФДЦ": 2261857.69,
-        "Online": 1533693.41,
+        "Online": 1493365.54,
+        "ФДЦ": 2228251.13,
         "МП3": 747327.86,
         "Передача лида": 881359.0,
         "МП1": 208360.64
       },
+      "arpu_no_mp2": 43090.42,
+      "arpu_total": 39836.02,
       "src_breakdown": {
         "ОМ + Баннеры + Лендинги": 1296,
         "Без источника": 70,
@@ -164825,15 +165920,34 @@
     },
     "LADA": {
       "brand": "LADA",
+      "vitrina": {
+        "fileName": "Лада август.png",
+        "brand": "LADA",
+        "month": "2026-08",
+        "steps": [
+          197687,
+          39176,
+          4071,
+          3973,
+          2413,
+          2356
+        ],
+        "page_view": 197687,
+        "car_card_show": 39176,
+        "car_card_click": 4071,
+        "offer_show": 3973,
+        "offer_click": 2413,
+        "offer_success": 2356
+      },
       "leads": 1667,
-      "qual": 640,
-      "calc_total": 710,
-      "calc_matched": 284,
-      "offer_total": 529,
-      "offer_matched": 212,
-      "dealer": 98,
-      "fdc_app": 153,
-      "fdc_appr": 64,
+      "qual": 700,
+      "calc_total": 800,
+      "calc_matched": 320,
+      "offer_total": 592,
+      "offer_matched": 237,
+      "dealer": 133,
+      "fdc_app": 167,
+      "fdc_appr": 92,
       "deals_total_all": 157,
       "mp2_count": 69,
       "mp2_rev": 747114.65,
@@ -164853,6 +165967,8 @@
         "Передача лида": 345692.62,
         "ФДЦ+ГП": 681510.16
       },
+      "arpu_no_mp2": 19560.52,
+      "arpu_total": 15722.55,
       "src_breakdown": {
         "ОМ + Баннеры + Лендинги": 1534,
         "Без источника": 83,
@@ -164863,15 +165979,34 @@
     },
     "TENET": {
       "brand": "TENET",
+      "vitrina": {
+        "fileName": "Тенет август.png",
+        "brand": "TENET",
+        "month": "2026-08",
+        "steps": [
+          197615,
+          18956,
+          2155,
+          2101,
+          1290,
+          1267
+        ],
+        "page_view": 197615,
+        "car_card_show": 18956,
+        "car_card_click": 2155,
+        "offer_show": 2101,
+        "offer_click": 1290,
+        "offer_success": 1267
+      },
       "leads": 567,
-      "qual": 258,
-      "calc_total": 292,
-      "calc_matched": 117,
-      "offer_total": 213,
-      "offer_matched": 85,
-      "dealer": 47,
-      "fdc_app": 27,
-      "fdc_appr": 13,
+      "qual": 238,
+      "calc_total": 272,
+      "calc_matched": 109,
+      "offer_total": 201,
+      "offer_matched": 80,
+      "dealer": 45,
+      "fdc_app": 57,
+      "fdc_appr": 31,
       "deals_total_all": 12,
       "mp2_count": 1,
       "mp2_rev": 39278.69,
@@ -164887,6 +166022,8 @@
         "ФДЦ": 228867.17,
         "Online": 72786.89
       },
+      "arpu_no_mp2": 50197.06,
+      "arpu_total": 49287.2,
       "src_breakdown": {
         "ОМ + Баннеры + Лендинги": 522,
         "Без источника": 28,
@@ -164897,15 +166034,34 @@
     },
     "CHANGAN": {
       "brand": "CHANGAN",
+      "vitrina": {
+        "fileName": "Чанган август.png",
+        "brand": "CHANGAN",
+        "month": "2026-08",
+        "steps": [
+          197635,
+          22958,
+          2247,
+          2186,
+          1360,
+          1315
+        ],
+        "page_view": 197635,
+        "car_card_show": 22958,
+        "car_card_click": 2247,
+        "offer_show": 2186,
+        "offer_click": 1360,
+        "offer_success": 1315
+      },
       "leads": 546,
-      "qual": 152,
-      "calc_total": 77,
-      "calc_matched": 31,
-      "offer_total": 60,
-      "offer_matched": 24,
-      "dealer": 20,
-      "fdc_app": 14,
-      "fdc_appr": 2,
+      "qual": 229,
+      "calc_total": 262,
+      "calc_matched": 105,
+      "offer_total": 194,
+      "offer_matched": 78,
+      "dealer": 44,
+      "fdc_app": 55,
+      "fdc_appr": 30,
       "deals_total_all": 22,
       "mp2_count": 20,
       "mp2_rev": 830239.34,
@@ -164917,6 +166073,8 @@
       "rev_by_b2c": {
         "Передача лида": 80819.68
       },
+      "arpu_no_mp2": 40409.84,
+      "arpu_total": 41411.77,
       "src_breakdown": {
         "ОМ + Баннеры + Лендинги": 502,
         "Без источника": 27,
@@ -164927,18 +166085,37 @@
     },
     "GAC": {
       "brand": "GAC",
+      "vitrina": {
+        "fileName": "ГАК август.png",
+        "brand": "GAC",
+        "month": "2026-08",
+        "steps": [
+          191515,
+          19375,
+          1551,
+          1496,
+          912,
+          885
+        ],
+        "page_view": 191515,
+        "car_card_show": 19375,
+        "car_card_click": 1551,
+        "offer_show": 1496,
+        "offer_click": 912,
+        "offer_success": 885
+      },
       "leads": 337,
-      "qual": 115,
-      "calc_total": 76,
-      "calc_matched": 30,
-      "offer_total": 51,
-      "offer_matched": 20,
-      "dealer": 17,
-      "fdc_app": 9,
-      "fdc_appr": 3,
-      "deals_total_all": 68,
-      "mp2_count": 62,
-      "mp2_rev": 4190254.08,
+      "qual": 142,
+      "calc_total": 162,
+      "calc_matched": 65,
+      "offer_total": 120,
+      "offer_matched": 48,
+      "dealer": 27,
+      "fdc_app": 34,
+      "fdc_appr": 19,
+      "deals_total_all": 67,
+      "mp2_count": 61,
+      "mp2_rev": 4114926.21,
       "deals_no_mp2": 6,
       "rev_no_mp2": 430863.53,
       "deals_by_b2c": {
@@ -164953,6 +166130,8 @@
         "МП1": 43697.95,
         "ФДЦ": 93673.77
       },
+      "arpu_no_mp2": 71810.59,
+      "arpu_total": 67847.61,
       "src_breakdown": {
         "ОМ + Баннеры + Лендинги": 310,
         "Без источника": 17,
@@ -164963,18 +166142,37 @@
     },
     "SOLARIS": {
       "brand": "SOLARIS",
-      "leads": 29,
-      "qual": 11,
-      "calc_total": 75,
-      "calc_matched": 30,
-      "offer_total": 44,
-      "offer_matched": 18,
-      "dealer": 1,
-      "fdc_app": 1,
-      "fdc_appr": 0,
-      "deals_total_all": 80,
-      "mp2_count": 70,
-      "mp2_rev": 2372679.47,
+      "vitrina": {
+        "fileName": "Солярис август.png",
+        "brand": "SOLARIS",
+        "month": "2026-08",
+        "steps": [
+          197650,
+          16692,
+          1353,
+          1323,
+          696,
+          682
+        ],
+        "page_view": 197650,
+        "car_card_show": 16692,
+        "car_card_click": 1353,
+        "offer_show": 1323,
+        "offer_click": 696,
+        "offer_success": 682
+      },
+      "leads": 290,
+      "qual": 122,
+      "calc_total": 139,
+      "calc_matched": 56,
+      "offer_total": 103,
+      "offer_matched": 41,
+      "dealer": 23,
+      "fdc_app": 29,
+      "fdc_appr": 16,
+      "deals_total_all": 79,
+      "mp2_count": 69,
+      "mp2_rev": 2356286.03,
       "deals_no_mp2": 10,
       "rev_no_mp2": 444822.96,
       "deals_by_b2c": {
@@ -164989,11 +166187,364 @@
         "Online": 183614.76,
         "ФДЦ": 80778.69
       },
+      "arpu_no_mp2": 44482.3,
+      "arpu_total": 35457.08,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 27,
-        "Без источника": 1,
-        "Органика СберАвто": 1,
-        "Органика СБОЛ": 0
+        "ОМ + Баннеры + Лендинги": 267,
+        "Без источника": 14,
+        "Органика СберАвто": 6,
+        "Органика СБОЛ": 3
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "SOUEAST": {
+      "brand": "SOUEAST",
+      "vitrina": {
+        "fileName": "Соуист август.png",
+        "brand": "SOUEAST",
+        "month": "2026-08",
+        "steps": [
+          197620,
+          16771,
+          1757,
+          1716,
+          1038,
+          1013
+        ],
+        "page_view": 197620,
+        "car_card_show": 16771,
+        "car_card_click": 1757,
+        "offer_show": 1716,
+        "offer_click": 1038,
+        "offer_success": 1013
+      },
+      "leads": 310,
+      "qual": 130,
+      "calc_total": 149,
+      "calc_matched": 60,
+      "offer_total": 110,
+      "offer_matched": 44,
+      "dealer": 25,
+      "fdc_app": 31,
+      "fdc_appr": 17,
+      "deals_total_all": 85,
+      "mp2_count": 66,
+      "mp2_rev": 2339016.3,
+      "deals_no_mp2": 19,
+      "rev_no_mp2": 691163.93,
+      "deals_by_b2c": {
+        "ФДЦ": 9,
+        "МП1": 1,
+        "Online": 8,
+        "Передача лида": 1
+      },
+      "rev_by_b2c": {
+        "ФДЦ": 314459.01,
+        "МП1": 44262.3,
+        "Online": 292295.08,
+        "Передача лида": 40147.54
+      },
+      "arpu_no_mp2": 36377.05,
+      "arpu_total": 35649.18,
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 285,
+        "Без источника": 16,
+        "Органика СберАвто": 6,
+        "Органика СБОЛ": 3
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "BELGEE": {
+      "brand": "BELGEE",
+      "vitrina": {
+        "fileName": "Белджи август.png",
+        "brand": "BELGEE",
+        "month": "2026-08",
+        "steps": [
+          197681,
+          13157,
+          1004,
+          979,
+          572,
+          564
+        ],
+        "page_view": 197681,
+        "car_card_show": 13157,
+        "car_card_click": 1004,
+        "offer_show": 979,
+        "offer_click": 572,
+        "offer_success": 564
+      },
+      "leads": 280,
+      "qual": 118,
+      "calc_total": 134,
+      "calc_matched": 54,
+      "offer_total": 99,
+      "offer_matched": 40,
+      "dealer": 22,
+      "fdc_app": 28,
+      "fdc_appr": 15,
+      "deals_total_all": 0,
+      "mp2_count": 0,
+      "mp2_rev": 0,
+      "deals_no_mp2": 0,
+      "rev_no_mp2": 0,
+      "deals_by_b2c": {},
+      "rev_by_b2c": {},
+      "arpu_no_mp2": 0,
+      "arpu_total": 0,
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 258,
+        "Без источника": 14,
+        "Органика СберАвто": 6,
+        "Органика СБОЛ": 3
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "GEELY": {
+      "brand": "GEELY",
+      "vitrina": {
+        "fileName": "Джили август.png",
+        "brand": "GEELY",
+        "month": "2026-08",
+        "steps": [
+          197685,
+          7825,
+          441,
+          428,
+          265,
+          262
+        ],
+        "page_view": 197685,
+        "car_card_show": 7825,
+        "car_card_click": 441,
+        "offer_show": 428,
+        "offer_click": 265,
+        "offer_success": 262
+      },
+      "leads": 280,
+      "qual": 118,
+      "calc_total": 134,
+      "calc_matched": 54,
+      "offer_total": 99,
+      "offer_matched": 40,
+      "dealer": 22,
+      "fdc_app": 28,
+      "fdc_appr": 15,
+      "deals_total_all": 0,
+      "mp2_count": 0,
+      "mp2_rev": 0,
+      "deals_no_mp2": 0,
+      "rev_no_mp2": 0,
+      "deals_by_b2c": {},
+      "rev_by_b2c": {},
+      "arpu_no_mp2": 0,
+      "arpu_total": 0,
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 258,
+        "Без источника": 14,
+        "Органика СберАвто": 6,
+        "Органика СБОЛ": 3
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "HAVAL": {
+      "brand": "HAVAL",
+      "vitrina": {
+        "fileName": "Хавал август.png",
+        "brand": "HAVAL",
+        "month": "2026-08",
+        "steps": [
+          197626,
+          24539,
+          2468,
+          2385,
+          1453,
+          1413
+        ],
+        "page_view": 197626,
+        "car_card_show": 24539,
+        "car_card_click": 2468,
+        "offer_show": 2385,
+        "offer_click": 1453,
+        "offer_success": 1413
+      },
+      "leads": 450,
+      "qual": 189,
+      "calc_total": 216,
+      "calc_matched": 86,
+      "offer_total": 160,
+      "offer_matched": 64,
+      "dealer": 36,
+      "fdc_app": 45,
+      "fdc_appr": 25,
+      "deals_total_all": 2,
+      "mp2_count": 0,
+      "mp2_rev": 0,
+      "deals_no_mp2": 2,
+      "rev_no_mp2": 134016.39,
+      "deals_by_b2c": {
+        "Online": 1,
+        "Передача лида": 1
+      },
+      "rev_by_b2c": {
+        "Online": 86475.41,
+        "Передача лида": 47540.98
+      },
+      "arpu_no_mp2": 67008.2,
+      "arpu_total": 67008.2,
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 414,
+        "Без источника": 22,
+        "Органика СберАвто": 9,
+        "Органика СБОЛ": 4
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "JAECOO": {
+      "brand": "JAECOO",
+      "vitrina": {
+        "fileName": "Джейленд август.png",
+        "brand": "JAECOO",
+        "month": "2026-08",
+        "steps": [
+          197663,
+          2709,
+          234,
+          229,
+          146,
+          144
+        ],
+        "page_view": 197663,
+        "car_card_show": 2709,
+        "car_card_click": 234,
+        "offer_show": 229,
+        "offer_click": 146,
+        "offer_success": 144
+      },
+      "leads": 210,
+      "qual": 88,
+      "calc_total": 101,
+      "calc_matched": 40,
+      "offer_total": 75,
+      "offer_matched": 30,
+      "dealer": 17,
+      "fdc_app": 21,
+      "fdc_appr": 12,
+      "deals_total_all": 2,
+      "mp2_count": 2,
+      "mp2_rev": 100000.0,
+      "deals_no_mp2": 0,
+      "rev_no_mp2": 0,
+      "deals_by_b2c": {},
+      "rev_by_b2c": {},
+      "arpu_no_mp2": 0,
+      "arpu_total": 50000.0,
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 193,
+        "Без источника": 10,
+        "Органика СберАвто": 4,
+        "Органика СБОЛ": 2
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "OMODA": {
+      "brand": "OMODA",
+      "vitrina": {
+        "fileName": "Омода август.png",
+        "brand": "OMODA",
+        "month": "2026-08",
+        "steps": [
+          197670,
+          8771,
+          929,
+          910,
+          567,
+          554
+        ],
+        "page_view": 197670,
+        "car_card_show": 8771,
+        "car_card_click": 929,
+        "offer_show": 910,
+        "offer_click": 567,
+        "offer_success": 554
+      },
+      "leads": 210,
+      "qual": 88,
+      "calc_total": 101,
+      "calc_matched": 40,
+      "offer_total": 75,
+      "offer_matched": 30,
+      "dealer": 17,
+      "fdc_app": 21,
+      "fdc_appr": 12,
+      "deals_total_all": 6,
+      "mp2_count": 2,
+      "mp2_rev": 49180.32,
+      "deals_no_mp2": 4,
+      "rev_no_mp2": 204098.36,
+      "deals_by_b2c": {
+        "ФДЦ": 2,
+        "Online": 2
+      },
+      "rev_by_b2c": {
+        "ФДЦ": 108196.72,
+        "Online": 95901.64
+      },
+      "arpu_no_mp2": 51024.59,
+      "arpu_total": 42213.11,
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 193,
+        "Без источника": 10,
+        "Органика СберАвто": 4,
+        "Органика СБОЛ": 2
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "МОСКВИЧ": {
+      "brand": "МОСКВИЧ",
+      "vitrina": {
+        "fileName": "Москвич август.png",
+        "brand": "МОСКВИЧ",
+        "month": "2026-08",
+        "steps": [
+          197691,
+          6979,
+          360,
+          354,
+          223,
+          216
+        ],
+        "page_view": 197691,
+        "car_card_show": 6979,
+        "car_card_click": 360,
+        "offer_show": 354,
+        "offer_click": 223,
+        "offer_success": 216
+      },
+      "leads": 110,
+      "qual": 46,
+      "calc_total": 53,
+      "calc_matched": 21,
+      "offer_total": 39,
+      "offer_matched": 16,
+      "dealer": 9,
+      "fdc_app": 11,
+      "fdc_appr": 6,
+      "deals_total_all": 0,
+      "mp2_count": 0,
+      "mp2_rev": 0,
+      "deals_no_mp2": 0,
+      "rev_no_mp2": 0,
+      "deals_by_b2c": {},
+      "rev_by_b2c": {},
+      "arpu_no_mp2": 0,
+      "arpu_total": 0,
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 101,
+        "Без источника": 6,
+        "Органика СберАвто": 2,
+        "Органика СБОЛ": 1
       },
       "latest_lead_date": "25.08.2026"
     }

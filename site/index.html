@@ -283,53 +283,60 @@
 
     <!-- ==================== TAB: BRAND FUNNEL ==================== -->
     <div id="tab-funnel" class="tab-content hidden space-y-5">
-        <!-- Sub Header with Brand Pills and Last Update -->
+        <!-- Sub Header with Month Switcher and Brand Pills -->
         <div class="card !p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-slate-900 text-white rounded-2xl shadow-sm">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-emerald-600 to-green-500 flex items-center justify-center shadow-md shrink-0">
                     <svg viewBox="0 0 24 24" width="22" height="22" stroke="white" stroke-width="2.5" fill="none"><circle cx="12" cy="12" r="10"></circle><path d="m8.5 12 2.5 2.5 5-5"></path></svg>
                 </div>
                 <div>
-                    <h2 class="text-base font-bold text-white flex items-center gap-2">
-                        Сквозная воронка продаж по 6 брендам
-                        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Август 2026</span>
-                    </h2>
-                    <p class="text-xs text-slate-400">Клиентский путь: Витрина ➔ Лиды CRM ➔ Кредитный калькулятор ➔ Развилка (ДЦ / ФДЦ) ➔ Сделки (без МП2)</p>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+                            Сквозная воронка продаж по брендам
+                        </h2>
+                        <span id="funnelPeriodBadge" class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold">Август 2026</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Клиентский путь: Витрина (PostHog) ➔ Лиды CRM ➔ Кредитный калькулятор (Calculate) ➔ Развилка (ДЦ / ФДЦ) ➔ Сделки (без МП2)</p>
                 </div>
             </div>
+
+            <!-- Month Selector Buttons -->
             <div class="flex items-center gap-2 text-xs text-slate-300 flex-wrap">
-                <span class="px-2.5 py-1 bg-slate-800 rounded-lg border border-slate-700 flex items-center gap-1">
-                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i> Обновлено: <b id="funnelUpdateDate" class="text-amber-300">25.08.2026 в 10:00</b>
-                </span>
-                <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg font-semibold">
+                <div class="bg-slate-800 p-1 rounded-xl border border-slate-700 flex items-center gap-1">
+                    <button onclick="setFunnelMonth('2026-08')" id="f-month-2026-08" class="f-month-btn px-3 py-1.5 rounded-lg font-bold text-xs transition bg-emerald-600 text-white shadow-sm">
+                        📅 Август 2026
+                    </button>
+                    <button onclick="setFunnelMonth('2026-07')" id="f-month-2026-07" class="f-month-btn px-3 py-1.5 rounded-lg font-semibold text-xs transition text-slate-300 hover:text-white hover:bg-slate-700">
+                        📅 Июль 2026
+                    </button>
+                    <button onclick="setFunnelMonth('all')" id="f-month-all" class="f-month-btn px-3 py-1.5 rounded-lg font-semibold text-xs transition text-slate-300 hover:text-white hover:bg-slate-700">
+                        📅 Все месяцы
+                    </button>
+                </div>
+                <span class="px-2.5 py-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg font-semibold text-[11px]">
                     МП2 исключен
                 </span>
             </div>
         </div>
 
         <!-- Brand Selector Tabs (Pills) -->
-        <div class="flex overflow-x-auto pb-1 gap-2 scrollbar-none">
+        <div class="flex overflow-x-auto pb-1 gap-2 scrollbar-none" id="funnelBrandPills">
             <button onclick="selectFunnelBrand('ALL')" id="f-tab-ALL" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white shadow-md">
                 📊 Сводное сравнение
             </button>
-            <button onclick="selectFunnelBrand('JETOUR')" id="f-tab-JETOUR" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-                JETOUR
-            </button>
-            <button onclick="selectFunnelBrand('LADA')" id="f-tab-LADA" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-                LADA
-            </button>
-            <button onclick="selectFunnelBrand('TENET')" id="f-tab-TENET" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-                TENET
-            </button>
-            <button onclick="selectFunnelBrand('CHANGAN')" id="f-tab-CHANGAN" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-                CHANGAN
-            </button>
-            <button onclick="selectFunnelBrand('GAC')" id="f-tab-GAC" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-                GAC
-            </button>
-            <button onclick="selectFunnelBrand('SOLARIS')" id="f-tab-SOLARIS" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-                SOLARIS
-            </button>
+            <button onclick="selectFunnelBrand('JETOUR')" id="f-tab-JETOUR" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">JETOUR</button>
+            <button onclick="selectFunnelBrand('LADA')" id="f-tab-LADA" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">LADA</button>
+            <button onclick="selectFunnelBrand('TENET')" id="f-tab-TENET" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">TENET</button>
+            <button onclick="selectFunnelBrand('CHANGAN')" id="f-tab-CHANGAN" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">CHANGAN</button>
+            <button onclick="selectFunnelBrand('GAC')" id="f-tab-GAC" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">GAC</button>
+            <button onclick="selectFunnelBrand('SOLARIS')" id="f-tab-SOLARIS" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">SOLARIS</button>
+            <button onclick="selectFunnelBrand('SOUEAST')" id="f-tab-SOUEAST" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">SOUEAST</button>
+            <button onclick="selectFunnelBrand('BELGEE')" id="f-tab-BELGEE" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">BELGEE</button>
+            <button onclick="selectFunnelBrand('GEELY')" id="f-tab-GEELY" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">GEELY</button>
+            <button onclick="selectFunnelBrand('HAVAL')" id="f-tab-HAVAL" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">HAVAL</button>
+            <button onclick="selectFunnelBrand('JAECOO')" id="f-tab-JAECOO" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">JAECOO</button>
+            <button onclick="selectFunnelBrand('OMODA')" id="f-tab-OMODA" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">OMODA</button>
+            <button onclick="selectFunnelBrand('МОСКВИЧ')" id="f-tab-МОСКВИЧ" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">МОСКВИЧ</button>
         </div>
 
         <!-- Summary KPI Cards -->
@@ -72532,8 +72539,11 @@
             const data = await res.json();
             db = data.sys_db || [];
             dbPartners = data.sys_db_partners || [];
-            if (data.brand_funnel && typeof funnelRawData !== 'undefined') {
-                Object.assign(funnelRawData, data.brand_funnel);
+            if (data.brand_funnel) {
+                window.brandFunnelFullData = data.brand_funnel;
+                if (typeof funnelRawData !== 'undefined') {
+                    Object.assign(funnelRawData, data.brand_funnel);
+                }
             }
             initDropdown();
         } catch (error) { 
@@ -73359,12 +73369,43 @@
 
     <!-- Sber Brand Funnel Embedded Logic -->
     <script>
-        const funnelRawData = {"JETOUR": {"brand": "JETOUR", "leads": 1409, "qual": 651, "calc_total": 732, "calc_matched": 273, "offer_total": 558, "offer_matched": 216, "dealer": 82, "fdc_app": 136, "fdc_appr": 75, "deals_total_all": 559, "mp2_count": 437, "mp2_rev": 16961050.78000003, "deals_no_mp2": 122, "rev_no_mp2": 5267000.2299999995, "deals_by_b2c": {"Online": 29, "ФДЦ": 49, "МП3": 18, "Передача лида": 21, "МП1": 5}, "rev_by_b2c": {"Online": 1228136.0299999998, "ФДЦ": 2201816.7, "МП3": 747327.86, "Передача лида": 881359.0000000001, "МП1": 208360.64}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 1287, "Без источника": 103, "Органика СБОЛ": 6, "Органика СберАвто": 13}}, "TENET": {"brand": "TENET", "leads": 567, "qual": 258, "calc_total": 292, "calc_matched": 105, "offer_total": 213, "offer_matched": 91, "dealer": 47, "fdc_app": 27, "fdc_appr": 13, "deals_total_all": 10, "mp2_count": 1, "mp2_rev": 39278.69, "deals_no_mp2": 9, "rev_no_mp2": 488257.82, "deals_by_b2c": {"Передача лида": 6, "ФДЦ": 2, "Online": 1}, "rev_by_b2c": {"Передача лида": 186603.76, "ФДЦ": 228867.17, "Online": 72786.89}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 542, "Органика СБОЛ": 5, "Без источника": 10, "Органика СберАвто": 10}}, "CHANGAN": {"brand": "CHANGAN", "leads": 546, "qual": 152, "calc_total": 77, "calc_matched": 41, "offer_total": 60, "offer_matched": 33, "dealer": 20, "fdc_app": 14, "fdc_appr": 2, "deals_total_all": 21, "mp2_count": 19, "mp2_rev": 780077.0399999999, "deals_no_mp2": 2, "rev_no_mp2": 80819.68, "deals_by_b2c": {"Передача лида": 2}, "rev_by_b2c": {"Передача лида": 80819.68}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 538, "Органика СБОЛ": 1, "Без источника": 7}}, "GAC": {"brand": "GAC", "leads": 337, "qual": 115, "calc_total": 76, "calc_matched": 38, "offer_total": 51, "offer_matched": 27, "dealer": 17, "fdc_app": 9, "fdc_appr": 3, "deals_total_all": 61, "mp2_count": 56, "mp2_rev": 3742826.2199999993, "deals_no_mp2": 5, "rev_no_mp2": 354961.89, "deals_by_b2c": {"Online": 3, "МП1": 1, "ФДЦ": 1}, "rev_by_b2c": {"Online": 217590.17, "МП1": 43697.95, "ФДЦ": 93673.77}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 325, "Без источника": 4, "Органика СБОЛ": 4, "Органика СберАвто": 4}}, "SOLARIS": {"brand": "SOLARIS", "leads": 29, "qual": 11, "calc_total": 75, "calc_matched": 2, "offer_total": 44, "offer_matched": 2, "dealer": 1, "fdc_app": 1, "fdc_appr": 0, "deals_total_all": 78, "mp2_count": 68, "mp2_rev": 2339892.589999999, "deals_no_mp2": 10, "rev_no_mp2": 444822.96, "deals_by_b2c": {"Передача лида": 3, "МП3": 1, "Online": 4, "ФДЦ": 2}, "rev_by_b2c": {"Передача лида": 133708.2, "МП3": 46721.31, "Online": 183614.76, "ФДЦ": 80778.69}, "src_breakdown": {"Без источника": 4, "ОМ + Баннеры + Лендинги": 20, "Органика СберАвто": 4, "Органика СБОЛ": 1}}, "LADA": {"brand": "LADA", "leads": 1667, "qual": 640, "calc_total": 711, "calc_matched": 325, "offer_total": 530, "offer_matched": 258, "dealer": 98, "fdc_app": 153, "fdc_appr": 64, "deals_total_all": 153, "mp2_count": 68, "mp2_rev": 738917.9299999991, "deals_no_mp2": 85, "rev_no_mp2": 1681826.78, "deals_by_b2c": {"ФДЦ": 24, "Передача лида": 18, "ФДЦ+ГП": 32, "Online": 5, "МП3": 6}, "rev_by_b2c": {"ФДЦ": 492316.62, "Передача лида": 345692.62000000005, "ФДЦ+ГП": 681510.16, "Online": 80741.81, "МП3": 81565.57}, "src_breakdown": {"ОМ + Баннеры + Лендинги": 1558, "Органика СБОЛ": 10, "Без источника": 82, "Органика СберАвто": 17}}};
-        const fBrandColors = ['#21A038', '#00B074', '#0097A7', '#2E5BFF', '#7928CA', '#FF9900'];
+        let currentFunnelMonth = '2026-08';
+        let currentFunnelBrand = 'ALL';
+        let funnelRawData = {};
+        const fBrandColors = ['#21A038', '#00B074', '#0097A7', '#2E5BFF', '#7928CA', '#FF9900', '#EC4899', '#8B5CF6', '#14B8A6', '#F59E0B', '#6366F1', '#3B82F6', '#64748B'];
         let leadsDoughnutChart = null;
         let revDoughnutChart = null;
 
+        function setFunnelMonth(month) {
+            currentFunnelMonth = month;
+            document.querySelectorAll('.f-month-btn').forEach(b => {
+                b.className = 'f-month-btn px-3 py-1.5 rounded-lg font-semibold text-xs transition text-slate-300 hover:text-white hover:bg-slate-700';
+            });
+            const activeMBtn = document.getElementById('f-month-' + month);
+            if (activeMBtn) {
+                activeMBtn.className = 'f-month-btn px-3 py-1.5 rounded-lg font-bold text-xs transition bg-emerald-600 text-white shadow-sm';
+            }
+
+            const pBadge = document.getElementById('funnelPeriodBadge');
+            if (pBadge) {
+                pBadge.innerText = month === '2026-08' ? 'Август 2026' : (month === '2026-07' ? 'Июль 2026' : 'Все месяцы');
+            }
+
+            selectFunnelBrand(currentFunnelBrand);
+        }
+
+        function getActiveMonthFunnelData() {
+            if (window.brandFunnelFullData && window.brandFunnelFullData.by_month && window.brandFunnelFullData.by_month[currentFunnelMonth]) {
+                return window.brandFunnelFullData.by_month[currentFunnelMonth].brands;
+            }
+            if (funnelRawData && funnelRawData.by_month && funnelRawData.by_month[currentFunnelMonth]) {
+                return funnelRawData.by_month[currentFunnelMonth].brands;
+            }
+            return funnelRawData;
+        }
+
         function selectFunnelBrand(brand) {
+            currentFunnelBrand = brand;
             document.querySelectorAll('.f-tab-btn').forEach(b => {
                 b.className = 'f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700';
             });
@@ -73373,95 +73414,104 @@
                 activeBtn.className = 'f-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white shadow-md';
             }
 
+            const dataObj = getActiveMonthFunnelData();
+
             if (brand === 'ALL') {
-                document.getElementById('funnelUpdateDate').innerText = funnelRawData.OVERALL_LATEST_DATE || '19.08.2026 в 23:59';
-                renderFunnelComparisonView();
+                renderFunnelComparisonView(dataObj);
             } else {
-                document.getElementById('funnelUpdateDate').innerText = funnelRawData[brand].latest_lead_date || '19.08.2026';
-                renderFunnelSingleBrandView(brand);
+                renderFunnelSingleBrandView(brand, dataObj);
             }
             if (window.lucide) lucide.createIcons();
         }
 
-        function renderFunnelComparisonView() {
-            const brands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS'];
-            let totLeads = 0, totQual = 0, totCalc = 0, totOffers = 0, totDeals = 0, totRev = 0;
+        function renderFunnelComparisonView(dataObj) {
+            const allPossibleBrands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS', 'SOUEAST', 'BELGEE', 'GEELY', 'HAVAL', 'JAECOO', 'OMODA', 'МОСКВИЧ'];
+            const brands = allPossibleBrands.filter(b => dataObj[b] && (dataObj[b].leads > 0 || dataObj[b].deals_total_all > 0));
+            
+            let totLeads = 0, totQual = 0, totCalc = 0, totOffers = 0, totDeals = 0, totRev = 0, totDealer = 0, totVitrinaCards = 0;
             brands.forEach(b => {
-                const d = funnelRawData[b];
-                totLeads += d.leads;
-                totQual += d.qual;
-                totCalc += d.calc_total;
-                totOffers += d.offer_total;
-                totDeals += d.deals_no_mp2;
-                totRev += d.rev_no_mp2;
+                const d = dataObj[b];
+                totLeads += (d.leads || 0);
+                totQual += (d.qual || 0);
+                totCalc += (d.calc_total || 0);
+                totOffers += (d.offer_total || 0);
+                totDeals += (d.deals_no_mp2 || 0);
+                totRev += (d.rev_no_mp2 || 0);
+                totDealer += (d.dealer || 0);
+                totVitrinaCards += ((d.vitrina && d.vitrina.car_card_show) || 0);
             });
 
             document.getElementById('funnelKpiCards').innerHTML = `
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Новых лидов</p>
+                    <p class="text-xs text-gray-500 font-bold uppercase">Показов карточек (Витрина)</p>
+                    <p class="text-2xl font-black text-blue-600 mt-1">${fmtNum(totVitrinaCards)}</p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">PostHog витрина</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                    <p class="text-xs text-gray-500 font-bold uppercase">Лидов в CRM</p>
                     <p class="text-2xl font-black text-gray-800 mt-1">${fmtNum(totLeads)}</p>
-                    <p class="text-[11px] text-emerald-600 mt-0.5 font-bold">Квалиф: ${((totQual/totLeads)*100).toFixed(1)}%</p>
+                    <p class="text-[11px] text-emerald-600 mt-0.5 font-bold">Квалиф: ${totLeads > 0 ? ((totQual/totLeads)*100).toFixed(1) : 0}%</p>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                     <p class="text-xs text-gray-500 font-bold uppercase">Расчетов кредита</p>
                     <p class="text-2xl font-black text-amber-600 mt-1">${fmtNum(totCalc)}</p>
-                    <p class="text-[11px] text-gray-400 mt-0.5">В Calculate</p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">Калькулятор</p>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                     <p class="text-xs text-gray-500 font-bold uppercase">Офферов клиентам</p>
                     <p class="text-2xl font-black text-purple-600 mt-1">${fmtNum(totOffers)}</p>
-                    <p class="text-[11px] text-gray-400 mt-0.5">${((totOffers/totCalc)*100).toFixed(1)}% от расчетов</p>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Передано в ДЦ</p>
-                    <p class="text-2xl font-black text-cyan-600 mt-1">${fmtNum(brands.reduce((s,b)=>s+funnelRawData[b].dealer,0))}</p>
-                    <p class="text-[11px] text-gray-400 mt-0.5">Лидов в сеть</p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">${totCalc > 0 ? ((totOffers/totCalc)*100).toFixed(1) : 0}% от расчетов</p>
                 </div>
                 <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-300 shadow-sm">
-                    <p class="text-xs text-emerald-700 font-bold uppercase">Сделок (без МП2)</p>
+                    <p class="text-xs text-emerald-700 font-bold uppercase">Сделок розницы (без МП2)</p>
                     <p class="text-2xl font-black text-emerald-700 mt-1">${fmtNum(totDeals)}</p>
-                    <p class="text-[11px] text-emerald-600 mt-0.5 font-bold">CR ${((totDeals/totLeads)*100).toFixed(2)}% от лидов</p>
+                    <p class="text-[11px] text-emerald-600 mt-0.5 font-bold">CR ${totLeads > 0 ? ((totDeals/totLeads)*100).toFixed(2) : 0}% от лидов</p>
                 </div>
                 <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-300 shadow-sm">
                     <p class="text-xs text-emerald-700 font-bold uppercase">Выручка (без МП2)</p>
                     <p class="text-2xl font-black text-emerald-700 mt-1">${fmtRub(totRev)}</p>
-                    <p class="text-[11px] text-gray-500 mt-0.5">Ср. чек: ${fmtRub(totRev/totDeals)}</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">ARPU: ${totDeals > 0 ? fmtRub(totRev/totDeals) : '0 ₽'}</p>
                 </div>
             `;
 
             let tableRows = '';
             brands.forEach((b, idx) => {
-                const d = funnelRawData[b];
-                const crQual = ((d.qual / d.leads) * 100).toFixed(1) + '%';
-                const crOffer = ((d.offer_total / d.calc_total) * 100).toFixed(1) + '%';
-                const crDeal = ((d.deals_no_mp2 / d.leads) * 100).toFixed(2) + '%';
-                const color = fBrandColors[idx];
+                const d = dataObj[b];
+                const crQual = d.leads > 0 ? ((d.qual / d.leads) * 100).toFixed(1) + '%' : '0%';
+                const crOffer = d.calc_total > 0 ? ((d.offer_total / d.calc_total) * 100).toFixed(1) + '%' : '0%';
+                const crDeal = d.leads > 0 ? ((d.deals_no_mp2 / d.leads) * 100).toFixed(2) + '%' : '0%';
+                const color = fBrandColors[idx % fBrandColors.length];
+                const vitrinaShow = (d.vitrina && d.vitrina.car_card_show) ? fmtNum(d.vitrina.car_card_show) : '—';
+                const arpuStr = d.deals_no_mp2 > 0 ? fmtRub(d.rev_no_mp2 / d.deals_no_mp2) : '—';
+
                 tableRows += `
                     <tr class="border-b border-gray-100 hover:bg-emerald-50/40 transition cursor-pointer" onclick="selectFunnelBrand('${b}')">
                         <td class="py-3 px-4 font-bold text-gray-900 flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full" style="background-color: ${color}"></span>
                             ${b}
                         </td>
-                        <td class="py-3 px-4 text-right font-medium text-gray-700">${fmtNum(d.leads)}</td>
-                        <td class="py-3 px-4 text-right text-gray-600">${fmtNum(d.qual)} <span class="text-xs text-gray-400">(${crQual})</span></td>
-                        <td class="py-3 px-4 text-right text-amber-600 font-medium">${fmtNum(d.calc_total)}</td>
-                        <td class="py-3 px-4 text-right text-purple-600 font-medium">${fmtNum(d.offer_total)} <span class="text-xs text-gray-400">(${crOffer})</span></td>
-                        <td class="py-3 px-4 text-right text-cyan-600 font-medium">${fmtNum(d.dealer)}</td>
-                        <td class="py-3 px-4 text-right text-teal-600 font-medium">${fmtNum(d.fdc_app)} / ${fmtNum(d.fdc_appr)}</td>
-                        <td class="py-3 px-4 text-right font-bold text-emerald-600">${fmtNum(d.deals_no_mp2)} <span class="text-xs text-emerald-500 font-normal">(${crDeal})</span></td>
-                        <td class="py-3 px-4 text-right font-black text-emerald-700">${fmtRub(d.rev_no_mp2)}</td>
-                        <td class="py-3 px-4 text-right text-gray-400 text-xs">${fmtNum(d.mp2_count)} шт.</td>
+                        <td class="py-3 px-3 text-right text-blue-600 font-medium">${vitrinaShow}</td>
+                        <td class="py-3 px-3 text-right font-medium text-gray-700">${fmtNum(d.leads)}</td>
+                        <td class="py-3 px-3 text-right text-gray-600">${fmtNum(d.qual)} <span class="text-[10px] text-gray-400">(${crQual})</span></td>
+                        <td class="py-3 px-3 text-right text-amber-600 font-medium">${fmtNum(d.calc_total)}</td>
+                        <td class="py-3 px-3 text-right text-purple-600 font-medium">${fmtNum(d.offer_total)} <span class="text-[10px] text-gray-400">(${crOffer})</span></td>
+                        <td class="py-3 px-3 text-right text-cyan-600 font-medium">${fmtNum(d.dealer)}</td>
+                        <td class="py-3 px-3 text-right text-teal-600 font-medium">${fmtNum(d.fdc_app)} / ${fmtNum(d.fdc_appr)}</td>
+                        <td class="py-3 px-3 text-right font-bold text-emerald-600">${fmtNum(d.deals_no_mp2)} <span class="text-[10px] text-emerald-500 font-normal">(${crDeal})</span></td>
+                        <td class="py-3 px-3 text-right font-black text-emerald-700">${fmtRub(d.rev_no_mp2)}</td>
+                        <td class="py-3 px-3 text-right text-gray-500 font-semibold text-[11px]">${arpuStr}</td>
+                        <td class="py-3 px-3 text-right text-gray-400 text-xs">${fmtNum(d.mp2_count)} шт.</td>
                     </tr>
                 `;
             });
 
-            let leadsLeg = '<div class="space-y-1.5 w-full mt-4">';
-            let revLeg = '<div class="space-y-1.5 w-full mt-4">';
+            let leadsLeg = '<div class="space-y-1.5 w-full mt-4 max-h-60 overflow-y-auto pr-1">';
+            let revLeg = '<div class="space-y-1.5 w-full mt-4 max-h-60 overflow-y-auto pr-1">';
             brands.forEach((b, idx) => {
-                const d = funnelRawData[b];
-                const color = fBrandColors[idx];
-                const leadPct = ((d.leads / totLeads) * 100).toFixed(1) + '%';
-                const revPct = ((d.rev_no_mp2 / totRev) * 100).toFixed(1) + '%';
+                const d = dataObj[b];
+                const color = fBrandColors[idx % fBrandColors.length];
+                const leadPct = totLeads > 0 ? ((d.leads / totLeads) * 100).toFixed(1) + '%' : '0%';
+                const revPct = totRev > 0 ? ((d.rev_no_mp2 / totRev) * 100).toFixed(1) + '%' : '0%';
                 leadsLeg += `
                     <div class="flex items-center justify-between text-xs py-1 px-2 rounded-lg hover:bg-gray-100 cursor-pointer transition" onclick="selectFunnelBrand('${b}')">
                         <div class="flex items-center gap-2">
@@ -73490,12 +73540,14 @@
             leadsLeg += '</div>';
             revLeg += '</div>';
 
+            const mLabel = currentFunnelMonth === '2026-08' ? 'Август 2026' : (currentFunnelMonth === '2026-07' ? 'Июль 2026' : 'Все месяцы (Тотал)');
+
             document.getElementById('funnelDynamicView').innerHTML = `
                 <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
                     <div class="flex justify-between items-center">
                         <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
                             <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-600"></i>
-                            Сводная матрица воронки по брендам (Август 2026)
+                            Сводная матрица воронки по брендам (${mLabel})
                         </h3>
                         <span class="text-xs text-gray-400">Нажмите на строку бренда для перехода к детализации</span>
                     </div>
@@ -73504,15 +73556,17 @@
                             <thead class="bg-gray-50 text-gray-500 uppercase font-bold border-b border-gray-200">
                                 <tr>
                                     <th class="py-2.5 px-4">Бренд</th>
-                                    <th class="py-2.5 px-4 text-right">Лиды CRM</th>
-                                    <th class="py-2.5 px-4 text-right">Квалификация</th>
-                                    <th class="py-2.5 px-4 text-right">Расчеты</th>
-                                    <th class="py-2.5 px-4 text-right">Офферы</th>
-                                    <th class="py-2.5 px-4 text-right">В ДЦ</th>
-                                    <th class="py-2.5 px-4 text-right">ФДЦ (Заяв/Одобр)</th>
-                                    <th class="py-2.5 px-4 text-right text-emerald-600">Сделки (без МП2)</th>
-                                    <th class="py-2.5 px-4 text-right text-emerald-600">Выручка</th>
-                                    <th class="py-2.5 px-4 text-right text-gray-400">Искл. МП2</th>
+                                    <th class="py-2.5 px-3 text-right text-blue-600">Витрина (Показы)</th>
+                                    <th class="py-2.5 px-3 text-right">Лиды CRM</th>
+                                    <th class="py-2.5 px-3 text-right">Квалификация</th>
+                                    <th class="py-2.5 px-3 text-right">Расчеты</th>
+                                    <th class="py-2.5 px-3 text-right">Офферы</th>
+                                    <th class="py-2.5 px-3 text-right">В ДЦ</th>
+                                    <th class="py-2.5 px-3 text-right">ФДЦ (Заяв/Одобр)</th>
+                                    <th class="py-2.5 px-3 text-right text-emerald-600">Сделки (без МП2)</th>
+                                    <th class="py-2.5 px-3 text-right text-emerald-600">Выручка</th>
+                                    <th class="py-2.5 px-3 text-right">ARPU</th>
+                                    <th class="py-2.5 px-3 text-right text-gray-400">Искл. МП2</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73525,8 +73579,8 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col items-center">
                         <div class="w-full flex justify-between items-center mb-2">
-                            <h4 class="text-xs font-bold text-gray-700">Сплит лидов CRM по брендам</h4>
-                            <span class="text-xs font-bold text-emerald-600">${fmtNum(totLeads)} лидов (100%)</span>
+                            <h4 class="text-xs font-bold text-gray-700">Сплит лидов CRM (${mLabel})</h4>
+                            <span class="text-xs font-bold text-emerald-600">${fmtNum(totLeads)} лидов</span>
                         </div>
                         <div class="h-56 w-full relative flex items-center justify-center">
                             <canvas id="fLeadsSplitChart"></canvas>
@@ -73535,8 +73589,8 @@
                     </div>
                     <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col items-center">
                         <div class="w-full flex justify-between items-center mb-2">
-                            <h4 class="text-xs font-bold text-gray-700">Сплит выручки без МП2 по брендам</h4>
-                            <span class="text-xs font-bold text-emerald-600">${fmtRub(totRev)} (100%)</span>
+                            <h4 class="text-xs font-bold text-gray-700">Сплит выручки без МП2 (${mLabel})</h4>
+                            <span class="text-xs font-bold text-emerald-600">${fmtRub(totRev)}</span>
                         </div>
                         <div class="h-56 w-full relative flex items-center justify-center">
                             <canvas id="fRevSplitChart"></canvas>
@@ -73550,13 +73604,15 @@
                 if (leadsDoughnutChart) leadsDoughnutChart.destroy();
                 if (revDoughnutChart) revDoughnutChart.destroy();
 
+                const top8Brands = brands.slice(0, 8);
+
                 leadsDoughnutChart = new Chart(document.getElementById('fLeadsSplitChart'), {
                     type: 'doughnut',
                     data: {
-                        labels: brands,
+                        labels: top8Brands,
                         datasets: [{
-                            data: brands.map(b => funnelRawData[b].leads),
-                            backgroundColor: fBrandColors,
+                            data: top8Brands.map(b => dataObj[b].leads),
+                            backgroundColor: fBrandColors.slice(0, top8Brands.length),
                             borderWidth: 2,
                             borderColor: '#FFFFFF'
                         }]
@@ -73565,8 +73621,8 @@
                         responsive: true, maintainAspectRatio: false, cutout: '65%',
                         plugins: {
                             legend: { display: false },
-                            tooltip: { callbacks: { label: (ctx) => ` ${ctx.label}: ${fmtNum(ctx.parsed)} лидов (${((ctx.parsed/totLeads)*100).toFixed(1)}%)` } },
-                            datalabels: { color: '#FFFFFF', font: { weight: 'bold', size: 11 }, formatter: (val) => ((val/totLeads)*100) >= 4 ? ((val/totLeads)*100).toFixed(0) + '%' : '' }
+                            tooltip: { callbacks: { label: (ctx) => ` ${ctx.label}: ${fmtNum(ctx.parsed)} лидов` } },
+                            datalabels: { color: '#FFFFFF', font: { weight: 'bold', size: 10 }, formatter: (val) => ((val/totLeads)*100) >= 5 ? ((val/totLeads)*100).toFixed(0) + '%' : '' }
                         }
                     }
                 });
@@ -73574,10 +73630,10 @@
                 revDoughnutChart = new Chart(document.getElementById('fRevSplitChart'), {
                     type: 'doughnut',
                     data: {
-                        labels: brands,
+                        labels: top8Brands,
                         datasets: [{
-                            data: brands.map(b => funnelRawData[b].rev_no_mp2),
-                            backgroundColor: fBrandColors,
+                            data: top8Brands.map(b => dataObj[b].rev_no_mp2),
+                            backgroundColor: fBrandColors.slice(0, top8Brands.length),
                             borderWidth: 2,
                             borderColor: '#FFFFFF'
                         }]
@@ -73586,53 +73642,56 @@
                         responsive: true, maintainAspectRatio: false, cutout: '65%',
                         plugins: {
                             legend: { display: false },
-                            tooltip: { callbacks: { label: (ctx) => ` ${ctx.label}: ${fmtRub(ctx.parsed)} (${((ctx.parsed/totRev)*100).toFixed(1)}%)` } },
-                            datalabels: { color: '#FFFFFF', font: { weight: 'bold', size: 11 }, formatter: (val) => ((val/totRev)*100) >= 4 ? ((val/totRev)*100).toFixed(0) + '%' : '' }
+                            tooltip: { callbacks: { label: (ctx) => ` ${ctx.label}: ${fmtRub(ctx.parsed)}` } },
+                            datalabels: { color: '#FFFFFF', font: { weight: 'bold', size: 10 }, formatter: (val) => ((val/totRev)*100) >= 5 ? ((val/totRev)*100).toFixed(0) + '%' : '' }
                         }
                     }
                 });
             }, 50);
         }
 
-        function renderFunnelSingleBrandView(brand) {
-            const d = funnelRawData[brand];
+        function renderFunnelSingleBrandView(brand, dataObj) {
+            const d = dataObj[brand] || { leads: 0, qual: 0, calc_total: 0, offer_total: 0, dealer: 0, fdc_app: 0, fdc_appr: 0, deals_no_mp2: 0, rev_no_mp2: 0, mp2_count: 0, mp2_rev: 0, deals_by_b2c: {}, rev_by_b2c: {}, src_breakdown: {}, vitrina: {} };
+            const v = d.vitrina || { page_view: 0, car_card_show: 0, car_card_click: 0, offer_show: 0, offer_click: 0, offer_success: 0 };
+            const mLabel = currentFunnelMonth === '2026-08' ? 'Август 2026' : (currentFunnelMonth === '2026-07' ? 'Июль 2026' : 'Все месяцы');
+
             document.getElementById('funnelKpiCards').innerHTML = `
+                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                    <p class="text-xs text-gray-500 font-bold uppercase">Витрина (Показы)</p>
+                    <p class="text-2xl font-black text-blue-600 mt-1">${fmtNum(v.car_card_show || 0)}</p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">Кликов: ${fmtNum(v.car_card_click || 0)}</p>
+                </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                     <p class="text-xs text-gray-500 font-bold uppercase">Лидов в CRM</p>
                     <p class="text-2xl font-black text-gray-800 mt-1">${fmtNum(d.leads)}</p>
-                    <p class="text-[11px] text-emerald-600 mt-0.5 font-bold">Квалиф: ${((d.qual/d.leads)*100).toFixed(1)}%</p>
+                    <p class="text-[11px] text-emerald-600 mt-0.5 font-bold">Квалиф: ${d.leads > 0 ? ((d.qual/d.leads)*100).toFixed(1) : 0}%</p>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                     <p class="text-xs text-gray-500 font-bold uppercase">Расчетов кредита</p>
                     <p class="text-2xl font-black text-amber-600 mt-1">${fmtNum(d.calc_total)}</p>
-                    <p class="text-[11px] text-gray-400 mt-0.5">${d.calc_matched} совпало по ID</p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">${d.calc_matched || 0} совпало по ID</p>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Офферов отправлено</p>
+                    <p class="text-xs text-gray-500 font-bold uppercase">Офферов клиентам</p>
                     <p class="text-2xl font-black text-purple-600 mt-1">${fmtNum(d.offer_total)}</p>
-                    <p class="text-[11px] text-gray-400 mt-0.5">${((d.offer_total/d.calc_total)*100).toFixed(1)}% от расчетов</p>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                    <p class="text-xs text-gray-500 font-bold uppercase">Передано в ДЦ</p>
-                    <p class="text-2xl font-black text-cyan-600 mt-1">${fmtNum(d.dealer)}</p>
-                    <p class="text-[11px] text-gray-400 mt-0.5">В дилерскую сеть</p>
+                    <p class="text-[11px] text-gray-400 mt-0.5">${d.calc_total > 0 ? ((d.offer_total/d.calc_total)*100).toFixed(1) : 0}% от расчетов</p>
                 </div>
                 <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-300 shadow-sm">
                     <p class="text-xs text-emerald-700 font-bold uppercase">Сделок (без МП2)</p>
                     <p class="text-2xl font-black text-emerald-700 mt-1">${fmtNum(d.deals_no_mp2)}</p>
-                    <p class="text-[11px] text-emerald-600 mt-0.5 font-bold">CR ${((d.deals_no_mp2/d.leads)*100).toFixed(2)}% от лидов</p>
+                    <p class="text-[11px] text-emerald-600 mt-0.5 font-bold">CR ${d.leads > 0 ? ((d.deals_no_mp2/d.leads)*100).toFixed(2) : 0}% от лидов</p>
                 </div>
                 <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-300 shadow-sm">
                     <p class="text-xs text-emerald-700 font-bold uppercase">Выручка (без МП2)</p>
                     <p class="text-2xl font-black text-emerald-700 mt-1">${fmtRub(d.rev_no_mp2)}</p>
-                    <p class="text-[11px] text-gray-500 mt-0.5">Ср. чек: ${d.deals_no_mp2 > 0 ? fmtRub(d.rev_no_mp2/d.deals_no_mp2) : '0 ₽'}</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">ARPU: ${d.deals_no_mp2 > 0 ? fmtRub(d.rev_no_mp2/d.deals_no_mp2) : '0 ₽'}</p>
                 </div>
             `;
 
             let b2cRows = '';
-            for (let ch in d.deals_by_b2c) {
+            for (let ch in (d.deals_by_b2c || {})) {
                 const chCount = d.deals_by_b2c[ch];
-                const chRev = d.rev_by_b2c[ch];
+                const chRev = d.rev_by_b2c[ch] || 0;
                 b2cRows += `
                     <div class="flex justify-between items-center py-2 border-b border-gray-100 text-xs">
                         <span class="font-medium text-gray-700 flex items-center gap-1.5">
@@ -73647,9 +73706,9 @@
             }
 
             let srcRows = '';
-            for (let s in d.src_breakdown) {
+            for (let s in (d.src_breakdown || {})) {
                 const sCount = d.src_breakdown[s];
-                const sPct = ((sCount / d.leads) * 100).toFixed(1) + '%';
+                const sPct = d.leads > 0 ? ((sCount / d.leads) * 100).toFixed(1) + '%' : '0%';
                 srcRows += `
                     <div class="flex justify-between items-center py-2 border-b border-gray-100 text-xs">
                         <span class="font-medium text-gray-700">${s}</span>
@@ -73661,21 +73720,80 @@
                 `;
             }
 
+            // Vitrina Funnel Steps Visual
+            const vPv = v.page_view || 0;
+            const vCcs = v.car_card_show || 0;
+            const vCcc = v.car_card_click || 0;
+            const vOs = v.offer_show || 0;
+            const vOc = v.offer_click || 0;
+            const vOsucc = v.offer_success || 0;
+
+            const cr1 = vPv > 0 ? ((vCcs / vPv) * 100).toFixed(1) + '%' : '—';
+            const cr2 = vCcs > 0 ? ((vCcc / vCcs) * 100).toFixed(1) + '%' : '—';
+            const cr3 = vCcc > 0 ? ((vOs / vCcc) * 100).toFixed(1) + '%' : '—';
+            const cr4 = vOs > 0 ? ((vOc / vOs) * 100).toFixed(1) + '%' : '—';
+            const cr5 = vOc > 0 ? ((vOsucc / vOc) * 100).toFixed(1) + '%' : '—';
+
             document.getElementById('funnelDynamicView').innerHTML = `
+                <!-- VITRINA SECTION (PostHog) -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+                            <i data-lucide="globe" class="w-4 h-4 text-blue-600"></i>
+                            Витрина СберАвто (PostHog): ${brand} [${mLabel}]
+                        </h3>
+                        <span class="text-xs text-slate-400">Сквозной кликстрим пользователей</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                        <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 text-center">
+                            <span class="text-[10px] text-blue-700 font-bold uppercase">1. Листинг авто</span>
+                            <p class="text-base font-black text-gray-900 mt-1">${fmtNum(vPv)}</p>
+                            <span class="text-[10px] text-blue-600 font-semibold">100% вход</span>
+                        </div>
+                        <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 text-center">
+                            <span class="text-[10px] text-blue-700 font-bold uppercase">2. Показ карточки</span>
+                            <p class="text-base font-black text-gray-900 mt-1">${fmtNum(vCcs)}</p>
+                            <span class="text-[10px] text-blue-600 font-semibold">CR: ${cr1}</span>
+                        </div>
+                        <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 text-center">
+                            <span class="text-[10px] text-blue-700 font-bold uppercase">3. Клик на заявку</span>
+                            <p class="text-base font-black text-gray-900 mt-1">${fmtNum(vCcc)}</p>
+                            <span class="text-[10px] text-blue-600 font-semibold">CR: ${cr2}</span>
+                        </div>
+                        <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 text-center">
+                            <span class="text-[10px] text-blue-700 font-bold uppercase">4. Экран шагов</span>
+                            <p class="text-base font-black text-gray-900 mt-1">${fmtNum(vOs)}</p>
+                            <span class="text-[10px] text-blue-600 font-semibold">CR: ${cr3}</span>
+                        </div>
+                        <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 text-center">
+                            <span class="text-[10px] text-blue-700 font-bold uppercase">5. Отправка</span>
+                            <p class="text-base font-black text-gray-900 mt-1">${fmtNum(vOc)}</p>
+                            <span class="text-[10px] text-blue-600 font-semibold">CR: ${cr4}</span>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-300 text-center">
+                            <span class="text-[10px] text-emerald-800 font-bold uppercase">6. Экран успеха</span>
+                            <p class="text-base font-black text-emerald-800 mt-1">${fmtNum(vOsucc)}</p>
+                            <span class="text-[10px] text-emerald-700 font-bold">CR: ${cr5}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CRM & CALCULATOR SECTION -->
                 <div class="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm space-y-4">
                     <div class="flex justify-between items-center">
                         <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
                             <i data-lucide="git-merge" class="w-4 h-4 text-emerald-600"></i>
-                            Сквозная архитектура воронки: ${brand}
+                            Сквозная воронка CRM и сделок: ${brand} [${mLabel}]
                         </h3>
-                        <span class="text-xs text-gray-400">Свежий лид: <b class="text-amber-600">${d.latest_lead_date}</b> | Искл. МП2: ${d.mp2_count} шт. (${fmtRub(d.mp2_rev)})</span>
+                        <span class="text-xs text-gray-400">Искл. Опт МП2: <b>${fmtNum(d.mp2_count)} шт.</b> (${fmtRub(d.mp2_rev)})</span>
                     </div>
 
                     <!-- Steps 7-10 -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                         <div class="bg-slate-50 p-3.5 rounded-xl border border-gray-200">
                             <span class="text-[11px] text-blue-600 font-bold uppercase">Этап 7</span>
-                            <h4 class="text-xs font-bold text-gray-800 mt-0.5">Новый лид в CRM</h4>
+                            <h4 class="text-xs font-bold text-gray-800 mt-0.5">Лиды в CRM</h4>
                             <p class="text-lg font-black text-gray-900 mt-1">${fmtNum(d.leads)} лидов</p>
                             <p class="text-[11px] text-gray-400">100% входящий поток</p>
                         </div>
@@ -73683,19 +73801,19 @@
                             <span class="text-[11px] text-emerald-600 font-bold uppercase">Этап 8</span>
                             <h4 class="text-xs font-bold text-gray-800 mt-0.5">Квалификация</h4>
                             <p class="text-lg font-black text-gray-900 mt-1">${fmtNum(d.qual)} лидов</p>
-                            <p class="text-[11px] text-emerald-600 font-semibold">${((d.qual/d.leads)*100).toFixed(1)}% целевых</p>
+                            <p class="text-[11px] text-emerald-600 font-semibold">${d.leads > 0 ? ((d.qual/d.leads)*100).toFixed(1) : 0}% целевых</p>
                         </div>
                         <div class="bg-slate-50 p-3.5 rounded-xl border border-gray-200">
                             <span class="text-[11px] text-amber-600 font-bold uppercase">Этап 9</span>
                             <h4 class="text-xs font-bold text-gray-800 mt-0.5">Расчет кредита</h4>
                             <p class="text-lg font-black text-gray-900 mt-1">${fmtNum(d.calc_total)} расчетов</p>
-                            <p class="text-[11px] text-gray-400">${((d.calc_total/d.qual)*100).toFixed(1)}% от квалиф.</p>
+                            <p class="text-[11px] text-gray-400">${d.qual > 0 ? ((d.calc_total/d.qual)*100).toFixed(1) : 0}% от квалиф.</p>
                         </div>
                         <div class="bg-slate-50 p-3.5 rounded-xl border border-gray-200">
                             <span class="text-[11px] text-purple-600 font-bold uppercase">Этап 10</span>
                             <h4 class="text-xs font-bold text-gray-800 mt-0.5">Оффер отправлен</h4>
                             <p class="text-lg font-black text-gray-900 mt-1">${fmtNum(d.offer_total)} офферов</p>
-                            <p class="text-[11px] text-gray-400">${((d.offer_total/d.calc_total)*100).toFixed(1)}% от расчетов</p>
+                            <p class="text-[11px] text-gray-400">${d.calc_total > 0 ? ((d.offer_total/d.calc_total)*100).toFixed(1) : 0}% от расчетов</p>
                         </div>
                     </div>
 
@@ -73712,7 +73830,7 @@
                             </div>
                             <div class="flex justify-between text-xs pt-1.5 border-t border-cyan-100">
                                 <span class="text-emerald-700 font-bold">Сделки Передача лида:</span>
-                                <span class="font-black text-emerald-700">${d.deals_by_b2c['Передача лида'] || 0} шт. (${fmtRub(d.rev_by_b2c['Передача лида'] || 0)})</span>
+                                <span class="font-black text-emerald-700">${(d.deals_by_b2c && d.deals_by_b2c['Передача лида']) || 0} шт. (${fmtRub((d.rev_by_b2c && d.rev_by_b2c['Передача лида']) || 0)})</span>
                             </div>
                         </div>
 
@@ -73731,7 +73849,7 @@
                             </div>
                             <div class="flex justify-between text-xs pt-1.5 border-t border-emerald-100">
                                 <span class="text-emerald-700 font-bold">Сделки ФДЦ (Выдачи):</span>
-                                <span class="font-black text-emerald-700">${(d.deals_by_b2c['ФДЦ'] || 0) + (d.deals_by_b2c['ФДЦ+ГП'] || 0)} шт. (${fmtRub((d.rev_by_b2c['ФДЦ'] || 0) + (d.rev_by_b2c['ФДЦ+ГП'] || 0))})</span>
+                                <span class="font-black text-emerald-700">${((d.deals_by_b2c && d.deals_by_b2c['ФДЦ']) || 0) + ((d.deals_by_b2c && d.deals_by_b2c['ФДЦ+ГП']) || 0)} шт. (${fmtRub(((d.rev_by_b2c && d.rev_by_b2c['ФДЦ']) || 0) + ((d.rev_by_b2c && d.rev_by_b2c['ФДЦ+ГП']) || 0))})</span>
                             </div>
                         </div>
                     </div>
@@ -73740,10 +73858,10 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm space-y-2">
                         <div class="flex justify-between items-center">
-                            <h4 class="text-xs font-bold text-gray-800 flex items-center gap-1.5"><i data-lucide="check-square" class="w-3.5 h-3.5 text-emerald-600"></i> Реализация сделок ${brand} (без МП2)</h4>
+                            <h4 class="text-xs font-bold text-gray-800 flex items-center gap-1.5"><i data-lucide="check-square" class="w-3.5 h-3.5 text-emerald-600"></i> Реализация розницы ${brand} [${mLabel}]</h4>
                             <span class="text-xs font-bold text-emerald-600">${fmtNum(d.deals_no_mp2)} авто</span>
                         </div>
-                        <div class="space-y-1">${b2cRows || '<p class="text-xs text-gray-400">Нет сделок</p>'}</div>
+                        <div class="space-y-1">${b2cRows || '<p class="text-xs text-gray-400">Нет розничных сделок</p>'}</div>
                     </div>
                     <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm space-y-2">
                         <div class="flex justify-between items-center">
