@@ -688,20 +688,8 @@
     </div>
 
     <!-- ==================== TAB: WAITING ==================== -->
-    <div id="tab-details" class="tab-content hidden">
-        <div class="card overflow-x-auto">
-            <div class="flex items-center justify-between mb-3">
-                <h2 class="text-lg font-bold text-gray-800">Клиенты в ожидании (по брендам)</h2>
-                <div class="flex items-center gap-2">
-                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchWaiting" type="text" class="search-box" placeholder="Поиск..." oninput="filterTable(this, 'tableWaitingContainer')"></div>
-                    <button class="copy-btn" onclick="copyTableToClipboard('tableWaitingContainer')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
-                </div>
-            </div>
-            <div id="tableWaitingContainer"></div>
-        </div>
-    </div>
-
     
+
     <!-- ==================== TAB: WAITING & DEBTORS ==================== -->
     <div id="tab-details" class="tab-content hidden space-y-5">
         <!-- HEADER / ACTIONS CARD -->
@@ -783,7 +771,7 @@
         <details class="card shadow-sm border border-gray-200 !p-4">
             <summary class="cursor-pointer font-bold text-sm text-gray-700 py-1 flex items-center justify-between">
                 <span>📊 Свод клиентов в ожидании по брендам</span>
-                <span class="text-xs text-blue-600">Развернуть / Свернуть</span>
+                <span class="text-xs text-blue-600 font-semibold">Развернуть / Свернуть</span>
             </summary>
             <div class="mt-3">
                 <div id="tableWaitingContainer"></div>
@@ -847,7 +835,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <script>
     // ====================================================================
@@ -857,6 +845,12 @@
         Chart.register(ChartDataLabels);
     }
     let db = [], dbPartners = [], rawDebtorsList = [];
+
+    const MODERN_PALETTE = [
+        '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', 
+        '#ec4899', '#06b6d4', '#f97316', '#64748b',
+        '#6366f1', '#14b8a6', '#d97706', '#a855f7'
+    ];
 
     const fmtNum = (num) => Math.round(num || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
     const fmtPct = (num) => (Math.round((num || 0) * 100)) + "%";
@@ -888,6 +882,7 @@
         if (btn) btn.classList.add('active');
         if (tabId === 'tab-funnel') selectFunnelBrand('ALL');
         if (tabId === 'tab-scenarios') { renderBrandsTable(); initScenarioCharts(); }
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function filterTable(input, targetId) {
@@ -1163,22 +1158,106 @@
         if (elDashB2C) elDashB2C.innerHTML = makeHtml(b2c, "Тип сделки B2C", "Количество");
     }
 
-    function getTopBrands(sDb) {
+    function getTopBrands(salesDb) {
         let counts = {};
-        sDb.forEach(r => counts[r.Brand] = (counts[r.Brand] || 0) + 1);
-        let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
-        let top = sorted.slice(0, 5);
-        let other = sorted.slice(5).reduce((acc, cur) => acc + cur[1], 0);
-        let res = {};
-        top.forEach(x => res[x[0]] = x[1]);
-        if (other > 0) res['Прочие'] = other;
-        return res;
+        salesDb.forEach(r => counts[r.Brand] = (counts[r.Brand]||0)+1);
+        let sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+        let top = sorted.slice(0,7), others = sorted.slice(7).reduce((sum,item)=>sum+item[1],0);
+        if (others > 0) top.push(["Прочие", others]);
+        return top;
     }
 
-    function getB2CSplit(sDb) {
+    function getB2CSplit(salesDb) {
         let counts = {};
-        sDb.forEach(r => counts[r.B2C || "(пусто)"] = (counts[r.B2C || "(пусто)"] || 0) + 1);
-        return counts;
+        salesDb.forEach(r => counts[r.B2C||"(пусто)"] = (counts[r.B2C||"(пусто)"]||0)+1);
+        let sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+        let top = sorted.slice(0,7), others = sorted.slice(7).reduce((sum,item)=>sum+item[1],0);
+        if (others > 0) top.push(["Прочие", others]);
+        return top;
+    }
+
+    function updatePieChart(canvasId, chartInst, dataEntries, titleText) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        if (window[canvasId + 'Inst']) window[canvasId + 'Inst'].destroy();
+
+        const labels = dataEntries.map(e => e[0]);
+        const dataValues = dataEntries.map(e => e[1]);
+        const total = dataValues.reduce((a, b) => a + b, 0);
+
+        const colors = MODERN_PALETTE.slice(0, dataEntries.length);
+        while (colors.length < dataEntries.length) {
+            colors.push('#' + Math.floor(Math.random()*16777215).toString(16));
+        }
+
+        window[canvasId + 'Inst'] = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: dataValues,
+                    backgroundColor: colors,
+                    borderWidth: 2,
+                    borderColor: '#ffffff',
+                    hoverOffset: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const val = context.parsed;
+                                const pct = total > 0 ? ((val / total) * 100).toFixed(1) + '%' : '0%';
+                                return ` ${context.label}: ${fmtNum(val)} шт (${pct})`;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#ffffff',
+                        font: { weight: '900', size: 12 },
+                        textShadowColor: 'rgba(0, 0, 0, 0.4)',
+                        textShadowBlur: 4,
+                        formatter: (value) => {
+                            if (total === 0 || value === 0) return '';
+                            const pct = (value / total) * 100;
+                            return pct >= 3.5 ? pct.toFixed(0) + '%' : '';
+                        }
+                    }
+                }
+            }
+        });
+
+        // Render Custom Legend on the Right
+        const legendContainerId = canvasId === 'pieBrands' ? 'legendPieBrands' : 'legendPieB2C';
+        const legendEl = document.getElementById(legendContainerId);
+        if (legendEl) {
+            let legHtml = '<div class="space-y-1">';
+            dataEntries.forEach((item, idx) => {
+                const label = item[0];
+                const val = item[1];
+                const pct = total > 0 ? ((val / total) * 100).toFixed(1) + '%' : '0%';
+                const color = colors[idx];
+                legHtml += `
+                    <div class="chart-legend-item flex items-center justify-between text-xs py-0.5 px-1.5 rounded hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${color}"></span>
+                            <span class="font-medium text-gray-700 break-words" title="${label}">${label}</span>
+                        </div>
+                        <div class="flex items-center gap-2 shrink-0 ml-2">
+                            <span class="font-bold text-gray-800">${fmtNum(val)}</span>
+                            <span class="text-xs text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded font-semibold min-w-[42px] text-right">${pct}</span>
+                        </div>
+                    </div>`;
+            });
+            legHtml += '</div>';
+            legendEl.innerHTML = legHtml;
+        }
     }
 
     function renderDynamicsTab(sDb, pDb, isAll) {
@@ -1186,7 +1265,6 @@
         let b2cTypes = new Set(sDb.map(r => r.B2C || "(пусто)"));
         let b2cArr = Array.from(b2cTypes).sort();
 
-        // Calculate metrics
         const calcMet = (sales, prepays, brand, idx) => {
             let filteredS = brand ? sales.filter(r => r.Brand === brand) : sales;
             let filteredP = brand ? prepays.filter(r => r.Brand === brand) : prepays;
@@ -1791,41 +1869,9 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: { legend: { position: 'top' }, tooltip: { mode: 'index', intersect: false } },
                 scales: { y: { beginAtZero: true, max: wH } }
-            }
-        });
-    }
-
-    function updatePieChart(canvasId, chartInst, dataObj, labelText) {
-        let canvas = document.getElementById(canvasId);
-        if (!canvas) return;
-        let ctx = canvas.getContext('2d');
-        if (canvas._chartInstance) canvas._chartInstance.destroy();
-
-        let labels = Object.keys(dataObj);
-        let values = Object.values(dataObj);
-        let colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#6b7280', '#ec4899', '#14b8a6'];
-
-        canvas._chartInstance = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: labels,
-                datasets: [{ data: values, backgroundColor: colors }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } },
-                    datalabels: {
-                        formatter: (val, ctx) => {
-                            let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                            return sum > 0 ? (val / sum * 100).toFixed(0) + "%" : "";
-                        },
-                        color: '#fff',
-                        font: { weight: 'bold', size: 10 }
-                    }
-                }
             }
         });
     }
@@ -1845,17 +1891,53 @@
         alert('Таблица скопирована в буфер обмена!');
     }
 
-    function copyCardToClipboard(cardId) {
-        let card = document.getElementById(cardId);
-        if (!card) return;
-        if (typeof html2canvas !== 'undefined') {
-            html2canvas(card).then(canvas => {
-                canvas.toBlob(blob => {
-                    navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => {
-                        alert('Скриншот карточки скопирован в буфер обмена!');
-                    });
+    async function copyCardToClipboard(cardId, btn) {
+        const cardEl = document.getElementById(cardId);
+        if (!cardEl) return;
+        const origContent = btn ? btn.innerHTML : '';
+        if (btn) {
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Копирование...';
+            btn.disabled = true;
+        }
+
+        try {
+            if (typeof html2canvas !== 'undefined') {
+                const canvas = await html2canvas(cardEl, {
+                    scale: 2,
+                    backgroundColor: null,
+                    logging: false,
+                    useCORS: true,
+                    ignoreElements: (element) => element.tagName === 'BUTTON'
                 });
-            });
+
+                canvas.toBlob(async (blob) => {
+                    try {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        await navigator.clipboard.write([item]);
+                        if (btn) {
+                            btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i> Скопировано!';
+                            btn.style.background = '#22c55e';
+                            btn.style.color = 'white';
+                        }
+                    } catch (err) {
+                        alert('Не удалось скопировать напрямую в буфер.');
+                    }
+                    if (btn) {
+                        setTimeout(() => {
+                            btn.innerHTML = origContent;
+                            btn.style.background = '';
+                            btn.style.color = '';
+                            btn.disabled = false;
+                            if (typeof lucide !== 'undefined') lucide.createIcons();
+                        }, 2000);
+                    }
+                });
+            }
+        } catch (e) {
+            if (btn) {
+                btn.innerHTML = origContent;
+                btn.disabled = false;
+            }
         }
     }
 
