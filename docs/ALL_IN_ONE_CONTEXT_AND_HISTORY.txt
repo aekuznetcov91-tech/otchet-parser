@@ -908,3 +908,93 @@ Google Таблица по ссылке сейчас закрыта настро
 --------------------------------------------------------------------------------
 отлично, обнови контект проекта
 
+
+--------------------------------------------------------------------------------
+ШАГ 34 | СЕССИЯ 25.08.2026 — ИТОГИ РАБОТЫ
+--------------------------------------------------------------------------------
+
+## ИСПРАВЛЕНИЯ И УЛУЧШЕНИЯ ДАШБОРДА (25.08.2026)
+
+### 1. Восстановлен оригинальный дизайн круговых диаграмм
+- Возвращен тип pie вместо уменьшенного doughnut.
+- Восстановлена фирменная палитра MODERN_PALETTE.
+- Восстановлены кастомные HTML-легенды справа (счетчики, цветные маркеры, %-плашки).
+- Диаграммы «СПЛИТ ПО БРЕНДАМ» и «ТИП СДЕЛКИ B2C» снова крупные и красивые.
+
+### 2. Исправлена вкладка «В ожидании»
+- Устранен дублирующийся id=tab-details — вкладка сразу показывает таблицу должников.
+- Отображаются 4 KPI-карточки: компании, авто, КАМы, сумма авансов.
+- Таблица: Компания / КАМ | Дата предоплаты | Марка | Модель | ВИН | Менеджер | Стадия.
+
+### 3. Синхронизирована фильтрация должников
+- Старая ошибка: модальное окно «Выгрузить» показывало 214 авто (все периоды),
+  а вкладка — 141 авто (только август).
+- Исправлено: окно выгрузки строго учитывает выбранный период.
+- Подзаголовок окна: «Период: 2026-08 | Компаний: 60 (141 авто)».
+- Excel-файлы формируются только по сделкам выбранного периода.
+
+### 4. Инструкция для КАМ
+- Файл: docs/KAM_INSTRUCTIONS.md
+- Содержит: вход в систему, алгоритм работы с вкладкой «В ожидании»,
+  инструкцию по пакетной выгрузке Excel (1 компания = 1 файл),
+  описание структуры файла, полезные фишки.
+
+### 5. Замена API-токена Cloudflare (без IP-ограничений)
+- Старый токен cfut_BbPf... имел IP-ограничение — работал только с IP Бориса.
+- Новый токен cfut_ljB4... — без IP-ограничений, работает с любого ПК.
+- Прописан в config.local.json (файл в .gitignore, в репозиторий не попадает).
+- Деплой успешно протестирован.
+
+### 6. Исправлен скрипт deploy_to_cloudflare.py
+- Ошибка: charmap codec — wrangler выводил эмодзи, Windows не мог декодировать.
+- Исправление: errors=replace, NO_COLOR=1, ручное decode(utf-8, errors=replace).
+- Успешность деплоя определяется по ключевым словам (Success, Deploying, pages.dev).
+
+### 7. Git-коммиты сессии
+- b37e4bc fix(ui): restore original beautiful pie charts & single tab-details container
+- 81257ef fix(debtors): sync filter between page and export modal dialog
+- 703ca0a docs: add user manual for KAM on DKP Debtors control and Excel batch export
+- 22a28f6 fix(deploy): fix encoding error on Windows when wrangler outputs emoji in logs
+
+---
+
+## ТЕКУЩИЕ ДОСТУПЫ И КОНФИГУРАЦИЯ
+
+Cloudflare:
+  Account ID:  8847a4c47c5dbe34f3887ce61182873a
+  API Token:   cfut_ljB4xxxx...xxxx[SEE config.local.json]
+  Project:     dashbord-partners1
+  Worker URL:  https://dashbord-partners.beckelaguas723.workers.dev
+  Pages URL:   https://dashbord-partners1.pages.dev
+  Login:       director / password
+
+Git:
+  Repo:   https://github.com/beckelaguas723-gif/otchet-parser.git
+  Branch: main
+  config.local.json — в .gitignore, передается коллеге вручную
+
+---
+
+## ПРОМТ ДЛЯ ОНБОРДИНГА КОЛЛЕГИ
+
+Привет! Настрой мне проект B2C Analytics Dashboard для работы на моем компьютере.
+
+1. Склонируй репозиторий:
+   git clone https://github.com/beckelaguas723-gif/otchet-parser.git
+   Перейди в папку проекта.
+
+2. Создай файл config.local.json в корне проекта:
+   {"account_id":"8847a4c47c5dbe34f3887ce61182873a","api_token":"cfut_ljB4xxxx...xxxx[SEE config.local.json]","project_name":"dashbord-partners1"}
+
+3. Установи зависимости:
+   - Python (с галочкой Add Python to PATH при установке)
+   - Node.js (с nodejs.org)
+   - В терминале: pip install pandas openpyxl
+
+4. Тестовый деплой: python deploy_to_cloudflare.py
+
+5. Проверка: https://dashbord-partners.beckelaguas723.workers.dev
+   (логин: director, пароль: password)
+
+Для обновления дашборда запускать: Вygрузить_на_Сайт.bat
+
