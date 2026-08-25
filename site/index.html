@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         body { background-color: #f1f5f9; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         .card { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); padding: 1.25rem; margin-bottom: 1.25rem; }
@@ -686,17 +687,149 @@
         
     </div>
 
-    <!-- ==================== TAB: WAITING ==================== -->
-    <div id="tab-details" class="tab-content hidden">
-        <div class="card overflow-x-auto">
-            <div class="flex items-center justify-between mb-3">
-                <h2 class="text-lg font-bold text-gray-800">Клиенты в ожидании (по брендам)</h2>
-                <div class="flex items-center gap-2">
-                    <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchWaiting" type="text" class="search-box" placeholder="Поиск..." oninput="filterTable(this, 'tableWaitingContainer')"></div>
-                    <button class="copy-btn" onclick="copyTableToClipboard('tableWaitingContainer')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
+    <!-- ==================== TAB: WAITING & DEBTORS ==================== -->
+    <div id="tab-details" class="tab-content hidden space-y-5">
+        <!-- HEADER / ACTIONS CARD -->
+        <div class="card !p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900 text-white rounded-2xl shadow-md border border-slate-800">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-900/30 shrink-0">
+                    <svg viewBox="0 0 24 24" width="26" height="26" stroke="white" stroke-width="2.5" fill="none">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        Должники по ДКП (Ожидание выдачи)
+                        <span id="badgeTotalDebtors" class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">0 авто</span>
+                    </h2>
+                    <p class="text-xs text-slate-400">Компании с внесенным авансом / предоплатой, по которым еще не проведена реализация сделки</p>
                 </div>
             </div>
-            <div id="tableWaitingContainer"></div>
+            <div class="flex items-center gap-2.5 flex-wrap">
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                    <input id="searchDebtors" type="text" class="bg-slate-800 border border-slate-700 text-white text-xs rounded-xl pl-9 pr-3 py-2 w-56 placeholder-slate-400 focus:ring-1 focus:ring-amber-500 outline-none" placeholder="Поиск по компании, КАМ, VIN..." oninput="filterDebtorsTable(this.value)">
+                </div>
+                <button onclick="openDebtorsExportModal()" class="bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Выгрузить
+                </button>
+            </div>
+        </div>
+
+        <!-- KPI MINI-CARDS -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-[11px] text-gray-400 font-bold uppercase">Компаний с долгами</p>
+                    <p id="kpiDebtorCompanies" class="text-xl font-black text-gray-800 mt-0.5">0</p>
+                </div>
+                <div class="w-9 h-9 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center font-bold text-base">🏢</div>
+            </div>
+            <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-[11px] text-gray-400 font-bold uppercase">Авто в ожидании</p>
+                    <p id="kpiDebtorCars" class="text-xl font-black text-amber-600 mt-0.5">0</p>
+                </div>
+                <div class="w-9 h-9 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-base">🚗</div>
+            </div>
+            <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-[11px] text-gray-400 font-bold uppercase">Закреплено КАМ</p>
+                    <p id="kpiDebtorKams" class="text-xl font-black text-blue-600 mt-0.5">0</p>
+                </div>
+                <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-base">👤</div>
+            </div>
+            <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-[11px] text-gray-400 font-bold uppercase">Сумма авансов</p>
+                    <p id="kpiDebtorPrepaySum" class="text-xl font-black text-emerald-600 mt-0.5">0 ₽</p>
+                </div>
+                <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-base">💳</div>
+            </div>
+        </div>
+
+        <!-- MAIN DEBTORS TABLE -->
+        <div class="card overflow-x-auto shadow-sm border border-gray-200 !p-0">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-sm font-bold text-gray-700 flex items-center gap-2">
+                    <span>📋 Список незакрытых сделок по компаниям</span>
+                    <span id="debtorRowsCounter" class="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-md font-semibold"></span>
+                </h3>
+                <button class="copy-btn text-xs" onclick="copyTableToClipboard('tableDebtorsContainer')">
+                    <i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> Скопировать в Excel
+                </button>
+            </div>
+            <div id="tableDebtorsContainer" class="p-3"></div>
+        </div>
+
+        <!-- BRAND SUMMARY (COLLAPSIBLE) -->
+        <details class="card shadow-sm border border-gray-200 !p-4">
+            <summary class="cursor-pointer font-bold text-sm text-gray-700 py-1 flex items-center justify-between">
+                <span>📊 Свод клиентов в ожидании по брендам</span>
+                <span class="text-xs text-blue-600">Развернуть / Свернуть</span>
+            </summary>
+            <div class="mt-3">
+                <div id="tableWaitingContainer"></div>
+            </div>
+        </details>
+    </div>
+
+    <!-- ==================== MODAL: DEBTORS EXPORT ==================== -->
+    <div id="modalDebtorsExport" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col border border-gray-100 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center border-b border-slate-800">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-white">Выгрузка отчетов по должникам ДКП</h3>
+                        <p class="text-[11px] text-slate-400">Формирование отдельных файлов Excel по выбранным компаниям (1 компания = 1 файл)</p>
+                    </div>
+                </div>
+                <button onclick="closeDebtorsExportModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 rounded-lg hover:bg-slate-800 transition">✕</button>
+            </div>
+
+            <!-- Modal Search & Filters -->
+            <div class="p-4 bg-gray-50 border-b border-gray-200 flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center justify-between">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                    <input id="modalDebtorSearch" type="text" class="w-full bg-white border border-gray-300 rounded-lg pl-9 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:ring-1 focus:ring-emerald-500 outline-none" placeholder="Поиск по названию компании или КАМ..." oninput="filterModalCompanies(this.value)">
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleAllDebtorCheckboxes(true)" class="px-2.5 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold rounded-lg transition cursor-pointer">
+                        Выбрать все
+                    </button>
+                    <button onclick="toggleAllDebtorCheckboxes(false)" class="px-2.5 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-semibold rounded-lg transition cursor-pointer">
+                        Снять все
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Company List -->
+            <div id="modalCompanyList" class="p-4 overflow-y-auto space-y-1.5 max-h-96 text-xs divide-y divide-gray-100">
+                <!-- Companies with checkboxes dynamically inserted here -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3.5 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-xs text-gray-600 font-medium">
+                    Выбрано компаний: <b id="modalSelectedCount" class="text-emerald-600">0</b>
+                    (<span id="modalSelectedCarsCount" class="text-gray-800 font-semibold">0</span> авто)
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="closeDebtorsExportModal()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition cursor-pointer">
+                        Отмена
+                    </button>
+                    <button id="btnExecuteExport" onclick="executeDebtorsExcelExport()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5 cursor-pointer">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Выгрузить
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -72879,6 +73012,7 @@
             const data = await res.json();
             db = data.sys_db || [];
             dbPartners = data.sys_db_partners || [];
+            rawDebtorsList = data.debtors || [];
             if (data.brand_funnel) {
                 window.brandFunnelFullData = data.brand_funnel;
                 if (typeof funnelRawData !== 'undefined') {
@@ -72891,6 +73025,7 @@
             if (embeddedDataBackup && embeddedDataBackup.sys_db) {
                 db = embeddedDataBackup.sys_db || [];
                 dbPartners = embeddedDataBackup.sys_db_partners || [];
+                rawDebtorsList = embeddedDataBackup.debtors || [];
                 initDropdown();
             } else {
                 alert("Ошибка загрузки data.json: " + error.message);
@@ -73076,6 +73211,7 @@
         renderPartnersTable(currentFilterConfig);
         renderManagersTable(sDb, pDb);
         renderWaitingTable(currentFilterConfig);
+        renderDebtorsTable(currentFilterConfig);
 
         initTableSorting();
         if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -73419,6 +73555,285 @@
         sorted.forEach(b => { tw += wStats[b]; html += `<tr><td class="font-semibold">${b}</td><td class="text-orange-500 font-bold">${fmtNum(wStats[b])}</td></tr>`;});
         document.getElementById('tableWaitingContainer').innerHTML = html + `<tr class="table-total"><td>ВСЕГО</td><td>${fmtNum(tw)}</td></tr></tbody></table>`;
         setupSmartSearch('searchWaiting', 'tableWaitingContainer');
+    }
+
+    // ====================================================================
+    // DEBTORS CONTROL & MULTI-COMPANY EXCEL EXPORT
+    // ====================================================================
+    let rawDebtorsList = [];
+
+    function renderDebtorsTable(filterCfg) {
+        let filtered = rawDebtorsList.filter(d => {
+            if (!filterCfg || filterCfg.mode === 'all') return true;
+            if (filterCfg.mode === 'month') {
+                let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0,2).join('-') : "";
+                return m === filterCfg.month;
+            }
+            if (filterCfg.mode === 'custom') {
+                const fTime = filterCfg.from ? filterCfg.from.getTime() : -Infinity;
+                const tTime = filterCfg.to ? filterCfg.to.getTime() : Infinity;
+                if (d.prepay_serial && d.prepay_serial > 0) {
+                    const jsD = excelToJSDate(d.prepay_serial);
+                    if (jsD) {
+                        const t = jsD.getTime();
+                        return t >= fTime && t <= tTime;
+                    }
+                }
+                return true;
+            }
+            return true;
+        });
+
+        // Group by company
+        let compMap = {};
+        let totalPrepaySum = 0;
+        let kamSet = new Set();
+
+        filtered.forEach(d => {
+            let c = d.company || "Неизвестная компания";
+            if (!compMap[c]) {
+                compMap[c] = {
+                    name: c,
+                    kam: d.kam || "",
+                    cars: []
+                };
+            }
+            compMap[c].cars.push(d);
+            totalPrepaySum += (d.price || 0);
+            if (d.kam) kamSet.add(d.kam);
+        });
+
+        let sortedCompanies = Object.values(compMap).sort((a, b) => b.cars.length - a.cars.length || a.name.localeCompare(b.name));
+
+        // Update Mini KPIs
+        const elDebtorComps = document.getElementById('kpiDebtorCompanies');
+        const elDebtorCars = document.getElementById('kpiDebtorCars');
+        const elBadgeDebtors = document.getElementById('badgeTotalDebtors');
+        const elDebtorKams = document.getElementById('kpiDebtorKams');
+        const elDebtorPrepaySum = document.getElementById('kpiDebtorPrepaySum');
+        const elDebtorCounter = document.getElementById('debtorRowsCounter');
+
+        if (elDebtorComps) elDebtorComps.innerText = sortedCompanies.length;
+        if (elDebtorCars) elDebtorCars.innerText = fmtNum(filtered.length);
+        if (elBadgeDebtors) elBadgeDebtors.innerText = `${fmtNum(filtered.length)} авто`;
+        if (elDebtorKams) elDebtorKams.innerText = kamSet.size;
+        if (elDebtorPrepaySum) elDebtorPrepaySum.innerText = fmtRub(totalPrepaySum);
+        if (elDebtorCounter) elDebtorCounter.innerText = `${sortedCompanies.length} компаний, ${filtered.length} авто`;
+
+        const container = document.getElementById('tableDebtorsContainer');
+        if (!container) return;
+
+        if (sortedCompanies.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-10 text-gray-400">
+                    <div class="text-3xl mb-2">🎉</div>
+                    <p class="font-bold text-gray-700">Нет незакрытых сделок по выбранному периоду</p>
+                    <p class="text-xs text-gray-400 mt-1">Все предоплаты успешно закрыты и реализованы в ДКП</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = `<table id="tableDebtors" class="min-w-full">
+            <thead>
+                <tr>
+                    <th class="!bg-slate-800">Компания / КАМ</th>
+                    <th class="!bg-slate-800">Дата предоплаты</th>
+                    <th class="!bg-slate-800">Марка</th>
+                    <th class="!bg-slate-800">Модель</th>
+                    <th class="!bg-slate-800">ВИН</th>
+                    <th class="!bg-slate-800">Менеджер</th>
+                    <th class="!bg-slate-800">Стадия</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+        sortedCompanies.forEach((comp, cIdx) => {
+            let rowClass = (cIdx % 2 === 0) ? "bg-white" : "bg-slate-50/70";
+            comp.cars.forEach((car, carIdx) => {
+                html += `<tr class="${rowClass} hover:bg-amber-50/50 transition">`;
+                if (carIdx === 0) {
+                    html += `<td rowspan="${comp.cars.length}" class="font-bold text-gray-900 align-top border-r border-gray-200 bg-white">
+                        <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="font-semibold text-slate-800">${comp.name}</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold border border-amber-200 shrink-0">
+                                ${comp.cars.length} авто
+                            </span>
+                        </div>
+                        <div class="text-[11px] text-gray-500 font-normal mt-1 flex items-center gap-1">
+                            <span class="text-slate-400">КАМ:</span> <b class="text-slate-700">${comp.kam || "Не назначен"}</b>
+                        </div>
+                    </td>`;
+                }
+                html += `
+                    <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}</td>
+                    <td class="font-bold text-blue-900">${car.brand}</td>
+                    <td class="text-slate-700 font-medium">${car.model || car.brand}</td>
+                    <td class="font-mono text-xs text-slate-600 select-all font-semibold">${car.vin || "—"}</td>
+                    <td class="text-xs text-slate-600">${car.manager || "—"}</td>
+                    <td><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100/70 text-amber-900 border border-amber-300/60 whitespace-nowrap">${car.stage || "В ожидании ДКП"}</span></td>
+                </tr>`;
+            });
+        });
+
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function filterDebtorsTable(query) {
+        let q = (query || "").toLowerCase().trim();
+        let table = document.getElementById('tableDebtors');
+        if (!table) return;
+        let rows = table.querySelectorAll('tbody tr');
+        rows.forEach(r => {
+            let txt = r.innerText.toLowerCase();
+            r.style.display = txt.includes(q) ? "" : "none";
+        });
+    }
+
+    // Modal Export Logic
+    function openDebtorsExportModal() {
+        const modal = document.getElementById('modalDebtorsExport');
+        const container = document.getElementById('modalCompanyList');
+        if (!modal || !container) return;
+
+        let compMap = {};
+        rawDebtorsList.forEach(d => {
+            let c = d.company || "Неизвестная компания";
+            if (!compMap[c]) {
+                compMap[c] = { name: c, kam: d.kam || "", cars: [] };
+            }
+            compMap[c].cars.push(d);
+        });
+
+        let sortedCompanies = Object.values(compMap).sort((a, b) => b.cars.length - a.cars.length || a.name.localeCompare(b.name));
+
+        let html = "";
+        sortedCompanies.forEach((comp, idx) => {
+            let safeName = encodeURIComponent(comp.name);
+            html += `
+                <label class="debtor-comp-item flex items-center justify-between p-2.5 rounded-xl hover:bg-emerald-50/60 transition cursor-pointer border border-transparent hover:border-emerald-200 select-none">
+                    <div class="flex items-center gap-3">
+                        <input type="checkbox" data-company="${safeName}" data-cars-count="${comp.cars.length}" class="debtor-checkbox w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 cursor-pointer" onchange="updateModalSelectionStats()">
+                        <div>
+                            <div class="font-bold text-gray-800 text-xs">${comp.name}</div>
+                            <div class="text-[11px] text-gray-500">КАМ: <b class="text-slate-700">${comp.kam || "Не назначен"}</b></div>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 font-bold text-[11px] border border-amber-200">
+                            ${comp.cars.length} авто
+                        </span>
+                    </div>
+                </label>
+            `;
+        });
+
+        container.innerHTML = html;
+        toggleAllDebtorCheckboxes(true);
+        modal.classList.remove('hidden');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function closeDebtorsExportModal() {
+        const modal = document.getElementById('modalDebtorsExport');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function filterModalCompanies(q) {
+        let query = (q || "").toLowerCase().trim();
+        let items = document.querySelectorAll('.debtor-comp-item');
+        items.forEach(it => {
+            let txt = it.innerText.toLowerCase();
+            it.style.display = txt.includes(query) ? "" : "none";
+        });
+    }
+
+    function toggleAllDebtorCheckboxes(checked) {
+        let checkboxes = document.querySelectorAll('.debtor-checkbox');
+        checkboxes.forEach(cb => {
+            let item = cb.closest('.debtor-comp-item');
+            if (item && item.style.display !== 'none') {
+                cb.checked = checked;
+            }
+        });
+        updateModalSelectionStats();
+    }
+
+    function updateModalSelectionStats() {
+        let checked = document.querySelectorAll('.debtor-checkbox:checked');
+        let totalCars = 0;
+        checked.forEach(cb => {
+            totalCars += parseInt(cb.getAttribute('data-cars-count') || 0);
+        });
+        const elCount = document.getElementById('modalSelectedCount');
+        const elCars = document.getElementById('modalSelectedCarsCount');
+        if (elCount) elCount.innerText = checked.length;
+        if (elCars) elCars.innerText = totalCars;
+    }
+
+    function executeDebtorsExcelExport() {
+        let checked = Array.from(document.querySelectorAll('.debtor-checkbox:checked'));
+        if (checked.length === 0) {
+            alert("Пожалуйста, выберите хотя бы одну компанию для выгрузки.");
+            return;
+        }
+
+        let selectedCompanyNames = checked.map(cb => decodeURIComponent(cb.getAttribute('data-company')));
+
+        // Group cars by company
+        let compMap = {};
+        rawDebtorsList.forEach(d => {
+            if (selectedCompanyNames.includes(d.company)) {
+                if (!compMap[d.company]) compMap[d.company] = [];
+                compMap[d.company].push(d);
+            }
+        });
+
+        let todayStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '_');
+        let exportedCount = 0;
+
+        selectedCompanyNames.forEach(compName => {
+            let cars = compMap[compName] || [];
+            if (cars.length === 0) return;
+
+            let wsData = [
+                ["Компания", "Дата предоплаты", "Марка", "Модель", "ВИН"]
+            ];
+
+            cars.forEach(c => {
+                wsData.push([
+                    c.company || compName,
+                    c.prepay_date || "—",
+                    c.brand || "—",
+                    c.model || c.brand || "—",
+                    c.vin || "—"
+                ]);
+            });
+
+            let ws = XLSX.utils.aoa_to_sheet(wsData);
+
+            // Set column widths
+            ws['!cols'] = [
+                { wch: 32 }, // Компания
+                { wch: 18 }, // Дата предоплаты
+                { wch: 18 }, // Марка
+                { wch: 22 }, // Модель
+                { wch: 24 }  // ВИН
+            ];
+
+            let wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Долги ДКП");
+
+            let cleanName = compName.replace(/["*\\/?:<>|]/g, '').replace(/\s+/g, '_').slice(0, 35);
+            let fileName = `Долги_ДКП_${cleanName}_${todayStr}.xlsx`;
+
+            XLSX.writeFile(wb, fileName);
+            exportedCount++;
+        });
+
+        closeDebtorsExportModal();
     }
 
     function updateLineChart(canvasId, chartInst, groupName, salesDb, prepayDb, year, month) {

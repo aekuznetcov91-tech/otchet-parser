@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sys
 import re
 import csv
@@ -484,13 +484,11 @@ def calculate_brand_funnel(sys_db):
                 "latest_lead_date": "25.08.2026"
             }
 
-    # Backward compatibility: root keys point to August 2026
     brand_funnel = {
         "OVERALL_LATEST_DATE": "25.08.2026 в 12:00",
         "months": months,
         "by_month": by_month
     }
-    # Populate root brand keys with 2026-08
     for b in all_brands:
         brand_funnel[b] = by_month["2026-08"]["brands"][b]
 
@@ -548,9 +546,10 @@ def run_pipeline():
             if pochta: kam_dict_sber[pochta.lower()] = kam
         print(f"[*] Справочник загружен: {len(directory_data)} записей КАМов.")
 
-    # 3. Process Deals -> sys_db & sys_db_partners
+    # 3. Process Deals -> sys_db, sys_db_partners & debtors
     sys_db = []
     sys_db_partners = []
+    debtors = []
 
     aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ")
 
@@ -605,6 +604,16 @@ def run_pipeline():
         final_brand = normalize_brand(tovar)
         final_revenue = round(comm / 1.22, 2) if (is_sale and comm > 0) else 0.0
 
+        # Model extraction
+        model = tovar
+        if final_brand in model:
+            model = model.replace(final_brand, '')
+        if vin and vin in model:
+            model = model.replace(vin, '')
+        model = model.strip(' ,-')
+        if not model:
+            model = final_brand
+
         sys_db.append({
             "SaleMonth": deal_month_str if is_sale else "",
             "PrepayMonth": prepay_month_str if is_prepay else "",
@@ -634,6 +643,20 @@ def run_pipeline():
                 sys_db_partners.append({"Month": prepay_month_str, "Partner": partner, "KAM": kam_partner, "Type": "Предоплата", "Qty": 1, "Date": prepay_serial})
             elif is_wait:
                 sys_db_partners.append({"Month": deal_month_str, "Partner": partner, "KAM": kam_partner, "Type": "Без сделки", "Qty": 1, "Date": deal_serial})
+                if not is_prepay:
+                    debtors.append({
+                        "company": partner,
+                        "prepay_date": d_prepay_date.strftime("%d.%m.%Y") if d_prepay_date else (d_deal_date.strftime("%d.%m.%Y") if d_deal_date else ""),
+                        "prepay_serial": prepay_serial or deal_serial,
+                        "brand": final_brand,
+                        "model": model,
+                        "vin": vin,
+                        "kam": kam_partner,
+                        "manager": manager,
+                        "stage": stage,
+                        "price": price,
+                        "b2c": b2c
+                    })
 
     # 4. Process Leads
     if leads_data:
@@ -683,24 +706,17 @@ def run_pipeline():
         "sys_db": sys_db,
         "sys_db_partners": sys_db_partners,
         "funnel_metrics": funnel_metrics,
-        "brand_funnel": brand_funnel
+        "brand_funnel": brand_funnel,
+        "debtors": debtors
     }
 
-    # 6. Save JSON and sync HTML files to site/
+    # 6. Save JSON
     os.makedirs(SITE_DIR, exist_ok=True)
     with open(OUTPUT_JSON_SITE, 'w', encoding='utf-8') as f:
         json.dump(output_payload, f, ensure_ascii=False, indent=2)
 
     with open(OUTPUT_JSON_ROOT, 'w', encoding='utf-8') as f:
         json.dump(output_payload, f, ensure_ascii=False, indent=2)
-
-    # Sync all HTML files to SITE_DIR
-    import shutil
-    for hf in ['index.html', 'scenario_analysis.html', 'parser.html', 'funnel.html']:
-        root_hf = os.path.join(PROJECT_ROOT, hf)
-        site_hf = os.path.join(SITE_DIR, hf)
-        if os.path.exists(root_hf):
-            shutil.copyfile(root_hf, site_hf)
 
     total_sales = sum(r['SaleQty'] for r in sys_db)
     total_prepays = sum(r['PrepayQty'] for r in sys_db)
@@ -711,7 +727,8 @@ def run_pipeline():
     print(f"📊 Итого сделок (SaleQty):    {total_sales:,}".replace(',', ' '))
     print(f"💰 Итого выручка (Revenue):   {total_revenue:,.2f} ₽".replace(',', ' '))
     print(f"📦 Итого авансов (PrepayQty): {total_prepays:,}".replace(',', ' '))
-    print(f"🎯 Воронка 6 брендов: JETOUR, LADA, TENET, CHANGAN, GAC, SOLARIS включена.")
+    print(f"📋 Должников ДКП (авто):      {len(debtors)} шт. ({len(set(d['company'] for d in debtors))} компаний)")
+    print(f"🎯 Воронка 13 брендов и мульти-месячный срез включены.")
     print(f"💾 Файл сохранен в: {OUTPUT_JSON_SITE} ({os.path.getsize(OUTPUT_JSON_SITE)/(1024*1024):.2f} MB)")
     print("-" * 60)
 
