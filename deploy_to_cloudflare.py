@@ -2,6 +2,7 @@ import subprocess
 import os
 import sys
 import json
+import shutil
 
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.local.json')
 
@@ -17,8 +18,17 @@ def deploy():
             print(f"[!] Warning: Failed to read config.local.json: {e}")
 
     env = os.environ.copy()
-    env["CLOUDFLARE_API_TOKEN"] = os.environ.get("CLOUDFLARE_API_TOKEN", config.get("api_token", ""))
-    env["CLOUDFLARE_ACCOUNT_ID"] = os.environ.get("CLOUDFLARE_ACCOUNT_ID", config.get("account_id", ""))
+    token = os.environ.get("CLOUDFLARE_API_TOKEN", config.get("api_token", ""))
+    account_id = os.environ.get("CLOUDFLARE_ACCOUNT_ID", config.get("account_id", ""))
+    project_name = config.get("project_name", "dashbord-partners1")
+    
+    env["CLOUDFLARE_API_TOKEN"] = token
+    env["CLOUDFLARE_ACCOUNT_ID"] = account_id
+
+    # Auto-add local node tools if present
+    local_node_bin = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scratch', 'tools', 'node-v20.18.0-darwin-arm64', 'bin')
+    if os.path.exists(local_node_bin):
+        env["PATH"] = local_node_bin + os.pathsep + env.get("PATH", "")
 
     site_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'site')
     if not os.path.exists(site_dir):
@@ -28,16 +38,21 @@ def deploy():
     env["PYTHONIOENCODING"] = "utf-8"
     env["NO_COLOR"] = "1"
 
-    cmd = ["npx.cmd", "wrangler", "pages", "deploy", "site", "--project-name=dashbord-partners1", "--commit-dirty=true", "--branch=main"]
+    # Determine npx executable
+    npx_bin = "npx.cmd" if sys.platform.startswith("win") else "npx"
+    if not shutil.which(npx_bin, path=env.get("PATH")):
+        if os.path.exists(os.path.join(local_node_bin, 'npx')):
+            npx_bin = os.path.join(local_node_bin, 'npx')
+
+    cmd = [npx_bin, "wrangler", "pages", "deploy", site_dir, f"--project-name={project_name}", "--commit-dirty=true", "--branch=main"]
     
     try:
-        res = subprocess.run(cmd, env=env, shell=True, capture_output=True, errors='replace')
+        res = subprocess.run(cmd, env=env, capture_output=True, errors='replace')
         stdout = res.stdout.decode('utf-8', errors='replace') if isinstance(res.stdout, bytes) else (res.stdout or '')
         stderr = res.stderr.decode('utf-8', errors='replace') if isinstance(res.stderr, bytes) else (res.stderr or '')
         combined = stdout + stderr
-        # Check success by looking for known success markers in output
         if res.returncode == 0 or 'Success' in combined or 'Deploying' in combined or 'pages.dev' in combined:
-            print("[+] USPESHNO VYGRUZHENO!")
+            print("[+] USPESHNO VYGRUZHENO NA CLOUDFLARE PAGES!")
             print("[+] Sayt s avtorizaciey: https://dashbord-partners.beckelaguas723.workers.dev")
             print("[+] Pryamaya ssylka:     https://dashbord-partners1.pages.dev")
         else:
@@ -48,3 +63,4 @@ def deploy():
 
 if __name__ == '__main__':
     deploy()
+
