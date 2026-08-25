@@ -686,13 +686,21 @@ def run_pipeline():
         "brand_funnel": brand_funnel
     }
 
-    # 6. Save JSON
+    # 6. Save JSON and sync HTML files to site/
     os.makedirs(SITE_DIR, exist_ok=True)
     with open(OUTPUT_JSON_SITE, 'w', encoding='utf-8') as f:
         json.dump(output_payload, f, ensure_ascii=False, indent=2)
 
     with open(OUTPUT_JSON_ROOT, 'w', encoding='utf-8') as f:
         json.dump(output_payload, f, ensure_ascii=False, indent=2)
+
+    # Sync all HTML files to SITE_DIR
+    import shutil
+    for hf in ['index.html', 'scenario_analysis.html', 'parser.html', 'funnel.html']:
+        root_hf = os.path.join(PROJECT_ROOT, hf)
+        site_hf = os.path.join(SITE_DIR, hf)
+        if os.path.exists(root_hf):
+            shutil.copyfile(root_hf, site_hf)
 
     total_sales = sum(r['SaleQty'] for r in sys_db)
     total_prepays = sum(r['PrepayQty'] for r in sys_db)
