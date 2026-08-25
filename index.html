@@ -443,7 +443,7 @@
                     </div>
                     <div>
                         <h3 class="text-base font-bold text-white">Выгрузка отчетов по должникам ДКП</h3>
-                        <p class="text-[11px] text-slate-400">Формирование отдельных файлов Excel по выбранным компаниям (1 компания = 1 файл)</p>
+                        <p id="modalDebtorsSubtitle" class="text-[11px] text-slate-400">Формирование отдельных файлов Excel по выбранным компаниям (1 компания = 1 файл)</p>
                     </div>
                 </div>
                 <button onclick="closeDebtorsExportModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 rounded-lg hover:bg-slate-800 transition">✕</button>
@@ -1218,16 +1218,17 @@
     // ====================================================================
     // DEBTORS CONTROL & MULTI-COMPANY EXCEL EXPORT
     // ====================================================================
-    function renderDebtorsTable(filterCfg) {
-        let filtered = rawDebtorsList.filter(d => {
-            if (!filterCfg || filterCfg.mode === 'all') return true;
-            if (filterCfg.mode === 'month') {
+    function getFilteredDebtors(filterCfg) {
+        const cfg = filterCfg || currentFilterConfig;
+        return rawDebtorsList.filter(d => {
+            if (!cfg || cfg.mode === 'all') return true;
+            if (cfg.mode === 'month') {
                 let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0,2).join('-') : "";
-                return m === filterCfg.month;
+                return m === cfg.month;
             }
-            if (filterCfg.mode === 'custom') {
-                const fTime = filterCfg.from ? filterCfg.from.getTime() : -Infinity;
-                const tTime = filterCfg.to ? filterCfg.to.getTime() : Infinity;
+            if (cfg.mode === 'custom') {
+                const fTime = cfg.from ? cfg.from.getTime() : -Infinity;
+                const tTime = cfg.to ? cfg.to.getTime() : Infinity;
                 if (d.prepay_serial && d.prepay_serial > 0) {
                     const jsD = excelToJSDate(d.prepay_serial);
                     if (jsD) {
@@ -1239,6 +1240,10 @@
             }
             return true;
         });
+    }
+
+    function renderDebtorsTable(filterCfg) {
+        let filtered = getFilteredDebtors(filterCfg);
 
         // Group by company
         let compMap = {};
@@ -1353,8 +1358,10 @@
         const container = document.getElementById('modalCompanyList');
         if (!modal || !container) return;
 
+        let filtered = getFilteredDebtors(currentFilterConfig);
+
         let compMap = {};
-        rawDebtorsList.forEach(d => {
+        filtered.forEach(d => {
             let c = d.company || "Неизвестная компания";
             if (!compMap[c]) {
                 compMap[c] = { name: c, kam: d.kam || "", cars: [] };
@@ -1363,6 +1370,12 @@
         });
 
         let sortedCompanies = Object.values(compMap).sort((a, b) => b.cars.length - a.cars.length || a.name.localeCompare(b.name));
+
+        const subEl = document.getElementById('modalDebtorsSubtitle');
+        let periodName = currentFilterConfig.mode === 'month' ? currentFilterConfig.month : (currentFilterConfig.mode === 'all' ? 'Весь период' : 'Выбранные даты');
+        if (subEl) {
+            subEl.innerText = `Период: ${periodName} | Компаний: ${sortedCompanies.length} (${filtered.length} авто)`;
+        }
 
         let html = "";
         sortedCompanies.forEach((comp, idx) => {
@@ -1436,9 +1449,10 @@
         }
 
         let selectedCompanyNames = checked.map(cb => decodeURIComponent(cb.getAttribute('data-company')));
+        let filtered = getFilteredDebtors(currentFilterConfig);
 
         let compMap = {};
-        rawDebtorsList.forEach(d => {
+        filtered.forEach(d => {
             if (selectedCompanyNames.includes(d.company)) {
                 if (!compMap[d.company]) compMap[d.company] = [];
                 compMap[d.company].push(d);
