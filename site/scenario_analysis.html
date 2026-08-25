@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СберАвто | Сценарное моделирование выручки и Воронка брендов витрины</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0B1319; color: #F1F5F9; }
+        
+        .sber-gradient { background: linear-gradient(135deg, #107C41 0%, #21A038 50%, #00B074 100%); }
+        .sber-card { background: rgba(16, 27, 35, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 20px; }
+        .sber-card:hover { border-color: rgba(33, 160, 56, 0.3); }
+        .table-row-hover:hover { background-color: rgba(33, 160, 56, 0.06); }
+        .badge-green { background: rgba(33, 160, 56, 0.15); color: #00D084; border: 1px solid rgba(33, 160, 56, 0.3); }
+        .badge-red { background: rgba(239, 68, 68, 0.15); color: #F87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge-yellow { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-purple { background: rgba(168, 85, 247, 0.15); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .badge-blue { background: rgba(59, 130, 246, 0.15); color: #60A5FA; border: 1px solid rgba(59, 130, 246, 0.3); }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col items-center">
+
+    <div class="w-full max-w-7xl space-y-6">
+
+        <!-- HEADER -->
+        <header class="sber-card p-6 border-emerald-500/20 shadow-2xl flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#107C41] to-[#21A038] flex items-center justify-center shadow-lg shadow-emerald-900/30 shrink-0">
+                    <svg viewBox="0 0 24 24" width="26" height="26" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="m8.5 12 2.5 2.5 5-5"></path>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+                            Сбер<span class="text-[#00D084]">Авто</span> | Сценарное финансовое моделирование
+                        </h1>
+                        <span class="px-2.5 py-0.5 bg-emerald-500/10 text-[#00D084] border border-emerald-500/20 rounded-lg text-xs font-bold">
+                            4 Сценария vs Бюджет 59.17M ₽
+                        </span>
+                        <span class="px-2.5 py-0.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-lg text-xs font-bold">
+                            13 брендов витрины (PostHog)
+                        </span>
+                    </div>
+                    <p class="text-slate-400 text-xs mt-1">Оценка факторов риска: изменение ARPU МП2 (до 20k), потеря 50% объема сделок в канале МП2 и сквозная воронка витрины</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition shadow-md">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Главный дашборд
+                </a>
+                <button onclick="window.print()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition shadow-sm">
+                    <i data-lucide="printer" class="w-4 h-4"></i> PDF
+                </button>
+            </div>
+        </header>
+
+        <!-- TOP KPI COMPARISON CARDS (6 CARDS) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <!-- Fact -->
+            <div class="sber-card p-3.5 border-slate-700/60">
+                <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                    <span>Текущий факт</span>
+                    <span class="text-slate-300">1 083 шт</span>
+                </div>
+                <p class="text-xl font-black text-white mt-1">40,26M ₽</p>
+                <div class="text-[11px] mt-1.5 pt-1.5 border-t border-slate-800/80 text-slate-400">
+                    <span>ARPU: <b class="text-slate-200">37 172 ₽</b></span>
+                </div>
+            </div>
+
+            <!-- Budget Target -->
+            <div class="sber-card p-3.5 border-blue-500/40 bg-blue-950/20">
+                <div class="flex justify-between items-center text-blue-400 text-[10px] font-bold uppercase tracking-wider">
+                    <span>🎯 Бюджетный план</span>
+                    <span class="text-blue-300">1 592 шт</span>
+                </div>
+                <p class="text-xl font-black text-blue-400 mt-1">59,17M ₽</p>
+                <div class="text-[11px] mt-1.5 pt-1.5 border-t border-blue-900/40 text-slate-400">
+                    <span>ARPU: <b class="text-blue-300">37 167 ₽</b></span>
+                </div>
+            </div>
+
+            <!-- Scenario 1 -->
+            <div class="sber-card p-3.5 border-emerald-500/40 bg-emerald-950/20">
+                <div class="flex justify-between items-center text-emerald-400 text-[10px] font-bold uppercase tracking-wider">
+                    <span>Сценарий 1 (База)</span>
+                    <span class="text-emerald-300">1 650 шт</span>
+                </div>
+                <p class="text-xl font-black text-emerald-400 mt-1">61,14M ₽</p>
+                <div class="text-[11px] mt-1.5 pt-1.5 border-t border-emerald-900/40 text-slate-400">
+                    <span>vs Бюджет: <b class="text-[#00D084]">+3.3%</b></span>
+                </div>
+            </div>
+
+            <!-- Scenario 2 -->
+            <div class="sber-card p-3.5 border-red-500/40 bg-red-950/20">
+                <div class="flex justify-between items-center text-red-400 text-[10px] font-bold uppercase tracking-wider">
+                    <span>Сценарий 2 (Все 20k)</span>
+                    <span class="text-red-300">1 650 шт</span>
+                </div>
+                <p class="text-xl font-black text-red-400 mt-1">38,81M ₽</p>
+                <div class="text-[11px] mt-1.5 pt-1.5 border-t border-red-900/40 text-slate-400">
+                    <span>vs Бюджет: <b class="text-red-400">-34.4%</b></span>
+                </div>
+            </div>
+
+            <!-- Scenario 3 -->
+            <div class="sber-card p-3.5 border-amber-500/40 bg-amber-950/20">
+                <div class="flex justify-between items-center text-amber-400 text-[10px] font-bold uppercase tracking-wider">
+                    <span>Сценарий 3 (Jetour 20k)</span>
+                    <span class="text-amber-300">1 650 шт</span>
+                </div>
+                <p class="text-xl font-black text-amber-400 mt-1">48,04M ₽</p>
+                <div class="text-[11px] mt-1.5 pt-1.5 border-t border-amber-900/40 text-slate-400">
+                    <span>vs Бюджет: <b class="text-amber-400">-18.8%</b></span>
+                </div>
+            </div>
+
+            <!-- Scenario 4 -->
+            <div class="sber-card p-3.5 border-purple-500/40 bg-purple-950/20">
+                <div class="flex justify-between items-center text-purple-400 text-[10px] font-bold uppercase tracking-wider">
+                    <span>Сценарий 4 (-50% МП2)</span>
+                    <span class="text-purple-300">1 036 шт</span>
+                </div>
+                <p class="text-xl font-black text-purple-400 mt-1">38,18M ₽</p>
+                <div class="text-[11px] mt-1.5 pt-1.5 border-t border-purple-900/40 text-slate-400">
+                    <span>vs Бюджет: <b class="text-purple-300">-35.5%</b></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN SCENARIO MATRIX TABLE -->
+        <div class="sber-card p-6 shadow-xl space-y-4">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i data-lucide="layers" class="w-5 h-5 text-[#00D084]"></i>
+                    Сводная матрица сравнения сценариев vs Бюджетный план
+                </h3>
+                <span class="text-xs text-slate-400">Бюджетная цель по МП2: <b>48%</b> (764 шт) | Розница: <b>52%</b> (828 шт)</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left">
+                    <thead class="bg-slate-900/90 text-slate-300 uppercase font-bold border-b border-slate-700">
+                        <tr>
+                            <th class="py-3.5 px-3.5 rounded-l-xl">Показатель</th>
+                            <th class="py-3.5 px-3 text-right">Текущий факт<br><span class="text-[10px] text-slate-500 font-normal">(1 083 авто)</span></th>
+                            <th class="py-3.5 px-3 text-right text-emerald-400">Сценарий 1<br><span class="text-[10px] text-emerald-600 font-normal">(1650 авто, база)</span></th>
+                            <th class="py-3.5 px-3 text-right text-red-400">Сценарий 2<br><span class="text-[10px] text-red-600 font-normal">(МП2=20k кроме LADA)</span></th>
+                            <th class="py-3.5 px-3 text-right text-amber-400">Сценарий 3<br><span class="text-[10px] text-amber-600 font-normal">(МП2=20k только Jetour)</span></th>
+                            <th class="py-3.5 px-3 text-right text-purple-400">Сценарий 4<br><span class="text-[10px] text-purple-500 font-normal">(-50% сделок МП2)</span></th>
+                            <th class="py-3.5 px-3.5 text-right text-blue-400 rounded-r-xl bg-blue-950/30">🎯 БЮДЖЕТ<br><span class="text-[10px] text-blue-300 font-normal">(Цель года)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 font-medium text-slate-300">
+                        <tr class="table-row-hover">
+                            <td class="py-3 px-3.5 font-bold text-white flex items-center gap-2">
+                                <i data-lucide="car" class="w-4 h-4 text-slate-400"></i> Всего авто (сделок)
+                            </td>
+                            <td class="py-3 px-3 text-right font-bold text-slate-200">1 083 шт.</td>
+                            <td class="py-3 px-3 text-right font-bold text-emerald-400">1 650 шт.</td>
+                            <td class="py-3 px-3 text-right font-bold text-slate-200">1 650 шт.</td>
+                            <td class="py-3 px-3 text-right font-bold text-slate-200">1 650 шт.</td>
+                            <td class="py-3 px-3 text-right font-bold text-purple-400">1 036 шт.</td>
+                            <td class="py-3 px-3.5 text-right font-black text-blue-400 bg-blue-950/20">1 592 шт.</td>
+                        </tr>
+
+                        <tr class="table-row-hover">
+                            <td class="py-2.5 px-3.5 pl-7 text-slate-400">🏢 • Оптовые сделки МП2</td>
+                            <td class="py-2.5 px-3 text-right">802 шт. <span class="text-[10px] text-slate-500">(74.1%)</span></td>
+                            <td class="py-2.5 px-3 text-right">1 229 шт. <span class="text-[10px] text-slate-500">(74.5%)</span></td>
+                            <td class="py-2.5 px-3 text-right">1 229 шт. <span class="text-[10px] text-slate-500">(74.5%)</span></td>
+                            <td class="py-2.5 px-3 text-right">1 229 шт. <span class="text-[10px] text-slate-500">(74.5%)</span></td>
+                            <td class="py-2.5 px-3 text-right font-semibold text-purple-300">614 шт. <span class="text-[10px] text-purple-400">(59.3%)</span></td>
+                            <td class="py-2.5 px-3.5 text-right font-bold text-blue-300 bg-blue-950/20">764 шт. <span class="text-[10px] text-blue-400">(48.0%)</span></td>
+                        </tr>
+
+                        <tr class="table-row-hover">
+                            <td class="py-2.5 px-3.5 pl-7 text-slate-400">👤 • Розничные сделки</td>
+                            <td class="py-2.5 px-3 text-right">281 шт. <span class="text-[10px] text-slate-500">(25.9%)</span></td>
+                            <td class="py-2.5 px-3 text-right">421 шт. <span class="text-[10px] text-slate-500">(25.5%)</span></td>
+                            <td class="py-2.5 px-3 text-right">421 шт. <span class="text-[10px] text-slate-500">(25.5%)</span></td>
+                            <td class="py-2.5 px-3 text-right">421 шт. <span class="text-[10px] text-slate-500">(25.5%)</span></td>
+                            <td class="py-2.5 px-3 text-right font-semibold text-purple-300">421 шт. <span class="text-[10px] text-purple-400">(40.7%)</span></td>
+                            <td class="py-2.5 px-3.5 text-right font-bold text-blue-300 bg-blue-950/20">828 шт. <span class="text-[10px] text-blue-400">(52.0%)</span></td>
+                        </tr>
+
+                        <tr class="table-row-hover border-t-2 border-emerald-500/30 bg-emerald-950/10">
+                            <td class="py-3.5 px-3.5 font-black text-white text-sm">💵 ИТОГО ВЫРУЧКА (без НДС)</td>
+                            <td class="py-3.5 px-3 text-right font-black text-slate-100 text-sm">40 256 976 ₽</td>
+                            <td class="py-3.5 px-3 text-right font-black text-[#00D084] text-sm">61 136 247 ₽</td>
+                            <td class="py-3.5 px-3 text-right font-black text-red-400 text-sm">38 811 340 ₽</td>
+                            <td class="py-3.5 px-3 text-right font-black text-amber-400 text-sm">48 040 539 ₽</td>
+                            <td class="py-3.5 px-3 text-right font-black text-purple-400 text-sm">38 175 411 ₽</td>
+                            <td class="py-3.5 px-3.5 text-right font-black text-blue-400 text-sm bg-blue-950/30">59 170 000 ₽</td>
+                        </tr>
+
+                        <tr class="table-row-hover bg-slate-900/40 font-bold">
+                            <td class="py-3 px-3.5 text-white">📊 ОБЩИЙ ARPU (на 1 авто)</td>
+                            <td class="py-3 px-3 text-right text-slate-100">37 172 ₽</td>
+                            <td class="py-3 px-3 text-right text-emerald-400">37 052 ₽</td>
+                            <td class="py-3 px-3 text-right text-red-400">23 522 ₽</td>
+                            <td class="py-3 px-3 text-right text-amber-400">29 115 ₽</td>
+                            <td class="py-3 px-3 text-right text-purple-400">36 864 ₽</td>
+                            <td class="py-3 px-3.5 text-right text-blue-300 bg-blue-950/30">37 167,09 ₽</td>
+                        </tr>
+
+                        <tr class="table-row-hover font-bold border-t border-slate-700 bg-slate-900/60">
+                            <td class="py-3 px-3.5 text-white flex items-center gap-1.5">
+                                <i data-lucide="target" class="w-4 h-4 text-blue-400"></i> Отклонение от БЮДЖЕТА
+                            </td>
+                            <td class="py-3 px-3 text-right text-slate-500">—</td>
+                            <td class="py-3 px-3 text-right">
+                                <span class="px-2 py-0.5 badge-green rounded-md text-[10px] font-bold">+1.97M (+3.3%)</span>
+                            </td>
+                            <td class="py-3 px-3 text-right">
+                                <span class="px-2 py-0.5 badge-red rounded-md text-[10px] font-bold">-20.36M (-34.4%)</span>
+                            </td>
+                            <td class="py-3 px-3 text-right">
+                                <span class="px-2 py-0.5 badge-yellow rounded-md text-[10px] font-bold">-11.13M (-18.8%)</span>
+                            </td>
+                            <td class="py-3 px-3 text-right">
+                                <span class="px-2 py-0.5 badge-purple rounded-md text-[10px] font-bold">-20.99M (-35.5%)</span>
+                            </td>
+                            <td class="py-3 px-3.5 text-right bg-blue-950/30">
+                                <span class="px-2 py-0.5 badge-blue rounded-md text-[10px] font-bold">100% ПЛАН</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CHARTS SECTION -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="sber-card p-5 lg:col-span-2 flex flex-col justify-between">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-emerald-400"></i>
+                        Сравнение итоговой выручки по 4-м сценариям vs Бюджет
+                    </h4>
+                    <span class="text-xs text-slate-400">млн ₽ (без НДС)</span>
+                </div>
+                <div class="h-64 relative">
+                    <canvas id="revenueBarChart"></canvas>
+                </div>
+            </div>
+
+            <div class="sber-card p-5 flex flex-col justify-between">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-4 h-4 text-purple-400"></i>
+                        Сплит каналов продаж
+                    </h4>
+                    <span class="text-xs text-slate-400">шт. / %</span>
+                </div>
+                <div class="h-48 relative flex items-center justify-center">
+                    <canvas id="channelPieChart"></canvas>
+                </div>
+                <div class="flex justify-around text-center text-xs mt-3 pt-3 border-t border-slate-800">
+                    <div>
+                        <p class="text-slate-400 text-[10px]">Бюджет (Цель)</p>
+                        <p class="font-bold text-blue-400 mt-0.5">48% МП2 / 52% Розн</p>
+                    </div>
+                    <div>
+                        <p class="text-slate-400 text-[10px]">Факт / Сц 1</p>
+                        <p class="font-bold text-emerald-400 mt-0.5">74.5% МП2 / 25.5% Розн</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🌟 NEW SECTION: ALL 13 BRANDS VITRINA (POSTHOG) & SALES FUNNEL MATRIX -->
+        <div class="sber-card p-6 shadow-xl space-y-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                <div>
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i data-lucide="globe" class="w-5 h-5 text-blue-400"></i>
+                        Сквозная воронка 13 брендов: Витрина (PostHog) ➔ Продажи ➔ Сценарии
+                    </h3>
+                    <p class="text-xs text-slate-400 mt-0.5">Оцифрованные данные из скриншотов витрины и фактические выдачи CRM</p>
+                </div>
+
+                <!-- Month switcher for Brand Table -->
+                <div class="flex items-center gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
+                    <button onclick="setBrandTableMonth('2026-08')" id="btn-m-2026-08" class="b-m-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition">
+                        📅 Август 2026
+                    </button>
+                    <button onclick="setBrandTableMonth('2026-07')" id="btn-m-2026-07" class="b-m-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
+                        📅 Июль 2026
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left" id="allBrandsTable">
+                    <thead class="bg-slate-900/90 text-slate-300 uppercase font-bold border-b border-slate-700">
+                        <tr>
+                            <th class="py-3 px-3 rounded-l-xl">Бренд</th>
+                            <th class="py-3 px-2.5 text-right text-blue-400">Показы карточки</th>
+                            <th class="py-3 px-2.5 text-right text-blue-300">Клики заявки</th>
+                            <th class="py-3 px-2.5 text-right text-cyan-400">Заявки витрины</th>
+                            <th class="py-3 px-2.5 text-right text-cyan-300">CR Витрины</th>
+                            <th class="py-3 px-2.5 text-right text-emerald-400">Сделки розница</th>
+                            <th class="py-3 px-2.5 text-right text-slate-400">Сделки МП2</th>
+                            <th class="py-3 px-2.5 text-right font-bold text-white">Всего сделок</th>
+                            <th class="py-3 px-2.5 text-right text-emerald-400">Выручка розницы</th>
+                            <th class="py-3 px-2.5 text-right text-slate-300">Выручка МП2</th>
+                            <th class="py-3 px-2.5 text-right font-bold text-white">Итого выручка</th>
+                            <th class="py-3 px-3 text-right rounded-r-xl text-amber-400">Сценарий 2 (Все 20k)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/50" id="allBrandsTableBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- KEY STRATEGIC TAKEAWAYS (4 CARDS) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5 text-xs">
+            <div class="sber-card p-4 border-l-4 border-l-[#00D084]">
+                <h4 class="font-bold text-white text-sm mb-1.5">Сценарий 1: База</h4>
+                <p class="text-slate-300 leading-relaxed">
+                    Выполняет Бюджет (<b class="text-[#00D084]">61,14M ₽ vs 59,17M ₽</b>). ARPU сохраняется <b class="text-white">37 052 ₽</b> при Take Rate 1.43%.
+                </p>
+            </div>
+
+            <div class="sber-card p-4 border-l-4 border-l-red-500">
+                <h4 class="font-bold text-white text-sm mb-1.5">Сценарий 2: Все 20k</h4>
+                <p class="text-slate-300 leading-relaxed">
+                    Глубокий провал выручки до <b class="text-red-400">38,81M ₽</b> (<b class="text-red-400">-34.4% к плану</b>). Общий ARPU падает до 23 522 ₽.
+                </p>
+            </div>
+
+            <div class="sber-card p-4 border-l-4 border-l-amber-500">
+                <h4 class="font-bold text-white text-sm mb-1.5">Сценарий 3: Jetour 20k</h4>
+                <p class="text-slate-300 leading-relaxed">
+                    Выручка <b class="text-amber-300">48,04M ₽</b> (<b class="text-amber-400">-18.8% к плану</b>). Потери только по JETOUR составляют -13,10 млн ₽.
+                </p>
+            </div>
+
+            <div class="sber-card p-4 border-l-4 border-l-purple-500">
+                <h4 class="font-bold text-white text-sm mb-1.5">Сценарий 4: -50% МП2</h4>
+                <p class="text-slate-300 leading-relaxed">
+                    Выручка <b class="text-purple-300">38,18M ₽</b> (<b class="text-purple-300">-35.5% к плану</b>). Объем 1 036 авто. ARPU высокий (36 864 ₽), но не хватает валового объема.
+                </p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="text-center text-slate-500 text-xs py-4">
+            СберАвто B2C Analytics | Сценарный анализ и Сквозная воронка 13 брендов | Актуализировано 25 августа 2026 г.
+        </footer>
+
+    </div>
+
+    <script>
+        const brandDataByMonth = {"2026-08": {"JETOUR": {"brand": "JETOUR", "tot_d": 585, "mp2_d": 456, "no_mp2_d": 129, "rev_mp2": 17745409.71, "rev_no_mp2": 5558664.17, "rev_tot": 23304073.88, "arpu_tot": 39836.02, "arpu_no_mp2": 43090.42, "sc1_deals": 923, "sc1_rev": 36760728.4, "sc2_rev": 20555332.55, "sc3_rev": 20555332.55, "sc4_deals": 564, "sc4_rev": 22777981.29, "vitrina": {"fileName": "Джетур август.png", "brand": "JETOUR", "month": "2026-08", "steps": [197658, 29885, 3840, 3756, 2413, 2356], "page_view": 197658, "car_card_show": 29885, "car_card_click": 3840, "offer_show": 3756, "offer_click": 2413, "offer_success": 2356}}, "LADA": {"brand": "LADA", "tot_d": 157, "mp2_d": 69, "no_mp2_d": 88, "rev_mp2": 747114.65, "rev_no_mp2": 1721325.96, "rev_tot": 2468440.61, "arpu_tot": 15722.55, "arpu_no_mp2": 19560.52, "sc1_deals": 248, "sc1_rev": 3893811.67, "sc2_rev": 3893811.67, "sc3_rev": 3893811.67, "sc4_deals": 193, "sc4_rev": 3299983.16, "vitrina": {"fileName": "Лада август.png", "brand": "LADA", "month": "2026-08", "steps": [197687, 39176, 4071, 3973, 2413, 2356], "page_view": 197687, "car_card_show": 39176, "car_card_click": 4071, "offer_show": 3973, "offer_click": 2413, "offer_success": 2356}}, "HAVAL": {"brand": "HAVAL", "tot_d": 2, "mp2_d": 0, "no_mp2_d": 2, "rev_mp2": 0, "rev_no_mp2": 134016.39, "rev_tot": 134016.39, "arpu_tot": 67008.2, "arpu_no_mp2": 67008.2, "sc1_deals": 3, "sc1_rev": 211402.53, "sc2_rev": 211402.53, "sc3_rev": 211402.53, "sc4_deals": 3, "sc4_rev": 211402.53, "vitrina": {"fileName": "Хавал август.png", "brand": "HAVAL", "month": "2026-08", "steps": [197626, 24539, 2468, 2385, 1453, 1413], "page_view": 197626, "car_card_show": 24539, "car_card_click": 2468, "offer_show": 2385, "offer_click": 1453, "offer_success": 1413}}, "CHANGAN": {"brand": "CHANGAN", "tot_d": 22, "mp2_d": 20, "no_mp2_d": 2, "rev_mp2": 830239.34, "rev_no_mp2": 80819.68, "rev_tot": 911059.02, "arpu_tot": 41411.77, "arpu_no_mp2": 40409.84, "sc1_deals": 35, "sc1_rev": 1437138.99, "sc2_rev": 652078.19, "sc3_rev": 1437138.99, "sc4_deals": 19, "sc4_rev": 791679.49, "vitrina": {"fileName": "Чанган август.png", "brand": "CHANGAN", "month": "2026-08", "steps": [197635, 22958, 2247, 2186, 1360, 1315], "page_view": 197635, "car_card_show": 22958, "car_card_click": 2247, "offer_show": 2186, "offer_click": 1360, "offer_success": 1315}}, "SOUEAST": {"brand": "SOUEAST", "tot_d": 85, "mp2_d": 66, "no_mp2_d": 19, "rev_mp2": 2339016.3, "rev_no_mp2": 691163.93, "rev_tot": 3030180.23, "arpu_tot": 35649.18, "arpu_no_mp2": 36377.05, "sc1_deals": 134, "sc1_rev": 4779921.01, "sc2_rev": 2795186.18, "sc3_rev": 4779921.01, "sc4_deals": 82, "sc4_rev": 2933129.48, "vitrina": {"fileName": "Соуист август.png", "brand": "SOUEAST", "month": "2026-08", "steps": [197620, 16771, 1757, 1716, 1038, 1013], "page_view": 197620, "car_card_show": 16771, "car_card_click": 1757, "offer_show": 1716, "offer_click": 1038, "offer_success": 1013}}, "SOLARIS": {"brand": "SOLARIS", "tot_d": 79, "mp2_d": 69, "no_mp2_d": 10, "rev_mp2": 2356286.03, "rev_no_mp2": 444822.96, "rev_tot": 2801108.99, "arpu_tot": 35457.08, "arpu_no_mp2": 44482.3, "sc1_deals": 125, "sc1_rev": 4418575.37, "sc2_rev": 2488565.82, "sc3_rev": 4418575.37, "sc4_deals": 70, "sc4_rev": 2545730.51, "vitrina": {"fileName": "Солярис август.png", "brand": "SOLARIS", "month": "2026-08", "steps": [197650, 16692, 1353, 1323, 696, 682], "page_view": 197650, "car_card_show": 16692, "car_card_click": 1353, "offer_show": 1323, "offer_click": 696, "offer_success": 682}}, "GAC": {"brand": "GAC", "tot_d": 67, "mp2_d": 61, "no_mp2_d": 6, "rev_mp2": 4114926.21, "rev_no_mp2": 430863.53, "rev_tot": 4545789.74, "arpu_tot": 67847.61, "arpu_no_mp2": 71810.59, "sc1_deals": 106, "sc1_rev": 7170700.83, "sc2_rev": 2253430.94, "sc3_rev": 7170700.83, "sc4_deals": 58, "sc4_rev": 3917635.17, "vitrina": {"fileName": "ГАК август.png", "brand": "GAC", "month": "2026-08", "steps": [191515, 19375, 1551, 1496, 912, 885], "page_view": 191515, "car_card_show": 19375, "car_card_click": 1551, "offer_show": 1496, "offer_click": 912, "offer_success": 885}}, "TENET": {"brand": "TENET", "tot_d": 12, "mp2_d": 1, "no_mp2_d": 11, "rev_mp2": 39278.69, "rev_no_mp2": 552167.66, "rev_tot": 591446.35, "arpu_tot": 49287.2, "arpu_no_mp2": 50197.06, "sc1_deals": 19, "sc1_rev": 932969.86, "sc2_rev": 903797.06, "sc3_rev": 932969.86, "sc4_deals": 18, "sc4_rev": 910288.86, "vitrina": {"fileName": "Тенет август.png", "brand": "TENET", "month": "2026-08", "steps": [197615, 18956, 2155, 2101, 1290, 1267], "page_view": 197615, "car_card_show": 18956, "car_card_click": 2155, "offer_show": 2101, "offer_click": 1290, "offer_success": 1267}}, "BELGEE": {"brand": "BELGEE", "tot_d": 0, "mp2_d": 0, "no_mp2_d": 0, "rev_mp2": 0, "rev_no_mp2": 0, "rev_tot": 0, "arpu_tot": 0, "arpu_no_mp2": 0, "sc1_deals": 0, "sc1_rev": 0.0, "sc2_rev": 0.0, "sc3_rev": 0.0, "sc4_deals": 0, "sc4_rev": 0.0, "vitrina": {"fileName": "Белджи август.png", "brand": "BELGEE", "month": "2026-08", "steps": [197681, 13157, 1004, 979, 572, 564], "page_view": 197681, "car_card_show": 13157, "car_card_click": 1004, "offer_show": 979, "offer_click": 572, "offer_success": 564}}, "GEELY": {"brand": "GEELY", "tot_d": 0, "mp2_d": 0, "no_mp2_d": 0, "rev_mp2": 0, "rev_no_mp2": 0, "rev_tot": 0, "arpu_tot": 0, "arpu_no_mp2": 0, "sc1_deals": 0, "sc1_rev": 0.0, "sc2_rev": 0.0, "sc3_rev": 0.0, "sc4_deals": 0, "sc4_rev": 0.0, "vitrina": {"fileName": "Джили август.png", "brand": "GEELY", "month": "2026-08", "steps": [197685, 7825, 441, 428, 265, 262], "page_view": 197685, "car_card_show": 7825, "car_card_click": 441, "offer_show": 428, "offer_click": 265, "offer_success": 262}}, "JAECOO": {"brand": "JAECOO", "tot_d": 2, "mp2_d": 2, "no_mp2_d": 0, "rev_mp2": 100000.0, "rev_no_mp2": 0, "rev_tot": 100000.0, "arpu_tot": 50000.0, "arpu_no_mp2": 0, "sc1_deals": 3, "sc1_rev": 157743.79, "sc2_rev": 49180.33, "sc3_rev": 157743.79, "sc4_deals": 2, "sc4_rev": 100000.0, "vitrina": {"fileName": "Джейленд август.png", "brand": "JAECOO", "month": "2026-08", "steps": [197663, 2709, 234, 229, 146, 144], "page_view": 197663, "car_card_show": 2709, "car_card_click": 234, "offer_show": 229, "offer_click": 146, "offer_success": 144}}, "OMODA": {"brand": "OMODA", "tot_d": 6, "mp2_d": 2, "no_mp2_d": 4, "rev_mp2": 49180.32, "rev_no_mp2": 204098.36, "rev_tot": 253278.68, "arpu_tot": 42213.11, "arpu_no_mp2": 51024.59, "sc1_deals": 9, "sc1_rev": 399531.38, "sc2_rev": 371132.81, "sc3_rev": 399531.38, "sc4_deals": 8, "sc4_rev": 371132.8, "vitrina": {"fileName": "Омода август.png", "brand": "OMODA", "month": "2026-08", "steps": [197670, 8771, 929, 910, 567, 554], "page_view": 197670, "car_card_show": 8771, "car_card_click": 929, "offer_show": 910, "offer_click": 567, "offer_success": 554}}, "МОСКВИЧ": {"brand": "МОСКВИЧ", "tot_d": 0, "mp2_d": 0, "no_mp2_d": 0, "rev_mp2": 0, "rev_no_mp2": 0, "rev_tot": 0, "arpu_tot": 0, "arpu_no_mp2": 0, "sc1_deals": 0, "sc1_rev": 0.0, "sc2_rev": 0.0, "sc3_rev": 0.0, "sc4_deals": 0, "sc4_rev": 0.0, "vitrina": {"fileName": "Москвич август.png", "brand": "МОСКВИЧ", "month": "2026-08", "steps": [197691, 6979, 360, 354, 223, 216], "page_view": 197691, "car_card_show": 6979, "car_card_click": 360, "offer_show": 354, "offer_click": 223, "offer_success": 216}}}, "2026-07": {"JETOUR": {"brand": "JETOUR", "tot_d": 988, "mp2_d": 613, "no_mp2_d": 375, "rev_mp2": 22220075.46, "rev_no_mp2": 14686773.25, "rev_tot": 36906848.71, "arpu_tot": 37355.11, "arpu_no_mp2": 39164.73, "sc1_deals": 1084, "sc1_rev": 40489561.42, "sc2_rev": 27145270.84, "sc3_rev": 27145270.84, "sc4_deals": 747, "sc4_rev": 28291840.16, "vitrina": {"fileName": "Джетур июль.png", "brand": "JETOUR", "month": "2026-07", "steps": [218984, 35925, 4616, 4522, 2950, 2890], "page_view": 218984, "car_card_show": 35925, "car_card_click": 4616, "offer_show": 4522, "offer_click": 2950, "offer_success": 2890}}, "LADA": {"brand": "LADA", "tot_d": 171, "mp2_d": 81, "no_mp2_d": 90, "rev_mp2": 801219.14, "rev_no_mp2": 1639561.09, "rev_tot": 2440780.23, "arpu_tot": 14273.57, "arpu_no_mp2": 18217.35, "sc1_deals": 188, "sc1_rev": 2677717.67, "sc2_rev": 2677717.67, "sc3_rev": 2677717.67, "sc4_deals": 143, "sc4_rev": 2233950.76, "vitrina": {"fileName": "Лада июль.png", "brand": "LADA", "month": "2026-07", "steps": [218984, 37999, 3699, 3609, 2194, 2114], "page_view": 218984, "car_card_show": 37999, "car_card_click": 3699, "offer_show": 3609, "offer_click": 2194, "offer_success": 2114}}, "HAVAL": {"brand": "HAVAL", "tot_d": 6, "mp2_d": 0, "no_mp2_d": 6, "rev_mp2": 0, "rev_no_mp2": 230860.66, "rev_tot": 230860.66, "arpu_tot": 38476.78, "arpu_no_mp2": 38476.78, "sc1_deals": 7, "sc1_rev": 253271.34, "sc2_rev": 253271.34, "sc3_rev": 253271.34, "sc4_deals": 7, "sc4_rev": 253271.34, "vitrina": {"fileName": "Хавал июль.png", "brand": "HAVAL", "month": "2026-07", "steps": [218984, 23201, 2212, 2153, 1348, 1315], "page_view": 218984, "car_card_show": 23201, "car_card_click": 2212, "offer_show": 2153, "offer_click": 1348, "offer_success": 1315}}, "CHANGAN": {"brand": "CHANGAN", "tot_d": 11, "mp2_d": 8, "no_mp2_d": 3, "rev_mp2": 210327.84, "rev_no_mp2": 137945.89, "rev_tot": 348273.73, "arpu_tot": 31661.25, "arpu_no_mp2": 45981.96, "sc1_deals": 12, "sc1_rev": 382082.22, "sc2_rev": 298877.9, "sc3_rev": 382082.22, "sc4_deals": 7, "sc4_rev": 256500.83, "vitrina": {"fileName": "Чанган июль.png", "brand": "CHANGAN", "month": "2026-07", "steps": [218984, 28865, 2654, 2591, 1597, 1563], "page_view": 218984, "car_card_show": 28865, "car_card_click": 2654, "offer_show": 2591, "offer_click": 1597, "offer_success": 1563}}, "SOUEAST": {"brand": "SOUEAST", "tot_d": 37, "mp2_d": 32, "no_mp2_d": 5, "rev_mp2": 970704.84, "rev_no_mp2": 184020.58, "rev_tot": 1154725.42, "arpu_tot": 31208.8, "arpu_no_mp2": 36804.12, "sc1_deals": 41, "sc1_rev": 1266819.78, "sc2_rev": 775654.77, "sc3_rev": 1266819.78, "sc4_deals": 24, "sc4_rev": 747905.75, "vitrina": {"fileName": "Соуист июль.png", "brand": "SOUEAST", "month": "2026-07", "steps": [218984, 3098, 264, 256, 140, 138], "page_view": 218984, "car_card_show": 3098, "car_card_click": 264, "offer_show": 256, "offer_click": 140, "offer_success": 138}}, "SOLARIS": {"brand": "SOLARIS", "tot_d": 125, "mp2_d": 110, "no_mp2_d": 15, "rev_mp2": 3543606.42, "rev_no_mp2": 668815.35, "rev_tot": 4212421.77, "arpu_tot": 33699.37, "arpu_no_mp2": 44587.69, "sc1_deals": 137, "sc1_rev": 4621340.37, "sc2_rev": 2717346.8, "sc3_rev": 4621340.37, "sc4_deals": 76, "sc4_rev": 2666616.47, "vitrina": {"fileName": "Солярис июль.png", "brand": "SOLARIS", "month": "2026-07", "steps": [218984, 19774, 1615, 1573, 879, 852], "page_view": 218984, "car_card_show": 19774, "car_card_click": 1615, "offer_show": 1573, "offer_click": 879, "offer_success": 852}}, "GAC": {"brand": "GAC", "tot_d": 41, "mp2_d": 30, "no_mp2_d": 11, "rev_mp2": 2452361.88, "rev_no_mp2": 918168.85, "rev_tot": 3370530.73, "arpu_tot": 82208.07, "arpu_no_mp2": 83469.9, "sc1_deals": 45, "sc1_rev": 3697723.21, "sc2_rev": 1548283.21, "sc3_rev": 3697723.21, "sc4_deals": 28, "sc4_rev": 2315225.94, "vitrina": {"fileName": "ГАК июль.png", "brand": "GAC", "month": "2026-07", "steps": [218984, 19920, 1590, 1557, 932, 908], "page_view": 218984, "car_card_show": 19920, "car_card_click": 1590, "offer_show": 1557, "offer_click": 932, "offer_success": 908}}, "TENET": {"brand": "TENET", "tot_d": 22, "mp2_d": 0, "no_mp2_d": 22, "rev_mp2": 0, "rev_no_mp2": 1526640.16, "rev_tot": 1526640.16, "arpu_tot": 69392.73, "arpu_no_mp2": 69392.73, "sc1_deals": 24, "sc1_rev": 1674837.94, "sc2_rev": 1674837.94, "sc3_rev": 1674837.94, "sc4_deals": 24, "sc4_rev": 1674837.94, "vitrina": {"fileName": "Тенет июль.png", "brand": "TENET", "month": "2026-07", "steps": [218984, 25069, 2395, 2335, 1363, 1337], "page_view": 218984, "car_card_show": 25069, "car_card_click": 2395, "offer_show": 2335, "offer_click": 1363, "offer_success": 1337}}, "BELGEE": {"brand": "BELGEE", "tot_d": 0, "mp2_d": 0, "no_mp2_d": 0, "rev_mp2": 0, "rev_no_mp2": 0, "rev_tot": 0, "arpu_tot": 0, "arpu_no_mp2": 0, "sc1_deals": 0, "sc1_rev": 0.0, "sc2_rev": 0.0, "sc3_rev": 0.0, "sc4_deals": 0, "sc4_rev": 0.0, "vitrina": {"fileName": "Белджи июль.png", "brand": "BELGEE", "month": "2026-07", "steps": [218984, 14863, 1082, 1052, 614, 603], "page_view": 218984, "car_card_show": 14863, "car_card_click": 1082, "offer_show": 1052, "offer_click": 614, "offer_success": 603}}, "GEELY": {"brand": "GEELY", "tot_d": 0, "mp2_d": 0, "no_mp2_d": 0, "rev_mp2": 0, "rev_no_mp2": 0, "rev_tot": 0, "arpu_tot": 0, "arpu_no_mp2": 0, "sc1_deals": 0, "sc1_rev": 0.0, "sc2_rev": 0.0, "sc3_rev": 0.0, "sc4_deals": 0, "sc4_rev": 0.0, "vitrina": {"fileName": "Джили июль.png", "brand": "GEELY", "month": "2026-07", "steps": [218984, 9562, 586, 568, 337, 332], "page_view": 218984, "car_card_show": 9562, "car_card_click": 586, "offer_show": 568, "offer_click": 337, "offer_success": 332}}, "JAECOO": {"brand": "JAECOO", "tot_d": 3, "mp2_d": 0, "no_mp2_d": 3, "rev_mp2": 0, "rev_no_mp2": 202670.5, "rev_tot": 202670.5, "arpu_tot": 67556.83, "arpu_no_mp2": 67556.83, "sc1_deals": 3, "sc1_rev": 222344.63, "sc2_rev": 222344.63, "sc3_rev": 222344.63, "sc4_deals": 3, "sc4_rev": 222344.63, "vitrina": {"fileName": "Джейку июль.png", "brand": "JAECOO", "month": "2026-07", "steps": [218984, 10788, 1064, 1045, 654, 639], "page_view": 218984, "car_card_show": 10788, "car_card_click": 1064, "offer_show": 1045, "offer_click": 654, "offer_success": 639}}, "OMODA": {"brand": "OMODA", "tot_d": 6, "mp2_d": 0, "no_mp2_d": 6, "rev_mp2": 0, "rev_no_mp2": 270823.76, "rev_tot": 270823.76, "arpu_tot": 45137.29, "arpu_no_mp2": 45137.29, "sc1_deals": 7, "sc1_rev": 297113.83, "sc2_rev": 297113.83, "sc3_rev": 297113.83, "sc4_deals": 7, "sc4_rev": 297113.83, "vitrina": {"fileName": "Омода июль.png", "brand": "OMODA", "month": "2026-07", "steps": [218984, 9281, 927, 898, 563, 549], "page_view": 218984, "car_card_show": 9281, "car_card_click": 927, "offer_show": 898, "offer_click": 563, "offer_success": 549}}, "МОСКВИЧ": {"brand": "МОСКВИЧ", "tot_d": 1, "mp2_d": 0, "no_mp2_d": 1, "rev_mp2": 0, "rev_no_mp2": 10655.74, "rev_tot": 10655.74, "arpu_tot": 10655.74, "arpu_no_mp2": 10655.74, "sc1_deals": 1, "sc1_rev": 11690.14, "sc2_rev": 11690.14, "sc3_rev": 11690.14, "sc4_deals": 1, "sc4_rev": 11690.14, "vitrina": {"fileName": "Москвич июль.png", "brand": "МОСКВИЧ", "month": "2026-07", "steps": [218984, 5518, 306, 301, 181, 178], "page_view": 218984, "car_card_show": 5518, "car_card_click": 306, "offer_show": 301, "offer_click": 181, "offer_success": 178}}}};
+        let currentBrandMonth = '2026-08';
+
+        const fmtNum = (num) => Math.round(num || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        const fmtRub = (num) => fmtNum(num) + " ₽";
+
+        function setBrandTableMonth(month) {
+            currentBrandMonth = month;
+            document.querySelectorAll('.b-m-btn').forEach(b => {
+                b.className = 'b-m-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition';
+            });
+            const activeBtn = document.getElementById('btn-m-' + month);
+            if (activeBtn) {
+                activeBtn.className = 'b-m-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white transition';
+            }
+            renderBrandsTable();
+        }
+
+        function renderBrandsTable() {
+            const dataObj = brandDataByMonth[currentBrandMonth] || {};
+            const allBrands = ['JETOUR', 'LADA', 'HAVAL', 'CHANGAN', 'SOUEAST', 'SOLARIS', 'GAC', 'TENET', 'BELGEE', 'GEELY', 'JAECOO', 'OMODA', 'МОСКВИЧ'];
+            
+            // Sort by rev_tot or vitrina car_card_show descending
+            allBrands.sort((a, b) => (dataObj[b]?.rev_tot || 0) - (dataObj[a]?.rev_tot || 0) || (dataObj[b]?.vitrina?.car_card_show || 0) - (dataObj[a]?.vitrina?.car_card_show || 0));
+
+            let rows = '';
+            allBrands.forEach(b => {
+                const d = dataObj[b] || {};
+                const v = d.vitrina || {};
+                const vShow = v.car_card_show || 0;
+                const vClick = v.car_card_click || 0;
+                const vSucc = v.offer_success || 0;
+                const vCr = vShow > 0 ? ((vSucc / vShow) * 100).toFixed(2) + '%' : '—';
+                
+                const isTop = d.tot_d > 10;
+                
+                rows += `
+                    <tr class="table-row-hover ${isTop ? 'font-bold text-slate-200' : 'text-slate-400'}">
+                        <td class="py-2.5 px-3 text-white flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full ${d.rev_tot > 1000000 ? 'bg-emerald-500' : (d.tot_d > 0 ? 'bg-blue-500' : 'bg-slate-600')}"></span>
+                            ${b}
+                        </td>
+                        <td class="py-2.5 px-2.5 text-right text-blue-400 font-medium">${fmtNum(vShow)}</td>
+                        <td class="py-2.5 px-2.5 text-right text-blue-300 font-medium">${fmtNum(vClick)}</td>
+                        <td class="py-2.5 px-2.5 text-right text-cyan-400 font-medium">${fmtNum(vSucc)}</td>
+                        <td class="py-2.5 px-2.5 text-right text-cyan-300 font-semibold">${vCr}</td>
+                        <td class="py-2.5 px-2.5 text-right text-emerald-400 font-bold">${fmtNum(d.no_mp2_d || 0)} шт.</td>
+                        <td class="py-2.5 px-2.5 text-right text-slate-400">${fmtNum(d.mp2_d || 0)} шт.</td>
+                        <td class="py-2.5 px-2.5 text-right font-black text-white">${fmtNum(d.tot_d || 0)} шт.</td>
+                        <td class="py-2.5 px-2.5 text-right text-emerald-400 font-semibold">${fmtRub(d.rev_no_mp2 || 0)}</td>
+                        <td class="py-2.5 px-2.5 text-right text-slate-400">${fmtRub(d.rev_mp2 || 0)}</td>
+                        <td class="py-2.5 px-2.5 text-right font-black text-white">${fmtRub(d.rev_tot || 0)}</td>
+                        <td class="py-2.5 px-3 text-right text-amber-400 font-bold">${fmtRub(d.sc2_rev || 0)}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('allBrandsTableBody').innerHTML = rows;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+            renderBrandsTable();
+
+            // Revenue Bar Chart
+            const ctxRev = document.getElementById('revenueBarChart').getContext('2d');
+            new Chart(ctxRev, {
+                type: 'bar',
+                data: {
+                    labels: ['Текущий факт', 'Сценарий 1 (База)', 'Сценарий 2 (Все 20k)', 'Сценарий 3 (Jetour 20k)', 'Сценарий 4 (-50% МП2)', '🎯 БЮДЖЕТ'],
+                    datasets: [{
+                        label: 'Итоговая выручка (млн ₽)',
+                        data: [40.26, 61.14, 38.81, 48.04, 38.18, 59.17],
+                        backgroundColor: [
+                            'rgba(148, 163, 184, 0.7)',
+                            'rgba(33, 160, 56, 0.85)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(245, 158, 11, 0.85)',
+                            'rgba(168, 85, 247, 0.85)',
+                            'rgba(59, 130, 246, 0.85)'
+                        ],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#94A3B8', callback: (v) => v + 'M' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#CBD5E1', font: { size: 10, weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+
+            // Channel Split Pie Chart
+            const ctxPie = document.getElementById('channelPieChart').getContext('2d');
+            new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Опт МП2 (74.5%)', 'Розница (25.5%)'],
+                    datasets: [{
+                        data: [1229, 421],
+                        backgroundColor: ['#21A038', '#00B074'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#94A3B8', font: { size: 11 } } }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
