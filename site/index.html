@@ -41,10 +41,27 @@
         <h1 class="text-xl font-bold text-blue-900 mb-3 md:mb-0 flex items-center gap-2">
             <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-600"></i> B2C Analytics Dashboard
         </h1>
-        <div class="flex items-center gap-3">
-            <label for="monthFilter" class="font-semibold text-gray-600 text-sm">Период:</label>
-            <select id="monthFilter" class="bg-yellow-50 border border-yellow-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 p-2 font-bold cursor-pointer transition-colors hover:bg-yellow-100 shadow-sm"></select>
+        <div class="flex items-center gap-3 flex-wrap">
+            <div class="flex items-center gap-2">
+                <label for="monthFilter" class="font-semibold text-gray-600 text-sm">Период:</label>
+                <select id="monthFilter" class="bg-yellow-50 border border-yellow-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 font-bold cursor-pointer transition-colors hover:bg-yellow-100 shadow-sm"></select>
+            </div>
             
+            <!-- ВЫБОР ПРОИЗВОЛЬНОГО ДИАПАЗОНА ДАТ (КАЛЕНДАРЬ) -->
+            <div id="customDateContainer" class="hidden flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-300 shadow-sm">
+                <div class="flex items-center gap-1 text-xs text-gray-600 font-semibold">
+                    <span>С:</span>
+                    <input type="date" id="dateFrom" class="text-xs font-bold text-gray-800 border border-gray-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 bg-white" onchange="applyCustomDateFilter()">
+                </div>
+                <div class="flex items-center gap-1 text-xs text-gray-600 font-semibold">
+                    <span>По:</span>
+                    <input type="date" id="dateTo" class="text-xs font-bold text-gray-800 border border-gray-300 rounded px-2 py-1 focus:ring-1 focus:ring-blue-500 bg-white" onchange="applyCustomDateFilter()">
+                </div>
+                <button onclick="applyCustomDateFilter()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-2.5 py-1 rounded transition shadow-sm">
+                    Применить
+                </button>
+            </div>
+
             <!-- КНОПКА ПРИНУДИТЕЛЬНОГО ОБНОВЛЕНИЯ ДАННЫХ -->
             <button onclick="forceDataUpdate(this)" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-2 rounded-lg font-bold transition-colors flex items-center gap-1 text-sm shadow-sm border border-blue-200">
                 <i data-lucide="refresh-cw" class="w-4 h-4"></i> Обновить
@@ -72531,28 +72548,136 @@
         }
     }
 
+    let currentFilterConfig = {
+        mode: 'month', // 'all', 'month', 'custom'
+        month: '2026-08',
+        from: null,
+        to: null
+    };
+
     function initDropdown() {
         const months = new Set();
+        let minDealSerial = Infinity, maxDealSerial = -Infinity;
+
         db.forEach(r => {
             if (r.SaleMonth && r.SaleMonth.length > 2) months.add(r.SaleMonth);
             if (r.PrepayMonth && r.PrepayMonth.length > 2) months.add(r.PrepayMonth);
+
+            let dS = r.DealDate || r.PrepayDate;
+            if (dS && dS > 0) {
+                if (dS < minDealSerial) minDealSerial = dS;
+                if (dS > maxDealSerial) maxDealSerial = dS;
+            }
         });
+
         const sortedMonths = Array.from(months).sort().reverse();
         const select = document.getElementById('monthFilter');
         select.innerHTML = '<option value="Весь период">Весь период</option>';
         sortedMonths.forEach(m => select.innerHTML += `<option value="${m}">${m}</option>`);
+        select.innerHTML += '<option value="CUSTOM">🗓️ Выбрать даты (календарь)...</option>';
+
         let def = sortedMonths.length > 0 ? sortedMonths[0] : "Весь период";
         select.value = def;
-        select.addEventListener('change', (e) => updateAllTabs(e.target.value));
-        updateAllTabs(def);
+
+        const toYMD = (d) => d ? `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}` : '';
+        const minD = (minDealSerial !== Infinity) ? excelToJSDate(minDealSerial) : new Date(2026, 6, 1);
+        const maxD = (maxDealSerial !== -Infinity) ? excelToJSDate(maxDealSerial) : new Date();
+
+        const dateFromInput = document.getElementById('dateFrom');
+        const dateToInput = document.getElementById('dateTo');
+        if (dateFromInput && dateToInput) {
+            dateFromInput.min = toYMD(minD);
+            dateFromInput.max = toYMD(maxD);
+            dateToInput.min = toYMD(minD);
+            dateToInput.max = toYMD(maxD);
+
+            if (def !== "Весь период" && def.includes('-')) {
+                const [y, m] = def.split('-').map(Number);
+                dateFromInput.value = `${y}-${String(m).padStart(2, '0')}-01`;
+                const lastDay = new Date(y, m, 0).getDate();
+                dateToInput.value = `${y}-${String(m).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+            } else {
+                dateFromInput.value = toYMD(minD);
+                dateToInput.value = toYMD(maxD);
+            }
+        }
+
+        select.addEventListener('change', (e) => onPeriodSelectChange(e.target.value));
+        onPeriodSelectChange(def);
     }
 
-    function updateAllTabs(period) {
-        const isAll = (period === "Весь период");
-        const filterM = period;
+    function onPeriodSelectChange(val) {
+        const customContainer = document.getElementById('customDateContainer');
+        if (val === "CUSTOM") {
+            if (customContainer) customContainer.classList.remove('hidden');
+            applyCustomDateFilter();
+        } else {
+            if (customContainer) customContainer.classList.add('hidden');
+            if (val === "Весь период") {
+                currentFilterConfig = { mode: 'all', month: 'Весь период', from: null, to: null };
+            } else {
+                currentFilterConfig = { mode: 'month', month: val, from: null, to: null };
+            }
+            updateAllTabs();
+        }
+    }
 
-        const sDb = db.filter(r => r.SaleQty > 0 && (isAll || r.SaleMonth === filterM));
-        const pDb = db.filter(r => r.PrepayQty > 0 && (isAll || r.PrepayMonth === filterM));
+    function applyCustomDateFilter() {
+        const fromVal = document.getElementById('dateFrom').value;
+        const toVal = document.getElementById('dateTo').value;
+        
+        let dFrom = fromVal ? new Date(fromVal + 'T00:00:00') : null;
+        let dTo = toVal ? new Date(toVal + 'T23:59:59') : null;
+
+        currentFilterConfig = {
+            mode: 'custom',
+            month: 'custom',
+            from: dFrom,
+            to: dTo
+        };
+        updateAllTabs();
+    }
+
+    function updateAllTabs(legacyPeriod) {
+        if (typeof legacyPeriod === 'string' && legacyPeriod !== 'custom') {
+            if (legacyPeriod === 'Весь период') {
+                currentFilterConfig = { mode: 'all', month: 'Весь период', from: null, to: null };
+            } else if (legacyPeriod.match(/^\d{4}-\d{2}$/)) {
+                currentFilterConfig = { mode: 'month', month: legacyPeriod, from: null, to: null };
+            }
+        }
+
+        let sDb, pDb;
+
+        if (currentFilterConfig.mode === 'all') {
+            sDb = db.filter(r => r.SaleQty > 0);
+            pDb = db.filter(r => r.PrepayQty > 0);
+        } else if (currentFilterConfig.mode === 'month') {
+            const filterM = currentFilterConfig.month;
+            sDb = db.filter(r => r.SaleQty > 0 && r.SaleMonth === filterM);
+            pDb = db.filter(r => r.PrepayQty > 0 && r.PrepayMonth === filterM);
+        } else if (currentFilterConfig.mode === 'custom') {
+            const fTime = currentFilterConfig.from ? currentFilterConfig.from.getTime() : -Infinity;
+            const tTime = currentFilterConfig.to ? currentFilterConfig.to.getTime() : Infinity;
+
+            // Сделки: предполагаемая дата закрытия (DealDate)
+            sDb = db.filter(r => {
+                if (r.SaleQty <= 0) return false;
+                const d = excelToJSDate(r.DealDate);
+                if (!d) return false;
+                const t = d.getTime();
+                return t >= fTime && t <= tTime;
+            });
+
+            // Предоплаты: дата внесения аванса (PrepayDate)
+            pDb = db.filter(r => {
+                if (r.PrepayQty <= 0) return false;
+                const d = excelToJSDate(r.PrepayDate);
+                if (!d) return false;
+                const t = d.getTime();
+                return t >= fTime && t <= tTime;
+            });
+        }
 
         let tS = sDb.length, tP = pDb.length;
         document.getElementById('kpiSales').innerText = fmtNum(tS);
@@ -72584,18 +72709,23 @@
 
         renderDashTables(sDb);
         let y, m;
-        if (isAll) { let n = new Date(); y = n.getFullYear(); m = n.getMonth(); }
-        else { let p = period.split('-'); y = parseInt(p[0]); m = parseInt(p[1]) - 1; }
+        if (currentFilterConfig.mode === 'month') {
+            let p = currentFilterConfig.month.split('-'); y = parseInt(p[0]); m = parseInt(p[1]) - 1;
+        } else if (currentFilterConfig.mode === 'custom' && currentFilterConfig.from) {
+            y = currentFilterConfig.from.getFullYear(); m = currentFilterConfig.from.getMonth();
+        } else {
+            let n = new Date(); y = n.getFullYear(); m = n.getMonth();
+        }
         updateLineChart('chartPartners', null, 'Partners', sDb, pDb, y, m);
         updateLineChart('chartNewAuto', null, 'Новые авто', sDb, pDb, y, m);
         updatePieChart('pieBrands', null, getTopBrands(sDb), 'Сплит по брендам');
         updatePieChart('pieB2C', null, getB2CSplit(sDb), 'Тип сделки B2C');
 
-        renderDynamicsTab(sDb, pDb, isAll);
-        renderDynMonthsTab(sDb, isAll, period);
-        renderPartnersTable(filterM, isAll);
-        renderManagersTable(filterM, isAll);
-        renderWaitingTable(filterM, isAll);
+        renderDynamicsTab(sDb, pDb, currentFilterConfig.mode === 'all');
+        renderDynMonthsTab(sDb, currentFilterConfig.mode === 'all', currentFilterConfig.mode === 'month' ? currentFilterConfig.month : "2026-08");
+        renderPartnersTable(currentFilterConfig);
+        renderManagersTable(sDb, pDb);
+        renderWaitingTable(currentFilterConfig);
 
         initTableSorting();
         if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -72781,11 +72911,29 @@
         setupSmartSearch('searchWeekComp', 'tableWeekComp');
     }
 
-    function renderPartnersTable(filterM, isAll) {
+    function renderPartnersTable(filterCfg) {
         let pStats = {};
         let pKAM = {};
 
-        dbPartners.filter(r => isAll || r.Month === filterM).forEach(r => {
+        let filteredPartners = dbPartners.filter(r => {
+            if (filterCfg.mode === 'all') return true;
+            if (filterCfg.mode === 'month') return r.Month === filterCfg.month;
+            if (filterCfg.mode === 'custom') {
+                const fTime = filterCfg.from ? filterCfg.from.getTime() : -Infinity;
+                const tTime = filterCfg.to ? filterCfg.to.getTime() : Infinity;
+                if (r.Date && r.Date > 0) {
+                    const d = excelToJSDate(r.Date);
+                    if (d) {
+                        const t = d.getTime();
+                        return t >= fTime && t <= tTime;
+                    }
+                }
+                return true;
+            }
+            return true;
+        });
+
+        filteredPartners.forEach(r => {
             let p = r.Partner; if (!p) return;
             if (!pStats[p]) pStats[p] = { deals: 0, prepays: 0, leads: 0, waiting: 0, b2c: {}, brandSplit: {} };
             if (r.KAM) pKAM[p] = r.KAM;
@@ -72843,13 +72991,17 @@
         setupSmartSearch('searchPartners', 'tablePartnersContainer');
     }
 
-    function renderManagersTable(filterM, isAll) {
+    function renderManagersTable(sDb, pDb) {
         let mStats = {};
-        db.forEach(r => {
+        sDb.forEach(r => {
             let mgr = r.Manager || "Не указан";
             if (!mStats[mgr]) mStats[mgr] = { s: 0, p: 0, senior: r.SeniorManager || "Без старшего" };
-            if (r.SaleQty > 0 && (isAll || r.SaleMonth === filterM)) mStats[mgr].s += r.SaleQty;
-            if (r.PrepayQty > 0 && (isAll || r.PrepayMonth === filterM)) mStats[mgr].p += r.PrepayQty;
+            mStats[mgr].s += (r.SaleQty || 1);
+        });
+        pDb.forEach(r => {
+            let mgr = r.Manager || "Не указан";
+            if (!mStats[mgr]) mStats[mgr] = { s: 0, p: 0, senior: r.SeniorManager || "Без старшего" };
+            mStats[mgr].p += (r.PrepayQty || 1);
         });
 
         let groups = {};
@@ -72863,8 +73015,8 @@
 
         let sortedGroups = Object.entries(groups).sort((a, b) => {
             let tA = a[1].reduce((s, x) => s + x.s, 0);
-            let tB = b[1].reduce((s, x) => s + x.s, 0);
-            return tB - tA;
+            let tB = b[1].reduce((s, x) => s + x.p, 0);
+            return (b[1].reduce((s,x)=>s+x.s,0)) - (a[1].reduce((s,x)=>s+x.s,0));
         });
 
         let html = `<table id="tableManagers"><thead><tr><th>Менеджер</th><th>Сделки (шт)</th><th>Предоплаты (шт)</th></tr></thead><tbody>`;
@@ -72890,9 +73042,28 @@
         setupSmartSearch('searchManagers', 'tableManagersContainer');
     }
 
-    function renderWaitingTable(filterM, isAll) {
+    function renderWaitingTable(filterCfg) {
         let wStats = {};
-        db.forEach(r => { if (r.WaitQty > 0 && (isAll || r.WaitMonth === filterM)) { let b = r.Brand || "Неизвестно"; wStats[b] = (wStats[b]||0) + r.WaitQty; }});
+        let filteredWaiting = db.filter(r => {
+            if (r.WaitQty <= 0) return false;
+            if (filterCfg.mode === 'all') return true;
+            if (filterCfg.mode === 'month') return r.WaitMonth === filterCfg.month;
+            if (filterCfg.mode === 'custom') {
+                const fTime = filterCfg.from ? filterCfg.from.getTime() : -Infinity;
+                const tTime = filterCfg.to ? filterCfg.to.getTime() : Infinity;
+                const d = excelToJSDate(r.DealDate || r.PrepayDate);
+                if (!d) return false;
+                const t = d.getTime();
+                return t >= fTime && t <= tTime;
+            }
+            return true;
+        });
+
+        filteredWaiting.forEach(r => {
+            let b = r.Brand || "Неизвестно";
+            wStats[b] = (wStats[b]||0) + r.WaitQty;
+        });
+
         let sorted = Object.keys(wStats).sort((a, b) => wStats[b] - wStats[a]);
         let html = `<table id="tableWaiting"><thead><tr><th>Марка Авто</th><th>Клиенты в ожидании</th></tr></thead><tbody>`, tw = 0;
         sorted.forEach(b => { tw += wStats[b]; html += `<tr><td class="font-semibold">${b}</td><td class="text-orange-500 font-bold">${fmtNum(wStats[b])}</td></tr>`;});

@@ -369,7 +369,6 @@ def calculate_brand_funnel(sys_db):
         "SOLARIS": {"leads": 29, "qual_ratio": 0.379, "calc_ratio": 2.58, "offer_ratio": 0.587, "dealer": 1, "fdc_app": 1, "fdc_appr": 0},
     }
 
-    now_str = datetime.datetime.now().strftime("%d.%m.%Y в %H:%M")
     brand_funnel = {
         "OVERALL_LATEST_DATE": f"25.08.2026 в 10:00"
     }
@@ -521,6 +520,9 @@ def run_pipeline():
         deal_month_str = f"{d_deal_date.year}-{str(d_deal_date.month).zfill(2)}" if d_deal_date else ""
         prepay_month_str = f"{d_prepay_date.year}-{str(d_prepay_date.month).zfill(2)}" if d_prepay_date else ""
 
+        deal_serial = date_to_excel_serial(d_deal_date)
+        prepay_serial = date_to_excel_serial(d_prepay_date)
+
         b2c_upper = b2c.upper().replace(' ', '')
         chart_group = "Новые авто"
         if any(k in b2c_upper for k in ("МП1", "МП2", "МП3", "ВХОДЯЩАЯЗАЯВКА", "PARTNER")):
@@ -540,10 +542,10 @@ def run_pipeline():
             "PrepayQty": 1 if is_prepay else 0,
             "WaitQty": 1 if is_wait else 0,
             "WaitMonth": deal_month_str if is_wait else "",
-            "DealDate": date_to_excel_serial(d_deal_date),
+            "DealDate": deal_serial,
             "Manager": manager,
             "SeniorManager": str(get_exact_val(row, 'ОТВЕТСТВЕННЫЙЗАСДЕЛКУСТАРШИЙ', 'СТАРШИЙ') or "Без старшего"),
-            "PrepayDate": date_to_excel_serial(d_prepay_date),
+            "PrepayDate": prepay_serial,
             "Revenue": final_revenue,
             "VIN": vin,
             "ChartGroup": chart_group
@@ -553,11 +555,11 @@ def run_pipeline():
         if partner:
             kam_partner = kam_dict_bitrix.get(partner.lower(), "")
             if is_sale:
-                sys_db_partners.append({"Month": deal_month_str, "Partner": partner, "KAM": kam_partner, "Type": "Сделка", "Qty": 1, "B2C": b2c, "Brand": final_brand})
+                sys_db_partners.append({"Month": deal_month_str, "Partner": partner, "KAM": kam_partner, "Type": "Сделка", "Qty": 1, "B2C": b2c, "Brand": final_brand, "Date": deal_serial})
             elif is_prepay:
-                sys_db_partners.append({"Month": prepay_month_str, "Partner": partner, "KAM": kam_partner, "Type": "Предоплата", "Qty": 1})
+                sys_db_partners.append({"Month": prepay_month_str, "Partner": partner, "KAM": kam_partner, "Type": "Предоплата", "Qty": 1, "Date": prepay_serial})
             elif is_wait:
-                sys_db_partners.append({"Month": deal_month_str, "Partner": partner, "KAM": kam_partner, "Type": "Без сделки", "Qty": 1})
+                sys_db_partners.append({"Month": deal_month_str, "Partner": partner, "KAM": kam_partner, "Type": "Без сделки", "Qty": 1, "Date": deal_serial})
 
     # 4. Process Leads
     if leads_data:
@@ -588,13 +590,15 @@ def run_pipeline():
 
             d_lead_date = parse_custom_date(get_exact_val(row, 'ДАТА'))
             lead_month_str = f"{d_lead_date.year}-{str(d_lead_date.month).zfill(2)}" if d_lead_date else ""
+            lead_serial = date_to_excel_serial(d_lead_date)
 
             sys_db_partners.append({
                 "Month": lead_month_str,
                 "Partner": partner,
                 "KAM": kam,
                 "Type": "Лид",
-                "Qty": 1
+                "Qty": 1,
+                "Date": lead_serial
             })
 
     # 5. Funnel Data (Clickstream & Brand Funnel)
