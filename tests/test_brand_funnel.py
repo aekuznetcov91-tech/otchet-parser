@@ -89,5 +89,23 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         self.assertIn('f-month-all', html, "Кнопка выбора всех месяцев должна быть в DOM")
         self.assertIn('selectFunnelBrand', html, "Функция selectFunnelBrand должна присутствовать в JS")
 
+    def test_07_debtors_and_export_modal(self):
+        """Проверка структуры должников ДКП и модального окна экспорта"""
+        self.assertIn('debtors', self.data, "debtors должен присутствовать в data.json")
+        debtors = self.data['debtors']
+        self.assertGreater(len(debtors), 10, "Должно быть более 10 авто должников")
+        first_debtor = debtors[0]
+        for field in ['company', 'brand', 'vin', 'prepay_date']:
+            self.assertIn(field, first_debtor, f"Поле {field} должно быть в записи должника")
+            
+        with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
+            html = f.read()
+            
+        self.assertIn('tab-details', html, "tab-details должен присутствовать в HTML")
+        self.assertIn('modalDebtorsExport', html, "modalDebtorsExport должен присутствовать в HTML")
+        self.assertIn('executeDebtorsExcelExport', html, "executeDebtorsExcelExport должен быть в JS")
+        self.assertIn('xlsx.full.min.js', html, "SheetJS библиотека должна быть подключена")
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+
