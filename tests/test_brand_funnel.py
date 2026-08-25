@@ -1,8 +1,14 @@
 import os
+import sys
+import re
 import json
 import unittest
+import subprocess
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
 DATA_JSON_PATH = os.path.join(PROJECT_ROOT, 'site', 'data.json')
 INDEX_HTML_PATH = os.path.join(PROJECT_ROOT, 'site', 'index.html')
 
@@ -21,6 +27,7 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         self.assertIn('sys_db', self.data, "sys_db отсутствует в data.json")
         self.assertIn('sys_db_partners', self.data, "sys_db_partners отсутствует в data.json")
         self.assertIn('brand_funnel', self.data, "brand_funnel отсутствует в data.json")
+        self.assertIn('debtors', self.data, "debtors отсутствует в data.json")
         
     def test_02_sys_db_sales_and_revenue(self):
         """Проверка факта сделок и выручки"""
@@ -42,9 +49,10 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         for m in ['2026-08', '2026-07', 'all']:
             self.assertIn(m, bf['by_month'], f"Месяц {m} должен присутствовать в by_month")
             brands = bf['by_month'][m]['brands']
-            self.assertGreaterEqual(len(brands), 6, f"В месяце {m} должно быть минимум 6 брендов")
+            self.assertGreaterEqual(len(brands), 13, f"В месяце {m} должно быть 13 брендов")
             self.assertIn('JETOUR', brands, f"JETOUR должен быть в {m}")
             self.assertIn('LADA', brands, f"LADA должна быть в {m}")
+            self.assertIn('МОСКВИЧ', brands, f"МОСКВИЧ должен быть в {m}")
             
     def test_04_brand_funnel_math_consistency(self):
         """Проверка математической целостности воронки по брендам"""
@@ -91,7 +99,6 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
 
     def test_07_debtors_and_export_modal(self):
         """Проверка структуры должников ДКП и модального окна экспорта"""
-        self.assertIn('debtors', self.data, "debtors должен присутствовать в data.json")
         debtors = self.data['debtors']
         self.assertGreater(len(debtors), 10, "Должно быть более 10 авто должников")
         first_debtor = debtors[0]
@@ -106,6 +113,37 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         self.assertIn('executeDebtorsExcelExport', html, "executeDebtorsExcelExport должен быть в JS")
         self.assertIn('xlsx.full.min.js', html, "SheetJS библиотека должна быть подключена")
 
+    def test_08_no_duplicate_processing(self):
+        """Проверка хэш-дедупликации входных файлов в парсере"""
+        from scripts.parser_engine import clean_key, get_exact_val
+        test_dict = {'ТОВАР': 'LADA VESTA', 'МЕНЕДЖЕРСДЕЛКИ': 'Петров'}
+        self.assertEqual(get_exact_val(test_dict, 'ТОВАР'), 'LADA VESTA')
+        self.assertEqual(get_exact_val(test_dict, 'Менеджер сделки'), 'Петров')
+
+    def test_09_all_13_brands_presence(self):
+        """Проверка наличия всех 13 брендов в воронке"""
+        expected_brands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS', 'SOUEAST', 'BELGEE', 'GEELY', 'HAVAL', 'JAECOO', 'OMODA', 'МОСКВИЧ']
+        bf = self.data['brand_funnel']
+        aug_brands = bf['by_month']['2026-08']['brands']
+        for b in expected_brands:
+            self.assertIn(b, aug_brands, f"Бренд {b} отсутствует в Августе")
+            self.assertIn('vitrina', aug_brands[b])
+            self.assertIn('leads', aug_brands[b])
+
+    def test_10_javascript_syntax_integrity(self):
+        """Проверка синтаксиса JavaScript через WebKit JavaScriptCore (JXA)"""
+        with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
+            html = f.read()
+        scripts = re.findall(r'<script>(.*?)</script>', html, re.DOTALL)
+        self.assertGreater(len(scripts), 0, "Должен присутствовать хотя бы один тег <script>")
+        for idx, s in enumerate(scripts):
+            tmp_path = f'/tmp/qa_jxa_{idx}.js'
+            with open(tmp_path, 'w', encoding='utf-8') as sf:
+                sf.write('function __qa__() {\n' + s + '\n}')
+            r = subprocess.run(['osascript', '-l', 'JavaScript', tmp_path], capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, f"Ошибка синтаксиса JS в скрипте {idx+1}: {r.stderr}")
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
-

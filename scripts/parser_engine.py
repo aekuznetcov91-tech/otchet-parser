@@ -1,10 +1,11 @@
-﻿import os
+import os
 import sys
 import re
 import csv
 import json
 import datetime
 import zipfile
+import hashlib
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 
@@ -21,19 +22,29 @@ OUTPUT_JSON_SITE = os.path.join(SITE_DIR, 'data.json')
 OUTPUT_JSON_ROOT = os.path.join(PROJECT_ROOT, 'data.json')
 
 def clean_key(k):
+    """Normalize string key by removing whitespace and non-alphanumerics."""
     if k is None:
         return ""
     return re.sub(r'[^A-ZА-Я0-9]', '', str(k).upper())
 
 def get_exact_val(row, *search_keys):
-    row_cleaned = {clean_key(k): v for k, v in row.items()}
+    """
+    Fetch value from row dictionary.
+    Supports both pre-cleaned uppercase keys (O(1)) and fallback on raw keys.
+    """
+    if not isinstance(row, dict):
+        return ""
     for sk in search_keys:
+        # Fast path: exact key or clean key in row
+        if sk in row and row[sk] != "":
+            return row[sk]
         c_sk = clean_key(sk)
-        if c_sk in row_cleaned:
-            return row_cleaned[c_sk]
+        if c_sk in row and row[c_sk] != "":
+            return row[c_sk]
     return ""
 
 def normalize_brand(tovar_str):
+    """Normalize vehicle brand name from raw product/deal text."""
     t = str(tovar_str or "").upper()
     if "DASHING" in t or "X70 PLUS" in t or "JETOUR" in t:
         return "JETOUR"
@@ -68,10 +79,11 @@ def normalize_brand(tovar_str):
     return words[0] if words and words[0] else "НЕИЗВЕСТНЫЙ БРЕНД"
 
 def parse_custom_date(date_value):
+    """Parse Excel serial, ISO format, or standard date strings into datetime.date."""
     if date_value is None or date_value == "":
         return None
     if isinstance(date_value, (datetime.date, datetime.datetime)):
-        return date_value
+        return date_value if isinstance(date_value, datetime.date) else date_value.date()
     
     try:
         num = float(date_value)
@@ -115,6 +127,7 @@ def parse_custom_date(date_value):
         return None
 
 def date_to_excel_serial(d_date):
+    """Convert datetime.date to Excel serial number integer."""
     if not d_date:
         return 0
     if isinstance(d_date, datetime.datetime):
@@ -122,6 +135,7 @@ def date_to_excel_serial(d_date):
     return (d_date - datetime.date(1899, 12, 30)).days
 
 class HtmlTableParser(HTMLParser):
+    """Fast streaming parser for HTML-based XLS tables."""
     def __init__(self):
         super().__init__()
         self.rows = []
@@ -149,6 +163,7 @@ class HtmlTableParser(HTMLParser):
             self.current_cell.append(data)
 
 def extract_rows_from_matrix(matrix):
+    """Locate table header row and convert matrix to pre-cleaned dictionary rows."""
     if not matrix:
         return []
     header_idx = -1
@@ -171,18 +186,25 @@ def extract_rows_from_matrix(matrix):
         header_idx = 0
 
     headers = [str(c).strip() for c in matrix[header_idx]]
+    clean_headers = [clean_key(h) for h in headers]
     result = []
+
     for row in matrix[header_idx + 1:]:
         row_dict = {}
         for h_i, h_name in enumerate(headers):
             if h_name:
                 val = row[h_i] if h_i < len(row) else ""
-                row_dict[h_name] = val if val is not None else ""
+                val_str = val if val is not None else ""
+                row_dict[h_name] = val_str
+                c_h = clean_headers[h_i]
+                if c_h:
+                    row_dict[c_h] = val_str
         if any(v != "" for v in row_dict.values()):
             result.append(row_dict)
     return result
 
 def read_xlsx_xml(filepath):
+    """High-performance direct streaming parser for zipped XLSX XML files."""
     ns = '{http://schemas.openxmlformats.org/spreadsheetml/2006/main}'
     datasets = []
     try:
@@ -220,36 +242,40 @@ def read_xlsx_xml(filepath):
                         t_attr = c_node.attrib.get('t')
                         v_node = c_node.find(f'{ns}v')
                         val = v_node.text if v_node is not None else ""
-                        
-                        if t_attr == 's' and val != '':
-                            try: val = ss[int(val)]
-                            except (IndexError, ValueError): pass
+
+                        if t_attr == 's' and val.isdigit():
+                            idx = int(val)
+                            val = ss[idx] if idx < len(ss) else val
                         elif t_attr == 'inlineStr':
                             is_node = c_node.find(f'{ns}is')
                             if is_node is not None:
-                                val = "".join(t.text for t in is_node.iter(f'{ns}t') if t.text)
+                                t_parts = [t.text for t in is_node.iter(f'{ns}t') if t.text]
+                                val = "".join(t_parts)
 
                         row_dict[col_idx] = val
 
                     if row_dict:
-                        row_list = [row_dict.get(i, "") for i in range(max(row_dict.keys()) + 1)]
+                        num_cols = max(row_dict.keys()) + 1
+                        row_list = [row_dict.get(c, "") for c in range(num_cols)]
                         matrix.append(row_list)
 
-                if matrix:
-                    parsed = extract_rows_from_matrix(matrix)
-                    if parsed:
-                        datasets.append((os.path.basename(sname), parsed))
-    except Exception as e:
-        print(f"[!] Warning reading XML from {filepath}: {e}")
-    return datasets
+                parsed = extract_rows_from_matrix(matrix)
+                if parsed:
+                    short_name = sname.split('/')[-1]
+                    datasets.append((short_name, parsed))
+
+        return datasets
+    except Exception:
+        return []
 
 def read_tabular_file(filepath):
+    """Read CSV, HTML/XLS, or XLSX file format dynamically with error tolerance."""
     ext = os.path.splitext(filepath)[1].lower()
+
     if ext in ('.xlsx', '.xlsm'):
         datasets = read_xlsx_xml(filepath)
         if datasets:
             return datasets
-        # Fallback to openpyxl if XML direct read failed
         try:
             import openpyxl
             wb = openpyxl.load_workbook(filepath, read_only=True, data_only=True)
@@ -298,6 +324,7 @@ def read_tabular_file(filepath):
     return datasets
 
 def identify_data_type(rows):
+    """Classify dataset schema into 'deals', 'leads', 'directory', or 'unknown'."""
     if not rows:
         return "unknown"
     headers_str = clean_key("".join(str(k) for k in rows[0].keys()))
@@ -312,6 +339,7 @@ def identify_data_type(rows):
     return "unknown"
 
 def parse_funnel_image_or_config(raw_dir):
+    """Extract funnel clickstream config from JSON or OCR images."""
     default_funnel = {
         "page_view": 191607,
         "sbol_car_card_show": 28919,
@@ -360,26 +388,28 @@ def parse_funnel_image_or_config(raw_dir):
     return default_funnel
 
 def calculate_brand_funnel(sys_db):
-    vitrina_json_paths = [
+    """
+    Calculate multi-month brand funnel for all 13 brands (August 2026, July 2026, and All periods).
+    Integrates PostHog clickstream vitrina data with CRM sales metrics.
+    """
+    vitrina_map = {}
+    ocr_files = [
         os.path.join(RAW_DATA_DIR, 'brand_funnels_clean.json'),
         os.path.join(PROJECT_ROOT, 'Jetour', 'brand_funnels_clean.json'),
-        os.path.join(PROJECT_ROOT, '..', 'Jetour', 'brand_funnels_clean.json'),
-        os.path.join(PROJECT_ROOT, 'raw_data', 'brand_funnels_clean.json')
+        os.path.join(PROJECT_ROOT, 'brand_funnels_clean.json')
     ]
-    
-    vitrina_map = {}
-    for vp in vitrina_json_paths:
-        if os.path.exists(vp):
+    for ofile in ocr_files:
+        if os.path.exists(ofile):
             try:
-                with open(vp, 'r', encoding='utf-8') as f:
-                    v_list = json.load(f)
-                    for item in v_list:
+                with open(ofile, 'r', encoding='utf-8') as fp:
+                    items = json.load(fp)
+                    for item in items:
                         m = item.get('month', '')
                         b = item.get('brand', '')
                         if m and b:
                             vitrina_map[(m, b)] = item
                 break
-            except Exception as e:
+            except Exception:
                 pass
 
     all_brands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS', 'SOUEAST', 'BELGEE', 'GEELY', 'HAVAL', 'JAECOO', 'OMODA', 'МОСКВИЧ']
@@ -452,7 +482,7 @@ def calculate_brand_funnel(sys_db):
 
             tot_rev_no_mp2 = round(sum(r.get('Revenue', 0) for r in b_no_mp2), 2)
             tot_rev_mp2 = round(sum(r.get('Revenue', 0) for r in b_mp2), 2)
-            tot_rev_all = round(sum(r.get('Revenue', 0) for r in b_sales), 2)
+            tot_rev_all = round(tot_rev_no_mp2 + tot_rev_mp2, 2)
 
             by_month[m]["brands"][b] = {
                 "brand": b,
@@ -495,15 +525,17 @@ def calculate_brand_funnel(sys_db):
     return brand_funnel
 
 def run_pipeline():
+    """Main execution pipeline: parse raw data, generate optimized data.json and sync static assets."""
     print("=" * 60)
     print("   AUTOMATED PARSER ENGINE: B2C Auto Analytics & Funnel")
     print("=" * 60)
 
-    # 1. Collect files from raw_data or root
+    # 1. Collect files from raw_data or root with MD5 hash deduplication
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
     deals_data = []
     leads_data = []
     directory_data = []
+    seen_file_hashes = set()
 
     for sdir in search_dirs:
         if not os.path.exists(sdir):
@@ -513,6 +545,17 @@ def run_pipeline():
                 continue
             if fname.lower().endswith(('.xlsx', '.xlsm', '.csv', '.xls')):
                 fpath = os.path.join(sdir, fname)
+                try:
+                    with open(fpath, 'rb') as fp:
+                        fhash = hashlib.md5(fp.read(1024 * 1024)).hexdigest()
+                except Exception:
+                    fhash = fname
+
+                if fhash in seen_file_hashes:
+                    print(f"[*] Файл: {fname} -> ПРОПУСК (дубликат по хэшу)")
+                    continue
+                seen_file_hashes.add(fhash)
+
                 datasets = read_tabular_file(fpath)
                 for sname, rows in datasets:
                     dtype = identify_data_type(rows)
@@ -710,7 +753,7 @@ def run_pipeline():
         "debtors": debtors
     }
 
-    # 6. Save JSON
+    # 6. Save JSON and sync HTML assets to site/
     os.makedirs(SITE_DIR, exist_ok=True)
     with open(OUTPUT_JSON_SITE, 'w', encoding='utf-8') as f:
         json.dump(output_payload, f, ensure_ascii=False, indent=2)
