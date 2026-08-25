@@ -157398,5 +157398,220 @@
     "sbol_offer_show": 3626,
     "sbol_offer_click": 2324,
     "sbol_offer_success_show": 2269
+  },
+  "brand_funnel": {
+    "OVERALL_LATEST_DATE": "25.08.2026 в 10:00",
+    "JETOUR": {
+      "brand": "JETOUR",
+      "leads": 1409,
+      "qual": 651,
+      "calc_total": 731,
+      "calc_matched": 292,
+      "offer_total": 557,
+      "offer_matched": 223,
+      "dealer": 82,
+      "fdc_app": 136,
+      "fdc_appr": 75,
+      "deals_total_all": 591,
+      "mp2_count": 460,
+      "mp2_rev": 17894917.9,
+      "deals_no_mp2": 131,
+      "rev_no_mp2": 5632598.6,
+      "deals_by_b2c": {
+        "ФДЦ": 51,
+        "Online": 36,
+        "МП3": 18,
+        "Передача лида": 21,
+        "МП1": 5
+      },
+      "rev_by_b2c": {
+        "ФДЦ": 2261857.69,
+        "Online": 1533693.41,
+        "МП3": 747327.86,
+        "Передача лида": 881359.0,
+        "МП1": 208360.64
+      },
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 1296,
+        "Без источника": 70,
+        "Органика СберАвто": 28,
+        "Органика СБОЛ": 14
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "LADA": {
+      "brand": "LADA",
+      "leads": 1667,
+      "qual": 640,
+      "calc_total": 710,
+      "calc_matched": 284,
+      "offer_total": 529,
+      "offer_matched": 212,
+      "dealer": 98,
+      "fdc_app": 153,
+      "fdc_appr": 64,
+      "deals_total_all": 157,
+      "mp2_count": 69,
+      "mp2_rev": 747114.65,
+      "deals_no_mp2": 88,
+      "rev_no_mp2": 1721325.96,
+      "deals_by_b2c": {
+        "ФДЦ": 25,
+        "МП3": 7,
+        "Online": 6,
+        "Передача лида": 18,
+        "ФДЦ+ГП": 32
+      },
+      "rev_by_b2c": {
+        "ФДЦ": 506660.06,
+        "МП3": 96639.34,
+        "Online": 90823.78,
+        "Передача лида": 345692.62,
+        "ФДЦ+ГП": 681510.16
+      },
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 1534,
+        "Без источника": 83,
+        "Органика СберАвто": 33,
+        "Органика СБОЛ": 17
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "TENET": {
+      "brand": "TENET",
+      "leads": 567,
+      "qual": 258,
+      "calc_total": 292,
+      "calc_matched": 117,
+      "offer_total": 213,
+      "offer_matched": 85,
+      "dealer": 47,
+      "fdc_app": 27,
+      "fdc_appr": 13,
+      "deals_total_all": 12,
+      "mp2_count": 1,
+      "mp2_rev": 39278.69,
+      "deals_no_mp2": 11,
+      "rev_no_mp2": 552167.66,
+      "deals_by_b2c": {
+        "Передача лида": 8,
+        "ФДЦ": 2,
+        "Online": 1
+      },
+      "rev_by_b2c": {
+        "Передача лида": 250513.6,
+        "ФДЦ": 228867.17,
+        "Online": 72786.89
+      },
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 522,
+        "Без источника": 28,
+        "Органика СберАвто": 11,
+        "Органика СБОЛ": 6
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "CHANGAN": {
+      "brand": "CHANGAN",
+      "leads": 546,
+      "qual": 152,
+      "calc_total": 77,
+      "calc_matched": 31,
+      "offer_total": 60,
+      "offer_matched": 24,
+      "dealer": 20,
+      "fdc_app": 14,
+      "fdc_appr": 2,
+      "deals_total_all": 22,
+      "mp2_count": 20,
+      "mp2_rev": 830239.34,
+      "deals_no_mp2": 2,
+      "rev_no_mp2": 80819.68,
+      "deals_by_b2c": {
+        "Передача лида": 2
+      },
+      "rev_by_b2c": {
+        "Передача лида": 80819.68
+      },
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 502,
+        "Без источника": 27,
+        "Органика СберАвто": 11,
+        "Органика СБОЛ": 5
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "GAC": {
+      "brand": "GAC",
+      "leads": 337,
+      "qual": 115,
+      "calc_total": 76,
+      "calc_matched": 30,
+      "offer_total": 51,
+      "offer_matched": 20,
+      "dealer": 17,
+      "fdc_app": 9,
+      "fdc_appr": 3,
+      "deals_total_all": 68,
+      "mp2_count": 62,
+      "mp2_rev": 4190254.08,
+      "deals_no_mp2": 6,
+      "rev_no_mp2": 430863.53,
+      "deals_by_b2c": {
+        "Передача лида": 1,
+        "Online": 3,
+        "МП1": 1,
+        "ФДЦ": 1
+      },
+      "rev_by_b2c": {
+        "Передача лида": 75901.64,
+        "Online": 217590.17,
+        "МП1": 43697.95,
+        "ФДЦ": 93673.77
+      },
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 310,
+        "Без источника": 17,
+        "Органика СберАвто": 7,
+        "Органика СБОЛ": 3
+      },
+      "latest_lead_date": "25.08.2026"
+    },
+    "SOLARIS": {
+      "brand": "SOLARIS",
+      "leads": 29,
+      "qual": 11,
+      "calc_total": 75,
+      "calc_matched": 30,
+      "offer_total": 44,
+      "offer_matched": 18,
+      "dealer": 1,
+      "fdc_app": 1,
+      "fdc_appr": 0,
+      "deals_total_all": 80,
+      "mp2_count": 70,
+      "mp2_rev": 2372679.47,
+      "deals_no_mp2": 10,
+      "rev_no_mp2": 444822.96,
+      "deals_by_b2c": {
+        "Передача лида": 3,
+        "МП3": 1,
+        "Online": 4,
+        "ФДЦ": 2
+      },
+      "rev_by_b2c": {
+        "Передача лида": 133708.2,
+        "МП3": 46721.31,
+        "Online": 183614.76,
+        "ФДЦ": 80778.69
+      },
+      "src_breakdown": {
+        "ОМ + Баннеры + Лендинги": 27,
+        "Без источника": 1,
+        "Органика СберАвто": 1,
+        "Органика СБОЛ": 0
+      },
+      "latest_lead_date": "25.08.2026"
+    }
   }
 }

@@ -264,6 +264,64 @@
         </div>
     </div>
 
+    <!-- ==================== TAB: BRAND FUNNEL ==================== -->
+    <div id="tab-funnel" class="tab-content hidden space-y-5">
+        <!-- Sub Header with Brand Pills and Last Update -->
+        <div class="card !p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 bg-slate-900 text-white rounded-2xl shadow-sm">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-emerald-600 to-green-500 flex items-center justify-center shadow-md shrink-0">
+                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="white" stroke-width="2.5" fill="none"><circle cx="12" cy="12" r="10"></circle><path d="m8.5 12 2.5 2.5 5-5"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        Сквозная воронка продаж по 6 брендам
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Август 2026</span>
+                    </h2>
+                    <p class="text-xs text-slate-400">Клиентский путь: Витрина ➔ Лиды CRM ➔ Кредитный калькулятор ➔ Развилка (ДЦ / ФДЦ) ➔ Сделки (без МП2)</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-slate-300 flex-wrap">
+                <span class="px-2.5 py-1 bg-slate-800 rounded-lg border border-slate-700 flex items-center gap-1">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i> Обновлено: <b id="funnelUpdateDate" class="text-amber-300">25.08.2026 в 10:00</b>
+                </span>
+                <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg font-semibold">
+                    МП2 исключен
+                </span>
+            </div>
+        </div>
+
+        <!-- Brand Selector Tabs (Pills) -->
+        <div class="flex overflow-x-auto pb-1 gap-2 scrollbar-none">
+            <button onclick="selectFunnelBrand('ALL')" id="f-tab-ALL" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white shadow-md">
+                📊 Сводное сравнение
+            </button>
+            <button onclick="selectFunnelBrand('JETOUR')" id="f-tab-JETOUR" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+                JETOUR
+            </button>
+            <button onclick="selectFunnelBrand('LADA')" id="f-tab-LADA" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+                LADA
+            </button>
+            <button onclick="selectFunnelBrand('TENET')" id="f-tab-TENET" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+                TENET
+            </button>
+            <button onclick="selectFunnelBrand('CHANGAN')" id="f-tab-CHANGAN" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+                CHANGAN
+            </button>
+            <button onclick="selectFunnelBrand('GAC')" id="f-tab-GAC" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+                GAC
+            </button>
+            <button onclick="selectFunnelBrand('SOLARIS')" id="f-tab-SOLARIS" class="f-tab-btn px-4 py-2 rounded-xl text-xs font-semibold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+                SOLARIS
+            </button>
+        </div>
+
+        <!-- Summary KPI Cards -->
+        <div id="funnelKpiCards" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3"></div>
+
+        <!-- Dynamic Content Section -->
+        <div id="funnelDynamicView" class="space-y-5"></div>
+    </div>
+
     <!-- ==================== TAB: WAITING ==================== -->
     <div id="tab-details" class="tab-content hidden">
         <div class="card overflow-x-auto">
@@ -72457,6 +72515,9 @@
             const data = await res.json();
             db = data.sys_db || [];
             dbPartners = data.sys_db_partners || [];
+            if (data.brand_funnel && typeof funnelRawData !== 'undefined') {
+                Object.assign(funnelRawData, data.brand_funnel);
+            }
             initDropdown();
         } catch (error) { 
             console.warn("Fetch failed, using embedded data backup:", error);
