@@ -701,6 +701,7 @@
         </div>
     </div>
 
+    
     <!-- ==================== TAB: WAITING & DEBTORS ==================== -->
     <div id="tab-details" class="tab-content hidden space-y-5">
         <!-- HEADER / ACTIONS CARD -->
@@ -846,13 +847,15 @@
             </div>
         </div>
     </div>
-
+    
 
     <script>
     // ====================================================================
     // B2C Analytics Dashboard
     // ====================================================================
-    Chart.register(ChartDataLabels);
+    if (typeof ChartDataLabels !== 'undefined') {
+        Chart.register(ChartDataLabels);
+    }
     let db = [], dbPartners = [], rawDebtorsList = [];
 
     const fmtNum = (num) => Math.round(num || 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -976,32 +979,35 @@
         });
         let sorted = Array.from(months).filter(m => m).sort().reverse();
         let sel = document.getElementById('monthFilter');
-        sel.innerHTML = '<option value="all">Весь период</option>';
-        sorted.forEach(m => {
-            sel.innerHTML += `<option value="${m}">${m}</option>`;
-        });
-        sel.innerHTML += '<option value="custom">🗓️ Выбрать даты (календарь)...</option>';
-        
-        let def = sorted.includes("2026-08") ? "2026-08" : (sorted[0] || "all");
-        sel.value = def;
-        onPeriodSelectChange(def);
-        sel.onchange = (e) => onPeriodSelectChange(e.target.value);
+        if (sel) {
+            sel.innerHTML = '<option value="all">Весь период</option>';
+            sorted.forEach(m => {
+                sel.innerHTML += `<option value="${m}">${m}</option>`;
+            });
+            sel.innerHTML += '<option value="custom">🗓️ Выбрать даты (календарь)...</option>';
+            let def = sorted.includes("2026-08") ? "2026-08" : (sorted[0] || "all");
+            sel.value = def;
+            onPeriodSelectChange(def);
+            sel.onchange = (e) => onPeriodSelectChange(e.target.value);
+        } else {
+            updateAllTabs();
+        }
     }
 
     function onPeriodSelectChange(val) {
         const customCont = document.getElementById('customDateContainer');
         if (val === 'custom') {
             if (customCont) customCont.classList.remove('hidden');
-            let dFrom = document.getElementById('dateFrom').value;
-            let dTo = document.getElementById('dateTo').value;
+            let dFrom = document.getElementById('dateFrom')?.value;
+            let dTo = document.getElementById('dateTo')?.value;
             if (!dFrom || !dTo) {
                 let now = new Date();
                 let y = now.getFullYear();
                 let m = (now.getMonth() + 1).toString().padStart(2, '0');
                 dFrom = `${y}-${m}-01`;
                 dTo = `${y}-${m}-${now.getDate().toString().padStart(2, '0')}`;
-                document.getElementById('dateFrom').value = dFrom;
-                document.getElementById('dateTo').value = dTo;
+                if (document.getElementById('dateFrom')) document.getElementById('dateFrom').value = dFrom;
+                if (document.getElementById('dateTo')) document.getElementById('dateTo').value = dTo;
             }
             applyCustomDateFilter();
             return;
@@ -1017,8 +1023,8 @@
     }
 
     function applyCustomDateFilter() {
-        const dFromStr = document.getElementById('dateFrom').value;
-        const dToStr = document.getElementById('dateTo').value;
+        const dFromStr = document.getElementById('dateFrom')?.value;
+        const dToStr = document.getElementById('dateTo')?.value;
         if (!dFromStr || !dToStr) return;
 
         const fromDate = new Date(dFromStr + 'T00:00:00');
@@ -1087,8 +1093,10 @@
         }
 
         let tS = sDb.length, tP = pDb.length;
-        document.getElementById('kpiSales').innerText = fmtNum(tS);
-        document.getElementById('kpiPrepays').innerText = fmtNum(tP);
+        const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.innerText = v; };
+
+        setVal('kpiSales', fmtNum(tS));
+        setVal('kpiPrepays', fmtNum(tP));
 
         let revTotal = 0, revChina = 0, revLada = 0;
         sDb.forEach(r => {
@@ -1097,9 +1105,9 @@
             if (r.Brand === 'LADA') revLada += rv;
             else revChina += rv;
         });
-        document.getElementById('kpiRevTotal').innerText = fmtRub(revTotal);
-        document.getElementById('kpiRevChina').innerText = fmtRub(revChina);
-        document.getElementById('kpiRevLada').innerText = fmtRub(revLada);
+        setVal('kpiRevTotal', fmtRub(revTotal));
+        setVal('kpiRevChina', fmtRub(revChina));
+        setVal('kpiRevLada', fmtRub(revLada));
 
         let cntCh = 0, cntLa = 0, pCh = 0, pLa = 0, pTot = 0;
         sDb.forEach(r => {
@@ -1107,12 +1115,12 @@
             if (r.Brand === 'LADA') { cntLa++; pLa += r.Price; }
             else { cntCh++; pCh += r.Price; }
         });
-        document.getElementById('kpiArpu').innerText = tS > 0 ? fmtRub(revTotal / tS) : '0 ₽';
-        document.getElementById('kpiArpuChina').innerText = cntCh > 0 ? fmtNum(revChina / cntCh) : '0';
-        document.getElementById('kpiArpuLada').innerText = cntLa > 0 ? fmtNum(revLada / cntLa) : '0';
-        document.getElementById('kpiCheck').innerText = tS > 0 ? fmtRub(pTot / tS) : '0 ₽';
-        document.getElementById('kpiCheckChina').innerText = cntCh > 0 ? fmtNum(pCh / cntCh) : '0';
-        document.getElementById('kpiCheckLada').innerText = cntLa > 0 ? fmtNum(pLa / cntLa) : '0';
+        setVal('kpiArpu', tS > 0 ? fmtRub(revTotal / tS) : '0 ₽');
+        setVal('kpiArpuChina', cntCh > 0 ? fmtNum(revChina / cntCh) : '0');
+        setVal('kpiArpuLada', cntLa > 0 ? fmtNum(revLada / cntLa) : '0');
+        setVal('kpiCheck', tS > 0 ? fmtRub(pTot / tS) : '0 ₽');
+        setVal('kpiCheckChina', cntCh > 0 ? fmtNum(pCh / cntCh) : '0');
+        setVal('kpiCheckLada', cntLa > 0 ? fmtNum(pLa / cntLa) : '0');
 
         renderDashTables(sDb);
         let y, m;
@@ -1149,8 +1157,10 @@
             sorted.forEach(x => h+=`<tr><td class="font-bold">${x[0]}</td><td>${fmtNum(x[1])}</td></tr>`);
             return h + `<tr><td class="table-subtotal">Общий итог</td><td class="table-subtotal">${fmtNum(tot)}</td></tr></tbody></table>`;
         };
-        document.getElementById('tableDashBrands').innerHTML = makeHtml(br, "Марка авто", "Количество");
-        document.getElementById('tableDashB2C').innerHTML = makeHtml(b2c, "Тип сделки B2C", "Количество");
+        const elDashBrands = document.getElementById('tableDashBrands');
+        if (elDashBrands) elDashBrands.innerHTML = makeHtml(br, "Марка авто", "Количество");
+        const elDashB2C = document.getElementById('tableDashB2C');
+        if (elDashB2C) elDashB2C.innerHTML = makeHtml(b2c, "Тип сделки B2C", "Количество");
     }
 
     function getTopBrands(sDb) {
@@ -1172,36 +1182,43 @@
     }
 
     function renderDynamicsTab(sDb, pDb, isAll) {
-        let brands = Array.from(new Set(sDb.map(r => r.Brand))).filter(b => b && b !== "ВНЕСЕНИЕ");
-        let bTotals = {};
-        brands.forEach(b => {
-            let bS = sDb.filter(r => r.Brand === b);
-            let bP = pDb.filter(r => r.Brand === b);
-            let pTot = bS.reduce((s,x)=>s+x.Price,0);
-            let rTot = bS.reduce((s,x)=>s+x.Revenue,0);
-            bTotals[b] = { sales: bS.length, prepays: bP.length, price: pTot, rev: rTot, avgCheck: bS.length > 0 ? pTot/bS.length : 0, arpu: bS.length > 0 ? rTot/bS.length : 0 };
-        });
-        let sortedBrands = Object.entries(bTotals).sort((a,b) => b[1].sales - a[1].sales);
-        let h1 = `<table id="tableDynBrands"><thead><tr><th>Марка авто</th><th>Кол-во продаж</th><th>Средний чек</th><th>ARPU (без НДС)</th><th>Предоплат</th></tr></thead><tbody>`;
-        let tS = 0, tP = 0, tPr = 0, tRv = 0;
-        sortedBrands.forEach(([b, data]) => {
-            tS += data.sales; tP += data.prepays; tPr += data.price; tRv += data.rev;
-            h1 += `<tr><td class="font-bold">${b}</td><td>${fmtNum(data.sales)}</td><td>${fmtNum(data.avgCheck)}</td><td>${fmtNum(data.arpu)}</td><td>${fmtNum(data.prepays)}</td></tr>`;
-        });
-        h1 += `<tr class="table-total"><td>ИТОГО</td><td>${fmtNum(tS)}</td><td>${tS>0?fmtNum(tPr/tS):0}</td><td>${tS>0?fmtNum(tRv/tS):0}</td><td>${fmtNum(tP)}</td></tr></tbody></table>`;
-        document.getElementById('tableDynBrands').innerHTML = h1;
-        setupSmartSearch('searchDynBrands', 'tableDynBrands');
-
+        let brands = Array.from(new Set(sDb.map(r => r.Brand))).filter(b => b && b !== "ВНЕСЕНИЕ").sort();
         let b2cTypes = new Set(sDb.map(r => r.B2C || "(пусто)"));
         let b2cArr = Array.from(b2cTypes).sort();
-        let h2 = `<table id="tableB2CBrands"><thead><tr><th>Тип сделки B2C</th><th>ИТОГО</th>`;
-        let h3 = `<table id="tableB2CStruct"><thead><tr><th>Тип сделки B2C</th><th>ИТОГО</th>`;
+
+        // Calculate metrics
+        const calcMet = (sales, prepays, brand, idx) => {
+            let filteredS = brand ? sales.filter(r => r.Brand === brand) : sales;
+            let filteredP = brand ? prepays.filter(r => r.Brand === brand) : prepays;
+            let t = filteredS.length, pr = filteredS.reduce((s,x)=>s+x.Price,0), rev = filteredS.reduce((s,x)=>s+x.Revenue,0);
+            if (idx === 0) return t;
+            if (idx === 1) return t > 0 ? pr / t : 0;
+            if (idx === 2) return t > 0 ? rev / t : 0;
+            if (idx === 3) return filteredP.length;
+            return 0;
+        };
+
+        let h1 = `<table id="tableOpDyn"><thead><tr><th>Показатель</th><th>Период</th><th class="table-subtotal">ИТОГО</th>`;
+        brands.forEach(b => h1 += `<th>${b}</th>`); h1 += `</tr></thead><tbody>`;
+        let metrics = ["Кол-во продаж (шт.)", "Средний чек (руб.)", "ARPU (без НДС)", "Кол-во предоплат"];
+        metrics.forEach((met, i) => {
+            h1 += `<tr><td class="font-bold border-r">${met}</td><td>Текущий факт</td><td class="font-bold bg-gray-50">${fmtNum(calcMet(sDb, pDb, null, i))}</td>`;
+            brands.forEach(b => h1 += `<td class="bg-gray-50">${fmtNum(calcMet(sDb, pDb, b, i))}</td>`); h1 += `</tr>`;
+        });
+        const elOpDyn = document.getElementById('tableOpDyn');
+        if (elOpDyn) {
+            elOpDyn.innerHTML = h1 + `</tbody></table>`;
+            setupSmartSearch('searchOpDyn', 'tableOpDyn');
+        }
+
+        let h2 = `<table id="tableB2CBrands"><thead><tr><th>Тип сделки B2C</th><th class="table-subtotal">ИТОГО</th>`;
+        let h3 = `<table id="tableB2CStruct"><thead><tr><th>Тип сделки B2C</th><th class="table-subtotal">ИТОГО</th>`;
         brands.forEach(b => { h2 += `<th>${b}</th>`; h3 += `<th>${b}</th>`; });
         h2 += `</tr></thead><tbody>`; h3 += `</tr></thead><tbody>`;
 
-        let brandTotals = {};
+        let b2cTotals = {}, brandTotals = {};
+        b2cArr.forEach(t => b2cTotals[t] = 0);
         brands.forEach(b => brandTotals[b] = sDb.filter(r => r.Brand === b).length);
-        let b2cTotals = {};
         let grandTotal = sDb.length;
 
         b2cArr.forEach(t => {
@@ -1222,9 +1239,15 @@
             h2 += `<td>${fmtNum(brandTotals[b])}</td>`;
             h3 += `<td>${fmtPct(brandTotals[b]/grandTotal)}</td>`;
         });
-        document.getElementById('tableB2CBrands').innerHTML = h2 + `</tr></tbody></table>`;
-        document.getElementById('tableB2CStruct').innerHTML = h3 + `</tr></tbody></table>`;
-        setupSmartSearch('searchB2CBrands', 'tableB2CBrands');
+        const elB2CBrands = document.getElementById('tableB2CBrands');
+        if (elB2CBrands) {
+            elB2CBrands.innerHTML = h2 + `</tr></tbody></table>`;
+            setupSmartSearch('searchB2CBrands', 'tableB2CBrands');
+        }
+        const elB2CStruct = document.getElementById('tableB2CStruct');
+        if (elB2CStruct) {
+            elB2CStruct.innerHTML = h3 + `</tr></tbody></table>`;
+        }
     }
 
     function renderDynMonthsTab(sDb, isAll, period) {
@@ -1243,14 +1266,17 @@
             hHist += `<tr><td class="font-bold">${r.b}</td><td>${r.m}</td><td>${fmtNum(r.s)}</td>
             <td>${r.s>0?fmtNum(r.pr/r.s):0}</td><td>${r.s>0?fmtNum(r.rev/r.s):0}</td><td>${fmtNum(r.p)}</td></tr>`;
         });
-        document.getElementById('tableHistDyn').innerHTML = hHist + `</tbody></table>`;
-        setupSmartSearch('searchHistDyn', 'tableHistDyn');
+        const elHistDyn = document.getElementById('tableHistDyn');
+        if (elHistDyn) {
+            elHistDyn.innerHTML = hHist + `</tbody></table>`;
+            setupSmartSearch('searchHistDyn', 'tableHistDyn');
+        }
 
         let dates = sDb.map(r => excelToJSDate(r.DealDate)).filter(d => d);
         if (dates.length === 0) return;
 
         let minD, maxD;
-        if (isAll) {
+        if (isAll || !period || period === 'all' || period.includes('🗓️')) {
             minD = new Date(Math.min(...dates)); maxD = new Date(Math.max(...dates));
         } else {
             let [y, m] = period.split('-');
@@ -1274,33 +1300,56 @@
             cur = new Date(we); cur.setDate(we.getDate() + 1); wNum++;
         }
 
-        let brands = Array.from(new Set(sDb.map(r => r.Brand))).filter(b => b && b !== "ВНЕСЕНИЕ").sort();
-        let hWeeks = `<table id="tableWeeks"><thead><tr><th>Марка Авто</th>`;
-        weeks.forEach(w => hWeeks += `<th>${w.l}<br><span class="text-xs text-gray-200 font-normal">${w.s}</span></th>`);
-        hWeeks += `<th>ИТОГО</th></tr></thead><tbody>`;
+        let hWComp = `<table id="tableWeekComp"><thead><tr><th>Показатель</th>`;
+        let hWB2C = `<table id="tableWeekB2C"><thead><tr><th>Тип сделки B2C</th>`;
+        weeks.forEach(w => {
+            hWComp += `<th>${w.l}<br><span style="font-weight:normal;font-size:0.72rem">${w.s}</span></th>`;
+            hWB2C += `<th>${w.l}<br><span style="font-weight:normal;font-size:0.72rem">${w.s}</span></th>`;
+        });
+        hWComp += `</tr></thead><tbody>`; hWB2C += `</tr></thead><tbody>`;
 
-        let bWeeklyData = {};
-        brands.forEach(b => {
-            bWeeklyData[b] = weeks.map(w => sDb.filter(r => {
-                let d = excelToJSDate(r.DealDate);
-                return r.Brand === b && d && d.getTime() >= w.start && d.getTime() <= w.end;
-            }).length);
+        const compMets = ["ARPU Китай", "ARPU LADA", "ARPU ИТОГО", "Средний чек Китай", "Средний чек LADA", "Средний чек ИТОГО"];
+        compMets.forEach((met, i) => {
+            hWComp += `<tr><td class="font-bold">${met}</td>`;
+            weeks.forEach(w => {
+                let wD = sDb.filter(r => { let d = excelToJSDate(r.DealDate)?.getTime(); return d && d >= w.start && d <= w.end; });
+                let t = wD.length, pr = 0, rev = 0, revLa = 0, cntLa = 0, prLa = 0, revCh = 0, cntCh = 0, prCh = 0;
+                wD.forEach(r => {
+                    rev += (r.Revenue || 0); pr += r.Price;
+                    if (r.Brand === 'LADA') { revLa += (r.Revenue||0); prLa += r.Price; cntLa++; }
+                    else { revCh += (r.Revenue||0); prCh += r.Price; cntCh++; }
+                });
+                let v = 0;
+                if (i === 0) v = cntCh > 0 ? (revCh / cntCh) : 0;   
+                if (i === 1) v = cntLa > 0 ? (revLa / cntLa) : 0;     
+                if (i === 2) v = t > 0 ? (rev / t) : 0;              
+                if (i === 3) v = cntCh > 0 ? (prCh / cntCh) : 0;
+                if (i === 4) v = cntLa > 0 ? (prLa / cntLa) : 0;
+                if (i === 5) v = t > 0 ? (pr / t) : 0;
+                hWComp += `<td>${fmtNum(v)}</td>`;
+            });
+            hWComp += `</tr>`;
         });
 
-        brands.forEach(b => {
-            let rowTot = bWeeklyData[b].reduce((s,x)=>s+x, 0);
-            hWeeks += `<tr><td class="font-bold">${b}</td>`;
-            bWeeklyData[b].forEach(cnt => hWeeks += `<td>${fmtNum(cnt)}</td>`);
-            hWeeks += `<td class="font-bold bg-gray-50">${fmtNum(rowTot)}</td></tr>`;
+        let b2cSet = new Set(sDb.map(r => r.B2C || "(пусто)"));
+        Array.from(b2cSet).sort().forEach(b2c => {
+            hWB2C += `<tr><td class="font-bold">${b2c}</td>`;
+            weeks.forEach(w => {
+                let c = sDb.filter(r => (r.B2C||"(пусто)") === b2c && excelToJSDate(r.DealDate)?.getTime() >= w.start && excelToJSDate(r.DealDate)?.getTime() <= w.end).length;
+                hWB2C += `<td>${fmtNum(c)}</td>`;
+            });
+            hWB2C += `</tr>`;
         });
-        hWeeks += `<tr class="table-total"><td>ИТОГО</td>`;
-        weeks.forEach((w, idx) => {
-            let wTot = brands.reduce((s, b) => s + bWeeklyData[b][idx], 0);
-            hWeeks += `<td>${fmtNum(wTot)}</td>`;
-        });
-        hWeeks += `<td>${fmtNum(sDb.length)}</td></tr></tbody></table>`;
-        document.getElementById('tableWeeks').innerHTML = hWeeks;
-        setupSmartSearch('searchWeeks', 'tableWeeks');
+
+        const elWeekComp = document.getElementById('tableWeekComp');
+        if (elWeekComp) {
+            elWeekComp.innerHTML = hWComp + `</tbody></table>`;
+            setupSmartSearch('searchWeekComp', 'tableWeekComp');
+        }
+        const elWeekB2C = document.getElementById('tableWeekB2C');
+        if (elWeekB2C) {
+            elWeekB2C.innerHTML = hWB2C + `</tbody></table>`;
+        }
     }
 
     function renderPartnersTable(filterCfg) {
@@ -1341,8 +1390,11 @@
 
         let tCr = tL > 0 ? fmtPct(tD / tL) : "0%";
         html += `<tr class="table-total"><td>ИТОГО</td><td>—</td><td>${fmtNum(tL)}</td><td>${fmtNum(tD)}</td><td>${fmtNum(tP)}</td><td>${tCr}</td></tr></tbody></table>`;
-        document.getElementById('tablePartnersContainer').innerHTML = html;
-        setupSmartSearch('searchPartners', 'tablePartnersContainer');
+        const elPartners = document.getElementById('tablePartnersContainer');
+        if (elPartners) {
+            elPartners.innerHTML = html;
+            setupSmartSearch('searchPartners', 'tablePartnersContainer');
+        }
     }
 
     function renderManagersTable(sDb, pDb) {
@@ -1394,8 +1446,11 @@
         });
 
         html += `<tr class="table-total"><td>ОБЩИЙ ИТОГ</td><td>${fmtNum(grandS)}</td><td>${fmtNum(grandP)}</td></tr>`;
-        document.getElementById('tableManagersContainer').innerHTML = html + `</tbody></table>`;
-        setupSmartSearch('searchManagers', 'tableManagersContainer');
+        const elMgrs = document.getElementById('tableManagersContainer');
+        if (elMgrs) {
+            elMgrs.innerHTML = html + `</tbody></table>`;
+            setupSmartSearch('searchManagers', 'tableManagersContainer');
+        }
     }
 
     function renderWaitingTable(filterCfg) {
@@ -1423,8 +1478,11 @@
         let sorted = Object.keys(wStats).sort((a, b) => wStats[b] - wStats[a]);
         let html = `<table id="tableWaiting"><thead><tr><th>Марка Авто</th><th>Клиенты в ожидании</th></tr></thead><tbody>`, tw = 0;
         sorted.forEach(b => { tw += wStats[b]; html += `<tr><td class="font-semibold">${b}</td><td class="text-orange-500 font-bold">${fmtNum(wStats[b])}</td></tr>`;});
-        document.getElementById('tableWaitingContainer').innerHTML = html + `<tr class="table-total"><td>ВСЕГО</td><td>${fmtNum(tw)}</td></tr></tbody></table>`;
-        setupSmartSearch('searchWaiting', 'tableWaitingContainer');
+        const elWait = document.getElementById('tableWaitingContainer');
+        if (elWait) {
+            elWait.innerHTML = html + `<tr class="table-total"><td>ВСЕГО</td><td>${fmtNum(tw)}</td></tr></tbody></table>`;
+            setupSmartSearch('searchWaiting', 'tableWaitingContainer');
+        }
     }
 
     // ====================================================================
@@ -1702,6 +1760,8 @@
     }
 
     function updateLineChart(canvasId, chartInst, groupName, salesDb, prepayDb, year, month) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const labels = [], dataSales = [], dataPrepays = [], dataWeekends = [];
         let maxVal = 0;
@@ -1716,8 +1776,6 @@
         const wH = maxVal > 0 ? maxVal * 1.2 : 10;
         const sW = dataWeekends.map(w => w === 1 ? wH : 0);
 
-        let canvas = document.getElementById(canvasId);
-        if (!canvas) return;
         let ctx = canvas.getContext('2d');
         if (canvas._chartInstance) canvas._chartInstance.destroy();
 
@@ -1790,13 +1848,15 @@
     function copyCardToClipboard(cardId) {
         let card = document.getElementById(cardId);
         if (!card) return;
-        html2canvas(card).then(canvas => {
-            canvas.toBlob(blob => {
-                navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => {
-                    alert('Скриншот карточки скопирован в буфер обмена!');
+        if (typeof html2canvas !== 'undefined') {
+            html2canvas(card).then(canvas => {
+                canvas.toBlob(blob => {
+                    navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => {
+                        alert('Скриншот карточки скопирован в буфер обмена!');
+                    });
                 });
             });
-        });
+        }
     }
 
     function initTableSorting() {
@@ -1853,8 +1913,6 @@
         let currentFunnelBrand = 'ALL';
         let funnelRawData = {};
         const fBrandColors = ['#21A038', '#00B074', '#0097A7', '#2E5BFF', '#7928CA', '#FF9900', '#EC4899', '#8B5CF6', '#14B8A6', '#F59E0B', '#6366F1', '#3B82F6', '#64748B'];
-        let leadsDoughnutChart = null;
-        let revDoughnutChart = null;
 
         function setFunnelMonth(month) {
             currentFunnelMonth = month;
@@ -1909,7 +1967,6 @@
                 totRevMp2 += (d.mp2_rev || 0);
             });
 
-            // Mini KPI Cards
             const kpiCards = document.getElementById('funnelKpiCards');
             if (kpiCards) {
                 kpiCards.innerHTML = `
