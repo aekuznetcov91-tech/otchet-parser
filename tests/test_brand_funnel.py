@@ -131,19 +131,45 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
             self.assertIn('leads', aug_brands[b])
 
     def test_10_javascript_syntax_integrity(self):
-        """Проверка синтаксиса JavaScript через WebKit JavaScriptCore (JXA)"""
+        """Проверка синтаксиса JavaScript"""
+        import tempfile
+        import shutil
         with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
             html = f.read()
         scripts = re.findall(r'<script>(.*?)</script>', html, re.DOTALL)
         self.assertGreater(len(scripts), 0, "Должен присутствовать хотя бы один тег <script>")
-        for idx, s in enumerate(scripts):
-            tmp_path = f'/tmp/qa_jxa_{idx}.js'
-            with open(tmp_path, 'w', encoding='utf-8') as sf:
-                sf.write('function __qa__() {\n' + s + '\n}')
-            r = subprocess.run(['osascript', '-l', 'JavaScript', tmp_path], capture_output=True, text=True)
-            self.assertEqual(r.returncode, 0, f"Ошибка синтаксиса JS в скрипте {idx+1}: {r.stderr}")
-            if os.path.exists(tmp_path):
-                os.remove(tmp_path)
+        if shutil.which('osascript'):
+            for idx, s in enumerate(scripts):
+                tmp_path = os.path.join(tempfile.gettempdir(), f'qa_jxa_{idx}.js')
+                with open(tmp_path, 'w', encoding='utf-8') as sf:
+                    sf.write('function __qa__() {\n' + s + '\n}')
+                r = subprocess.run(['osascript', '-l', 'JavaScript', tmp_path], capture_output=True, text=True)
+                self.assertEqual(r.returncode, 0, f"Ошибка синтаксиса JS в скрипте {idx+1}: {r.stderr}")
+                if os.path.exists(tmp_path):
+                    os.remove(tmp_path)
+
+    def test_11_master_partners_registry_and_matching(self):
+        """Проверка целостности Master Partner Registry и сквозного метчинга"""
+        partners_db = self.data.get('sys_db_partners', [])
+        self.assertGreater(len(partners_db), 100, "В sys_db_partners должно быть более 100 записей")
+
+        # Check partner IDs
+        matched_rows = [r for r in partners_db if r.get('PartnerId') is not None]
+        self.assertGreater(len(matched_rows), 500, "Должно быть более 500 записей с присвоенным цифровым PartnerId")
+
+        # Check matched partners with both leads and deals
+        pstats = {}
+        for r in partners_db:
+            pid = r.get('PartnerId')
+            t = r.get('Type', '')
+            if pid:
+                if pid not in pstats:
+                    pstats[pid] = {'lead': 0, 'deal': 0}
+                if t == 'Лид': pstats[pid]['lead'] += 1
+                elif t == 'Сделка': pstats[pid]['deal'] += 1
+
+        both = [pid for pid, s in pstats.items() if s['lead'] > 0 and s['deal'] > 0]
+        self.assertGreater(len(both), 50, f"Должно быть > 50 партнеров с обоими типами данных (факт: {len(both)})")
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
