@@ -913,10 +913,76 @@
         }
 
         // ================= TAB 2: OEM DEALERS =================
+
+        window.oemTotalCitiesSet = new Set();
+        window.oemBrandCitiesSets = {};
+
+        function copyCitiesToClipboard(citiesData, brandLabel, event) {
+            if (event) event.stopPropagation();
+            let arr = [];
+            if (citiesData instanceof Set) {
+                arr = Array.from(citiesData);
+            } else if (Array.isArray(citiesData)) {
+                arr = citiesData;
+            } else if (typeof citiesData === 'string' && window.oemBrandCitiesSets[citiesData]) {
+                arr = Array.from(window.oemBrandCitiesSets[citiesData]);
+            }
+            
+            arr = arr.filter(c => c && c !== 'Не указан').map(c => c.trim());
+            // Sort in alphabetical order using Russian locale
+            arr.sort((a, b) => a.localeCompare(b, 'ru'));
+            
+            if (arr.length === 0) {
+                alert("Нет городов для копирования.");
+                return;
+            }
+
+            const textToCopy = arr.join('\n');
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showToastNotification(`📋 Скопировано ${arr.length} городов (${brandLabel}) в алфавитном порядке!`);
+                }).catch(() => {
+                    fallbackCopyText(textToCopy, arr.length, brandLabel);
+                });
+            } else {
+                fallbackCopyText(textToCopy, arr.length, brandLabel);
+            }
+        }
+
+        function fallbackCopyText(text, count, label) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToastNotification(`📋 Скопировано ${count} городов (${label}) в алфавитном порядке!`);
+        }
+
+        function showToastNotification(msg) {
+            let toast = document.getElementById('globalToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'globalToast';
+                toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 text-xs font-bold border border-emerald-500/50 transition-all duration-300 transform translate-y-10 opacity-0';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> <span>${msg}</span>`;
+            if (window.lucide) lucide.createIcons();
+            toast.classList.remove('translate-y-10', 'opacity-0');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+            }, 2500);
+        }
+
         function renderOemViews() {
             let allOem = [];
             let brandStats = {};
             let totalCities = new Set();
+            window.oemBrandCitiesSets = {};
 
             (registryData.partners || []).forEach(p => {
                 (p.oem_data || []).forEach(o => {
@@ -928,7 +994,9 @@
                         brandStats[brand] = { brand: brand, count: 0, cities: new Set() };
                     }
                     brandStats[brand].count++;
-                    if (city && city !== 'Не указан') brandStats[brand].cities.add(city);
+                    if (city && city !== 'Не указан') {
+                        brandStats[brand].cities.add(city);
+                    }
 
                     allOem.push({
                         ...o,
@@ -940,28 +1008,43 @@
                 });
             });
 
+            window.oemTotalCitiesSet = totalCities;
+            Object.values(brandStats).forEach(bs => {
+                window.oemBrandCitiesSets[bs.brand] = bs.cities;
+            });
+
             const cardsContainer = document.getElementById('oemBrandCardsContainer');
             cardsContainer.innerHTML = '';
 
             const totalCard = document.createElement('div');
-            totalCard.className = `sber-card p-3 border-purple-200 bg-purple-50/50 cursor-pointer ${selectedOemBrandFilter === 'ALL' ? 'ring-2 ring-purple-500' : ''}`;
+            totalCard.className = `sber-card p-3.5 border-purple-200 bg-purple-50/50 cursor-pointer ${selectedOemBrandFilter === 'ALL' ? 'ring-2 ring-purple-500 shadow-md' : ''}`;
             totalCard.onclick = () => { selectOemBrandFilter('ALL'); };
             totalCard.innerHTML = `
                 <div class="text-purple-800 font-bold text-xs">Все бренды</div>
                 <div class="text-xl font-black text-slate-900 mt-0.5">${allOem.length} <span class="text-xs font-normal text-slate-500">крыш</span></div>
-                <div class="text-[10px] text-purple-700 mt-1">${totalCities.size} уникальных городов</div>
+                <div class="text-[11px] text-purple-700 mt-1.5 flex items-center gap-1 font-semibold group cursor-pointer hover:text-purple-950 transition" 
+                     onclick="copyCitiesToClipboard(window.oemTotalCitiesSet, 'Все бренды', event)" 
+                     title="Кликните, чтобы скопировать список всех ${totalCities.size} городов в алфавитном порядке">
+                    <i data-lucide="copy" class="w-3 h-3 text-purple-500 group-hover:scale-125 transition shrink-0"></i>
+                    <span class="underline decoration-dotted underline-offset-2">${totalCities.size} уникальных городов</span>
+                </div>
             `;
             cardsContainer.appendChild(totalCard);
 
             Object.values(brandStats).forEach(bs => {
                 const isSel = selectedOemBrandFilter === bs.brand;
                 const card = document.createElement('div');
-                card.className = `sber-card p-3 border-slate-200 cursor-pointer transition ${isSel ? 'border-purple-400 bg-purple-50 ring-2 ring-purple-500' : ''}`;
+                card.className = `sber-card p-3.5 border-slate-200 cursor-pointer transition ${isSel ? 'border-purple-400 bg-purple-50 ring-2 ring-purple-500 shadow-md' : ''}`;
                 card.onclick = () => { selectOemBrandFilter(bs.brand); };
                 card.innerHTML = `
                     <div class="text-slate-700 font-bold text-xs truncate">${bs.brand}</div>
                     <div class="text-xl font-black text-emerald-600 mt-0.5">${bs.count} <span class="text-xs font-normal text-slate-500">крыш</span></div>
-                    <div class="text-[10px] text-blue-700 mt-1">${bs.cities.size} уникальных городов</div>
+                    <div class="text-[11px] text-blue-700 mt-1.5 flex items-center gap-1 font-semibold group cursor-pointer hover:text-blue-950 transition" 
+                         onclick="copyCitiesToClipboard('${bs.brand.replace(/'/g, "\'")}', '${bs.brand.replace(/'/g, "\'")}', event)" 
+                         title="Кликните, чтобы скопировать список ${bs.cities.size} городов (${bs.brand}) в алфавитном порядке">
+                        <i data-lucide="copy" class="w-3 h-3 text-blue-500 group-hover:scale-125 transition shrink-0"></i>
+                        <span class="underline decoration-dotted underline-offset-2">${bs.cities.size} уникальных городов</span>
+                    </div>
                 `;
                 cardsContainer.appendChild(card);
             });

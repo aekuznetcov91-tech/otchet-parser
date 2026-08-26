@@ -146,21 +146,32 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
             self.assertIn('leads', aug_brands[b])
 
     def test_10_javascript_syntax_integrity(self):
-        """Проверка синтаксиса JavaScript всех модулей через WebKit JavaScriptCore (JXA)"""
+        """Проверка синтаксиса JavaScript всех модулей"""
+        import tempfile
+        import shutil
         js_dir = os.path.join(PROJECT_ROOT, 'site', 'js')
         js_files = [os.path.join(js_dir, f) for f in os.listdir(js_dir) if f.endswith('.js')]
         self.assertGreater(len(js_files), 5, "В site/js должно быть более 5 модулей JS")
         
+        has_node = shutil.which('node') is not None
+        has_osascript = shutil.which('osascript') is not None
+
         for js_file in js_files:
             with open(js_file, 'r', encoding='utf-8') as sf:
                 code = sf.read()
-            tmp_path = f'/tmp/qa_jxa_{os.path.basename(js_file)}'
-            with open(tmp_path, 'w', encoding='utf-8') as tf:
-                tf.write('function __qa__() {\n' + code + '\n}')
-            r = subprocess.run(['osascript', '-l', 'JavaScript', tmp_path], capture_output=True, text=True)
-            self.assertEqual(r.returncode, 0, f"Ошибка синтаксиса JS в {os.path.basename(js_file)}: {r.stderr}")
-            if os.path.exists(tmp_path):
-                os.remove(tmp_path)
+            tmp_fd, tmp_path = tempfile.mkstemp(suffix='.js')
+            try:
+                with os.fdopen(tmp_fd, 'w', encoding='utf-8') as tf:
+                    tf.write('function __qa__() {\n' + code + '\n}')
+                if has_node:
+                    r = subprocess.run(['node', '-c', tmp_path], capture_output=True, text=True)
+                    self.assertEqual(r.returncode, 0, f"Ошибка синтаксиса JS в {os.path.basename(js_file)}: {r.stderr}")
+                elif has_osascript:
+                    r = subprocess.run(['osascript', '-l', 'JavaScript', tmp_path], capture_output=True, text=True)
+                    self.assertEqual(r.returncode, 0, f"Ошибка синтаксиса JS в {os.path.basename(js_file)}: {r.stderr}")
+            finally:
+                if os.path.exists(tmp_path):
+                    os.remove(tmp_path)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
