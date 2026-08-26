@@ -225,6 +225,58 @@ function updateModalSelectionStats() {
     if (elCars) elCars.innerText = totalCars;
 }
 
+
+function executeDebtorsSingleTableExport() {
+    let checked = Array.from(document.querySelectorAll('.debtor-checkbox:checked'));
+    if (checked.length === 0) {
+        alert("Пожалуйста, выберите хотя бы одну компанию для выгрузки.");
+        return;
+    }
+
+    let selectedCompanyNames = checked.map(cb => decodeURIComponent(cb.getAttribute('data-company')));
+    let filtered = getFilteredDebtors(currentFilterConfig);
+
+    let wsData = [
+        ["Компания", "Дата аванса", "Марка", "ВИН"]
+    ];
+
+    let totalCars = 0;
+    filtered.forEach(d => {
+        if (selectedCompanyNames.includes(d.company)) {
+            wsData.push([
+                d.company || "—",
+                d.prepay_date || "—",
+                d.brand || "—",
+                d.vin || "—"
+            ]);
+            totalCars++;
+        }
+    });
+
+    if (totalCars === 0) {
+        alert("Нет данных для выгрузки по выбранным компаниям.");
+        return;
+    }
+
+    let ws = XLSX.utils.aoa_to_sheet(wsData);
+    ws['!cols'] = [
+        { wch: 35 }, // Компания
+        { wch: 18 }, // Дата аванса
+        { wch: 20 }, // Марка
+        { wch: 25 }  // ВИН
+    ];
+
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Должники_ДКП");
+
+    let todayStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '_');
+    let fileName = `Должники_ДКП_Общий_реестр_${todayStr}.xlsx`;
+
+    XLSX.writeFile(wb, fileName);
+    closeDebtorsExportModal();
+    alert(`✅ Успешно выгружена таблица должников ДКП (${totalCars} авто) в файл «${fileName}»!`);
+}
+
 function executeDebtorsExcelExport() {
     let checked = Array.from(document.querySelectorAll('.debtor-checkbox:checked'));
     if (checked.length === 0) {
