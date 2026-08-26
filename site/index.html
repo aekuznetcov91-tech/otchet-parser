@@ -65,6 +65,10 @@
             <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="m8.5 12 2.5 2.5 5-5"></path></svg>
             Воронка брендов
         </button>
+        <button onclick="switchTab('tab-lead-geo', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm text-indigo-700 font-bold hover:text-indigo-800">
+            <i data-lucide="map-pin" class="w-4 h-4 text-indigo-600"></i>
+            🗺️ Лиды: Регионы и Дилеры
+        </button>
         <button onclick="switchTab('tab-details', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
             <i data-lucide="clock" class="w-4 h-4"></i> В ожидании</button>
         <a href="partner_matcher.html" target="_blank" class="flex items-center gap-1.5 whitespace-nowrap text-xs text-purple-700 font-black bg-purple-50 hover:bg-purple-100 px-3 py-1.5 rounded-lg border border-purple-200 shadow-sm transition ml-auto">
@@ -466,6 +470,73 @@
         </div>
     </div>
 
+    
+    <!-- ==================== MODAL: CLIENT DRILLDOWN (BFS LINKS) ==================== -->
+    <div id="modalClientDrilldown" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] flex flex-col border border-gray-100 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold shadow-md">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <div>
+                        <h3 id="modalClientDrilldownTitle" class="text-base font-bold text-white">Клиенты и Ссылки в БФС</h3>
+                        <p id="modalClientDrilldownSubtitle" class="text-[11px] text-slate-400">Детальный реестр клиентов с прямыми ссылками в CRM Backoffice</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="modalClientCountBadge" class="px-2.5 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs font-bold border border-blue-500/30">0 клиентов</span>
+                    <button onclick="closeClientDrilldownModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 rounded-lg hover:bg-slate-800 transition">✕</button>
+                </div>
+            </div>
+
+            <!-- Modal Search & Actions -->
+            <div class="p-4 bg-gray-50 border-b border-gray-200 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                    <input type="text" class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Поиск по ID клиента, марке, модели или ВИН..." oninput="filterModalClientsTable(this.value)">
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportModalClientsToExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5 cursor-pointer">
+                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Экспорт в Excel (.xlsx)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Clients Table -->
+            <div class="overflow-y-auto flex-1 max-h-[60vh]">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-slate-800 text-white sticky top-0 z-10 text-xs">
+                        <tr>
+                            <th class="py-2.5 px-3 text-left">ID / Ссылка БФС</th>
+                            <th class="py-2.5 px-3 text-left">Марка и Модель</th>
+                            <th class="py-2.5 px-3 text-left">Дилерский Центр</th>
+                            <th class="py-2.5 px-3 text-center">Квалификация</th>
+                            <th class="py-2.5 px-3 text-center">Передача в ДЦ</th>
+                            <th class="py-2.5 px-3 text-center">Сделка</th>
+                            <th class="py-2.5 px-3 text-left">ВИН</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalClientDrilldownTbody" class="divide-y divide-gray-100 bg-white">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3.5 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-xs text-gray-500">
+                    🔗 Нажмите на бейдж <b>BFS #ID</b>, чтобы открыть карточку в Backoffice SberAuto
+                </div>
+                <button onclick="closeClientDrilldownModal()" class="px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition cursor-pointer">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ==================== MODULAR JAVASCRIPT BUNDLE ==================== -->
     <script src="js/utils.js"></script>
     <script src="js/data-loader.js"></script>
@@ -474,6 +545,7 @@
     <script src="js/debtors.js"></script>
     <script src="js/funnel.js"></script>
     <script src="js/heatmap.js"></script>
+    <script src="js/lead-geo.js"></script>
 
     <script>
         window.onload = () => {

@@ -173,5 +173,16 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
                 if os.path.exists(tmp_path):
                     os.remove(tmp_path)
 
+    def test_11_lead_geo_dealers_integrity(self):
+        """Проверка структуры и данных модуля Lead Geo & Dealers"""
+        self.assertIn('lead_geo_dealers', self.data, "В data.json должен быть узел lead_geo_dealers")
+        lgd = self.data['lead_geo_dealers']
+        self.assertIn('summary', lgd)
+        self.assertIn('regions', lgd)
+        self.assertGreater(lgd['summary']['qual_clients'], 0, "Количество квалифицированных клиентов должно быть > 0")
+        self.assertGreater(lgd['summary']['trans_clients'], 0, "Количество переданных клиентов должно быть > 0")
+        self.assertGreater(len(lgd['regions']), 10, "Количество регионов должно быть > 10")
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+

@@ -22,6 +22,7 @@ async function loadData() {
         const data = await res.json();
         db = data.sys_db || [];
         dbPartners = data.sys_db_partners || [];
+        window.dataPayload = data;
         rawDebtorsList = data.debtors || [];
         if (data.brand_funnel) {
             window.brandFunnelFullData = data.brand_funnel;
@@ -213,6 +214,7 @@ function updateAllTabs() {
 
     // Regional heatmap
     if (typeof updateHeatmap === 'function') updateHeatmap(sDb);
+    if (typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
 
     initTableSorting();
     if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -300,5 +302,6 @@ function switchTab(tabId, btn) {
     if (targetEl) targetEl.classList.remove('hidden');
     if (btn) btn.classList.add('active');
     if (tabId === 'tab-funnel' && typeof selectFunnelBrand === 'function') selectFunnelBrand('ALL');
+    if (tabId === 'tab-lead-geo' && typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }

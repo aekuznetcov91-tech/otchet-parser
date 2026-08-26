@@ -832,6 +832,319 @@ def load_master_partners_registry():
 
     return reg_data, bitrix_map, bi_map, pochta_map, oem_map
 
+
+def normalize_region_clean(raw_reg):
+    if not raw_reg or str(raw_reg).lower() in ('не указан', 'nan', 'null', 'без региона', ''):
+        return 'Другие регионы'
+    r = str(raw_reg).strip()
+    r = re.sub(r'\s+', ' ', r)
+    r_up = r.upper()
+    if 'МОСКВА' in r_up or 'МОСКОВСКАЯ' in r_up:
+        return 'Москва и Московская область'
+    if 'САНКТ-ПЕТЕРБУРГ' in r_up or 'ПЕТЕРБУРГ' in r_up or 'ЛЕНИНГРАДСКАЯ' in r_up:
+        return 'Санкт-Петербург и Ленинградская область'
+    if 'КРАСНОДАР' in r_up:
+        return 'Краснодарский край'
+    if 'ТАТАРСТАН' in r_up:
+        return 'Республика Татарстан'
+    if 'БАШКОРТОСТАН' in r_up:
+        return 'Республика Башкортостан'
+    if 'РОСТОВ' in r_up:
+        return 'Ростовская область'
+    if 'СВЕРДЛОВСК' in r_up or 'ЕКАТЕРИНБУРГ' in r_up:
+        return 'Свердловская область'
+    if 'САМАР' in r_up:
+        return 'Самарская область'
+    if 'НИЖЕГОРОД' in r_up:
+        return 'Нижегородская область'
+    if 'ЧЕЛЯБИНСК' in r_up:
+        return 'Челябинская область'
+    if 'ПЕРМ' in r_up:
+        return 'Пермский край'
+    if 'СТАВРОПОЛЬ' in r_up:
+        return 'Ставропольский край'
+    if 'ВОРОНЕЖ' in r_up:
+        return 'Воронежская область'
+    if 'НОВОСИБИРСК' in r_up:
+        return 'Новосибирская область'
+    if 'ТЮМЕН' in r_up:
+        return 'Тюменская область'
+    if 'ВОЛГОГРАД' in r_up:
+        return 'Волгоградская область'
+    if 'САРАТОВ' in r_up:
+        return 'Саратовская область'
+    if 'УЛЬЯНОВСК' in r_up:
+        return 'Ульяновская область'
+    if 'ЯРОСЛАВ' in r_up:
+        return 'Ярославская область'
+    if 'ТУЛЬСК' in r_up:
+        return 'Тульская область'
+    if 'РЯЗАН' in r_up:
+        return 'Рязанская область'
+    if 'ВЛАДИМИР' in r_up:
+        return 'Владимирская область'
+    if 'БЕЛГОРОД' in r_up:
+        return 'Белгородская область'
+    if 'КАЛУЖ' in r_up:
+        return 'Калужская область'
+    if 'УДМУРТ' in r_up:
+        return 'Удмуртская Республика'
+    if 'ЧУВАШ' in r_up:
+        return 'Чувашская Республика'
+    if 'КИРОВ' in r_up:
+        return 'Кировская область'
+    if 'ЛИПЕЦК' in r_up:
+        return 'Липецкая область'
+    if 'ОРЕНБУРГ' in r_up:
+        return 'Оренбургская область'
+    if 'КУРСК' in r_up:
+        return 'Курская область'
+    if 'БРЯНСК' in r_up:
+        return 'Брянская область'
+    if 'ИВАНОВ' in r_up:
+        return 'Ивановская область'
+    if 'ТВЕР' in r_up:
+        return 'Тверская область'
+    if 'ОМСК' in r_up:
+        return 'Омская область'
+    if 'КРАСНОЯРСК' in r_up:
+        return 'Красноярский край'
+    if 'ХАНТЫ' in r_up or 'ХМАО' in r_up or 'СУРГУТ' in r_up:
+        return 'ХМАО — Югра'
+    return r.title()
+
+def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
+    """
+    Build detailed breakdown of transferred and qualified leads by Region and Dealer.
+    Includes client-level database for interactive drilldown with BFS URLs.
+    """
+    d12_client_map = {}
+    deals_client_map = {}
+
+    if deals_data:
+        for r in deals_data:
+            cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА') or '').strip()
+            if cid:
+                deals_client_map[cid] = {
+                    'partner': str(get_exact_val(r, 'КОМПАНИЯ', 'ПАРТНЕР') or '').strip(),
+                    'brand': str(get_exact_val(r, 'ТОВАР', 'БРЕНД') or '').strip(),
+                    'price': float(str(get_exact_val(r, 'ЦЕНА', 'ФИНАЛЬНАЯЦЕНАB2C') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.') or 0)
+                }
+
+    # Pass 1: Extract client details from data (12) or enriched rows
+    for r in leads_data:
+        cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА', 'ID') or '').strip()
+        if not cid:
+            continue
+        
+        reg = str(get_exact_val(r, 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОН', 'ADDRESS', 'АДРЕС') or '').strip()
+        partner = str(get_exact_val(r, 'ПАРТНЕР', 'ДИЛЕР', 'КОМПАНИЯ') or '').strip()
+        brand = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
+        model = str(get_exact_val(r, 'МОДЕЛЬ') or '').strip()
+        vin = str(get_exact_val(r, 'VIN', 'ВИН') or '').strip()
+        
+        try:
+            price = float(str(get_exact_val(r, 'ЦЕНААВТО', 'ЦЕНА') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
+        except Exception:
+            price = 0.0
+
+        if cid not in d12_client_map:
+            d12_client_map[cid] = {
+                'region': reg,
+                'partner': partner,
+                'brand': brand,
+                'model': model,
+                'vin': vin,
+                'price': price
+            }
+        else:
+            if reg and not d12_client_map[cid]['region']: d12_client_map[cid]['region'] = reg
+            if partner and not d12_client_map[cid]['partner']: d12_client_map[cid]['partner'] = partner
+            if brand and not d12_client_map[cid]['brand']: d12_client_map[cid]['brand'] = brand
+            if model and not d12_client_map[cid]['model']: d12_client_map[cid]['model'] = model
+            if vin and not d12_client_map[cid]['vin']: d12_client_map[cid]['vin'] = vin
+            if price > 0 and d12_client_map[cid]['price'] == 0: d12_client_map[cid]['price'] = price
+
+    # Pass 2: Aggregate events, qualification and transfer flags by client_id
+    clients_by_id = {}
+    for r in leads_data:
+        cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА', 'ID') or '').strip()
+        if not cid:
+            continue
+        
+        is_qual = (str(get_exact_val(r, 'ЦЕЛЕВОЙМЕНЕДЖЕР', 'ЦЕЛЕВОЙ') or '').strip() == '1')
+        is_trans = (str(get_exact_val(r, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
+        
+        d12_info = d12_client_map.get(cid, {})
+        deal_info = deals_client_map.get(cid, {})
+        
+        dealer = d12_info.get('partner') or deal_info.get('partner') or str(get_exact_val(r, 'ПАРТНЕР', 'ДИЛЕР') or '').strip()
+        if not dealer:
+            dealer = 'Пул СберАвто (ДЦ не назначен)'
+        
+        raw_reg = d12_info.get('region') or str(get_exact_val(r, 'РЕГИОН', 'АДРЕС') or '').strip()
+        norm_reg = normalize_region_clean(raw_reg)
+        
+        brand = d12_info.get('brand') or deal_info.get('brand') or str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip() or 'Другие'
+        model = d12_info.get('model') or str(get_exact_val(r, 'МОДЕЛЬ') or '').strip()
+        event = str(get_exact_val(r, 'СОБЫТИЕ', 'EVENTNAME') or '').strip()
+        has_deal = (event == 'Сделка' or d12_info.get('price', 0) > 0 or cid in deals_client_map)
+        date_val = str(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА') or '').strip()
+
+        if cid not in clients_by_id:
+            clients_by_id[cid] = {
+                'id': cid,
+                'bfs_url': f"https://backoffice.x.sberauto.com/crm/manager/{cid}",
+                'region': norm_reg,
+                'dealer': dealer,
+                'brand': brand,
+                'model': model,
+                'is_qual': is_qual,
+                'is_trans': is_trans,
+                'has_deal': has_deal,
+                'event': event or ('Сделка' if has_deal else 'В обработке'),
+                'date': date_val,
+                'price': d12_info.get('price', 0) or deal_info.get('price', 0),
+                'vin': d12_info.get('vin', '')
+            }
+        else:
+            if is_qual: clients_by_id[cid]['is_qual'] = True
+            if is_trans: clients_by_id[cid]['is_trans'] = True
+            if has_deal: clients_by_id[cid]['has_deal'] = True
+            if not clients_by_id[cid]['brand'] or clients_by_id[cid]['brand'] == 'Другие':
+                clients_by_id[cid]['brand'] = brand
+            if not clients_by_id[cid]['model']:
+                clients_by_id[cid]['model'] = model
+            if dealer and clients_by_id[cid]['dealer'] == 'Пул СберАвто (ДЦ не назначен)':
+                clients_by_id[cid]['dealer'] = dealer
+            if norm_reg != 'Другие регионы' and clients_by_id[cid]['region'] == 'Другие регионы':
+                clients_by_id[cid]['region'] = norm_reg
+
+    clients_all = list(clients_by_id.values())
+
+    # Build Summary KPIs
+    total_clients = len(clients_all)
+    qual_clients = sum(1 for c in clients_all if c['is_qual'])
+    trans_clients = sum(1 for c in clients_all if c['is_trans'])
+    trans_qual = sum(1 for c in clients_all if c['is_qual'] and c['is_trans'])
+    trans_qual_pct = round((trans_qual / qual_clients * 100), 1) if qual_clients > 0 else 0.0
+    deals_cnt = sum(1 for c in clients_all if c['has_deal'])
+    deals_cr_pct = round((deals_cnt / trans_clients * 100), 1) if trans_clients > 0 else 0.0
+
+    # Build Region & Dealer tree
+    reg_map = {}
+    for c in clients_all:
+        r_name = c['region']
+        d_name = c['dealer']
+        
+        if r_name not in reg_map:
+            reg_map[r_name] = {
+                'region_name': r_name,
+                'total_clients': 0,
+                'qual_clients': 0,
+                'trans_clients': 0,
+                'trans_qual_clients': 0,
+                'deals': 0,
+                'dealers_dict': {}
+            }
+        
+        r_entry = reg_map[r_name]
+        r_entry['total_clients'] += 1
+        if c['is_qual']: r_entry['qual_clients'] += 1
+        if c['is_trans']: r_entry['trans_clients'] += 1
+        if c['is_qual'] and c['is_trans']: r_entry['trans_qual_clients'] += 1
+        if c['has_deal']: r_entry['deals'] += 1
+        
+        if d_name not in r_entry['dealers_dict']:
+            r_entry['dealers_dict'][d_name] = {
+                'dealer_name': d_name,
+                'region_name': r_name,
+                'total_clients': 0,
+                'qual_clients': 0,
+                'trans_clients': 0,
+                'trans_qual_clients': 0,
+                'deals': 0,
+                'brands_count': {},
+                'clients': []
+            }
+        
+        d_entry = r_entry['dealers_dict'][d_name]
+        d_entry['total_clients'] += 1
+        if c['is_qual']: d_entry['qual_clients'] += 1
+        if c['is_trans']: d_entry['trans_clients'] += 1
+        if c['is_qual'] and c['is_trans']: d_entry['trans_qual_clients'] += 1
+        if c['has_deal']: d_entry['deals'] += 1
+        
+        b = c['brand'] or 'Другие'
+        d_entry['brands_count'][b] = d_entry['brands_count'].get(b, 0) + 1
+        
+        if len(d_entry['clients']) < 500:
+            d_entry['clients'].append({
+                'id': c['id'],
+                'bfs_url': c['bfs_url'],
+                'brand': c['brand'],
+                'model': c['model'],
+                'is_qual': c['is_qual'],
+                'is_trans': c['is_trans'],
+                'has_deal': c['has_deal'],
+                'event': c['event'],
+                'vin': c['vin'],
+                'price': c['price']
+            })
+
+    # Format list
+    regions_list = []
+    for r_name, r_data in reg_map.items():
+        dealers_list = []
+        for d_name, d_data in r_data['dealers_dict'].items():
+            top_brands = sorted(d_data['brands_count'].items(), key=lambda x: x[1], reverse=True)
+            dealers_list.append({
+                'dealer_name': d_name,
+                'region_name': r_name,
+                'total_clients': d_data['total_clients'],
+                'qual_clients': d_data['qual_clients'],
+                'trans_clients': d_data['trans_clients'],
+                'trans_qual_clients': d_data['trans_qual_clients'],
+                'trans_qual_pct': round((d_data['trans_qual_clients'] / d_data['qual_clients'] * 100), 1) if d_data['qual_clients'] > 0 else 0.0,
+                'deals': d_data['deals'],
+                'deals_cr_pct': round((d_data['deals'] / d_data['trans_clients'] * 100), 1) if d_data['trans_clients'] > 0 else 0.0,
+                'top_brands': [tb[0] for tb in top_brands[:3]],
+                'clients': d_data['clients']
+            })
+        
+        dealers_list.sort(key=lambda x: (x['trans_clients'], x['qual_clients']), reverse=True)
+        
+        regions_list.append({
+            'region_name': r_name,
+            'total_clients': r_data['total_clients'],
+            'qual_clients': r_data['qual_clients'],
+            'trans_clients': r_data['trans_clients'],
+            'trans_qual_clients': r_data['trans_qual_clients'],
+            'trans_qual_pct': round((r_data['trans_qual_clients'] / r_data['qual_clients'] * 100), 1) if r_data['qual_clients'] > 0 else 0.0,
+            'deals': r_data['deals'],
+            'deals_cr_pct': round((r_data['deals'] / r_data['trans_clients'] * 100), 1) if r_data['trans_clients'] > 0 else 0.0,
+            'dealers_count': len(dealers_list),
+            'dealers': dealers_list
+        })
+
+    regions_list.sort(key=lambda x: (x['trans_clients'], x['qual_clients']), reverse=True)
+
+    return {
+        'summary': {
+            'total_clients': total_clients,
+            'qual_clients': qual_clients,
+            'trans_clients': trans_clients,
+            'trans_qual_clients': trans_qual,
+            'trans_qual_pct': trans_qual_pct,
+            'deals_from_trans': deals_cnt,
+            'deals_cr_pct': deals_cr_pct
+        },
+        'regions': regions_list
+    }
+
+
+
+
 def run_pipeline():
     """Main execution pipeline: parse raw data, generate optimized data.json and sync static assets."""
     print("=" * 60)
@@ -842,6 +1155,7 @@ def run_pipeline():
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
     deals_data = []
     leads_data = []
+    all_leads_data = []
     directory_data = []
     seen_file_hashes = set()
 
@@ -871,8 +1185,10 @@ def run_pipeline():
                     
                     if dtype == "deals" and not deals_data:
                         deals_data = rows
-                    elif dtype == "leads" and not leads_data:
-                        leads_data = rows
+                    elif dtype == "leads":
+                        if not leads_data:
+                            leads_data = rows
+                        all_leads_data.extend(rows)
                     elif dtype == "directory" and not directory_data:
                         directory_data = rows
 
@@ -1117,6 +1433,7 @@ def run_pipeline():
     city_expansion = calculate_city_expansion_potential(deals_data, leads_data)
     competitor_benchmarks = calculate_competitor_benchmarks(deals_data)
     discount_analytics = calculate_discount_analytics(deals_data)
+    lead_geo_dealers = calculate_lead_geo_dealers_analytics(all_leads_data, deals_data)
 
     output_payload = {
         "sys_db": sys_db,
@@ -1129,7 +1446,8 @@ def run_pipeline():
         "geo_analytics": geo_analytics,
         "city_expansion": city_expansion,
         "competitor_benchmarks": competitor_benchmarks,
-        "discount_analytics": discount_analytics
+        "discount_analytics": discount_analytics,
+        "lead_geo_dealers": lead_geo_dealers
     }
 
     # 6. Save JSON and sync HTML assets to site/
