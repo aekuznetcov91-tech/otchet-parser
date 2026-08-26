@@ -1,0 +1,2698 @@
+{
+  "updated_at": "2026-08-26 15:00:00",
+  "summary": {
+    "total_brands": 15,
+    "total_dealers_rf": 1633,
+    "total_connected_roofs": 642,
+    "total_unique_cities_connected": 102
+  },
+  "brand_geo_matrix": [
+    {
+      "brand": "LADA",
+      "total_cities_rf": 130,
+      "connected_cities_count": 52,
+      "connected_cities_list": [
+        "Архангельск",
+        "Астрахань",
+        "Барнаул",
+        "Брянск",
+        "Великие Луки",
+        "Великий Новгород",
+        "Владимир",
+        "Волгоград",
+        "Воронеж",
+        "Дзержинск",
+        "Екатеринбург",
+        "Иваново",
+        "Ижевск",
+        "Йошкар-Ола",
+        "Казань",
+        "Калуга",
+        "Кемерово",
+        "Краснодар",
+        "Курган",
+        "Липецк",
+        "Мариуполь",
+        "Москва",
+        "Мурманск",
+        "Набережные Челны",
+        "Нижний Новгород",
+        "Новомосковск (тульская Область)",
+        "Новосибирск",
+        "Омск",
+        "Оренбург",
+        "Оренбургская Обл.",
+        "Пермь",
+        "Петрозаводск",
+        "Псков",
+        "Ростов На Дону",
+        "Рыбинск",
+        "Рязань",
+        "Самара",
+        "Самарская Обл.",
+        "Санкт-Петербург",
+        "Саратов",
+        "Ставрополь",
+        "Стерлитамак",
+        "Сургут",
+        "Сыктывкар",
+        "Тольятти",
+        "Томск",
+        "Тула",
+        "Тюмень",
+        "Уфа",
+        "Челябинск",
+        "Ярославль",
+        "Яхрома"
+      ],
+      "city_coverage_pct": 40.0,
+      "missing_cities_count": 78,
+      "missing_cities_potential": [
+        "Ростов-на-Дону",
+        "Красноярск",
+        "Иркутск",
+        "Новокузнецк",
+        "Белгород",
+        "Пенза",
+        "Киров",
+        "Чебоксары",
+        "Курск",
+        "Тверь",
+        "Смоленск",
+        "Сочи",
+        "Новороссийск",
+        "Анапа",
+        "Армавир",
+        "Альметьевск",
+        "Ульяновск",
+        "Вологда",
+        "Череповец",
+        "Кострома",
+        "Тамбов",
+        "Саранск",
+        "Нижневартовск",
+        "Таганрог",
+        "Шахты",
+        "Владикавказ",
+        "Грозный"
+      ],
+      "connected_roofs": 97,
+      "total_dealers_rf": 318,
+      "dealer_coverage_pct": 30.5
+    },
+    {
+      "brand": "CHERY & TENET",
+      "total_cities_rf": 110,
+      "connected_cities_count": 51,
+      "connected_cities_list": [
+        "Анапа",
+        "Армавир",
+        "Архангельск",
+        "Белореченск",
+        "Брянск",
+        "Великий Новгород",
+        "Владимир",
+        "Волгоград",
+        "Воронеж",
+        "Геленджик",
+        "Донецк",
+        "Екатеринбург",
+        "Иваново",
+        "Ижевск",
+        "Иркутск",
+        "Казань",
+        "Калининград",
+        "Калуга",
+        "Кемерово",
+        "Краснодар",
+        "Кропоткин",
+        "Крымск",
+        "Лабинск",
+        "Луганск",
+        "Мариуполь",
+        "Мин. Воды",
+        "Москва",
+        "Набережные Челны",
+        "Нижний Новгород",
+        "Новокузнецк",
+        "Новосибирск",
+        "Оренбург",
+        "Орск",
+        "Пермь",
+        "Пятигорск",
+        "Самара",
+        "Санкт-Петербург",
+        "Саратов",
+        "Славянск-на-кубани",
+        "Сочи",
+        "Ставрополь",
+        "Ставропольский Край",
+        "Таганрог",
+        "Тамбов",
+        "Темрюк",
+        "Тимашевск",
+        "Тула",
+        "Тюмень",
+        "Уфа",
+        "Челябинск",
+        "Шахты"
+      ],
+      "city_coverage_pct": 46.4,
+      "missing_cities_count": 59,
+      "missing_cities_potential": [
+        "Ростов-на-Дону",
+        "Омск",
+        "Красноярск",
+        "Барнаул",
+        "Белгород",
+        "Рязань",
+        "Ярославль",
+        "Астрахань",
+        "Пенза",
+        "Липецк",
+        "Киров",
+        "Чебоксары",
+        "Курск",
+        "Тверь",
+        "Сургут",
+        "Новороссийск",
+        "Альметьевск"
+      ],
+      "connected_roofs": 72,
+      "total_dealers_rf": 205,
+      "dealer_coverage_pct": 35.1
+    },
+    {
+      "brand": "Geely & Belgee",
+      "total_cities_rf": 95,
+      "connected_cities_count": 39,
+      "connected_cities_list": [
+        "Альметьевск",
+        "Анапа",
+        "Белореченск",
+        "Великий Новгород",
+        "Волгоград",
+        "Воронеж",
+        "Геленджик",
+        "Иваново",
+        "Ижевск",
+        "Казань",
+        "Кемерово",
+        "Краснодар",
+        "Кропоткин",
+        "Крымск",
+        "Лабинск",
+        "Липецк",
+        "Луганск",
+        "Макеевка",
+        "Мариуполь",
+        "Мин. Воды",
+        "Москва",
+        "Набережные Челны",
+        "Новоросийск",
+        "Новосибирск",
+        "Оренбург",
+        "Пермь",
+        "Ростов-на-Дону",
+        "Самара",
+        "Санк-петербург",
+        "Санкт-Петербург",
+        "Славянск-на-кубани",
+        "Смоленск",
+        "Ставрополь",
+        "Ставропольский Край",
+        "Тамбов",
+        "Темрюк",
+        "Тимашевск",
+        "Тула",
+        "Тюмень"
+      ],
+      "city_coverage_pct": 41.1,
+      "missing_cities_count": 56,
+      "missing_cities_potential": [
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Уфа",
+        "Челябинск",
+        "Омск",
+        "Красноярск",
+        "Барнаул",
+        "Иркутск",
+        "Новокузнецк",
+        "Белгород",
+        "Владимир",
+        "Калуга",
+        "Рязань",
+        "Ярославль",
+        "Астрахань",
+        "Пенза",
+        "Киров",
+        "Чебоксары",
+        "Курск",
+        "Тверь",
+        "Брянск",
+        "Сочи"
+      ],
+      "connected_roofs": 71,
+      "total_dealers_rf": 176,
+      "dealer_coverage_pct": 40.3
+    },
+    {
+      "brand": "HAVAL",
+      "total_cities_rf": 85,
+      "connected_cities_count": 22,
+      "connected_cities_list": [
+        "Альметьевск",
+        "Анапа",
+        "Белореченск",
+        "Брянск",
+        "Геленджик",
+        "Донецк",
+        "Краснодар",
+        "Кропоткин",
+        "Крымск",
+        "Лабинск",
+        "Луганск",
+        "Мариуполь",
+        "Минеральные Воды",
+        "Москва",
+        "Ростов-на-Дону",
+        "Санк-петербург",
+        "Санкт-Петербург",
+        "Славянск-на-кубани",
+        "Ставрополь",
+        "Ставропольский Край",
+        "Темрюк",
+        "Тимашевск"
+      ],
+      "city_coverage_pct": 25.9,
+      "missing_cities_count": 63,
+      "missing_cities_potential": [
+        "Казань",
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Воронеж",
+        "Самара",
+        "Уфа",
+        "Пермь",
+        "Волгоград",
+        "Челябинск",
+        "Тюмень",
+        "Новосибирск",
+        "Омск",
+        "Красноярск",
+        "Ижевск",
+        "Барнаул",
+        "Иркутск",
+        "Кемерово",
+        "Новокузнецк",
+        "Белгород",
+        "Владимир",
+        "Калуга",
+        "Тула",
+        "Рязань",
+        "Ярославль",
+        "Набережные Челны",
+        "Оренбург",
+        "Астрахань",
+        "Пенза",
+        "Липецк",
+        "Сургут",
+        "Сочи",
+        "Новороссийск",
+        "Армавир"
+      ],
+      "connected_roofs": 42,
+      "total_dealers_rf": 152,
+      "dealer_coverage_pct": 27.6
+    },
+    {
+      "brand": "CHANGAN",
+      "total_cities_rf": 80,
+      "connected_cities_count": 35,
+      "connected_cities_list": [
+        "Альметьевск",
+        "Анапа",
+        "Белореченск",
+        "Воронеж",
+        "Геленджик",
+        "Донецк",
+        "Иваново",
+        "Казань",
+        "Калуга",
+        "Каспийск",
+        "Краснодар",
+        "Кропоткин",
+        "Крымск",
+        "Лабинск",
+        "Липецк",
+        "Луганск",
+        "Мариуполь",
+        "Мин. Воды",
+        "Москва",
+        "Новомосковск (тульская Область)",
+        "Пермь",
+        "Ростов-на-Дону",
+        "Рыбинск",
+        "Самара",
+        "Санкт-Петербург",
+        "Саратов",
+        "Славянск-на-кубани",
+        "Сочи",
+        "Ставрополь",
+        "Ставропольский Край",
+        "Тверь",
+        "Темрюк",
+        "Тимашевск",
+        "Уфа",
+        "Челябинск"
+      ],
+      "city_coverage_pct": 43.8,
+      "missing_cities_count": 45,
+      "missing_cities_potential": [
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Волгоград",
+        "Тюмень",
+        "Новосибирск",
+        "Омск",
+        "Красноярск",
+        "Ижевск",
+        "Барнаул",
+        "Иркутск",
+        "Кемерово",
+        "Новокузнецк",
+        "Белгород",
+        "Владимир",
+        "Тула",
+        "Рязань",
+        "Ярославль",
+        "Набережные Челны",
+        "Оренбург",
+        "Астрахань",
+        "Пенза",
+        "Армавир"
+      ],
+      "connected_roofs": 57,
+      "total_dealers_rf": 165,
+      "dealer_coverage_pct": 34.5
+    },
+    {
+      "brand": "JETOUR",
+      "total_cities_rf": 88,
+      "connected_cities_count": 65,
+      "connected_cities_list": [
+        "Альметьевск",
+        "Анапа",
+        "Архангельск",
+        "Белореченск",
+        "Брянск",
+        "Великий Новгород",
+        "Владимир",
+        "Волгоград",
+        "Воронеж",
+        "Геленджик",
+        "Екатеринбург",
+        "Иваново",
+        "Ижевск",
+        "Йошкар-Ола",
+        "Казань",
+        "Калуга",
+        "Кемерово",
+        "Коломна",
+        "Кострома",
+        "Краснодар",
+        "Красноярск",
+        "Кропоткин",
+        "Крымск",
+        "Курск",
+        "Лабинск",
+        "Липецк",
+        "Магнитогорск",
+        "Москва",
+        "Мурманск",
+        "Набережные Челны",
+        "Нижнекамск",
+        "Нижний Новгород",
+        "Новокузнецк",
+        "Новороссийск",
+        "Новосибирск",
+        "Орехово-зуево",
+        "Пермь",
+        "Псков",
+        "Пятигорск",
+        "Ростов-на-Дону",
+        "Рыбинск",
+        "Рязань",
+        "Самара",
+        "Санкт-Петербург",
+        "Саранск",
+        "Саратов",
+        "Севастополь",
+        "Симферополь",
+        "Славянск-на-кубани",
+        "Смоленск",
+        "Ставрополь",
+        "Ставропольский Край",
+        "Сыктывкар",
+        "Тамбов",
+        "Тверь",
+        "Темрюк",
+        "Тимашевск",
+        "Тольятти",
+        "Томск",
+        "Тула",
+        "Ульяновск",
+        "Уфа",
+        "Челябинск",
+        "Челябинск Область",
+        "Ярославль"
+      ],
+      "city_coverage_pct": 73.9,
+      "missing_cities_count": 23,
+      "missing_cities_potential": [
+        "Тюмень",
+        "Омск",
+        "Барнаул",
+        "Иркутск",
+        "Белгород",
+        "Оренбург",
+        "Астрахань",
+        "Пенза",
+        "Киров",
+        "Чебоксары",
+        "Сургут",
+        "Сочи",
+        "Армавир"
+      ],
+      "connected_roofs": 123,
+      "total_dealers_rf": 148,
+      "dealer_coverage_pct": 83.1
+    },
+    {
+      "brand": "OMODA & JAECOO",
+      "total_cities_rf": 78,
+      "connected_cities_count": 31,
+      "connected_cities_list": [
+        "Анапа",
+        "Армавир",
+        "Белореченск",
+        "Брянск",
+        "Владимир",
+        "Волгоград",
+        "Воронеж",
+        "Геленджик",
+        "Екатеринбург",
+        "Иркутск",
+        "Казань",
+        "Краснодар",
+        "Кропоткин",
+        "Крымск",
+        "Курск",
+        "Лабинск",
+        "Махачкала",
+        "Минеральные Воды",
+        "Москва",
+        "Набережные Челны",
+        "Новосибирск",
+        "Пятигорск",
+        "Самара",
+        "Санкт-Петербург",
+        "Славянск-на-кубани",
+        "Ставропольский Край",
+        "Таганрог",
+        "Тамбов",
+        "Темрюк",
+        "Тимашевск",
+        "Челябинск"
+      ],
+      "city_coverage_pct": 39.7,
+      "missing_cities_count": 47,
+      "missing_cities_potential": [
+        "Нижний Новгород",
+        "Ростов-на-Дону",
+        "Уфа",
+        "Пермь",
+        "Тюмень",
+        "Омск",
+        "Красноярск",
+        "Ижевск",
+        "Барнаул",
+        "Кемерово",
+        "Новокузнецк",
+        "Ставрополь",
+        "Белгород",
+        "Калуга",
+        "Тула",
+        "Рязань",
+        "Ярославль",
+        "Оренбург",
+        "Астрахань",
+        "Сочи",
+        "Новороссийск",
+        "Альметьевск"
+      ],
+      "connected_roofs": 46,
+      "total_dealers_rf": 162,
+      "dealer_coverage_pct": 28.4
+    },
+    {
+      "brand": "SOLARIS",
+      "total_cities_rf": 65,
+      "connected_cities_count": 24,
+      "connected_cities_list": [
+        "Альметьевск",
+        "Белгород",
+        "Владимир",
+        "Воронеж",
+        "Казань",
+        "Калуга",
+        "Краснодар",
+        "Курск",
+        "Липецк",
+        "Махачкала",
+        "Мин. Воды",
+        "Москва",
+        "Набережный Челны",
+        "Нижнекамск",
+        "Новосибирск",
+        "Ростов-на-Дону",
+        "Рязань",
+        "Самара",
+        "Санкт-Петербург",
+        "Саранск",
+        "Симферополь",
+        "Ставрополь",
+        "Тамбов",
+        "Тула"
+      ],
+      "city_coverage_pct": 36.9,
+      "missing_cities_count": 41,
+      "missing_cities_potential": [
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Уфа",
+        "Пермь",
+        "Волгоград",
+        "Челябинск",
+        "Тюмень",
+        "Омск",
+        "Красноярск",
+        "Ижевск",
+        "Барнаул",
+        "Ярославль",
+        "Тверь"
+      ],
+      "connected_roofs": 41,
+      "total_dealers_rf": 82,
+      "dealer_coverage_pct": 50.0
+    },
+    {
+      "brand": "GAC",
+      "total_cities_rf": 45,
+      "connected_cities_count": 24,
+      "connected_cities_list": [
+        "Анапа",
+        "Белореченск",
+        "Владимир",
+        "Геленджик",
+        "Казань",
+        "Калуга",
+        "Кропоткин",
+        "Крымск",
+        "Курск",
+        "Лабинск",
+        "Липецк",
+        "Москва",
+        "Набережные Челны",
+        "Пермь",
+        "Пятигорск",
+        "Республика Башкортостан",
+        "Ростов-на-Дону",
+        "Санкт-петебург",
+        "Славянск-на-кубани",
+        "Ставропольский Край",
+        "Темрюк",
+        "Тимашевск",
+        "Тольятти",
+        "Томск"
+      ],
+      "city_coverage_pct": 53.3,
+      "missing_cities_count": 21,
+      "missing_cities_potential": [
+        "Санкт-Петербург",
+        "Краснодар",
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Воронеж",
+        "Самара",
+        "Уфа",
+        "Тюмень",
+        "Новосибирск",
+        "Сочи",
+        "Новороссийск",
+        "Туапсе"
+      ],
+      "connected_roofs": 40,
+      "total_dealers_rf": 68,
+      "dealer_coverage_pct": 58.8
+    },
+    {
+      "brand": "Soueast",
+      "total_cities_rf": 30,
+      "connected_cities_count": 15,
+      "connected_cities_list": [
+        "Брянск",
+        "Владимир",
+        "Кострома",
+        "Краснодар",
+        "Красноярск",
+        "Москва",
+        "Пятигорск",
+        "Ростов-на-Дону",
+        "Санкт-Петербург",
+        "Севастополь",
+        "Симферополь",
+        "Сыктывкар",
+        "Тамбов",
+        "Томск",
+        "Ярославль"
+      ],
+      "city_coverage_pct": 50.0,
+      "missing_cities_count": 15,
+      "missing_cities_potential": [
+        "Казань",
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Воронеж",
+        "Рязань"
+      ],
+      "connected_roofs": 25,
+      "total_dealers_rf": 36,
+      "dealer_coverage_pct": 69.4
+    },
+    {
+      "brand": "Москвич",
+      "total_cities_rf": 35,
+      "connected_cities_count": 3,
+      "connected_cities_list": [
+        "Казань",
+        "Краснодар",
+        "Санкт-Петербург"
+      ],
+      "city_coverage_pct": 8.6,
+      "missing_cities_count": 32,
+      "missing_cities_potential": [
+        "Москва",
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Ростов-на-Дону",
+        "Воронеж",
+        "Самара",
+        "Уфа",
+        "Пермь",
+        "Волгоград",
+        "Челябинск",
+        "Тюмень",
+        "Новосибирск",
+        "Омск",
+        "Красноярск",
+        "Ижевск",
+        "Барнаул",
+        "Ставрополь",
+        "Белгород",
+        "Сочи"
+      ],
+      "connected_roofs": 3,
+      "total_dealers_rf": 52,
+      "dealer_coverage_pct": 5.8
+    },
+    {
+      "brand": "DEEPAL",
+      "total_cities_rf": 12,
+      "connected_cities_count": 7,
+      "connected_cities_list": [
+        "Воронеж",
+        "Краснодар",
+        "Пермь",
+        "Ростов-на-Дону",
+        "Санкт-Петербург",
+        "Ставрополь",
+        "Уфа"
+      ],
+      "city_coverage_pct": 58.3,
+      "missing_cities_count": 5,
+      "missing_cities_potential": [
+        "Москва",
+        "Казань",
+        "Тюмень",
+        "Екатеринбург",
+        "Новосибирск"
+      ],
+      "connected_roofs": 8,
+      "total_dealers_rf": 18,
+      "dealer_coverage_pct": 44.4
+    },
+    {
+      "brand": "Voyah",
+      "total_cities_rf": 18,
+      "connected_cities_count": 1,
+      "connected_cities_list": [
+        "Казань"
+      ],
+      "city_coverage_pct": 5.6,
+      "missing_cities_count": 17,
+      "missing_cities_potential": [
+        "Москва",
+        "Санкт-Петербург",
+        "Краснодар",
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Ростов-на-Дону",
+        "Воронеж",
+        "Самара",
+        "Уфа",
+        "Пермь",
+        "Тюмень",
+        "Новосибирск",
+        "Сочи"
+      ],
+      "connected_roofs": 1,
+      "total_dealers_rf": 24,
+      "dealer_coverage_pct": 4.2
+    },
+    {
+      "brand": "JETTA",
+      "total_cities_rf": 15,
+      "connected_cities_count": 1,
+      "connected_cities_list": [
+        "Москва"
+      ],
+      "city_coverage_pct": 6.7,
+      "missing_cities_count": 14,
+      "missing_cities_potential": [
+        "Санкт-Петербург",
+        "Казань",
+        "Краснодар",
+        "Екатеринбург",
+        "Нижний Новгород",
+        "Ростов-на-Дону",
+        "Самара",
+        "Воронеж",
+        "Уфа"
+      ],
+      "connected_roofs": 1,
+      "total_dealers_rf": 12,
+      "dealer_coverage_pct": 8.3
+    },
+    {
+      "brand": "Рольф Импорт",
+      "total_cities_rf": 1,
+      "connected_cities_count": 1,
+      "connected_cities_list": [
+        "Москва"
+      ],
+      "city_coverage_pct": 100.0,
+      "missing_cities_count": 0,
+      "missing_cities_potential": [],
+      "connected_roofs": 15,
+      "total_dealers_rf": 15,
+      "dealer_coverage_pct": 100.0
+    }
+  ],
+  "city_geo_matrix": [
+    {
+      "city": "Москва",
+      "total_brands_in_city": 15,
+      "connected_brands_count": 12,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "JETTA",
+        "LADA",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Soueast",
+        "Рольф Импорт"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "Москвич",
+        "DEEPAL",
+        "Voyah"
+      ],
+      "connected_roofs": 106,
+      "coverage_pct": 80.0
+    },
+    {
+      "city": "Санкт-Петербург",
+      "total_brands_in_city": 14,
+      "connected_brands_count": 11,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "DEEPAL",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Soueast",
+        "Москвич"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "GAC",
+        "Voyah",
+        "JETTA"
+      ],
+      "connected_roofs": 51,
+      "coverage_pct": 78.6
+    },
+    {
+      "city": "Краснодар",
+      "total_brands_in_city": 14,
+      "connected_brands_count": 11,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "DEEPAL",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Soueast",
+        "Москвич"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "GAC",
+        "Voyah",
+        "JETTA"
+      ],
+      "connected_roofs": 30,
+      "coverage_pct": 78.6
+    },
+    {
+      "city": "Казань",
+      "total_brands_in_city": 14,
+      "connected_brands_count": 10,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Voyah",
+        "Москвич"
+      ],
+      "missing_brands_count": 4,
+      "missing_brands_potential": [
+        "HAVAL",
+        "Soueast",
+        "DEEPAL",
+        "JETTA"
+      ],
+      "connected_roofs": 30,
+      "coverage_pct": 71.4
+    },
+    {
+      "city": "Ставропольский Край",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 23,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Воронеж",
+      "total_brands_in_city": 14,
+      "connected_brands_count": 8,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "DEEPAL",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 6,
+      "missing_brands_potential": [
+        "HAVAL",
+        "GAC",
+        "Soueast",
+        "Москвич",
+        "Voyah",
+        "JETTA"
+      ],
+      "connected_roofs": 12,
+      "coverage_pct": 57.1
+    },
+    {
+      "city": "Ростов-на-Дону",
+      "total_brands_in_city": 14,
+      "connected_brands_count": 8,
+      "connected_brands_list": [
+        "CHANGAN",
+        "DEEPAL",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "SOLARIS",
+        "Soueast"
+      ],
+      "missing_brands_count": 6,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "OMODA & JAECOO",
+        "Москвич",
+        "Voyah",
+        "JETTA"
+      ],
+      "connected_roofs": 12,
+      "coverage_pct": 57.1
+    },
+    {
+      "city": "Самара",
+      "total_brands_in_city": 12,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 5,
+      "missing_brands_potential": [
+        "HAVAL",
+        "GAC",
+        "Москвич",
+        "Voyah",
+        "JETTA"
+      ],
+      "connected_roofs": 12,
+      "coverage_pct": 58.3
+    },
+    {
+      "city": "Пермь",
+      "total_brands_in_city": 12,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "DEEPAL",
+        "GAC",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 5,
+      "missing_brands_potential": [
+        "HAVAL",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Москвич",
+        "Voyah"
+      ],
+      "connected_roofs": 11,
+      "coverage_pct": 58.3
+    },
+    {
+      "city": "Ставрополь",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 8,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "DEEPAL",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "LADA",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 2,
+      "missing_brands_potential": [
+        "OMODA & JAECOO",
+        "Москвич"
+      ],
+      "connected_roofs": 10,
+      "coverage_pct": 88.9
+    },
+    {
+      "city": "Владимир",
+      "total_brands_in_city": 10,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "GAC",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Soueast"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN"
+      ],
+      "connected_roofs": 9,
+      "coverage_pct": 70.0
+    },
+    {
+      "city": "Екатеринбург",
+      "total_brands_in_city": 14,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 10,
+      "missing_brands_potential": [
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "SOLARIS",
+        "GAC",
+        "Soueast",
+        "Москвич",
+        "DEEPAL",
+        "Voyah",
+        "JETTA"
+      ],
+      "connected_roofs": 9,
+      "coverage_pct": 28.6
+    },
+    {
+      "city": "Липецк",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 6,
+      "connected_brands_list": [
+        "CHANGAN",
+        "GAC",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 2,
+      "missing_brands_potential": [
+        "CHERY & TENET",
+        "HAVAL"
+      ],
+      "connected_roofs": 8,
+      "coverage_pct": 85.7
+    },
+    {
+      "city": "Новосибирск",
+      "total_brands_in_city": 12,
+      "connected_brands_count": 6,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 6,
+      "missing_brands_potential": [
+        "HAVAL",
+        "CHANGAN",
+        "GAC",
+        "Москвич",
+        "DEEPAL",
+        "Voyah"
+      ],
+      "connected_roofs": 8,
+      "coverage_pct": 50.0
+    },
+    {
+      "city": "Волгоград",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 5,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 4,
+      "missing_brands_potential": [
+        "HAVAL",
+        "CHANGAN",
+        "SOLARIS",
+        "Москвич"
+      ],
+      "connected_roofs": 8,
+      "coverage_pct": 55.6
+    },
+    {
+      "city": "Уфа",
+      "total_brands_in_city": 13,
+      "connected_brands_count": 5,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "DEEPAL",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 8,
+      "missing_brands_potential": [
+        "Geely & Belgee",
+        "HAVAL",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "GAC",
+        "Москвич",
+        "Voyah",
+        "JETTA"
+      ],
+      "connected_roofs": 8,
+      "coverage_pct": 38.5
+    },
+    {
+      "city": "Челябинск",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 5,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 4,
+      "missing_brands_potential": [
+        "Geely & Belgee",
+        "HAVAL",
+        "SOLARIS",
+        "Москвич"
+      ],
+      "connected_roofs": 8,
+      "coverage_pct": 55.6
+    },
+    {
+      "city": "Санк-петербург",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "Geely & Belgee",
+        "HAVAL"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 8,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Анапа",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 7,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Белореченск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Геленджик",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Кропоткин",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Крымск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Лабинск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Славянск-на-кубани",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Темрюк",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Тимашевск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 7,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 700.0
+    },
+    {
+      "city": "Брянск",
+      "total_brands_in_city": 6,
+      "connected_brands_count": 6,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "HAVAL",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO",
+        "Soueast"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "Geely & Belgee"
+      ],
+      "connected_roofs": 7,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Калуга",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 6,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "GAC",
+        "JETOUR",
+        "LADA",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "Geely & Belgee",
+        "HAVAL",
+        "OMODA & JAECOO"
+      ],
+      "connected_roofs": 7,
+      "coverage_pct": 66.7
+    },
+    {
+      "city": "Набережные Челны",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 6,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "GAC",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 2,
+      "missing_brands_potential": [
+        "HAVAL",
+        "CHANGAN"
+      ],
+      "connected_roofs": 7,
+      "coverage_pct": 85.7
+    },
+    {
+      "city": "Симферополь",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "JETOUR",
+        "SOLARIS",
+        "Soueast"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 300.0
+    },
+    {
+      "city": "Санкт-петебург",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "GAC"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 7,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Тамбов",
+      "total_brands_in_city": 2,
+      "connected_brands_count": 6,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Soueast"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 6,
+      "coverage_pct": 300.0
+    },
+    {
+      "city": "Иваново",
+      "total_brands_in_city": 4,
+      "connected_brands_count": 5,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 6,
+      "coverage_pct": 125.0
+    },
+    {
+      "city": "Мариуполь",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 5,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 6,
+      "coverage_pct": 500.0
+    },
+    {
+      "city": "Нижний Новгород",
+      "total_brands_in_city": 13,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 10,
+      "missing_brands_potential": [
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "GAC",
+        "Soueast",
+        "Москвич",
+        "Voyah",
+        "JETTA"
+      ],
+      "connected_roofs": 6,
+      "coverage_pct": 23.1
+    },
+    {
+      "city": "Тольятти",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "GAC",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 6,
+      "coverage_pct": 300.0
+    },
+    {
+      "city": "Альметьевск",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 5,
+      "connected_brands_list": [
+        "CHANGAN",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "OMODA & JAECOO"
+      ],
+      "connected_roofs": 5,
+      "coverage_pct": 71.4
+    },
+    {
+      "city": "Пятигорск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 5,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "GAC",
+        "JETOUR",
+        "OMODA & JAECOO",
+        "Soueast"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 5,
+      "coverage_pct": 500.0
+    },
+    {
+      "city": "Тула",
+      "total_brands_in_city": 8,
+      "connected_brands_count": 5,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "HAVAL",
+        "CHANGAN",
+        "OMODA & JAECOO"
+      ],
+      "connected_roofs": 5,
+      "coverage_pct": 62.5
+    },
+    {
+      "city": "Ижевск",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 5,
+      "missing_brands_potential": [
+        "HAVAL",
+        "CHANGAN",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Москвич"
+      ],
+      "connected_roofs": 5,
+      "coverage_pct": 44.4
+    },
+    {
+      "city": "Кемерово",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "HAVAL",
+        "CHANGAN",
+        "OMODA & JAECOO"
+      ],
+      "connected_roofs": 5,
+      "coverage_pct": 57.1
+    },
+    {
+      "city": "Луганск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 5,
+      "coverage_pct": 400.0
+    },
+    {
+      "city": "Саратов",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 5,
+      "coverage_pct": 400.0
+    },
+    {
+      "city": "Рязань",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "JETOUR",
+        "LADA",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 6,
+      "missing_brands_potential": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "OMODA & JAECOO",
+        "Soueast"
+      ],
+      "connected_roofs": 5,
+      "coverage_pct": 33.3
+    },
+    {
+      "city": "Великий Новгород",
+      "total_brands_in_city": 3,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 4,
+      "coverage_pct": 133.3
+    },
+    {
+      "city": "Курск",
+      "total_brands_in_city": 5,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "GAC",
+        "JETOUR",
+        "OMODA & JAECOO",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "Geely & Belgee"
+      ],
+      "connected_roofs": 4,
+      "coverage_pct": 80.0
+    },
+    {
+      "city": "Мин. Воды",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 4,
+      "coverage_pct": 400.0
+    },
+    {
+      "city": "Томск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 4,
+      "connected_brands_list": [
+        "GAC",
+        "JETOUR",
+        "LADA",
+        "Soueast"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 4,
+      "coverage_pct": 400.0
+    },
+    {
+      "city": "Архангельск",
+      "total_brands_in_city": 3,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 4,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Донецк",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET",
+        "HAVAL"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 4,
+      "coverage_pct": 300.0
+    },
+    {
+      "city": "Тюмень",
+      "total_brands_in_city": 12,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "LADA"
+      ],
+      "missing_brands_count": 9,
+      "missing_brands_potential": [
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "GAC",
+        "Москвич",
+        "DEEPAL",
+        "Voyah"
+      ],
+      "connected_roofs": 4,
+      "coverage_pct": 25.0
+    },
+    {
+      "city": "Ярославль",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "JETOUR",
+        "LADA",
+        "Soueast"
+      ],
+      "missing_brands_count": 6,
+      "missing_brands_potential": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "OMODA & JAECOO",
+        "SOLARIS"
+      ],
+      "connected_roofs": 4,
+      "coverage_pct": 33.3
+    },
+    {
+      "city": "Оренбург",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "LADA"
+      ],
+      "missing_brands_count": 4,
+      "missing_brands_potential": [
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "connected_roofs": 3,
+      "coverage_pct": 42.9
+    },
+    {
+      "city": "Рыбинск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "CHANGAN",
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 3,
+      "coverage_pct": 300.0
+    },
+    {
+      "city": "Сыктывкар",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 3,
+      "connected_brands_list": [
+        "JETOUR",
+        "LADA",
+        "Soueast"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 3,
+      "coverage_pct": 300.0
+    },
+    {
+      "city": "Тверь",
+      "total_brands_in_city": 5,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "CHANGAN",
+        "JETOUR"
+      ],
+      "missing_brands_count": 4,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "SOLARIS"
+      ],
+      "connected_roofs": 3,
+      "coverage_pct": 40.0
+    },
+    {
+      "city": "Армавир",
+      "total_brands_in_city": 6,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 4,
+      "missing_brands_potential": [
+        "LADA",
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 33.3
+    },
+    {
+      "city": "Иркутск",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 5,
+      "missing_brands_potential": [
+        "LADA",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 28.6
+    },
+    {
+      "city": "Йошкар-Ола",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Кострома",
+      "total_brands_in_city": 2,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "JETOUR",
+        "Soueast"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Красноярск",
+      "total_brands_in_city": 10,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "JETOUR",
+        "Soueast"
+      ],
+      "missing_brands_count": 8,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Москвич"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 20.0
+    },
+    {
+      "city": "Махачкала",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "OMODA & JAECOO",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Минеральные Воды",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "HAVAL",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Мурманск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Нижнекамск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "JETOUR",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Новокузнецк",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "JETOUR"
+      ],
+      "missing_brands_count": 5,
+      "missing_brands_potential": [
+        "LADA",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "OMODA & JAECOO"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 28.6
+    },
+    {
+      "city": "Новомосковск (тульская Область)",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "CHANGAN",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Псков",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "JETOUR",
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Саранск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "JETOUR",
+        "SOLARIS"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Севастополь",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "JETOUR",
+        "Soueast"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Смоленск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "Geely & Belgee",
+        "JETOUR"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Сочи",
+      "total_brands_in_city": 10,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "CHANGAN",
+        "CHERY & TENET"
+      ],
+      "missing_brands_count": 8,
+      "missing_brands_potential": [
+        "LADA",
+        "Geely & Belgee",
+        "HAVAL",
+        "JETOUR",
+        "OMODA & JAECOO",
+        "GAC",
+        "Москвич",
+        "Voyah"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 20.0
+    },
+    {
+      "city": "Таганрог",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 2,
+      "connected_brands_list": [
+        "CHERY & TENET",
+        "OMODA & JAECOO"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 200.0
+    },
+    {
+      "city": "Астрахань",
+      "total_brands_in_city": 7,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 6,
+      "missing_brands_potential": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR",
+        "OMODA & JAECOO"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 14.3
+    },
+    {
+      "city": "Макеевка",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "Geely & Belgee"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Набережный Челны",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "SOLARIS"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Самарская Обл.",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 2,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Ульяновск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "JETOUR"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 2,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Барнаул",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 8,
+      "missing_brands_potential": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Москвич"
+      ],
+      "connected_roofs": 1,
+      "coverage_pct": 11.1
+    },
+    {
+      "city": "Белгород",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "SOLARIS"
+      ],
+      "missing_brands_count": 8,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR",
+        "OMODA & JAECOO",
+        "Москвич"
+      ],
+      "connected_roofs": 1,
+      "coverage_pct": 11.1
+    },
+    {
+      "city": "Великие Луки",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Дзержинск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Калининград",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "CHERY & TENET"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Каспийск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "CHANGAN"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Коломна",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "JETOUR"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Курган",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Магнитогорск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "JETOUR"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Новоросийск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "Geely & Belgee"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Новороссийск",
+      "total_brands_in_city": 6,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "JETOUR"
+      ],
+      "missing_brands_count": 5,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "HAVAL",
+        "OMODA & JAECOO",
+        "GAC"
+      ],
+      "connected_roofs": 1,
+      "coverage_pct": 16.7
+    },
+    {
+      "city": "Омск",
+      "total_brands_in_city": 9,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 8,
+      "missing_brands_potential": [
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR",
+        "OMODA & JAECOO",
+        "SOLARIS",
+        "Москвич"
+      ],
+      "connected_roofs": 1,
+      "coverage_pct": 11.1
+    },
+    {
+      "city": "Оренбургская Обл.",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Орехово-зуево",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "JETOUR"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Орск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "CHERY & TENET"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Петрозаводск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Республика Башкортостан",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "GAC"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Ростов На Дону",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Стерлитамак",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Сургут",
+      "total_brands_in_city": 4,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 3,
+      "missing_brands_potential": [
+        "CHERY & TENET",
+        "HAVAL",
+        "JETOUR"
+      ],
+      "connected_roofs": 1,
+      "coverage_pct": 25.0
+    },
+    {
+      "city": "Челябинск Область",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "JETOUR"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Шахты",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "CHERY & TENET"
+      ],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Яхрома",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 1,
+      "connected_brands_list": [
+        "LADA"
+      ],
+      "missing_brands_count": 0,
+      "missing_brands_potential": [],
+      "connected_roofs": 1,
+      "coverage_pct": 100.0
+    },
+    {
+      "city": "Владикавказ",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "city": "Вологда",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "city": "Грозный",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "city": "Киров",
+      "total_brands_in_city": 4,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 4,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "city": "Нижневартовск",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "city": "Пенза",
+      "total_brands_in_city": 6,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 6,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "HAVAL",
+        "CHANGAN",
+        "JETOUR"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "city": "Туапсе",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "GAC"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "city": "Чебоксары",
+      "total_brands_in_city": 4,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 4,
+      "missing_brands_potential": [
+        "LADA",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "JETOUR"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    },
+    {
+      "city": "Череповец",
+      "total_brands_in_city": 1,
+      "connected_brands_count": 0,
+      "connected_brands_list": [],
+      "missing_brands_count": 1,
+      "missing_brands_potential": [
+        "LADA"
+      ],
+      "connected_roofs": 0,
+      "coverage_pct": 0.0
+    }
+  ]
+}

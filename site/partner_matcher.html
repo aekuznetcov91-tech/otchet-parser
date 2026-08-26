@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>СберАвто | География Брендов (Охват городов) и Метчинг Партнеров</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- SheetJS for Excel export/import -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary: #10b981;
+            --primary-hover: #059669;
+            --primary-light: rgba(16, 185, 129, 0.1);
+            --primary-ring: rgba(16, 185, 129, 0.2);
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --radius: 16px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .sber-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+        .sber-card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ===== АНИМАЦИИ КНОПОК И ВКЛАДОК (УВЕЛИЧЕНИЕ И БЛИК ИЗ 1_style.css) ===== */
+        @keyframes hover-glare {
+            0% { left: -150%; }
+            100% { left: 150%; }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        button, .brand-pill, .tab-btn, .filter-chip, a.btn-link {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease-in-out, background-color 0.2s ease, color 0.2s ease !important;
+            position: relative;
+            overflow: hidden !important;
+        }
+
+        /* Увеличение на 5% при наведении */
+        button:hover, .brand-pill:hover, a.btn-link:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+            z-index: 10 !important;
+        }
+
+        .tab-btn:hover, .filter-chip:hover {
+            transform: scale(1.03) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+            z-index: 10 !important;
+        }
+
+        button:active, .brand-pill:active, .tab-btn:active, .filter-chip:active, a.btn-link:active {
+            transform: scale(0.96) !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* Блик (Shimmer glare) */
+        button::after, .brand-pill::after, .tab-btn::after, .filter-chip::after, a.btn-link::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 60%;
+            height: 100%;
+            transform: skewX(-25deg);
+            pointer-events: none;
+            z-index: 5;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        button:hover::after, .brand-pill:hover::after, .tab-btn:hover::after, .filter-chip:hover::after, a.btn-link:hover::after {
+            animation: hover-glare 0.6s ease-out forwards;
+        }
+
+        /* Кнопки стилей */
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #334155;
+            border: 1px solid #cbd5e1;
+            font-weight: 600;
+        }
+        .btn-secondary:hover {
+            background: #f8fafc;
+            color: #0f172a;
+            border-color: #94a3b8;
+        }
+
+        /* Brand Pills */
+        .brand-pill {
+            cursor: pointer;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #334155;
+        }
+        .brand-pill:hover {
+            border-color: var(--primary);
+            color: var(--primary-hover);
+        }
+        .brand-pill-active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            color: white !important;
+            border-color: #059669 !important;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+        }
+
+        .tab-btn-active {
+            background: #10b981 !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+        }
+
+        /* Badges */
+        .badge-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-yellow { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .badge-blue { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .badge-purple { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+
+        /* City Cards */
+        .city-card-conn {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            transition: all 0.2s;
+        }
+        .city-card-conn:hover {
+            background: #dcfce7;
+            border-color: #86efac;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+        }
+
+        .city-card-miss {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            transition: all 0.2s;
+        }
+        .city-card-miss:hover {
+            background: #fef3c7;
+            border-color: #fcd34d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+        }
+
+        /* Tables */
+        tbody tr {
+            transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+        }
+        tbody tr:hover {
+            background-color: #f1f5f9 !important;
+            box-shadow: inset 4px 0 0 0 #10b981 !important;
+        }
+
+        .combobox-item:hover { background-color: #f0fdf4; }
+        .combobox-item-selected { background-color: #dcfce7; border-left: 3px solid #10b981; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="p-3 md:p-6 flex flex-col items-center">
+
+    <div class="w-full max-w-7xl space-y-5">
+
+        <!-- HEADER -->
+        <header class="sber-card p-5 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#10b981] to-[#059669] flex items-center justify-center shadow-lg shadow-emerald-500/20 shrink-0">
+                    <i data-lucide="compass" class="w-6 h-6 text-white"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2.5 flex-wrap">
+                        <h1 class="text-xl md:text-2xl font-black tracking-tight text-slate-900 flex items-center gap-2">
+                            Сбер<span class="text-[#10b981]">Авто</span> | География Брендов (Охват городов РФ)
+                        </h1>
+                        <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold">
+                            Отношение Городов к Брендам
+                        </span>
+                        <span id="syncStatusBadge" class="px-2.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold flex items-center gap-1">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5 text-blue-500"></i> База 642 крыш активна
+                        </span>
+                    </div>
+                    <p class="text-slate-500 text-xs mt-1">Отношение городов присутствия бренда в РФ к подключенным городам в СберАвто ➔ Подключенные города vs Потенциал расширения сети</p>
+                </div>
+            </div>
+
+            <!-- Top Actions -->
+            <div class="flex items-center gap-2 flex-wrap">
+                <button onclick="saveRegistryToCloud()" class="btn-primary px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/20">
+                    <i data-lucide="save" class="w-4 h-4"></i> Сохранить в облако
+                </button>
+                <button onclick="exportRegistryToExcel()" class="btn-secondary px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i> В Excel
+                </button>
+                <button onclick="exportRegistryToJson()" class="btn-secondary px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="download" class="w-4 h-4 text-blue-600"></i> JSON
+                </button>
+                <a href="index.html" class="btn-secondary btn-link px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-sm">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 text-slate-700"></i> Дашборд
+                </a>
+            </div>
+        </header>
+
+        <!-- TOP MAIN NAVIGATION TABS -->
+        <div class="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto">
+            <button onclick="switchTab('brand-explorer')" id="tabBtn-brand-explorer" class="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 tab-btn-active">
+                <i data-lucide="map-pin" class="w-4 h-4"></i> Отношение Городов к Брендам (Охват)
+                <span class="px-1.5 py-0.2 bg-white text-emerald-800 rounded-full text-[10px] font-black">15 брендов</span>
+            </button>
+            <button onclick="switchTab('oem')" id="tabBtn-oem" class="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                <i data-lucide="layers" class="w-4 h-4"></i> Дилеры ОЕМ (642 крыши)
+                <span class="px-1.5 py-0.2 bg-purple-100 text-purple-700 rounded-full text-[10px] font-bold">102 города</span>
+            </button>
+            <button onclick="switchTab('unmatched')" id="tabBtn-unmatched" class="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                <i data-lucide="alert-circle" class="w-4 h-4"></i> Очередь несметченных
+                <span id="badgeTabUnmatched" class="px-1.5 py-0.2 bg-amber-500 text-white rounded-full text-[10px] font-black">30</span>
+            </button>
+            <button onclick="switchTab('registry')" id="tabBtn-registry" class="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                <i data-lucide="list-tree" class="w-4 h-4"></i> Реестр Master Partners (Редактор)
+                <span id="badgeTabRegistry" class="px-1.5 py-0.2 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold">266</span>
+            </button>
+        </div>
+
+        <!-- ================= TAB 1: INTERACTIVE BRAND EXPLORER ================= -->
+        <section id="view-brand-explorer" class="space-y-4">
+            
+            <!-- BRAND SELECTOR PILLS BAR -->
+            <div class="sber-card p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                        <i data-lucide="sliders-horizontal" class="w-4 h-4 text-emerald-600"></i> Выберите бренд для детального анализа городов:
+                    </span>
+                    <span id="brandSelectorHint" class="text-xs text-emerald-600 font-semibold"></span>
+                </div>
+
+                <!-- Brand selector buttons container -->
+                <div id="brandPillList" class="flex items-center gap-2 overflow-x-auto pb-1">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- DYNAMIC BRAND HERO CARD (CURRENT SELECTED BRAND) -->
+            <div id="brandHeroCard" class="sber-card p-6 border-emerald-200 bg-gradient-to-r from-emerald-50/50 via-white to-blue-50/50 space-y-5">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <span id="heroBrandIcon" class="w-10 h-10 rounded-xl bg-emerald-100 border border-emerald-200 flex items-center justify-center text-lg font-black text-emerald-700 shadow-sm">
+                                🚗
+                            </span>
+                            <div>
+                                <h2 id="heroBrandName" class="text-2xl font-black text-slate-900 tracking-tight">LADA</h2>
+                                <p id="heroBrandSub" class="text-xs text-slate-500">Официальная дилерская сеть в городах Российской Федерации</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coverage Meter -->
+                    <div class="flex items-center gap-4 bg-white border border-slate-200 p-3.5 rounded-2xl shadow-sm">
+                        <div>
+                            <div class="text-[10px] text-slate-500 font-bold uppercase">Охват городов присутствия</div>
+                            <div id="heroCoveragePct" class="text-2xl font-black text-emerald-600">40.0%</div>
+                        </div>
+                        <div class="w-32 bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
+                            <div id="heroCoverageBar" class="bg-gradient-to-r from-emerald-500 to-[#10b981] h-full transition-all duration-500" style="width: 40%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 KPI Badges for Selected Brand -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div class="p-3.5 bg-white border border-slate-200 rounded-xl shadow-sm">
+                        <div class="text-slate-500 text-xs font-bold uppercase">Всего городов в РФ</div>
+                        <div id="heroTotalCities" class="text-2xl font-black text-slate-900 mt-1">130 городов</div>
+                        <div class="text-[11px] text-slate-400 mt-0.5">Присутствие марки</div>
+                    </div>
+
+                    <div class="p-3.5 bg-white border border-emerald-200 rounded-xl shadow-sm">
+                        <div class="text-emerald-700 text-xs font-bold uppercase">Подключено у нас</div>
+                        <div id="heroConnCities" class="text-2xl font-black text-emerald-600 mt-1">52 города</div>
+                        <div id="heroConnRoofs" class="text-[11px] text-emerald-700/80 mt-0.5">97 крыш (ДЦ в ОЕМ)</div>
+                    </div>
+
+                    <div class="p-3.5 bg-white border border-amber-200 rounded-xl shadow-sm">
+                        <div class="text-amber-700 text-xs font-bold uppercase">Не подключено городов</div>
+                        <div id="heroMissCities" class="text-2xl font-black text-amber-600 mt-1">78 городов</div>
+                        <div class="text-[11px] text-amber-600/80 mt-0.5">Свободный рынок</div>
+                    </div>
+
+                    <div class="p-3.5 bg-white border border-blue-200 rounded-xl shadow-sm">
+                        <div class="text-blue-700 text-xs font-bold uppercase">Потенциал роста</div>
+                        <div id="heroGrowthPotential" class="text-2xl font-black text-blue-600 mt-1">+60.0%</div>
+                        <div class="text-[11px] text-blue-600/80 mt-0.5">Емкость расширения</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DETAILED CITIES VIEW (SIDE-BY-SIDE INTERACTIVE LISTS) -->
+            <div class="sber-card p-5 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <button onclick="setCityFilterMode('ALL')" id="btnCityFilter-ALL" class="btn-primary px-3.5 py-1.5 rounded-xl text-xs shadow-sm">
+                            Все города (<span id="countFilterAll">130</span>)
+                        </button>
+                        <button onclick="setCityFilterMode('CONN')" id="btnCityFilter-CONN" class="btn-secondary px-3.5 py-1.5 rounded-xl text-xs text-emerald-700 hover:bg-emerald-50">
+                            🟢 Подключенные (<span id="countFilterConn">52</span>)
+                        </button>
+                        <button onclick="setCityFilterMode('MISS')" id="btnCityFilter-MISS" class="btn-secondary px-3.5 py-1.5 rounded-xl text-xs text-amber-700 hover:bg-amber-50">
+                            🟡 Неподключенные — Потенциал (<span id="countFilterMiss">78</span>)
+                        </button>
+                    </div>
+
+                    <div class="w-full md:w-72 relative">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                        <input id="searchCityInput" type="text" placeholder="Поиск города..." oninput="renderSelectedBrandCities()" class="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white">
+                    </div>
+                </div>
+
+                <!-- CITIES GRID -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <!-- Connected Cities Column -->
+                    <div id="colConnectedCities" class="space-y-3">
+                        <div class="flex justify-between items-center border-b border-emerald-200 pb-2">
+                            <span class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Подключенные города в СберАвто
+                            </span>
+                            <span id="colConnBadge" class="text-xs text-emerald-700 font-mono font-bold">52 города</span>
+                        </div>
+                        <div id="connCitiesGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-[500px] overflow-y-auto pr-1">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Missing Cities Column -->
+                    <div id="colMissingCities" class="space-y-3">
+                        <div class="flex justify-between items-center border-b border-amber-200 pb-2">
+                            <span class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+                                <i data-lucide="plus-circle" class="w-4 h-4 text-amber-600"></i> Неподключенные города в РФ (Потенциал)
+                            </span>
+                            <span id="colMissBadge" class="text-xs text-amber-700 font-mono font-bold">78 городов</span>
+                        </div>
+                        <div id="missCitiesGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-[500px] overflow-y-auto pr-1">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALL BRANDS SUMMARY TABLE -->
+            <div class="sber-card p-5">
+                <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 mb-3">
+                    <i data-lucide="table" class="w-4 h-4 text-emerald-600"></i>
+                    Сводная таблица отношения городов по всем 15 брендам в РФ
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase tracking-wider text-[10px]">
+                                <th class="py-3 px-3">Бренд</th>
+                                <th class="py-3 px-3 text-center">Всего городов в РФ (Рынок)</th>
+                                <th class="py-3 px-3 text-center">Подключено городов у нас</th>
+                                <th class="py-3 px-3 text-center">Охват географии %</th>
+                                <th class="py-3 px-3 text-center">Подключено крыш (ДЦ)</th>
+                                <th class="py-3 px-3 text-center">Потенциал (+городов)</th>
+                                <th class="py-3 px-3 text-right">Выбрать бренд</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allBrandsTableBody" class="divide-y divide-slate-200">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= TAB 2: OEM DEALERS ================= -->
+        <section id="view-oem" class="space-y-4 hidden">
+            <div class="sber-card p-5">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="layers" class="w-5 h-5 text-purple-600"></i>
+                            Сводная статистика дилеров ОЕМ (642 крыши по 15 брендам)
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Количество дилерских точек (крыш) и уникальных городов присутствия</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5" id="oemBrandCardsContainer">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="flex items-center gap-2 border-b border-slate-200 pb-3 mb-4 overflow-x-auto" id="oemBrandFilters">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase tracking-wider text-[10px]">
+                                <th class="py-3 px-3">Бренд</th>
+                                <th class="py-3 px-3">Город</th>
+                                <th class="py-3 px-3">Название дилера (крыша)</th>
+                                <th class="py-3 px-3">Юр. лицо / ИНН</th>
+                                <th class="py-3 px-3">Код ФДЦ</th>
+                                <th class="py-3 px-3">Название в беке</th>
+                                <th class="py-3 px-3">Master Partner ID</th>
+                                <th class="py-3 px-3 text-right">Связка</th>
+                            </tr>
+                        </thead>
+                        <tbody id="oemTableBody" class="divide-y divide-slate-200">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: UNMATCHED QUEUE ================= -->
+        <section id="view-unmatched" class="space-y-4 hidden">
+            <div class="sber-card p-5">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="inbox" class="w-5 h-5 text-amber-600"></i>
+                            Несметченные названия из свежих выгрузок
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Привяжите новые названия к существующим Master Partners или создайте для них новые ID</p>
+                    </div>
+                    <div class="flex items-center gap-2 w-full md:w-auto">
+                        <input id="searchUnmatched" type="text" placeholder="Поиск в очереди..." oninput="filterUnmatchedTable()" class="px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 w-full md:w-64">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase tracking-wider text-[10px]">
+                                <th class="py-3 px-3">Источник</th>
+                                <th class="py-3 px-3">Нераспознанное название</th>
+                                <th class="py-3 px-3 text-center">Объем (лидов/сделок)</th>
+                                <th class="py-3 px-3">Умное авто-предложение</th>
+                                <th class="py-3 px-3 text-right">Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unmatchedTableBody" class="divide-y divide-slate-200">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: MASTER PARTNERS REGISTRY ================= -->
+        <section id="view-registry" class="space-y-4 hidden">
+            <div class="sber-card p-5">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="database" class="w-5 h-5 text-emerald-600"></i>
+                            Реестр Master Partners
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Единая база: цифровой ID, каноническое имя, закрепленный КАМ и все связанные алиасы</p>
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap w-full md:w-auto">
+                        <input id="searchRegistry" type="text" placeholder="Поиск по ID, названию, алиасу или КАМу..." oninput="filterRegistryTable()" class="px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-emerald-500 w-full md:w-80">
+                        <button onclick="openCreatePartnerModal()" class="btn-primary px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 shrink-0 shadow-sm">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> Новый партнер
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase tracking-wider text-[10px]">
+                                <th class="py-3 px-3 w-16">ID</th>
+                                <th class="py-3 px-3">Каноническое название</th>
+                                <th class="py-3 px-3">Ответственный КАМ</th>
+                                <th class="py-3 px-3">Алиасы Битрикс (Сделки)</th>
+                                <th class="py-3 px-3">Алиасы BI (Лиды)</th>
+                                <th class="py-3 px-3">ОЕМ статус</th>
+                                <th class="py-3 px-3 text-right">Управление</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registryTableBody" class="divide-y divide-slate-200">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- MODAL: EDIT MASTER PARTNER -->
+    <div id="editPartnerModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="sber-card max-w-2xl w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="edit" class="w-5 h-5 text-emerald-600"></i>
+                    Редактирование Master Partner <span id="modalPartnerId" class="badge-green px-2 py-0.5 rounded-lg text-xs font-black">ID: 1001</span>
+                </h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-600 font-semibold mb-1">Каноническое название (для дашборда):</label>
+                    <input id="modalCanonicalName" type="text" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-emerald-500 focus:bg-white">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-600 font-semibold mb-1">Холдинг / Группа:</label>
+                        <input id="modalHolding" type="text" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-emerald-500 focus:bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-slate-600 font-semibold mb-1">Закрепленный КАМ:</label>
+                        <select id="modalKam" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-emerald-500 focus:bg-white">
+                            <option value="Валерия Солдатова">Валерия Солдатова</option>
+                            <option value="Светлана Дариенко">Светлана Дариенко</option>
+                            <option value="Алексей Чихарев">Алексей Чихарев</option>
+                            <option value="Андрей Кузнецов">Андрей Кузнецов</option>
+                            <option value="Гамаюнов Вячеслав">Гамаюнов Вячеслав</option>
+                            <option value="Не назначен">Не назначен</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-slate-600 font-semibold mb-1">Алиасы Битрикс (Сделки) — разделяйте новой строкой:</label>
+                    <textarea id="modalBitrixAliases" rows="3" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-emerald-500 focus:bg-white font-mono text-[11px]"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-slate-600 font-semibold mb-1">Алиасы BI (Лиды) — разделяйте новой строкой:</label>
+                    <textarea id="modalBiAliases" rows="3" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:border-emerald-500 focus:bg-white font-mono text-[11px]"></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end items-center gap-2 pt-3 border-t border-slate-200">
+                <button onclick="closeEditModal()" class="btn-secondary px-4 py-2 rounded-xl text-xs font-semibold">Отмена</button>
+                <button onclick="saveModalPartner()" class="btn-primary px-5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
+                    <i data-lucide="check" class="w-4 h-4"></i> Сохранить партнера
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: BIND UNMATCHED -->
+    <div id="bindModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="sber-card max-w-xl w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="link" class="w-5 h-5 text-blue-600"></i>
+                    Привязка названия к Master Partner
+                </h3>
+                <button onclick="closeBindModal()" class="text-slate-400 hover:text-slate-700"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-600 font-semibold mb-1">Несметченное название из выгрузки:</label>
+                    <p id="bindRawName" class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 font-mono font-bold"></p>
+                    <p id="bindSource" class="text-[10px] text-slate-500 mt-1"></p>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-slate-600 font-semibold">Выберите целевого Master Partner:</label>
+                        <span id="bindMatchCount" class="text-[10px] text-emerald-700 font-bold"></span>
+                    </div>
+
+                    <div class="relative mb-2">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                        <input id="bindSearchInput" type="text" placeholder="Введите название, ID (напр. 1055) или имя КАМа..." oninput="filterBindOptions(this.value)" class="w-full pl-9 pr-8 py-2 bg-slate-50 border border-emerald-400 rounded-xl text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:border-emerald-600 focus:bg-white">
+                        <button onclick="clearBindSearch()" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-700"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i></button>
+                    </div>
+
+                    <div id="bindSelectedDisplay" class="p-2.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs flex justify-between items-center mb-2 hidden">
+                        <div class="flex items-center gap-2">
+                            <span id="selectedPartnerBadge" class="badge-green px-2 py-0.5 rounded-md font-bold text-xs">ID: 1001</span>
+                            <span id="selectedPartnerName" class="font-bold text-slate-900">Автостиль</span>
+                            <span id="selectedPartnerKam" class="text-[11px] text-slate-500"></span>
+                        </div>
+                        <span class="text-[10px] text-emerald-700 font-bold">Выбран</span>
+                    </div>
+
+                    <div id="bindOptionsList" class="max-h-56 overflow-y-auto bg-slate-50 border border-slate-200 rounded-xl divide-y divide-slate-200">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-3 border-t border-slate-200">
+                <button onclick="createNewFromUnmatched()" class="btn-secondary px-3.5 py-2 text-purple-700 border-purple-200 hover:bg-purple-50 rounded-xl text-xs font-semibold">
+                    + Создать нового партнера
+                </button>
+                <div class="flex items-center gap-2">
+                    <button onclick="closeBindModal()" class="btn-secondary px-3.5 py-2 rounded-xl text-xs font-semibold">Отмена</button>
+                    <button onclick="applyBindModal()" id="btnApplyBind" class="btn-primary px-5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md">
+                        <i data-lucide="check" class="w-4 h-4"></i> Привязать
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP JAVASCRIPT -->
+    <script>
+        let registryData = {
+            partners: [],
+            unmatched_queue: [],
+            auto_matched_deals: [],
+            auto_matched_leads: []
+        };
+
+        let geoData = {
+            brand_geo_matrix: [],
+            city_geo_matrix: []
+        };
+
+        let selectedBrandName = 'LADA';
+        let currentCityFilterMode = 'ALL';
+        let currentEditingPid = null;
+        let currentBindingItem = null;
+        let selectedBindTargetId = null;
+        let selectedOemBrandFilter = 'ALL';
+
+        async function loadRegistry() {
+            try {
+                let resp = await fetch('partners_registry.json?v=' + Date.now());
+                if (resp.ok) registryData = await resp.json();
+
+                let respB = await fetch('russia_dealer_benchmarks.json?v=' + Date.now());
+                if (respB.ok) geoData = await respB.json();
+            } catch (e) {
+                console.error("Load registry/geo error:", e);
+            }
+            updateAllViews();
+        }
+
+        function updateAllViews() {
+            renderKPIs();
+            renderBrandPills();
+            renderSelectedBrandHero();
+            renderSelectedBrandCities();
+            renderAllBrandsTable();
+            renderOemViews();
+            renderUnmatchedTable();
+            renderRegistryTable();
+            lucide.createIcons();
+        }
+
+        function renderKPIs() {
+            const masterCount = registryData.partners ? registryData.partners.length : 0;
+            const unmatchedCount = registryData.unmatched_queue ? registryData.unmatched_queue.length : 0;
+            document.getElementById('badgeTabUnmatched').textContent = unmatchedCount;
+            document.getElementById('badgeTabRegistry').textContent = masterCount;
+        }
+
+        function switchTab(tabId) {
+            ['brand-explorer', 'oem', 'unmatched', 'registry'].forEach(t => {
+                const el = document.getElementById('view-' + t);
+                const btn = document.getElementById('tabBtn-' + t);
+                if (el) el.classList.add('hidden');
+                if (btn) btn.className = 'px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100';
+            });
+
+            const activeEl = document.getElementById('view-' + tabId);
+            const activeBtn = document.getElementById('tabBtn-' + tabId);
+            if (activeEl) activeEl.classList.remove('hidden');
+            if (activeBtn) activeBtn.className = 'px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 tab-btn-active';
+            lucide.createIcons();
+        }
+
+        // ================= TAB 1: INTERACTIVE BRAND EXPLORER =================
+        function renderBrandPills() {
+            const container = document.getElementById('brandPillList');
+            container.innerHTML = '';
+
+            const list = geoData.brand_geo_matrix || [];
+            if (list.length === 0) return;
+
+            list.forEach(b => {
+                const isSel = b.brand === selectedBrandName;
+                const pill = document.createElement('div');
+                pill.className = `brand-pill px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shrink-0 border ${isSel ? 'brand-pill-active' : 'bg-white border-slate-200 text-slate-700'}`;
+                pill.onclick = () => { selectBrand(b.brand); };
+
+                const covBadgeClass = isSel ? 'bg-black/20 text-white' : (b.city_coverage_pct >= 50 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200');
+
+                pill.innerHTML = `
+                    <span>${b.brand}</span>
+                    <span class="px-1.5 py-0.2 rounded-md text-[10px] font-bold ${covBadgeClass}">${b.connected_cities_count}/${b.total_cities_rf} гор.</span>
+                `;
+                container.appendChild(pill);
+            });
+        }
+
+        function selectBrand(brandName) {
+            selectedBrandName = brandName;
+            renderBrandPills();
+            renderSelectedBrandHero();
+            renderSelectedBrandCities();
+            lucide.createIcons();
+        }
+
+        function renderSelectedBrandHero() {
+            const b = (geoData.brand_geo_matrix || []).find(x => x.brand === selectedBrandName) || (geoData.brand_geo_matrix || [])[0];
+            if (!b) return;
+
+            document.getElementById('heroBrandName').textContent = b.brand;
+            document.getElementById('heroCoveragePct').textContent = `${b.city_coverage_pct}%`;
+            document.getElementById('heroCoverageBar').style.width = `${b.city_coverage_pct}%`;
+
+            document.getElementById('heroTotalCities').textContent = `${b.total_cities_rf} городов`;
+            document.getElementById('heroConnCities').textContent = `${b.connected_cities_count} городов`;
+            document.getElementById('heroConnRoofs').textContent = `${b.connected_roofs} крыш (ДЦ в ОЕМ)`;
+            document.getElementById('heroMissCities').textContent = `${b.missing_cities_count} городов`;
+            
+            const freeMarketPct = Math.round(100 - b.city_coverage_pct);
+            document.getElementById('heroGrowthPotential').textContent = `+${freeMarketPct}%`;
+
+            document.getElementById('countFilterAll').textContent = b.total_cities_rf;
+            document.getElementById('countFilterConn').textContent = b.connected_cities_count;
+            document.getElementById('countFilterMiss').textContent = b.missing_cities_count;
+        }
+
+        function setCityFilterMode(mode) {
+            currentCityFilterMode = mode;
+            ['ALL', 'CONN', 'MISS'].forEach(m => {
+                const btn = document.getElementById('btnCityFilter-' + m);
+                if (btn) {
+                    if (m === mode) {
+                        btn.className = 'btn-primary px-3.5 py-1.5 rounded-xl text-xs shadow-sm';
+                    } else {
+                        btn.className = 'btn-secondary px-3.5 py-1.5 rounded-xl text-xs';
+                    }
+                }
+            });
+
+            const colConn = document.getElementById('colConnectedCities');
+            const colMiss = document.getElementById('colMissingCities');
+            if (mode === 'CONN') {
+                colConn.classList.remove('hidden');
+                colConn.className = 'col-span-2 space-y-3';
+                colMiss.classList.add('hidden');
+            } else if (mode === 'MISS') {
+                colConn.classList.add('hidden');
+                colMiss.classList.remove('hidden');
+                colMiss.className = 'col-span-2 space-y-3';
+            } else {
+                colConn.classList.remove('hidden');
+                colConn.className = 'space-y-3';
+                colMiss.classList.remove('hidden');
+                colMiss.className = 'space-y-3';
+            }
+
+            renderSelectedBrandCities();
+        }
+
+        function renderSelectedBrandCities() {
+            const b = (geoData.brand_geo_matrix || []).find(x => x.brand === selectedBrandName) || (geoData.brand_geo_matrix || [])[0];
+            if (!b) return;
+
+            const search = (document.getElementById('searchCityInput')?.value || '').toLowerCase().trim();
+
+            // 1. Connected Cities Grid
+            const connGrid = document.getElementById('connCitiesGrid');
+            connGrid.innerHTML = '';
+            const filteredConn = (b.connected_cities_list || []).filter(c => !search || c.toLowerCase().includes(search));
+
+            document.getElementById('colConnBadge').textContent = `${filteredConn.length} из ${b.connected_cities_count}`;
+
+            if (filteredConn.length === 0) {
+                connGrid.innerHTML = `<div class="col-span-3 py-6 text-center text-slate-400 text-xs">Городов не найдено</div>`;
+            } else {
+                filteredConn.forEach(city => {
+                    const card = document.createElement('div');
+                    card.className = 'city-card-conn p-2.5 rounded-xl flex items-center justify-between text-xs cursor-pointer shadow-sm';
+                    card.innerHTML = `
+                        <div class="flex items-center gap-1.5 truncate">
+                            <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
+                            <span class="font-bold text-slate-800 truncate">${city}</span>
+                        </div>
+                        <span class="text-[10px] text-emerald-700 font-bold bg-white px-1.5 py-0.5 rounded border border-emerald-200">В ОЕМ</span>
+                    `;
+                    connGrid.appendChild(card);
+                });
+            }
+
+            // 2. Missing Cities Grid
+            const missGrid = document.getElementById('missCitiesGrid');
+            missGrid.innerHTML = '';
+            const filteredMiss = (b.missing_cities_potential || []).filter(c => !search || c.toLowerCase().includes(search));
+
+            document.getElementById('colMissBadge').textContent = `${filteredMiss.length} из ${b.missing_cities_count}`;
+
+            if (filteredMiss.length === 0) {
+                missGrid.innerHTML = `<div class="col-span-3 py-6 text-center text-slate-400 text-xs">Городов не найдено</div>`;
+            } else {
+                filteredMiss.forEach(city => {
+                    const card = document.createElement('div');
+                    card.className = 'city-card-miss p-2.5 rounded-xl flex items-center justify-between text-xs cursor-pointer shadow-sm';
+                    card.onclick = () => { promptAddCityDealer(b.brand, city); };
+                    card.innerHTML = `
+                        <div class="flex items-center gap-1.5 truncate">
+                            <i data-lucide="plus" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i>
+                            <span class="font-bold text-slate-800 truncate">${city}</span>
+                        </div>
+                        <span class="text-[10px] text-amber-800 font-bold bg-white px-1.5 py-0.5 rounded border border-amber-200">+ Подключить</span>
+                    `;
+                    missGrid.appendChild(card);
+                });
+            }
+            lucide.createIcons();
+        }
+
+        function promptAddCityDealer(brand, city) {
+            alert(`💡 Вы выбрали неподключенный город «${city}» для бренда «${brand}». Вы можете связаться с дилером этого города и добавить его в таблицу ОЕМ или Master Partners!`);
+        }
+
+        function renderAllBrandsTable() {
+            const tbody = document.getElementById('allBrandsTableBody');
+            tbody.innerHTML = '';
+
+            (geoData.brand_geo_matrix || []).forEach(b => {
+                const tr = document.createElement('tr');
+                const isCurrent = b.brand === selectedBrandName;
+                tr.className = `cursor-pointer ${isCurrent ? 'bg-emerald-50/80 font-bold' : ''}`;
+                tr.onclick = () => { selectBrand(b.brand); window.scrollTo({ top: 120, behavior: 'smooth' }); };
+
+                const covColor = b.city_coverage_pct >= 50 ? 'text-emerald-700 font-black' : (b.city_coverage_pct >= 30 ? 'text-blue-700 font-bold' : 'text-amber-700 font-bold');
+
+                tr.innerHTML = `
+                    <td class="py-3 px-3">
+                        <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                            ${isCurrent ? '<i data-lucide="chevron-right" class="w-4 h-4 text-emerald-600"></i>' : ''}
+                            ${b.brand}
+                        </div>
+                    </td>
+                    <td class="py-3 px-3 text-center font-bold text-slate-700">
+                        ${b.total_cities_rf} городов
+                    </td>
+                    <td class="py-3 px-3 text-center font-black text-emerald-600">
+                        ${b.connected_cities_count} городов
+                    </td>
+                    <td class="py-3 px-3 text-center ${covColor}">
+                        <div class="inline-flex items-center gap-1.5">
+                            <span>${b.city_coverage_pct}%</span>
+                            <div class="w-12 bg-slate-200 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-emerald-500 h-full" style="width: ${b.city_coverage_pct}%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3 px-3 text-center font-bold text-purple-700">
+                        ${b.connected_roofs} крыш
+                    </td>
+                    <td class="py-3 px-3 text-center font-black text-amber-600">
+                        +${b.missing_cities_count} городов
+                    </td>
+                    <td class="py-3 px-3 text-right">
+                        <button class="btn-secondary px-3 py-1 rounded-lg text-xs font-semibold ml-auto">
+                            Выбрать ➔
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        // ================= TAB 2: OEM DEALERS =================
+        function renderOemViews() {
+            let allOem = [];
+            let brandStats = {};
+            let totalCities = new Set();
+
+            (registryData.partners || []).forEach(p => {
+                (p.oem_data || []).forEach(o => {
+                    const brand = (o.brand || o.sheet || 'Другие').trim();
+                    const city = (o.city || 'Не указан').trim();
+                    if (city && city !== 'Не указан') totalCities.add(city);
+
+                    if (!brandStats[brand]) {
+                        brandStats[brand] = { brand: brand, count: 0, cities: new Set() };
+                    }
+                    brandStats[brand].count++;
+                    if (city && city !== 'Не указан') brandStats[brand].cities.add(city);
+
+                    allOem.push({
+                        ...o,
+                        brand: brand,
+                        city: city,
+                        partner_id: p.partner_id,
+                        canonical_name: p.canonical_name
+                    });
+                });
+            });
+
+            const cardsContainer = document.getElementById('oemBrandCardsContainer');
+            cardsContainer.innerHTML = '';
+
+            const totalCard = document.createElement('div');
+            totalCard.className = `sber-card p-3 border-purple-200 bg-purple-50/50 cursor-pointer ${selectedOemBrandFilter === 'ALL' ? 'ring-2 ring-purple-500' : ''}`;
+            totalCard.onclick = () => { selectOemBrandFilter('ALL'); };
+            totalCard.innerHTML = `
+                <div class="text-purple-800 font-bold text-xs">Все бренды</div>
+                <div class="text-xl font-black text-slate-900 mt-0.5">${allOem.length} <span class="text-xs font-normal text-slate-500">крыш</span></div>
+                <div class="text-[10px] text-purple-700 mt-1">${totalCities.size} уникальных городов</div>
+            `;
+            cardsContainer.appendChild(totalCard);
+
+            Object.values(brandStats).forEach(bs => {
+                const isSel = selectedOemBrandFilter === bs.brand;
+                const card = document.createElement('div');
+                card.className = `sber-card p-3 border-slate-200 cursor-pointer transition ${isSel ? 'border-purple-400 bg-purple-50 ring-2 ring-purple-500' : ''}`;
+                card.onclick = () => { selectOemBrandFilter(bs.brand); };
+                card.innerHTML = `
+                    <div class="text-slate-700 font-bold text-xs truncate">${bs.brand}</div>
+                    <div class="text-xl font-black text-emerald-600 mt-0.5">${bs.count} <span class="text-xs font-normal text-slate-500">крыш</span></div>
+                    <div class="text-[10px] text-blue-700 mt-1">${bs.cities.size} уникальных городов</div>
+                `;
+                cardsContainer.appendChild(card);
+            });
+
+            const filtersContainer = document.getElementById('oemBrandFilters');
+            filtersContainer.innerHTML = `
+                <button onclick="selectOemBrandFilter('ALL')" class="btn-secondary px-3 py-1 rounded-lg text-xs font-bold transition shrink-0 ${selectedOemBrandFilter === 'ALL' ? 'bg-purple-600 text-white' : ''}">
+                    Все бренды (${allOem.length})
+                </button>
+            `;
+
+            Object.values(brandStats).forEach(bs => {
+                const isSel = selectedOemBrandFilter === bs.brand;
+                const btn = document.createElement('button');
+                btn.className = `btn-secondary px-3 py-1 rounded-lg text-xs font-bold transition shrink-0 ${isSel ? 'bg-purple-600 text-white' : ''}`;
+                btn.textContent = `${bs.brand} (${bs.count} крыш, ${bs.cities.size} гор.)`;
+                btn.onclick = () => { selectOemBrandFilter(bs.brand); };
+                filtersContainer.appendChild(btn);
+            });
+
+            const tbody = document.getElementById('oemTableBody');
+            tbody.innerHTML = '';
+
+            const filteredOem = allOem.filter(o => {
+                if (selectedOemBrandFilter === 'ALL') return true;
+                return o.brand === selectedOemBrandFilter;
+            });
+
+            filteredOem.forEach(o => {
+                const tr = document.createElement('tr');
+
+                tr.innerHTML = `
+                    <td class="py-3 px-3">
+                        <span class="badge-purple px-2 py-0.5 rounded-md text-[10px] font-bold">${o.brand}</span>
+                    </td>
+                    <td class="py-3 px-3">
+                        <span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md font-semibold text-xs">${o.city || '—'}</span>
+                    </td>
+                    <td class="py-3 px-3 font-bold text-slate-900">${o.name || '—'}</td>
+                    <td class="py-3 px-3 text-slate-700 font-mono text-[11px]">${o.legal_entity || '—'}<br><span class="text-slate-400">ИНН: ${o.inn || '—'}</span></td>
+                    <td class="py-3 px-3 text-emerald-700 font-mono font-bold">${o.fdc_code || '—'}</td>
+                    <td class="py-3 px-3 text-slate-700">${o.back_name || '—'}</td>
+                    <td class="py-3 px-3">
+                        <span class="badge-green px-2 py-0.5 rounded-md text-xs font-black">ID: ${o.partner_id}</span>
+                        <div class="text-[10px] text-slate-500 mt-0.5">${o.canonical_name}</div>
+                    </td>
+                    <td class="py-3 px-3 text-right">
+                        <span class="text-emerald-600 text-xs font-bold flex items-center justify-end gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Привязан</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function selectOemBrandFilter(brand) {
+            selectedOemBrandFilter = brand;
+            renderOemViews();
+        }
+
+        // ================= TAB 3: UNMATCHED QUEUE =================
+        function renderUnmatchedTable() {
+            const tbody = document.getElementById('unmatchedTableBody');
+            const search = (document.getElementById('searchUnmatched')?.value || '').toLowerCase();
+            tbody.innerHTML = '';
+
+            const queue = (registryData.unmatched_queue || []).filter(item => {
+                if (!search) return true;
+                return item.raw_name.toLowerCase().includes(search) || 
+                       (item.suggested_name && item.suggested_name.toLowerCase().includes(search));
+            });
+
+            if (queue.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-500 font-semibold">🎉 Все названия успешно сметчены! Новых нераспознанных записей нет.</td></tr>`;
+                return;
+            }
+
+            queue.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                const srcBadge = item.source.includes('Битрикс') ? 'badge-blue' : 'badge-purple';
+                const hasSugg = item.suggested_id !== null && item.suggested_id !== undefined;
+
+                tr.innerHTML = `
+                    <td class="py-3 px-3">
+                        <span class="${srcBadge} px-2 py-0.5 rounded-md text-[10px] font-bold">${item.source}</span>
+                    </td>
+                    <td class="py-3 px-3 font-semibold text-slate-900">
+                        ${item.raw_name}
+                    </td>
+                    <td class="py-3 px-3 text-center font-bold text-emerald-600">
+                        ${item.count} шт
+                    </td>
+                    <td class="py-3 px-3">
+                        ${hasSugg ? `
+                            <div class="flex items-center gap-1.5">
+                                <span class="badge-green px-2 py-0.5 rounded-md text-[11px] font-bold">ID: ${item.suggested_id}</span>
+                                <span class="text-slate-800 font-semibold">${item.suggested_name}</span>
+                                <span class="text-[10px] text-emerald-700 font-bold">(${item.confidence}%)</span>
+                            </div>
+                        ` : `<span class="text-slate-400 italic text-[11px]">Нет очевидного совпадения</span>`}
+                    </td>
+                    <td class="py-3 px-3 text-right">
+                        <div class="flex items-center justify-end gap-1.5">
+                            ${hasSugg ? `
+                                <button onclick="quickBindUnmatched(${idx})" class="btn-primary px-2.5 py-1 rounded-lg text-xs flex items-center gap-1 shadow-sm">
+                                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Привязать
+                                </button>
+                            ` : ''}
+                            <button onclick="openBindModal(${idx})" class="btn-secondary px-2.5 py-1 text-blue-700 border-blue-200 hover:bg-blue-50 rounded-lg text-xs flex items-center gap-1">
+                                <i data-lucide="link" class="w-3.5 h-3.5"></i> Выбрать ID (Поиск)
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function filterUnmatchedTable() { renderUnmatchedTable(); }
+
+        function quickBindUnmatched(idx) {
+            const item = registryData.unmatched_queue[idx];
+            if (!item || !item.suggested_id) return;
+            const partner = registryData.partners.find(p => p.partner_id === item.suggested_id);
+            if (partner) {
+                if (item.source.includes('Битрикс')) {
+                    if (!partner.bitrix_aliases.includes(item.raw_name)) partner.bitrix_aliases.push(item.raw_name);
+                } else {
+                    if (!partner.bi_aliases.includes(item.raw_name)) partner.bi_aliases.push(item.raw_name);
+                }
+                registryData.unmatched_queue.splice(idx, 1);
+                updateAllViews();
+            }
+        }
+
+        function openBindModal(idx) {
+            currentBindingItem = { item: registryData.unmatched_queue[idx], idx: idx };
+            const item = currentBindingItem.item;
+
+            document.getElementById('bindRawName').textContent = item.raw_name;
+            document.getElementById('bindSource').textContent = `Источник: ${item.source} (${item.count} операций)`;
+
+            selectedBindTargetId = item.suggested_id || null;
+            document.getElementById('bindSearchInput').value = '';
+            
+            filterBindOptions('');
+            updateSelectedBindDisplay();
+
+            document.getElementById('bindModal').classList.remove('hidden');
+            setTimeout(() => { document.getElementById('bindSearchInput').focus(); }, 100);
+            lucide.createIcons();
+        }
+
+        function filterBindOptions(query) {
+            const q = (query || '').toLowerCase().trim();
+            const listContainer = document.getElementById('bindOptionsList');
+            listContainer.innerHTML = '';
+
+            const filtered = (registryData.partners || []).filter(p => {
+                if (!q) return true;
+                const matchId = String(p.partner_id).includes(q);
+                const matchName = (p.canonical_name || '').toLowerCase().includes(q);
+                const matchKam = (p.kam || '').toLowerCase().includes(q);
+                const matchHolding = (p.holding || '').toLowerCase().includes(q);
+                const matchBtrx = (p.bitrix_aliases || []).some(a => a.toLowerCase().includes(q));
+                const matchBi = (p.bi_aliases || []).some(a => a.toLowerCase().includes(q));
+                return matchId || matchName || matchKam || matchHolding || matchBtrx || matchBi;
+            });
+
+            document.getElementById('bindMatchCount').textContent = `Найдено: ${filtered.length} партнеров`;
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="p-4 text-center text-slate-500">
+                        <p>Партнеров по запросу "${query}" не найдено.</p>
+                        <button onclick="createNewFromUnmatched()" class="mt-2 text-xs text-purple-600 font-bold underline">
+                            + Создать нового партнера с таким именем
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(p => {
+                const isSelected = selectedBindTargetId === p.partner_id;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `p-2.5 cursor-pointer flex items-center justify-between transition combobox-item ${isSelected ? 'combobox-item-selected' : ''}`;
+                itemDiv.onclick = () => { selectBindTarget(p.partner_id); };
+
+                itemDiv.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="badge-green px-1.5 py-0.5 rounded text-[11px] font-bold">ID: ${p.partner_id}</span>
+                        <div>
+                            <span class="font-bold text-slate-900 text-xs">${p.canonical_name}</span>
+                            <span class="text-[10px] text-slate-500 ml-1.5">КАМ: ${p.kam || '—'}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        ${isSelected ? '<i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>' : ''}
+                    </div>
+                `;
+                listContainer.appendChild(itemDiv);
+            });
+            lucide.createIcons();
+        }
+
+        function selectBindTarget(pid) {
+            selectedBindTargetId = pid;
+            updateSelectedBindDisplay();
+            filterBindOptions(document.getElementById('bindSearchInput').value);
+        }
+
+        function updateSelectedBindDisplay() {
+            const display = document.getElementById('bindSelectedDisplay');
+            if (!selectedBindTargetId) {
+                display.classList.add('hidden');
+                return;
+            }
+            const p = registryData.partners.find(x => x.partner_id === selectedBindTargetId);
+            if (p) {
+                document.getElementById('selectedPartnerBadge').textContent = `ID: ${p.partner_id}`;
+                document.getElementById('selectedPartnerName').textContent = p.canonical_name;
+                document.getElementById('selectedPartnerKam').textContent = `(КАМ: ${p.kam || 'Не назначен'})`;
+                display.classList.remove('hidden');
+            }
+        }
+
+        function clearBindSearch() {
+            document.getElementById('bindSearchInput').value = '';
+            filterBindOptions('');
+            document.getElementById('bindSearchInput').focus();
+        }
+
+        function closeBindModal() {
+            document.getElementById('bindModal').classList.add('hidden');
+            currentBindingItem = null;
+            selectedBindTargetId = null;
+        }
+
+        function applyBindModal() {
+            if (!currentBindingItem) return;
+            if (!selectedBindTargetId) {
+                alert("Пожалуйста, выберите партнера из списка!");
+                return;
+            }
+
+            const item = currentBindingItem.item;
+            const partner = registryData.partners.find(p => p.partner_id === selectedBindTargetId);
+            if (partner) {
+                if (item.source.includes('Битрикс')) {
+                    if (!partner.bitrix_aliases.includes(item.raw_name)) partner.bitrix_aliases.push(item.raw_name);
+                } else {
+                    if (!partner.bi_aliases.includes(item.raw_name)) partner.bi_aliases.push(item.raw_name);
+                }
+                registryData.unmatched_queue.splice(currentBindingItem.idx, 1);
+                closeBindModal();
+                updateAllViews();
+            }
+        }
+
+        function createNewFromUnmatched() {
+            if (!currentBindingItem) return;
+            const item = currentBindingItem.item;
+            closeBindModal();
+            openCreatePartnerModal(item.raw_name, item.source);
+        }
+
+        // ================= TAB 4: MASTER PARTNERS REGISTRY =================
+        function renderRegistryTable() {
+            const tbody = document.getElementById('registryTableBody');
+            const search = (document.getElementById('searchRegistry')?.value || '').toLowerCase();
+            tbody.innerHTML = '';
+
+            const partners = (registryData.partners || []).filter(p => {
+                if (!search) return true;
+                const matchId = String(p.partner_id).includes(search);
+                const matchName = (p.canonical_name || '').toLowerCase().includes(search);
+                const matchKam = (p.kam || '').toLowerCase().includes(search);
+                const matchBtrx = (p.bitrix_aliases || []).some(a => a.toLowerCase().includes(search));
+                const matchBi = (p.bi_aliases || []).some(a => a.toLowerCase().includes(search));
+                return matchId || matchName || matchKam || matchBtrx || matchBi;
+            });
+
+            partners.forEach(p => {
+                const tr = document.createElement('tr');
+
+                const oemCount = p.oem_data ? p.oem_data.length : 0;
+                const oemBadge = oemCount > 0 ? 
+                    `<span class="badge-purple px-2 py-0.5 rounded-md text-[10px] font-bold">${oemCount} крыш ОЕМ</span>` : 
+                    `<span class="text-slate-400 text-[10px]">—</span>`;
+
+                tr.innerHTML = `
+                    <td class="py-3 px-3">
+                        <span class="badge-green px-2 py-0.5 rounded-md text-xs font-black">${p.partner_id}</span>
+                    </td>
+                    <td class="py-3 px-3">
+                        <div class="font-bold text-slate-900 text-sm">${p.canonical_name}</div>
+                        <div class="text-[11px] text-slate-500">Холдинг: ${p.holding || '—'}</div>
+                    </td>
+                    <td class="py-3 px-3 font-semibold text-slate-700">
+                        ${p.kam || '—'}
+                    </td>
+                    <td class="py-3 px-3 max-w-xs">
+                        <div class="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+                            ${p.bitrix_aliases.map(a => `<span class="px-1.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded text-[11px] font-semibold">${a}</span>`).join('')}
+                        </div>
+                    </td>
+                    <td class="py-3 px-3 max-w-xs">
+                        <div class="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
+                            ${p.bi_aliases.map(a => `<span class="px-1.5 py-0.5 bg-purple-50 text-purple-700 border border-purple-200 rounded text-[11px] font-semibold">${a}</span>`).join('')}
+                        </div>
+                    </td>
+                    <td class="py-3 px-3">
+                        ${oemBadge}
+                    </td>
+                    <td class="py-3 px-3 text-right">
+                        <button onclick="openEditModal(${p.partner_id})" class="btn-secondary px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 ml-auto">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5 text-emerald-600"></i> Править
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function filterRegistryTable() { renderRegistryTable(); }
+
+        function openEditModal(pid) {
+            currentEditingPid = pid;
+            const p = registryData.partners.find(x => x.partner_id === pid);
+            if (!p) return;
+
+            document.getElementById('modalPartnerId').textContent = `ID: ${p.partner_id}`;
+            document.getElementById('modalCanonicalName').value = p.canonical_name || '';
+            document.getElementById('modalHolding').value = p.holding || '';
+            document.getElementById('modalKam').value = p.kam || 'Не назначен';
+            document.getElementById('modalBitrixAliases').value = (p.bitrix_aliases || []).join('\n');
+            document.getElementById('modalBiAliases').value = (p.bi_aliases || []).join('\n');
+
+            document.getElementById('editPartnerModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function openCreatePartnerModal(defaultName = '', defaultSource = '') {
+            currentEditingPid = 'NEW';
+            const maxId = (registryData.partners || []).reduce((max, p) => Math.max(max, p.partner_id), 1000);
+            const newId = maxId + 1;
+
+            document.getElementById('modalPartnerId').textContent = `ID: ${newId} (Новый)`;
+            document.getElementById('modalCanonicalName').value = defaultName || '';
+            document.getElementById('modalHolding').value = defaultName.split(' ')[0] || '';
+            document.getElementById('modalKam').value = 'Не назначен';
+            document.getElementById('modalBitrixAliases').value = defaultSource.includes('Битрикс') ? defaultName : '';
+            document.getElementById('modalBiAliases').value = defaultSource.includes('BI') ? defaultName : '';
+
+            document.getElementById('editPartnerModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeEditModal() {
+            document.getElementById('editPartnerModal').classList.add('hidden');
+            currentEditingPid = null;
+        }
+
+        function saveModalPartner() {
+            const canName = document.getElementById('modalCanonicalName').value.trim();
+            if (!canName) {
+                alert("Пожалуйста, введите каноническое название партнера!");
+                return;
+            }
+
+            const holding = document.getElementById('modalHolding').value.trim();
+            const kam = document.getElementById('modalKam').value;
+            const btrxAliases = document.getElementById('modalBitrixAliases').value.split('\n').map(s => s.trim()).filter(Boolean);
+            const biAliases = document.getElementById('modalBiAliases').value.split('\n').map(s => s.trim()).filter(Boolean);
+
+            if (currentEditingPid === 'NEW') {
+                const maxId = (registryData.partners || []).reduce((max, p) => Math.max(max, p.partner_id), 1000);
+                const newId = maxId + 1;
+                const newPartner = {
+                    partner_id: newId,
+                    canonical_name: canName,
+                    holding: holding,
+                    kam: kam,
+                    bitrix_aliases: btrxAliases,
+                    bi_aliases: biAliases,
+                    pochta_aliases: [],
+                    oem_data: [],
+                    status: "verified"
+                };
+                registryData.partners.push(newPartner);
+            } else {
+                const p = registryData.partners.find(x => x.partner_id === currentEditingPid);
+                if (p) {
+                    p.canonical_name = canName;
+                    p.holding = holding;
+                    p.kam = kam;
+                    p.bitrix_aliases = btrxAliases;
+                    p.bi_aliases = biAliases;
+                }
+            }
+
+            closeEditModal();
+            updateAllViews();
+        }
+
+        // ================= EXPORT & CLOUD SYNC =================
+        async function saveRegistryToCloud() {
+            const badge = document.getElementById('syncStatusBadge');
+            badge.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Сохранение...`;
+            badge.className = 'px-2.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold flex items-center gap-1';
+            lucide.createIcons();
+
+            try {
+                const resp = await fetch('/api/save-partners', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(registryData)
+                });
+                
+                localStorage.setItem('sberauto_partners_registry', JSON.stringify(registryData));
+
+                setTimeout(() => {
+                    badge.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-600"></i> Сохранено в облаке`;
+                    badge.className = 'px-2.5 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold flex items-center gap-1';
+                    lucide.createIcons();
+                    alert("✅ Реестр Master Partners успешно сохранен!");
+                }, 400);
+            } catch (e) {
+                localStorage.setItem('sberauto_partners_registry', JSON.stringify(registryData));
+                badge.innerHTML = `<i data-lucide="check-circle" class="w-3.5 h-3.5 text-blue-600"></i> Сохранено локально`;
+                badge.className = 'px-2.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold flex items-center gap-1';
+                lucide.createIcons();
+            }
+        }
+
+        function exportRegistryToJson() {
+            const blob = new Blob([JSON.stringify(registryData, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `partners_registry_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+        }
+
+        function exportRegistryToExcel() {
+            const rows = [];
+            rows.push(['ID', 'Каноническое название', 'Холдинг', 'КАМ', 'Алиасы Битрикс', 'Алиасы BI', 'ОЕМ Бренд', 'ОЕМ Город', 'ОЕМ Юр. лицо', 'ОЕМ ИНН', 'ОЕМ Код ФДЦ']);
+
+            (registryData.partners || []).forEach(p => {
+                const oemInn = (p.oem_data || []).map(o => o.inn).filter(Boolean).join('; ');
+                const oemFdc = (p.oem_data || []).map(o => o.fdc_code).filter(Boolean).join('; ');
+                const oemLegal = (p.oem_data || []).map(o => o.legal_entity).filter(Boolean).join('; ');
+                const oemBrand = (p.oem_data || []).map(o => o.brand || o.sheet).filter(Boolean).join('; ');
+                const oemCity = (p.oem_data || []).map(o => o.city).filter(Boolean).join('; ');
+
+                rows.push([
+                    p.partner_id,
+                    p.canonical_name,
+                    p.holding || '',
+                    p.kam || '',
+                    (p.bitrix_aliases || []).join('; '),
+                    (p.bi_aliases || []).join('; '),
+                    oemBrand,
+                    oemCity,
+                    oemLegal,
+                    oemInn,
+                    oemFdc
+                ]);
+            });
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            XLSX.utils.book_append_sheet(wb, ws, "Справочник_Партнеры_Master");
+            XLSX.writeFile(wb, `справочник_партнеры_master_${new Date().toISOString().slice(0,10)}.xlsx`);
+        }
+
+        window.onload = () => { loadRegistry(); };
+    </script>
+</body>
+</html>
