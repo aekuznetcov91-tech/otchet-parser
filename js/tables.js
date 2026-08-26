@@ -248,7 +248,7 @@ function renderDynMonthsTab(sDb, isAll, period) {
 }
 
 /**
- * Renders partners summary table with CR calculations.
+ * Renders partners summary table with CR calculations and Master ID matching.
  * @param {Object} filterCfg
  */
 function renderPartnersTable(filterCfg) {
@@ -268,27 +268,105 @@ function renderPartnersTable(filterCfg) {
 
     let pStats = {};
     fPartners.forEach(r => {
-        let p = r.Partner || "Неизвестный";
-        if (!pStats[p]) pStats[p] = { leads: 0, deals: 0, prepays: 0, kam: r.KAM || "" };
-        if (r.Type === 'Лид') pStats[p].leads += r.Qty;
-        else if (r.Type === 'Сделка') pStats[p].deals += r.Qty;
-        else if (r.Type === 'Предоплата') pStats[p].prepays += r.Qty;
-        if (!pStats[p].kam && r.KAM) pStats[p].kam = r.KAM;
+        let pid = r.PartnerId;
+        let pName = r.Partner || "Неизвестный";
+        let key = pid ? `ID_${pid}` : `RAW_${pName}`;
+
+        if (!pStats[key]) {
+            pStats[key] = {
+                id: pid,
+                name: pName,
+                leads: 0,
+                prepays: 0,
+                leadDirectDeals: 0,
+                mpDeals: 0,
+                deals: 0,
+                kam: r.KAM || "",
+                rawBitrix: new Set(),
+                rawBi: new Set()
+            };
+        }
+
+        if (r.Type === 'Лид') {
+            pStats[key].leads += (r.Qty || 1);
+            if (r.RawPartner) pStats[key].rawBi.add(r.RawPartner);
+        } else if (r.Type === 'Сделка') {
+            pStats[key].deals += (r.Qty || 1);
+            if (r.IsLeadSaleNoPrepay === 1) {
+                pStats[key].leadDirectDeals += (r.Qty || 1);
+            }
+            if (r.IsMpSale === 1) {
+                pStats[key].mpDeals += (r.Qty || 1);
+            }
+            if (r.RawPartner) pStats[key].rawBitrix.add(r.RawPartner);
+        } else if (r.Type === 'Предоплата') {
+            pStats[key].prepays += (r.Qty || 1);
+            if (r.RawPartner) pStats[key].rawBitrix.add(r.RawPartner);
+        }
+        if (!pStats[key].kam && r.KAM) pStats[key].kam = r.KAM;
     });
 
-    let sorted = Object.entries(pStats).sort((a, b) => b[1].deals - a[1].deals);
-    let html = `<table id="tablePartners"><thead><tr><th>Партнер</th><th>КАМ</th><th>Лиды (шт)</th><th>Сделки (шт)</th><th>Предоплаты (шт)</th><th>Конверсия в сделку</th></tr></thead><tbody>`;
-    let tL = 0, tD = 0, tP = 0;
+    let sorted = Object.values(pStats).sort((a, b) => (b.deals + b.leads) - (a.deals + a.leads));
+    let html = `<table id="tablePartners">
+        <thead>
+            <tr>
+                <th style="width: 65px;">ID</th>
+                <th>Партнер (Master Name)</th>
+                <th>Закрепленный КАМ</th>
+                <th>Лиды (BI)</th>
+                <th>Предоплаты</th>
+                <th>Сделки с лидов</th>
+                <th>Сделки с МП</th>
+                <th>Сделки Тотал</th>
+                <th>Конверсия (Сделка/Лид)</th>
+                <th style="text-align: right;">Управление</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    
+    let tL = 0, tP = 0, tLD = 0, tMP = 0, tD = 0;
 
-    sorted.forEach(([partner, data]) => {
-        tL += data.leads; tD += data.deals; tP += data.prepays;
-        let cr = data.leads > 0 ? fmtPct(data.deals / data.leads) : "0%";
-        html += `<tr><td class="font-semibold">${partner}</td><td>${data.kam || "—"}</td><td>${fmtNum(data.leads)}</td>
-        <td class="font-bold text-blue-600">${fmtNum(data.deals)}</td><td>${fmtNum(data.prepays)}</td><td class="font-bold text-emerald-600">${cr}</td></tr>`;
+    sorted.forEach(data => {
+        tL += data.leads; tP += data.prepays; tLD += data.leadDirectDeals; tMP += data.mpDeals; tD += data.deals;
+        let cr = data.leads > 0 ? fmtPct(data.deals / data.leads) : (data.deals > 0 ? "— (нет лидов)" : "0%");
+        let idBadge = data.id ? 
+            `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-xs">ID: ${data.id}</span>` : 
+            `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded font-bold text-xs">Не сметчен</span>`;
+
+        let crColor = data.leads > 0 && data.deals > 0 ? 'text-emerald-700 font-black' : (data.deals > 0 ? 'text-blue-600 font-bold' : 'text-gray-500');
+
+        html += `<tr>
+            <td>${idBadge}</td>
+            <td class="font-bold text-gray-900">${data.name}</td>
+            <td class="font-medium text-gray-600">${data.kam || "—"}</td>
+            <td class="font-semibold text-gray-700">${fmtNum(data.leads)}</td>
+            <td class="font-semibold text-amber-700">${fmtNum(data.prepays)}</td>
+            <td class="font-semibold text-purple-700">${fmtNum(data.leadDirectDeals)}</td>
+            <td class="font-semibold text-indigo-700">${fmtNum(data.mpDeals)}</td>
+            <td class="font-black text-blue-700">${fmtNum(data.deals)}</td>
+            <td class="${crColor}">${cr}</td>
+            <td style="text-align: right;">
+                <a href="partner_matcher.html" target="_blank" class="px-2.5 py-1 bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 rounded-lg text-xs font-bold transition inline-flex items-center gap-1 shadow-sm">
+                    Править ➔
+                </a>
+            </td>
+        </tr>`;
     });
 
     let tCr = tL > 0 ? fmtPct(tD / tL) : "0%";
-    html += `<tr class="table-total"><td>ИТОГО</td><td>—</td><td>${fmtNum(tL)}</td><td>${fmtNum(tD)}</td><td>${fmtNum(tP)}</td><td>${tCr}</td></tr></tbody></table>`;
+    html += `<tr class="table-total">
+        <td>ИТОГО</td>
+        <td>—</td>
+        <td>—</td>
+        <td>${fmtNum(tL)}</td>
+        <td>${fmtNum(tP)}</td>
+        <td>${fmtNum(tLD)}</td>
+        <td>${fmtNum(tMP)}</td>
+        <td>${fmtNum(tD)}</td>
+        <td>${tCr}</td>
+        <td></td>
+    </tr></tbody></table>`;
+
     const elPartners = document.getElementById('tablePartnersContainer');
     if (elPartners) {
         elPartners.innerHTML = html;
