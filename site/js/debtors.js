@@ -1,0 +1,288 @@
+/* ====================================================================
+ * B2C Analytics Dashboard — Debtors & DKP Control Module
+ * ====================================================================*/
+
+function getFilteredDebtors(filterCfg) {
+    const cfg = filterCfg || currentFilterConfig;
+    return rawDebtorsList.filter(d => {
+        if (!cfg || cfg.mode === 'all') return true;
+        if (cfg.mode === 'month') {
+            let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0, 2).join('-') : "";
+            return m === cfg.month;
+        }
+        if (cfg.mode === 'custom') {
+            const fTime = cfg.from ? cfg.from.getTime() : -Infinity;
+            const tTime = cfg.to ? cfg.to.getTime() : Infinity;
+            if (d.prepay_serial && d.prepay_serial > 0) {
+                const jsD = excelToJSDate(d.prepay_serial);
+                if (jsD) {
+                    const t = jsD.getTime();
+                    return t >= fTime && t <= tTime;
+                }
+            }
+            return true;
+        }
+        return true;
+    });
+}
+
+function renderDebtorsTable(filterCfg) {
+    let filtered = getFilteredDebtors(filterCfg);
+
+    // Group by company
+    let compMap = {};
+    let totalPrepaySum = 0;
+    let kamSet = new Set();
+
+    filtered.forEach(d => {
+        let c = d.company || "Неизвестная компания";
+        if (!compMap[c]) {
+            compMap[c] = {
+                name: c,
+                kam: d.kam || "",
+                cars: []
+            };
+        }
+        compMap[c].cars.push(d);
+        totalPrepaySum += (d.price || 0);
+        if (d.kam) kamSet.add(d.kam);
+    });
+
+    let sortedCompanies = Object.values(compMap).sort((a, b) => b.cars.length - a.cars.length || a.name.localeCompare(b.name));
+
+    // Update Mini KPIs
+    const elDebtorComps = document.getElementById('kpiDebtorCompanies');
+    const elDebtorCars = document.getElementById('kpiDebtorCars');
+    const elBadgeDebtors = document.getElementById('badgeTotalDebtors');
+    const elDebtorKams = document.getElementById('kpiDebtorKams');
+    const elDebtorPrepaySum = document.getElementById('kpiDebtorPrepaySum');
+    const elDebtorCounter = document.getElementById('debtorRowsCounter');
+
+    if (elDebtorComps) elDebtorComps.innerText = sortedCompanies.length;
+    if (elDebtorCars) elDebtorCars.innerText = fmtNum(filtered.length);
+    if (elBadgeDebtors) elBadgeDebtors.innerText = `${fmtNum(filtered.length)} авто`;
+    if (elDebtorKams) elDebtorKams.innerText = kamSet.size;
+    if (elDebtorPrepaySum) elDebtorPrepaySum.innerText = fmtRub(totalPrepaySum);
+    if (elDebtorCounter) elDebtorCounter.innerText = `${sortedCompanies.length} компаний, ${filtered.length} авто`;
+
+    const container = document.getElementById('tableDebtorsContainer');
+    if (!container) return;
+
+    if (sortedCompanies.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-10 text-gray-400">
+                <div class="text-3xl mb-2">🎉</div>
+                <p class="font-bold text-gray-700">Нет незакрытых сделок по выбранному периоду</p>
+                <p class="text-xs text-gray-400 mt-1">Все предоплаты успешно закрыты и реализованы в ДКП</p>
+            </div>
+        `;
+        return;
+    }
+
+    let html = `<table id="tableDebtors" class="min-w-full">
+        <thead>
+            <tr>
+                <th class="!bg-slate-800">Компания / КАМ</th>
+                <th class="!bg-slate-800">Дата предоплаты</th>
+                <th class="!bg-slate-800">Марка</th>
+                <th class="!bg-slate-800">Модель</th>
+                <th class="!bg-slate-800">ВИН</th>
+                <th class="!bg-slate-800">Менеджер</th>
+                <th class="!bg-slate-800">Стадия</th>
+            </tr>
+        </thead>
+        <tbody>`;
+
+    sortedCompanies.forEach((comp, cIdx) => {
+        let rowClass = (cIdx % 2 === 0) ? "bg-white" : "bg-slate-50/70";
+        comp.cars.forEach((car, carIdx) => {
+            html += `<tr class="${rowClass} hover:bg-amber-50/50 transition">`;
+            if (carIdx === 0) {
+                html += `<td rowspan="${comp.cars.length}" class="font-bold text-gray-900 align-top border-r border-gray-200 bg-white">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="font-semibold text-slate-800">${comp.name}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold border border-amber-200 shrink-0">
+                            ${comp.cars.length} авто
+                        </span>
+                    </div>
+                    <div class="text-[11px] text-gray-500 font-normal mt-1 flex items-center gap-1">
+                        <span class="text-slate-400">КАМ:</span> <b class="text-slate-700">${comp.kam || "Не назначен"}</b>
+                    </div>
+                </td>`;
+            }
+            html += `
+                <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}</td>
+                <td class="font-bold text-blue-900">${car.brand}</td>
+                <td class="text-slate-700 font-medium">${car.model || car.brand}</td>
+                <td class="font-mono text-xs text-slate-600 select-all font-semibold">${car.vin || "—"}</td>
+                <td class="text-xs text-slate-600">${car.manager || "—"}</td>
+                <td><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100/70 text-amber-900 border border-amber-300/60 whitespace-nowrap">${car.stage || "В ожидании ДКП"}</span></td>
+            </tr>`;
+        });
+    });
+
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function filterDebtorsTable(query) {
+    let q = (query || "").toLowerCase().trim();
+    let table = document.getElementById('tableDebtors');
+    if (!table) return;
+    let rows = table.querySelectorAll('tbody tr');
+    rows.forEach(r => {
+        let txt = r.innerText.toLowerCase();
+        r.style.display = txt.includes(q) ? "" : "none";
+    });
+}
+
+function openDebtorsExportModal() {
+    const modal = document.getElementById('modalDebtorsExport');
+    const container = document.getElementById('modalCompanyList');
+    if (!modal || !container) return;
+
+    let filtered = getFilteredDebtors(currentFilterConfig);
+
+    let compMap = {};
+    filtered.forEach(d => {
+        let c = d.company || "Неизвестная компания";
+        if (!compMap[c]) {
+            compMap[c] = { name: c, kam: d.kam || "", cars: [] };
+        }
+        compMap[c].cars.push(d);
+    });
+
+    let sortedCompanies = Object.values(compMap).sort((a, b) => b.cars.length - a.cars.length || a.name.localeCompare(b.name));
+
+    const subEl = document.getElementById('modalDebtorsSubtitle');
+    let periodName = currentFilterConfig.mode === 'month' ? currentFilterConfig.month : (currentFilterConfig.mode === 'all' ? 'Весь период' : 'Выбранные даты');
+    if (subEl) {
+        subEl.innerText = `Период: ${periodName} | Компаний: ${sortedCompanies.length} (${filtered.length} авто)`;
+    }
+
+    let html = "";
+    sortedCompanies.forEach((comp, idx) => {
+        let safeName = encodeURIComponent(comp.name);
+        html += `
+            <label class="debtor-comp-item flex items-center justify-between p-2.5 rounded-xl hover:bg-emerald-50/60 transition cursor-pointer border border-transparent hover:border-emerald-200 select-none">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" data-company="${safeName}" data-cars-count="${comp.cars.length}" class="debtor-checkbox w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 cursor-pointer" onchange="updateModalSelectionStats()">
+                    <div>
+                        <div class="font-bold text-gray-800 text-xs">${comp.name}</div>
+                        <div class="text-[11px] text-gray-500">КАМ: <b class="text-slate-700">${comp.kam || "Не назначен"}</b></div>
+                    </div>
+                </div>
+                <div class="text-right shrink-0">
+                    <span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 font-bold text-[11px] border border-amber-200">
+                        ${comp.cars.length} авто
+                    </span>
+                </div>
+            </label>
+        `;
+    });
+
+    container.innerHTML = html;
+    toggleAllDebtorCheckboxes(true);
+    modal.classList.remove('hidden');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function closeDebtorsExportModal() {
+    const modal = document.getElementById('modalDebtorsExport');
+    if (modal) modal.classList.add('hidden');
+}
+
+function filterModalCompanies(q) {
+    let query = (q || "").toLowerCase().trim();
+    let items = document.querySelectorAll('.debtor-comp-item');
+    items.forEach(it => {
+        let txt = it.innerText.toLowerCase();
+        it.style.display = txt.includes(query) ? "" : "none";
+    });
+}
+
+function toggleAllDebtorCheckboxes(checked) {
+    let checkboxes = document.querySelectorAll('.debtor-checkbox');
+    checkboxes.forEach(cb => {
+        let item = cb.closest('.debtor-comp-item');
+        if (item && item.style.display !== 'none') {
+            cb.checked = checked;
+        }
+    });
+    updateModalSelectionStats();
+}
+
+function updateModalSelectionStats() {
+    let checked = document.querySelectorAll('.debtor-checkbox:checked');
+    let totalCars = 0;
+    checked.forEach(cb => {
+        totalCars += parseInt(cb.getAttribute('data-cars-count') || 0);
+    });
+    const elCount = document.getElementById('modalSelectedCount');
+    const elCars = document.getElementById('modalSelectedCarsCount');
+    if (elCount) elCount.innerText = checked.length;
+    if (elCars) elCars.innerText = totalCars;
+}
+
+function executeDebtorsExcelExport() {
+    let checked = Array.from(document.querySelectorAll('.debtor-checkbox:checked'));
+    if (checked.length === 0) {
+        alert("Пожалуйста, выберите хотя бы одну компанию для выгрузки.");
+        return;
+    }
+
+    let selectedCompanyNames = checked.map(cb => decodeURIComponent(cb.getAttribute('data-company')));
+    let filtered = getFilteredDebtors(currentFilterConfig);
+
+    let compMap = {};
+    filtered.forEach(d => {
+        if (selectedCompanyNames.includes(d.company)) {
+            if (!compMap[d.company]) compMap[d.company] = [];
+            compMap[d.company].push(d);
+        }
+    });
+
+    let todayStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '_');
+    let exportedCount = 0;
+
+    selectedCompanyNames.forEach(compName => {
+        let cars = compMap[compName] || [];
+        if (cars.length === 0) return;
+
+        let wsData = [
+            ["Компания", "Дата предоплаты", "Марка", "Модель", "ВИН"]
+        ];
+
+        cars.forEach(c => {
+            wsData.push([
+                c.company || compName,
+                c.prepay_date || "—",
+                c.brand || "—",
+                c.model || c.brand || "—",
+                c.vin || "—"
+            ]);
+        });
+
+        let ws = XLSX.utils.aoa_to_sheet(wsData);
+        ws['!cols'] = [
+            { wch: 32 },
+            { wch: 18 },
+            { wch: 18 },
+            { wch: 22 },
+            { wch: 24 }
+        ];
+
+        let wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Долги ДКП");
+
+        let cleanName = compName.replace(/["*\\/?:<>|]/g, '').replace(/\s+/g, '_').slice(0, 35) || 'Компания';
+        let fileName = `Долги_ДКП_${cleanName}_${todayStr}.xlsx`;
+
+        XLSX.writeFile(wb, fileName);
+        exportedCount++;
+    });
+
+    closeDebtorsExportModal();
+    alert(`✅ Успешно выгружено ${exportedCount} файлов Excel в папку «Загрузки»!`);
+}

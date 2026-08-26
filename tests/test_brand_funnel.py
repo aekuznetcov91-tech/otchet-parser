@@ -86,16 +86,23 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         self.assertGreater(aug_jetour.get('offer_success', 0), 1000, "У Джетур за август должно быть > 1000 экранов успеха")
 
     def test_06_index_html_ui_components(self):
-        """Проверка наличия UI компонентов и обработчиков в index.html"""
+        """Проверка наличия UI компонентов и обработчиков в index.html и модулях JS"""
         with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
             html = f.read()
             
+        funnel_js_path = os.path.join(PROJECT_ROOT, 'site', 'js', 'funnel.js')
+        funnel_js = ""
+        if os.path.exists(funnel_js_path):
+            with open(funnel_js_path, 'r', encoding='utf-8') as f:
+                funnel_js = f.read()
+
+        all_code = html + "\n" + funnel_js
+            
         self.assertIn('tab-funnel', html, "tab-funnel должен присутствовать в HTML")
-        self.assertIn('setFunnelMonth', html, "Функция setFunnelMonth должна присутствовать в JS")
-        self.assertIn('f-month-2026-08', html, "Кнопка выбора августа должна быть в DOM")
-        self.assertIn('f-month-2026-07', html, "Кнопка выбора июля должна быть в DOM")
-        self.assertIn('f-month-all', html, "Кнопка выбора всех месяцев должна быть в DOM")
-        self.assertIn('selectFunnelBrand', html, "Функция selectFunnelBrand должна присутствовать в JS")
+        self.assertIn('funnelMonthButtons', html, "Контейнер динамических месяцев должен быть в DOM")
+        self.assertIn('setFunnelMonth', all_code, "Функция setFunnelMonth должна присутствовать")
+        self.assertIn('selectFunnelBrand', all_code, "Функция selectFunnelBrand должна присутствовать")
+        self.assertIn('initFunnelMonths', all_code, "Функция автогенерации месяцев должна присутствовать")
 
     def test_07_debtors_and_export_modal(self):
         """Проверка структуры должников ДКП и модального окна экспорта"""
@@ -108,9 +115,17 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
             html = f.read()
             
+        debtors_js_path = os.path.join(PROJECT_ROOT, 'site', 'js', 'debtors.js')
+        debtors_js = ""
+        if os.path.exists(debtors_js_path):
+            with open(debtors_js_path, 'r', encoding='utf-8') as f:
+                debtors_js = f.read()
+
+        all_code = html + "\n" + debtors_js
+
         self.assertIn('tab-details', html, "tab-details должен присутствовать в HTML")
         self.assertIn('modalDebtorsExport', html, "modalDebtorsExport должен присутствовать в HTML")
-        self.assertIn('executeDebtorsExcelExport', html, "executeDebtorsExcelExport должен быть в JS")
+        self.assertIn('executeDebtorsExcelExport', all_code, "executeDebtorsExcelExport должен быть в JS")
         self.assertIn('xlsx.full.min.js', html, "SheetJS библиотека должна быть подключена")
 
     def test_08_no_duplicate_processing(self):
@@ -131,17 +146,19 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
             self.assertIn('leads', aug_brands[b])
 
     def test_10_javascript_syntax_integrity(self):
-        """Проверка синтаксиса JavaScript через WebKit JavaScriptCore (JXA)"""
-        with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
-            html = f.read()
-        scripts = re.findall(r'<script>(.*?)</script>', html, re.DOTALL)
-        self.assertGreater(len(scripts), 0, "Должен присутствовать хотя бы один тег <script>")
-        for idx, s in enumerate(scripts):
-            tmp_path = f'/tmp/qa_jxa_{idx}.js'
-            with open(tmp_path, 'w', encoding='utf-8') as sf:
-                sf.write('function __qa__() {\n' + s + '\n}')
+        """Проверка синтаксиса JavaScript всех модулей через WebKit JavaScriptCore (JXA)"""
+        js_dir = os.path.join(PROJECT_ROOT, 'site', 'js')
+        js_files = [os.path.join(js_dir, f) for f in os.listdir(js_dir) if f.endswith('.js')]
+        self.assertGreater(len(js_files), 5, "В site/js должно быть более 5 модулей JS")
+        
+        for js_file in js_files:
+            with open(js_file, 'r', encoding='utf-8') as sf:
+                code = sf.read()
+            tmp_path = f'/tmp/qa_jxa_{os.path.basename(js_file)}'
+            with open(tmp_path, 'w', encoding='utf-8') as tf:
+                tf.write('function __qa__() {\n' + code + '\n}')
             r = subprocess.run(['osascript', '-l', 'JavaScript', tmp_path], capture_output=True, text=True)
-            self.assertEqual(r.returncode, 0, f"Ошибка синтаксиса JS в скрипте {idx+1}: {r.stderr}")
+            self.assertEqual(r.returncode, 0, f"Ошибка синтаксиса JS в {os.path.basename(js_file)}: {r.stderr}")
             if os.path.exists(tmp_path):
                 os.remove(tmp_path)
 
