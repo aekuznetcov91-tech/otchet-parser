@@ -4,6 +4,13 @@ import sys
 import json
 import shutil
 
+if sys.platform == 'win32':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except AttributeError:
+        pass
+
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.local.json')
 
 def deploy():
@@ -30,6 +37,12 @@ def deploy():
     if os.path.exists(local_node_bin):
         env["PATH"] = local_node_bin + os.pathsep + env.get("PATH", "")
 
+    # Auto-add npm global path on Windows
+    if sys.platform.startswith("win"):
+        appdata_npm = os.path.join(os.environ.get("APPDATA", ""), "npm")
+        if os.path.exists(appdata_npm) and appdata_npm not in env.get("PATH", ""):
+            env["PATH"] = appdata_npm + os.pathsep + env.get("PATH", "")
+
     site_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'site')
     if not os.path.exists(site_dir):
         print(f"[!] Oshibka: Papka {site_dir} ne naydena!")
@@ -38,29 +51,56 @@ def deploy():
     env["PYTHONIOENCODING"] = "utf-8"
     env["NO_COLOR"] = "1"
 
-    # Determine npx executable
-    npx_bin = "npx.cmd" if sys.platform.startswith("win") else "npx"
-    if not shutil.which(npx_bin, path=env.get("PATH")):
-        if os.path.exists(os.path.join(local_node_bin, 'npx')):
-            npx_bin = os.path.join(local_node_bin, 'npx')
-
-    cmd = [npx_bin, "wrangler", "pages", "deploy", site_dir, f"--project-name={project_name}", "--commit-dirty=true", "--branch=main"]
+    # Determine wrangler / npx executable
+    wrangler_bin = "wrangler.cmd" if sys.platform.startswith("win") else "wrangler"
+    wrangler_path = shutil.which(wrangler_bin, path=env.get("PATH"))
     
+    if wrangler_path:
+        cmd = [wrangler_path, "pages", "deploy", site_dir, f"--project-name={project_name}", "--commit-dirty=true", "--branch=main"]
+    else:
+        npx_bin = "npx.cmd" if sys.platform.startswith("win") else "npx"
+        if not shutil.which(npx_bin, path=env.get("PATH")):
+            if os.path.exists(os.path.join(local_node_bin, 'npx')):
+                npx_bin = os.path.join(local_node_bin, 'npx')
+        cmd = [npx_bin, "--yes", "wrangler", "pages", "deploy", site_dir, f"--project-name={project_name}", "--commit-dirty=true", "--branch=main"]
+
     try:
-        res = subprocess.run(cmd, env=env, capture_output=True, errors='replace')
-        stdout = res.stdout.decode('utf-8', errors='replace') if isinstance(res.stdout, bytes) else (res.stdout or '')
-        stderr = res.stderr.decode('utf-8', errors='replace') if isinstance(res.stderr, bytes) else (res.stderr or '')
-        combined = stdout + stderr
-        if res.returncode == 0 or 'Success' in combined or 'Deploying' in combined or 'pages.dev' in combined:
-            print("[+] USPESHNO VYGRUZHENO NA CLOUDFLARE PAGES!")
+        print(f"[*] Komanda: {' '.join(cmd)}")
+        # Stream live output
+        process = subprocess.Popen(
+            cmd,
+            env=env,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            encoding='utf-8',
+            errors='replace'
+        )
+        
+        output_lines = []
+        for line in process.stdout:
+            try:
+                sys.stdout.write(line)
+                sys.stdout.flush()
+            except Exception:
+                pass
+            output_lines.append(line)
+            
+        process.wait()
+        combined = "".join(output_lines)
+        
+        if process.returncode == 0 or 'Success' in combined or 'Deployment complete' in combined or 'pages.dev' in combined:
+            print("\n[+] USPESHNO VYGRUZHENO NA CLOUDFLARE PAGES!")
             print("[+] Sayt s avtorizaciey: https://dashbord-partners.beckelaguas723.workers.dev")
             print("[+] Pryamaya ssylka:     https://dashbord-partners1.pages.dev")
         else:
-            print("[!] Oshibka wrangler:")
-            print(stderr or stdout)
+            print("\n[!] Oshibka wrangler pri vygruzke:")
+            if not combined.strip():
+                print(f"Protsess zavershilsya s kodom {process.returncode}")
     except Exception as e:
         print(f"[!] Oshibka: {e}")
 
 if __name__ == '__main__':
     deploy()
+
 
