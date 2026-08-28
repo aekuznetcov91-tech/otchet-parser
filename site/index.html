@@ -59,6 +59,10 @@
             <i data-lucide="calendar-days" class="w-4 h-4"></i> Динамика месяцы</button>
         <button onclick="switchTab('tab-partners', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm font-bold text-blue-700">
             <i data-lucide="handshake" class="w-4 h-4"></i> Партнеры (Сквозной ID)</button>
+        <button onclick="switchTab('tab-kam', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm font-black text-indigo-700 hover:text-indigo-800">
+            <i data-lucide="briefcase" class="w-4 h-4 text-indigo-600"></i>
+            👔 КАМ
+        </button>
         <button onclick="switchTab('tab-managers', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
             <i data-lucide="users" class="w-4 h-4"></i> Менеджеры</button>
         <button onclick="switchTab('tab-funnel', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm text-emerald-600 font-bold hover:text-emerald-700">
@@ -416,6 +420,163 @@
         </div>
     </div>
 
+    <!-- ==================== TAB: KAM MANAGEMENT & REPORTING ==================== -->
+    <div id="tab-kam" class="tab-content hidden space-y-5">
+        <!-- Sub Header with Title and KAM Manager Filter Pills -->
+        <div class="card !p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white rounded-3xl shadow-sm border border-gray-200">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center shadow-md shrink-0 text-white font-black">
+                    <i data-lucide="briefcase" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                            Управленческий отчет КАМ-менеджеров
+                        </h2>
+                        <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-300 font-bold">Отчетность</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">Входящие и квалифицированные лиды ➔ Передача партнерам ➔ Сделки (МП / ФДЦ / Online / Передача) ➔ География брендов и План</p>
+                </div>
+            </div>
+
+            <!-- KAM Selector Pills -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <button data-kam="all" onclick="setKamManagerFilter('all')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow-sm bg-blue-600 text-white cursor-pointer border border-blue-600">
+                    Все КАМы
+                </button>
+                <button data-kam="Алексей Чихарев" onclick="setKamManagerFilter('Алексей Чихарев')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Алексей Чихарев
+                </button>
+                <button data-kam="Андрей Кузнецов" onclick="setKamManagerFilter('Андрей Кузнецов')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Андрей Кузнецов
+                </button>
+                <button data-kam="Светлана Дариенко" onclick="setKamManagerFilter('Светлана Дариенко')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Светлана Дариенко
+                </button>
+                <button data-kam="Валерия Солдатова" onclick="setKamManagerFilter('Валерия Солдатова')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Валерия Солдатова
+                </button>
+                <button data-kam="Евгения Добролюбова" onclick="setKamManagerFilter('Евгения Добролюбова')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Евгения Добролюбова
+                </button>
+            </div>
+        </div>
+
+        <!-- KAM Overall Plan Container (Dynamically updated) -->
+        <div id="kamPlanHeaderContainer"></div>
+
+        <!-- 5 Key Funnel KPI Cards (Items 1, 2, 3, 4, 9) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="kpi-card border-blue-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">1. Входящие лиды</p>
+                <p id="kamKpiInLeads" class="text-3xl font-black text-blue-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Общий входящий поток лидов</p>
+            </div>
+            <div class="kpi-card border-indigo-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">2. Квалифицировано</p>
+                <p id="kamKpiQualLeads" class="text-3xl font-black text-indigo-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Целевые клиенты (Целевой = 1)</p>
+            </div>
+            <div class="kpi-card border-teal-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">3. Передано партнерам</p>
+                <p id="kamKpiTransLeads" class="text-3xl font-black text-teal-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Отправлено в дилерские центры</p>
+            </div>
+            <div class="kpi-card border-purple-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">4. Сделки с передачи</p>
+                <p id="kamKpiTransDeals" class="text-3xl font-black text-purple-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Сделки по переданным (без аванса)</p>
+            </div>
+            <div class="kpi-card border-emerald-600 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">9. CR с передачи</p>
+                <p id="kamKpiCr" class="text-3xl font-black text-emerald-700 mt-1">0.0%</p>
+                <p class="text-[11px] text-gray-500 mt-1">Сделки / Переданные лиды</p>
+            </div>
+        </div>
+
+        <!-- 3 Deal Breakdown Cards (Items 5, 6, Total) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="card !p-4 bg-white border border-amber-200 shadow-sm rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-amber-700 uppercase tracking-wide">5. Сделки по типу МП</span>
+                    <p id="kamKpiMpDeals" class="text-3xl font-black text-amber-800 mt-1">0</p>
+                    <span class="text-[11px] text-gray-500">Маркетплейс (МП1, МП2, МП3)</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-black">
+                    🛍️
+                </div>
+            </div>
+            <div class="card !p-4 bg-white border border-sky-200 shadow-sm rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-sky-700 uppercase tracking-wide">6. Сделки ФДЦ / Online</span>
+                    <p id="kamKpiFdcOnlineDeals" class="text-3xl font-black text-sky-800 mt-1">0</p>
+                    <span class="text-[11px] text-gray-500">ФДЦ + ФДЦ ГП + Online сделки</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-xl font-black">
+                    🌐
+                </div>
+            </div>
+            <div class="card !p-4 bg-white border border-blue-200 shadow-sm rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-blue-700 uppercase tracking-wide">Всего сделок КАМ</span>
+                    <p id="kamKpiTotalDeals" class="text-3xl font-black text-blue-800 mt-1">0</p>
+                    <span class="text-[11px] text-gray-500">Суммарно по всем типам каналов</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-black">
+                    📊
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Bar for Partners Table -->
+        <div class="card !p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center gap-3 flex-1">
+                <div class="relative flex-1 max-w-md">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                    <input type="text" class="w-full bg-slate-50 border border-gray-300 rounded-xl pl-9 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Поиск по партнеру, городу, бренду..." oninput="onKamSearchInput(this.value)">
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-xs text-gray-500 font-bold mr-1">Статус плана:</span>
+                <button data-status="all" onclick="setKamPlanStatusFilter('all')" class="kam-plan-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-white cursor-pointer shadow-sm">
+                    Все
+                </button>
+                <button data-status="completed" onclick="setKamPlanStatusFilter('completed')" class="kam-plan-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    ✅ Выполнен (≥100%)
+                </button>
+                <button data-status="in_progress" onclick="setKamPlanStatusFilter('in_progress')" class="kam-plan-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    ⏳ В процессе (&lt;100%)
+                </button>
+                <button data-status="no_plan" onclick="setKamPlanStatusFilter('no_plan')" class="kam-plan-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    Без плана
+                </button>
+                <button onclick="exportKamReportToExcel()" class="ml-2 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition shadow-sm inline-flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                    В Excel (.xlsx)
+                </button>
+            </div>
+        </div>
+
+        <!-- Hierarchical Interactive Table: Partner -> City -> Brand -->
+        <div class="card overflow-hidden bg-white shadow-sm rounded-2xl border border-gray-200 !p-0">
+            <div class="px-5 py-3.5 bg-slate-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="building-2" class="w-4 h-4 text-blue-400"></i>
+                    <h3 class="text-sm font-bold text-white">Реестр партнеров КАМ: Города и Бренды</h3>
+                </div>
+                <div class="text-[11px] text-slate-300 font-medium">
+                    💡 Кликните по строке партнера для просмотра городов и брендов. Планы сохраняются мгновенно.
+                </div>
+            </div>
+            <div id="kamTableContainer" class="overflow-x-auto max-h-[750px] p-0">
+                <!-- Dynamically populated by kam-dashboard.js -->
+            </div>
+        </div>
+
+        <!-- Brand Summary Container -->
+        <div id="kamBrandsSummaryContainer"></div>
+    </div>
+
     <div id="tab-details" class="tab-content hidden space-y-5">
         <!-- HEADER / ACTIONS CARD -->
         <div class="card !p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900 text-white rounded-2xl shadow-md border border-slate-800">
@@ -641,6 +802,7 @@
     <script src="js/funnel.js?v=2808_1455"></script>
     <script src="js/heatmap.js?v=2808_1455"></script>
     <script src="js/lead-geo.js?v=2808_1455"></script>
+    <script src="js/kam-dashboard.js?v=2808_1455"></script>
 
     <script>
         window.onload = () => {

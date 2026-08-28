@@ -220,9 +220,10 @@ function updateAllTabs() {
     renderWaitingTable(currentFilterConfig);
     renderDebtorsTable(currentFilterConfig);
 
-    // Regional heatmap
+    // Regional heatmap & modules
     if (typeof updateHeatmap === 'function') updateHeatmap(sDb);
     if (typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
+    if (typeof renderKamTab === 'function') renderKamTab(currentFilterConfig);
 
     initTableSorting();
     if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -656,5 +657,6 @@ function switchTab(tabId, btn) {
     if (btn) btn.classList.add('active');
     if (tabId === 'tab-funnel' && typeof selectFunnelBrand === 'function') selectFunnelBrand('ALL');
     if (tabId === 'tab-lead-geo' && typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
+    if (tabId === 'tab-kam' && typeof renderKamTab === 'function') renderKamTab(currentFilterConfig);
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }

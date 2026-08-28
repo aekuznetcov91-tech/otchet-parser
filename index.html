@@ -59,11 +59,19 @@
             <i data-lucide="calendar-days" class="w-4 h-4"></i> Динамика месяцы</button>
         <button onclick="switchTab('tab-partners', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm font-bold text-blue-700">
             <i data-lucide="handshake" class="w-4 h-4"></i> Партнеры (Сквозной ID)</button>
+        <button onclick="switchTab('tab-kam', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm font-black text-indigo-700 hover:text-indigo-800">
+            <i data-lucide="briefcase" class="w-4 h-4 text-indigo-600"></i>
+            👔 КАМ
+        </button>
         <button onclick="switchTab('tab-managers', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
             <i data-lucide="users" class="w-4 h-4"></i> Менеджеры</button>
         <button onclick="switchTab('tab-funnel', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm text-emerald-600 font-bold hover:text-emerald-700">
             <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="m8.5 12 2.5 2.5 5-5"></path></svg>
             Воронка брендов
+        </button>
+        <button onclick="switchTab('tab-lead-geo', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm text-indigo-700 font-bold hover:text-indigo-800">
+            <i data-lucide="map-pin" class="w-4 h-4 text-indigo-600"></i>
+            🗺️ Лиды: Регионы и Дилеры
         </button>
         <button onclick="switchTab('tab-details', this)" class="tab-btn flex items-center gap-1.5 whitespace-nowrap text-sm">
             <i data-lucide="clock" class="w-4 h-4"></i> В ожидании</button>
@@ -337,6 +345,238 @@
     </div>
 
     <!-- ==================== TAB: WAITING & DEBTORS ==================== -->
+        <!-- ==================== TAB: LEAD GEO & DEALERS ==================== -->
+    <div id="tab-lead-geo" class="tab-content hidden space-y-5">
+        <!-- Top KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="kpi-card border-emerald-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Квалифицировано лидов</p>
+                <p id="kpiGeoQualClients" class="text-3xl font-black text-emerald-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Целевой клиент (Целевой = 1)</p>
+            </div>
+            <div class="kpi-card border-blue-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Передано в ДЦ</p>
+                <p id="kpiGeoTransClients" class="text-3xl font-black text-blue-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Отправлено дилерским центрам</p>
+            </div>
+            <div class="kpi-card border-purple-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Доля передачи (% квал)</p>
+                <p id="kpiGeoTransPct" class="text-3xl font-black text-purple-700 mt-1">0%</p>
+                <p class="text-[11px] text-gray-500 mt-1">Передано из квалифицированных</p>
+            </div>
+            <div class="kpi-card border-amber-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Сделки по переданным</p>
+                <p id="kpiGeoDeals" class="text-3xl font-black text-amber-600 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Закрыто и реализовано</p>
+            </div>
+            <div class="kpi-card border-slate-700 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Охват регионов РФ</p>
+                <p id="kpiGeoRegionsCount" class="text-3xl font-black text-slate-800 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Регионов присутствия клиентов</p>
+            </div>
+        </div>
+
+        <!-- Filters & Search Bar -->
+        <div class="sber-card p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white">
+            <div class="flex items-center gap-3 flex-1">
+                <div class="relative flex-1 max-w-md">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                    <input type="text" class="w-full bg-slate-50 border border-gray-300 rounded-xl pl-9 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 outline-none transition" placeholder="Поиск по региону, названию ДЦ или марке..." oninput="onLeadGeoSearchInput(this.value)">
+                </div>
+                <select id="leadGeoBrandFilter" class="bg-slate-50 border border-gray-300 rounded-xl px-3 py-1.5 text-xs text-gray-700 font-semibold focus:ring-2 focus:ring-emerald-500 outline-none cursor-pointer" onchange="onLeadGeoBrandChange(this.value)">
+                    <option value="all">Все бренды</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <button id="geoChip_all" onclick="setLeadGeoStatusFilter('all')" class="lead-geo-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white cursor-pointer shadow-sm">
+                    Все
+                </button>
+                <button id="geoChip_qual" onclick="setLeadGeoStatusFilter('qual')" class="lead-geo-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    Квалифицированные
+                </button>
+                <button id="geoChip_trans" onclick="setLeadGeoStatusFilter('trans')" class="lead-geo-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    Переданные в ДЦ
+                </button>
+                <button id="geoChip_deals" onclick="setLeadGeoStatusFilter('deals')" class="lead-geo-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    Со сделками
+                </button>
+            </div>
+        </div>
+
+        <!-- Region & Dealer Interactive Table -->
+        <div class="sber-card overflow-hidden bg-white shadow-sm rounded-2xl border border-gray-200">
+            <div class="px-5 py-3.5 bg-slate-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="layers" class="w-4 h-4 text-emerald-400"></i>
+                    <h3 class="text-sm font-bold text-white">Матрица переданных и квалифицированных клиентов по дилерам</h3>
+                </div>
+                <div class="text-[11px] text-slate-400 font-medium">
+                    💡 Кликните на любую цифру, чтобы открыть базу клиентов со ссылками на БФС
+                </div>
+            </div>
+            <div id="leadGeoTableContainer" class="overflow-x-auto max-h-[700px]">
+                <!-- Populated by lead-geo.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB: KAM MANAGEMENT & REPORTING ==================== -->
+    <div id="tab-kam" class="tab-content hidden space-y-5">
+        <!-- Sub Header with Title and KAM Manager Filter Pills -->
+        <div class="card !p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white rounded-3xl shadow-sm border border-gray-200">
+            <div class="flex items-center gap-3.5">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center shadow-md shrink-0 text-white font-black">
+                    <i data-lucide="briefcase" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h2 class="text-lg font-black text-slate-900 flex items-center gap-2">
+                            Управленческий отчет КАМ-менеджеров
+                        </h2>
+                        <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-300 font-bold">Отчетность</span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">Входящие и квалифицированные лиды ➔ Передача партнерам ➔ Сделки (МП / ФДЦ / Online / Передача) ➔ География брендов и План</p>
+                </div>
+            </div>
+
+            <!-- KAM Selector Pills -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <button data-kam="all" onclick="setKamManagerFilter('all')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow-sm bg-blue-600 text-white cursor-pointer border border-blue-600">
+                    Все КАМы
+                </button>
+                <button data-kam="Алексей Чихарев" onclick="setKamManagerFilter('Алексей Чихарев')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Алексей Чихарев
+                </button>
+                <button data-kam="Андрей Кузнецов" onclick="setKamManagerFilter('Андрей Кузнецов')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Андрей Кузнецов
+                </button>
+                <button data-kam="Светлана Дариенко" onclick="setKamManagerFilter('Светлана Дариенко')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Светлана Дариенко
+                </button>
+                <button data-kam="Валерия Солдатова" onclick="setKamManagerFilter('Валерия Солдатова')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Валерия Солдатова
+                </button>
+                <button data-kam="Евгения Добролюбова" onclick="setKamManagerFilter('Евгения Добролюбова')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                    Евгения Добролюбова
+                </button>
+            </div>
+        </div>
+
+        <!-- KAM Overall Plan Container (Dynamically updated) -->
+        <div id="kamPlanHeaderContainer"></div>
+
+        <!-- 5 Key Funnel KPI Cards (Items 1, 2, 3, 4, 9) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="kpi-card border-blue-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">1. Входящие лиды</p>
+                <p id="kamKpiInLeads" class="text-3xl font-black text-blue-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Общий входящий поток лидов</p>
+            </div>
+            <div class="kpi-card border-indigo-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">2. Квалифицировано</p>
+                <p id="kamKpiQualLeads" class="text-3xl font-black text-indigo-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Целевые клиенты (Целевой = 1)</p>
+            </div>
+            <div class="kpi-card border-teal-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">3. Передано партнерам</p>
+                <p id="kamKpiTransLeads" class="text-3xl font-black text-teal-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Отправлено в дилерские центры</p>
+            </div>
+            <div class="kpi-card border-purple-500 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">4. Сделки с передачи</p>
+                <p id="kamKpiTransDeals" class="text-3xl font-black text-purple-700 mt-1">0</p>
+                <p class="text-[11px] text-gray-500 mt-1">Сделки по переданным (без аванса)</p>
+            </div>
+            <div class="kpi-card border-emerald-600 bg-white !mb-0 shadow-sm">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">9. CR с передачи</p>
+                <p id="kamKpiCr" class="text-3xl font-black text-emerald-700 mt-1">0.0%</p>
+                <p class="text-[11px] text-gray-500 mt-1">Сделки / Переданные лиды</p>
+            </div>
+        </div>
+
+        <!-- 3 Deal Breakdown Cards (Items 5, 6, Total) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="card !p-4 bg-white border border-amber-200 shadow-sm rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-amber-700 uppercase tracking-wide">5. Сделки по типу МП</span>
+                    <p id="kamKpiMpDeals" class="text-3xl font-black text-amber-800 mt-1">0</p>
+                    <span class="text-[11px] text-gray-500">Маркетплейс (МП1, МП2, МП3)</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl font-black">
+                    🛍️
+                </div>
+            </div>
+            <div class="card !p-4 bg-white border border-sky-200 shadow-sm rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-sky-700 uppercase tracking-wide">6. Сделки ФДЦ / Online</span>
+                    <p id="kamKpiFdcOnlineDeals" class="text-3xl font-black text-sky-800 mt-1">0</p>
+                    <span class="text-[11px] text-gray-500">ФДЦ + ФДЦ ГП + Online сделки</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-xl font-black">
+                    🌐
+                </div>
+            </div>
+            <div class="card !p-4 bg-white border border-blue-200 shadow-sm rounded-2xl flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-blue-700 uppercase tracking-wide">Всего сделок КАМ</span>
+                    <p id="kamKpiTotalDeals" class="text-3xl font-black text-blue-800 mt-1">0</p>
+                    <span class="text-[11px] text-gray-500">Суммарно по всем типам каналов</span>
+                </div>
+                <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-black">
+                    📊
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Bar for Partners Table -->
+        <div class="card !p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-white rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center gap-3 flex-1">
+                <div class="relative flex-1 max-w-md">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                    <input type="text" class="w-full bg-slate-50 border border-gray-300 rounded-xl pl-9 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Поиск по партнеру, городу, бренду..." oninput="onKamSearchInput(this.value)">
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-xs text-gray-500 font-bold mr-1">Статус плана:</span>
+                <button data-status="all" onclick="setKamPlanStatusFilter('all')" class="kam-plan-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-800 text-white cursor-pointer shadow-sm">
+                    Все
+                </button>
+                <button data-status="completed" onclick="setKamPlanStatusFilter('completed')" class="kam-plan-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    ✅ Выполнен (≥100%)
+                </button>
+                <button data-status="in_progress" onclick="setKamPlanStatusFilter('in_progress')" class="kam-plan-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    ⏳ В процессе (&lt;100%)
+                </button>
+                <button data-status="no_plan" onclick="setKamPlanStatusFilter('no_plan')" class="kam-plan-chip px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
+                    Без плана
+                </button>
+                <button onclick="exportKamReportToExcel()" class="ml-2 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition shadow-sm inline-flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
+                    В Excel (.xlsx)
+                </button>
+            </div>
+        </div>
+
+        <!-- Hierarchical Interactive Table: Partner -> City -> Brand -->
+        <div class="card overflow-hidden bg-white shadow-sm rounded-2xl border border-gray-200 !p-0">
+            <div class="px-5 py-3.5 bg-slate-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="building-2" class="w-4 h-4 text-blue-400"></i>
+                    <h3 class="text-sm font-bold text-white">Реестр партнеров КАМ: Города и Бренды</h3>
+                </div>
+                <div class="text-[11px] text-slate-300 font-medium">
+                    💡 Кликните по строке партнера для просмотра городов и брендов. Планы сохраняются мгновенно.
+                </div>
+            </div>
+            <div id="kamTableContainer" class="overflow-x-auto max-h-[750px] p-0">
+                <!-- Dynamically populated by kam-dashboard.js -->
+            </div>
+        </div>
+
+        <!-- Brand Summary Container -->
+        <div id="kamBrandsSummaryContainer"></div>
+    </div>
+
     <div id="tab-details" class="tab-content hidden space-y-5">
         <!-- HEADER / ACTIONS CARD -->
         <div class="card !p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900 text-white rounded-2xl shadow-md border border-slate-800">
@@ -464,32 +704,105 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="px-6 py-3.5 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+            <div class="px-6 py-3.5 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div class="text-xs text-gray-600 font-medium">
                     Выбрано компаний: <b id="modalSelectedCount" class="text-emerald-600">0</b>
                     (<span id="modalSelectedCarsCount" class="text-gray-800 font-semibold">0</span> авто)
                 </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="closeDebtorsExportModal()" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition cursor-pointer">
+                <div class="flex items-center gap-2 flex-wrap justify-end">
+                    <button onclick="closeDebtorsExportModal()" class="px-3.5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition cursor-pointer">
                         Отмена
                     </button>
-                    <button id="btnExecuteExport" onclick="executeDebtorsExcelExport()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5 cursor-pointer">
+                    <button id="btnExecuteSingleTableExport" onclick="executeDebtorsSingleTableExport()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5 cursor-pointer" title="Скачать единую таблицу по всем выбранным должникам со столбцами: Компания, Дата аванса, Марка, ВИН">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Выгрузить таблицей
+                    </button>
+                    <button id="btnExecuteExport" onclick="executeDebtorsExcelExport()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5 cursor-pointer" title="Выгрузить отдельные Excel файлы по каждой компании">
                         <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                        Выгрузить
+                        По компаниям
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+    
+    <!-- ==================== MODAL: CLIENT DRILLDOWN (BFS LINKS) ==================== -->
+    <div id="modalClientDrilldown" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] flex flex-col border border-gray-100 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold shadow-md">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <div>
+                        <h3 id="modalClientDrilldownTitle" class="text-base font-bold text-white">Клиенты и Ссылки в БФС</h3>
+                        <p id="modalClientDrilldownSubtitle" class="text-[11px] text-slate-400">Детальный реестр клиентов с прямыми ссылками в CRM Backoffice</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="modalClientCountBadge" class="px-2.5 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs font-bold border border-blue-500/30">0 клиентов</span>
+                    <button onclick="closeClientDrilldownModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1 rounded-lg hover:bg-slate-800 transition">✕</button>
+                </div>
+            </div>
+
+            <!-- Modal Search & Actions -->
+            <div class="p-4 bg-gray-50 border-b border-gray-200 flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-2.5"></i>
+                    <input type="text" class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Поиск по ID клиента, марке, модели или ВИН..." oninput="filterModalClientsTable(this.value)">
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportModalClientsToExcel()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5 cursor-pointer">
+                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Экспорт в Excel (.xlsx)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Clients Table -->
+            <div class="overflow-y-auto flex-1 max-h-[60vh]">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-slate-800 text-white sticky top-0 z-10 text-xs">
+                        <tr>
+                            <th class="py-2.5 px-3 text-left">ID / Ссылка БФС</th>
+                            <th class="py-2.5 px-3 text-left">Марка и Модель</th>
+                            <th class="py-2.5 px-3 text-left">Дилерский Центр</th>
+                            <th class="py-2.5 px-3 text-center">Квалификация</th>
+                            <th class="py-2.5 px-3 text-center">Передача в ДЦ</th>
+                            <th class="py-2.5 px-3 text-center">Сделка</th>
+                            <th class="py-2.5 px-3 text-left">ВИН</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalClientDrilldownTbody" class="divide-y divide-gray-100 bg-white">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3.5 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-xs text-gray-500">
+                    🔗 Нажмите на бейдж <b>BFS #ID</b>, чтобы открыть карточку в Backoffice SberAuto
+                </div>
+                <button onclick="closeClientDrilldownModal()" class="px-5 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition cursor-pointer">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ==================== MODULAR JAVASCRIPT BUNDLE ==================== -->
-    <script src="js/utils.js"></script>
-    <script src="js/data-loader.js"></script>
-    <script src="js/charts.js"></script>
-    <script src="js/tables.js"></script>
-    <script src="js/debtors.js"></script>
-    <script src="js/funnel.js"></script>
-    <script src="js/heatmap.js"></script>
+    <script src="js/utils.js?v=2808_1455"></script>
+    <script src="js/data-loader.js?v=2808_1455"></script>
+    <script src="js/charts.js?v=2808_1455"></script>
+    <script src="js/tables.js?v=2808_1455"></script>
+    <script src="js/debtors.js?v=2808_1455"></script>
+    <script src="js/funnel.js?v=2808_1455"></script>
+    <script src="js/heatmap.js?v=2808_1455"></script>
+    <script src="js/lead-geo.js?v=2808_1455"></script>
+    <script src="js/kam-dashboard.js?v=2808_1455"></script>
 
     <script>
         window.onload = () => {

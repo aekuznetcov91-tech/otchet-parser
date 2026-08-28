@@ -183,6 +183,37 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         self.assertGreater(lgd['summary']['trans_clients'], 0, "Количество переданных клиентов должно быть > 0")
         self.assertGreater(len(lgd['regions']), 10, "Количество регионов должно быть > 10")
 
+    def test_12_kam_dashboard_integrity(self):
+        """Проверка структуры и компонентов новой вкладки КАМ (Отчетность)"""
+        with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
+            html = f.read()
+
+        kam_js_path = os.path.join(PROJECT_ROOT, 'site', 'js', 'kam-dashboard.js')
+        self.assertTrue(os.path.exists(kam_js_path), "kam-dashboard.js должен существовать в site/js")
+        with open(kam_js_path, 'r', encoding='utf-8') as f:
+            kam_js = f.read()
+
+        all_code = html + "\n" + kam_js
+
+        self.assertIn('tab-kam', html, "tab-kam должен присутствовать в HTML")
+        self.assertIn('kamTableContainer', html, "kamTableContainer должен быть в DOM")
+        self.assertIn('kamPlanHeaderContainer', html, "kamPlanHeaderContainer должен быть в DOM")
+        self.assertIn('kamKpiInLeads', html, "kamKpiInLeads должен быть в DOM")
+        self.assertIn('kamKpiQualLeads', html, "kamKpiQualLeads должен быть в DOM")
+        self.assertIn('kamKpiTransLeads', html, "kamKpiTransLeads должен быть в DOM")
+        self.assertIn('kamKpiTransDeals', html, "kamKpiTransDeals должен быть в DOM")
+        self.assertIn('kamKpiCr', html, "kamKpiCr должен быть в DOM")
+        self.assertIn('kamKpiMpDeals', html, "kamKpiMpDeals должен быть в DOM")
+        self.assertIn('kamKpiFdcOnlineDeals', html, "kamKpiFdcOnlineDeals должен быть в DOM")
+        self.assertIn('kamKpiTotalDeals', html, "kamKpiTotalDeals должен быть в DOM")
+        
+        self.assertIn('renderKamTab', all_code, "renderKamTab функция должна быть в кодовой базе")
+        self.assertIn('onKamOverallPlanChange', all_code, "onKamOverallPlanChange функция должна быть в кодовой базе")
+        self.assertIn('onPartnerPlanChange', all_code, "onPartnerPlanChange функция должна быть в кодовой базе")
+        self.assertIn('exportKamReportToExcel', all_code, "exportKamReportToExcel функция должна быть в кодовой базе")
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+
+
 
