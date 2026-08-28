@@ -80,37 +80,52 @@
     <div id="tab-dashboard" class="tab-content block">
         <!-- KPI ROW 1: MAIN STATS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
-            <div class="kpi-card border-blue-500 bg-white !mb-0">
-                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Сделки (шт)</p>
-                <p id="kpiSales" class="text-3xl font-black text-gray-800 mt-1">0</p>
-            </div>
-            <div class="kpi-card border-orange-500 bg-white !mb-0">
-                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Авансы (шт)</p>
-                <p id="kpiPrepays" class="text-3xl font-black text-gray-800 mt-1">0</p>
-            </div>
-            <div class="kpi-card border-purple-500 bg-white !mb-0">
-                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Средний чек Тотал</p>
-                <p id="kpiCheck" class="text-3xl font-black text-gray-800 mt-1">0 ₽</p>
-                <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
-                    <span class="text-gray-500">Китай: <span id="kpiCheckChina" class="font-bold text-gray-700">0</span></span>
-                    <span class="text-gray-500">Lada: <span id="kpiCheckLada" class="font-bold text-gray-700">0</span></span>
+            <div class="kpi-card border-blue-500 bg-white !mb-0 flex flex-col justify-between">
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Сделки (шт)</p>
+                    <p id="kpiSales" class="text-3xl font-black text-gray-800 mt-1">0</p>
                 </div>
+                <div id="kpiSalesPlan"></div>
             </div>
-            <div class="kpi-card border-green-500 bg-white !mb-0">
-                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">ARPU Тотал (без НДС)</p>
-                <p id="kpiArpu" class="text-3xl font-black text-gray-800 mt-1">0 ₽</p>
-                <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
-                    <span class="text-gray-500">Китай: <span id="kpiArpuChina" class="font-bold text-gray-700">0</span></span>
-                    <span class="text-gray-500">Lada: <span id="kpiArpuLada" class="font-bold text-gray-700">0</span></span>
+            <div class="kpi-card border-orange-500 bg-white !mb-0 flex flex-col justify-between">
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Авансы (шт)</p>
+                    <p id="kpiPrepays" class="text-3xl font-black text-gray-800 mt-1">0</p>
                 </div>
+                <div id="kpiPrepaysPlan"></div>
             </div>
-            <div class="kpi-card border-emerald-600 bg-white !mb-0">
-                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Выручка Тотал (без НДС)</p>
-                <p id="kpiRevTotal" class="text-3xl font-black text-emerald-700 mt-1">0 ₽</p>
-                <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
-                    <span class="text-gray-500">Китай: <span id="kpiRevChina" class="font-bold text-gray-700">0 ₽</span></span>
-                    <span class="text-gray-500">Lada: <span id="kpiRevLada" class="font-bold text-gray-700">0 ₽</span></span>
+            <div class="kpi-card border-purple-500 bg-white !mb-0 flex flex-col justify-between">
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Средний чек Тотал</p>
+                    <p id="kpiCheck" class="text-3xl font-black text-gray-800 mt-1">0 ₽</p>
+                    <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
+                        <span class="text-gray-500">Китай: <span id="kpiCheckChina" class="font-bold text-gray-700">0</span></span>
+                        <span class="text-gray-500">Lada: <span id="kpiCheckLada" class="font-bold text-gray-700">0</span></span>
+                    </div>
                 </div>
+                <div id="kpiCheckPlan"></div>
+            </div>
+            <div class="kpi-card border-green-500 bg-white !mb-0 flex flex-col justify-between">
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">ARPU Тотал (без НДС)</p>
+                    <p id="kpiArpu" class="text-3xl font-black text-gray-800 mt-1">0 ₽</p>
+                    <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
+                        <span class="text-gray-500">Китай: <span id="kpiArpuChina" class="font-bold text-gray-700">0</span></span>
+                        <span class="text-gray-500">Lada: <span id="kpiArpuLada" class="font-bold text-gray-700">0</span></span>
+                    </div>
+                </div>
+                <div id="kpiArpuPlan"></div>
+            </div>
+            <div class="kpi-card border-emerald-600 bg-white !mb-0 flex flex-col justify-between">
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Выручка Тотал (без НДС)</p>
+                    <p id="kpiRevTotal" class="text-3xl font-black text-emerald-700 mt-1">0 ₽</p>
+                    <div class="text-xs mt-2 flex justify-between bg-gray-50 p-1.5 rounded-lg">
+                        <span class="text-gray-500">Китай: <span id="kpiRevChina" class="font-bold text-gray-700">0 ₽</span></span>
+                        <span class="text-gray-500">Lada: <span id="kpiRevLada" class="font-bold text-gray-700">0 ₽</span></span>
+                    </div>
+                </div>
+                <div id="kpiRevPlan"></div>
             </div>
         </div>
 

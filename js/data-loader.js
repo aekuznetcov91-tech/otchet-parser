@@ -186,6 +186,11 @@ function updateAllTabs() {
     setVal('kpiCheckChina', cntCh > 0 ? fmtNum(pCh / cntCh) : '0');
     setVal('kpiCheckLada', cntLa > 0 ? fmtNum(pLa / cntLa) : '0');
 
+    // Top KPI Plan indicators & progress bars
+    const curAvgCheck = tS > 0 ? (pTot / tS) : 0;
+    const curArpu = tS > 0 ? (revTotal / tS) : 0;
+    updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal);
+
     // Plan vs Fact KPI
     updatePlanVsFact(tS, revTotal, pTot);
 
@@ -297,6 +302,125 @@ function updatePlanVsFact(totalDeals, totalRevenue, totalPrice) {
 }
 
 // ====================================================================
+// Top KPI Card Plans & Progress Bars
+// ====================================================================
+function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
+    let targetSales = 1592;
+    let targetPrepays = 1592;
+    let targetCheck = 2600000;
+    let targetArpu = 37167;
+    let targetRev = 59170000;
+
+    if (currentFilterConfig.mode === 'month' && currentFilterConfig.month) {
+        if (currentFilterConfig.month === '2026-08') {
+            targetSales = 1592;
+            targetPrepays = 1592;
+            targetCheck = 2600000;
+            targetArpu = 37167;
+            targetRev = 59170000;
+        } else if (currentFilterConfig.month === '2026-07') {
+            targetSales = 1500;
+            targetPrepays = 1500;
+            targetCheck = 2600000;
+            targetArpu = 35667;
+            targetRev = 53500000;
+        } else {
+            targetSales = Math.round(Q3_TARGETS.deals / 3);
+            targetPrepays = Math.round(Q3_TARGETS.deals / 3);
+            targetCheck = Q3_TARGETS.avgCheck;
+            targetArpu = Math.round(Q3_TARGETS.revenue / Q3_TARGETS.deals);
+            targetRev = Math.round(Q3_TARGETS.revenue / 3);
+        }
+    } else if (currentFilterConfig.mode === 'all') {
+        targetSales = Q3_TARGETS.deals; // 5000
+        targetPrepays = Q3_TARGETS.deals; // 5000
+        targetCheck = Q3_TARGETS.avgCheck; // 2.6M
+        targetArpu = Math.round(Q3_TARGETS.revenue / Q3_TARGETS.deals); // 34 000
+        targetRev = Q3_TARGETS.revenue; // 170M
+    }
+
+    // 1. Sales
+    const salesPct = targetSales > 0 ? (tS / targetSales * 100) : 0;
+    const salesColor = salesPct >= 90 ? '#22c55e' : (salesPct >= 60 ? '#3b82f6' : '#f59e0b');
+    const elSalesPlan = document.getElementById('kpiSalesPlan');
+    if (elSalesPlan) {
+        elSalesPlan.innerHTML = `
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+                <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, salesPct)}%; background: ${salesColor}"></div>
+            </div>
+            <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
+                <span>План: <b class="text-gray-600">${fmtNum(targetSales)}</b></span>
+                <span class="font-bold" style="color: ${salesColor}">${salesPct.toFixed(1)}%</span>
+            </div>
+        `;
+    }
+
+    // 2. Prepays
+    const prepaysPct = targetPrepays > 0 ? (tP / targetPrepays * 100) : 0;
+    const prepaysColor = prepaysPct >= 90 ? '#22c55e' : (prepaysPct >= 60 ? '#f97316' : '#f59e0b');
+    const elPrepaysPlan = document.getElementById('kpiPrepaysPlan');
+    if (elPrepaysPlan) {
+        elPrepaysPlan.innerHTML = `
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+                <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, prepaysPct)}%; background: ${prepaysColor}"></div>
+            </div>
+            <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
+                <span>План: <b class="text-gray-600">${fmtNum(targetPrepays)}</b></span>
+                <span class="font-bold" style="color: ${prepaysColor}">${prepaysPct.toFixed(1)}%</span>
+            </div>
+        `;
+    }
+
+    // 3. Avg Check
+    const checkPct = targetCheck > 0 ? (curAvgCheck / targetCheck * 100) : 0;
+    const checkColor = checkPct >= 100 ? '#22c55e' : (checkPct >= 90 ? '#8b5cf6' : '#f59e0b');
+    const elCheckPlan = document.getElementById('kpiCheckPlan');
+    if (elCheckPlan) {
+        elCheckPlan.innerHTML = `
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+                <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, checkPct)}%; background: ${checkColor}"></div>
+            </div>
+            <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
+                <span>План: <b class="text-gray-600">${fmtMln(targetCheck)}</b></span>
+                <span class="font-bold" style="color: ${checkColor}">${checkPct.toFixed(1)}%</span>
+            </div>
+        `;
+    }
+
+    // 4. ARPU
+    const arpuPct = targetArpu > 0 ? (curArpu / targetArpu * 100) : 0;
+    const arpuColor = arpuPct >= 100 ? '#22c55e' : (arpuPct >= 90 ? '#10b981' : '#f59e0b');
+    const elArpuPlan = document.getElementById('kpiArpuPlan');
+    if (elArpuPlan) {
+        elArpuPlan.innerHTML = `
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+                <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, arpuPct)}%; background: ${arpuColor}"></div>
+            </div>
+            <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
+                <span>План: <b class="text-gray-600">${fmtNum(targetArpu)} ₽</b></span>
+                <span class="font-bold" style="color: ${arpuColor}">${arpuPct.toFixed(1)}%</span>
+            </div>
+        `;
+    }
+
+    // 5. Total Revenue
+    const revPct = targetRev > 0 ? (revTotal / targetRev * 100) : 0;
+    const revColor = revPct >= 90 ? '#22c55e' : (revPct >= 60 ? '#10b981' : '#f59e0b');
+    const elRevPlan = document.getElementById('kpiRevPlan');
+    if (elRevPlan) {
+        elRevPlan.innerHTML = `
+            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+                <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, revPct)}%; background: ${revColor}"></div>
+            </div>
+            <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
+                <span>План: <b class="text-gray-600">${fmtMln(targetRev)}</b></span>
+                <span class="font-bold" style="color: ${revColor}">${revPct.toFixed(1)}%</span>
+            </div>
+        `;
+    }
+}
+
+// ====================================================================
 // Linear Run Rate KPI Card (Deals & Revenue)
 // ====================================================================
 function updateRunRate(sDb, filterConfig) {
@@ -384,139 +508,136 @@ function updateRunRate(sDb, filterConfig) {
     const revPlanPct = targetMonthRev > 0 ? (revRunRate / targetMonthRev * 100) : 100;
 
     container.innerHTML = `
-        <div class="card !p-4 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl shadow-lg border border-slate-700/60">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-3 mb-4 border-b border-slate-700/80 gap-2">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-blue-400">
+        <div class="card !p-4 bg-white rounded-2xl shadow-sm border border-gray-200 mb-5">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-3 mb-3 border-b border-gray-100 gap-2">
+                <div class="flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600">
                         <i data-lucide="trending-up" class="w-4 h-4"></i>
                     </div>
                     <div>
-                        <h2 class="text-base font-black text-white uppercase tracking-wide flex items-center gap-2">
-                            ⚡ Линейный Run Rate: ${periodTitle}
+                        <h2 class="text-base font-bold text-gray-700 uppercase tracking-wide flex items-center gap-2">
+                            Линейный Run Rate: ${periodTitle}
                         </h2>
-                        <p class="text-[11px] text-slate-400 font-medium">
-                            Линейный прогноз сделок и выручки к концу месяца на основе фактического темпа
-                        </p>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
-                    <span class="px-2.5 py-1 bg-slate-800/90 text-cyan-300 border border-cyan-500/30 rounded-lg text-xs font-bold flex items-center gap-1">
+                    <span class="px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold flex items-center gap-1">
                         <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Прошло ${daysPassed} из ${daysInMonth} дн. (${pctPassed.toFixed(1)}%)
                     </span>
-                    <span class="px-2.5 py-1 bg-slate-800/90 text-amber-300 border border-amber-500/30 rounded-lg text-xs font-bold flex items-center gap-1">
+                    <span class="px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold flex items-center gap-1">
                         <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${daysLeft > 0 ? `Осталось ${daysLeft} дн.` : 'Период завершен'}
                     </span>
                 </div>
             </div>
 
-            <!-- 3 RUN RATE CARDS -->
+            <!-- 3 RUN RATE CARDS (Light Dashboard Theme) -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- CARD 1: DEALS RUN RATE -->
-                <div class="bg-slate-800/70 border border-slate-700/70 rounded-xl p-3.5 flex flex-col justify-between hover:border-blue-500/40 transition">
+                <div class="bg-gray-50/80 border border-gray-200 rounded-xl p-3.5 flex flex-col justify-between hover:border-blue-300 transition">
                     <div>
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] uppercase font-bold text-blue-300 tracking-wider flex items-center gap-1">
-                                <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Ранрейт Сделок (Прогноз)
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider flex items-center gap-1">
+                                <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-blue-600"></i> Ранрейт Сделок (Прогноз)
                             </span>
-                            <span class="text-xs font-extrabold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                            <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">
                                 ${dealsPlanPct.toFixed(1)}% плана
                             </span>
                         </div>
                         <div class="flex items-baseline gap-2 mt-1">
-                            <span class="text-2xl font-black text-white">${fmtNum(dealsRunRate)}</span>
-                            <span class="text-xs text-slate-400 font-medium">шт. к концу месяца</span>
+                            <span class="text-2xl font-black text-gray-800">${fmtNum(dealsRunRate)}</span>
+                            <span class="text-xs text-gray-400 font-medium">шт. к концу месяца</span>
                         </div>
                     </div>
 
-                    <div class="mt-3 pt-2.5 border-t border-slate-700/60 text-[11px] space-y-1.5">
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Текущий факт:</span>
-                            <b class="text-white">${fmtNum(dealsFact)} шт.</b>
+                    <div class="mt-3 pt-2.5 border-t border-gray-200/80 text-[11px] space-y-1.5">
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">Текущий факт:</span>
+                            <b class="text-gray-800">${fmtNum(dealsFact)} шт.</b>
                         </div>
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Прогноз остатка:</span>
-                            <b class="text-cyan-400">+${fmtNum(dealsRem)} шт.</b>
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">Прогноз остатка:</span>
+                            <b class="text-blue-600 font-bold">+${fmtNum(dealsRem)} шт.</b>
                         </div>
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Текущий темп:</span>
-                            <b class="text-amber-300">${dealsPace.toFixed(1)} шт./день</b>
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">Текущий темп:</span>
+                            <b class="text-amber-600 font-bold">${dealsPace.toFixed(1)} шт./день</b>
                         </div>
                         <!-- Progress bar -->
-                        <div class="w-full bg-slate-700 rounded-full h-1.5 mt-2">
-                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${Math.min(100, (dealsFact / Math.max(1, dealsRunRate) * 100))}%;"></div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                            <div class="bg-blue-600 h-1.5 rounded-full" style="width: ${Math.min(100, (dealsFact / Math.max(1, dealsRunRate) * 100))}%;"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- CARD 2: REVENUE RUN RATE -->
-                <div class="bg-slate-800/70 border border-slate-700/70 rounded-xl p-3.5 flex flex-col justify-between hover:border-emerald-500/40 transition">
+                <div class="bg-gray-50/80 border border-gray-200 rounded-xl p-3.5 flex flex-col justify-between hover:border-emerald-300 transition">
                     <div>
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] uppercase font-bold text-emerald-300 tracking-wider flex items-center gap-1">
-                                <i data-lucide="coins" class="w-3.5 h-3.5"></i> Ранрейт Выручки (Прогноз)
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider flex items-center gap-1">
+                                <i data-lucide="coins" class="w-3.5 h-3.5 text-emerald-600"></i> Ранрейт Выручки (Прогноз)
                             </span>
-                            <span class="text-xs font-extrabold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                            <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">
                                 ${revPlanPct.toFixed(1)}% плана
                             </span>
                         </div>
                         <div class="flex items-baseline gap-2 mt-1">
-                            <span class="text-2xl font-black text-emerald-400">${fmtMln(revRunRate)}</span>
-                            <span class="text-xs text-slate-400 font-medium">без НДС</span>
+                            <span class="text-2xl font-black text-emerald-700">${fmtMln(revRunRate)}</span>
+                            <span class="text-xs text-gray-400 font-medium">без НДС</span>
                         </div>
                     </div>
 
-                    <div class="mt-3 pt-2.5 border-t border-slate-700/60 text-[11px] space-y-1.5">
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Текущий факт:</span>
-                            <b class="text-white">${fmtMln(revFact)}</b>
+                    <div class="mt-3 pt-2.5 border-t border-gray-200/80 text-[11px] space-y-1.5">
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">Текущий факт:</span>
+                            <b class="text-gray-800">${fmtMln(revFact)}</b>
                         </div>
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Прогноз остатка:</span>
-                            <b class="text-emerald-400">+${fmtMln(revRem)}</b>
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">Прогноз остатка:</span>
+                            <b class="text-emerald-600 font-bold">+${fmtMln(revRem)}</b>
                         </div>
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Текущий темп:</span>
-                            <b class="text-amber-300">+${fmtMln(revPace)}/день</b>
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">Текущий темп:</span>
+                            <b class="text-amber-600 font-bold">+${fmtMln(revPace)}/день</b>
                         </div>
                         <!-- Progress bar -->
-                        <div class="w-full bg-slate-700 rounded-full h-1.5 mt-2">
-                            <div class="bg-emerald-500 h-1.5 rounded-full" style="width: ${Math.min(100, (revFact / Math.max(1, revRunRate) * 100))}%;"></div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                            <div class="bg-emerald-600 h-1.5 rounded-full" style="width: ${Math.min(100, (revFact / Math.max(1, revRunRate) * 100))}%;"></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- CARD 3: ARPU & AVERAGE CHECK -->
-                <div class="bg-slate-800/70 border border-slate-700/70 rounded-xl p-3.5 flex flex-col justify-between hover:border-purple-500/40 transition">
+                <div class="bg-gray-50/80 border border-gray-200 rounded-xl p-3.5 flex flex-col justify-between hover:border-purple-300 transition">
                     <div>
                         <div class="flex justify-between items-center mb-1">
-                            <span class="text-[10px] uppercase font-bold text-purple-300 tracking-wider flex items-center gap-1">
-                                <i data-lucide="receipt" class="w-3.5 h-3.5"></i> Эффективность & Чек
+                            <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider flex items-center gap-1">
+                                <i data-lucide="receipt" class="w-3.5 h-3.5 text-purple-600"></i> Эффективность & Чек
                             </span>
-                            <span class="text-xs font-extrabold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-400/30">
+                            <span class="text-xs font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-700">
                                 Ориентир
                             </span>
                         </div>
                         <div class="flex items-baseline gap-2 mt-1">
-                            <span class="text-2xl font-black text-purple-300">${fmtNum(arpuRunRate)} ₽</span>
-                            <span class="text-xs text-slate-400 font-medium">ARPU прогноз</span>
+                            <span class="text-2xl font-black text-purple-700">${fmtNum(arpuRunRate)} ₽</span>
+                            <span class="text-xs text-gray-400 font-medium">ARPU прогноз</span>
                         </div>
                     </div>
 
-                    <div class="mt-3 pt-2.5 border-t border-slate-700/60 text-[11px] space-y-1.5">
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">Средний чек сделки:</span>
-                            <b class="text-white">${fmtMln(avgCheckFact)}</b>
+                    <div class="mt-3 pt-2.5 border-t border-gray-200/80 text-[11px] space-y-1.5">
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">Средний чек сделки:</span>
+                            <b class="text-gray-800">${fmtMln(avgCheckFact)}</b>
                         </div>
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">План сделок месяца:</span>
-                            <b class="text-slate-300">${fmtNum(targetMonthDeals)} шт.</b>
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">План сделок месяца:</span>
+                            <b class="text-gray-700 font-bold">${fmtNum(targetMonthDeals)} шт.</b>
                         </div>
-                        <div class="flex justify-between text-slate-300">
-                            <span class="text-slate-400">План выручки месяца:</span>
-                            <b class="text-slate-300">${fmtMln(targetMonthRev)}</b>
+                        <div class="flex justify-between text-gray-600">
+                            <span class="text-gray-400">План выручки месяца:</span>
+                            <b class="text-gray-700 font-bold">${fmtMln(targetMonthRev)}</b>
                         </div>
-                        <div class="w-full bg-slate-700 rounded-full h-1.5 mt-2">
-                            <div class="bg-purple-500 h-1.5 rounded-full" style="width: ${Math.min(100, pctPassed)}%;"></div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                            <div class="bg-purple-600 h-1.5 rounded-full" style="width: ${Math.min(100, pctPassed)}%;"></div>
                         </div>
                     </div>
                 </div>
