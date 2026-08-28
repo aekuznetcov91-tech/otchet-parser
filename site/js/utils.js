@@ -172,3 +172,19 @@ async function copyCardToClipboard(cardId, btn) {
         if (btn) { btn.innerHTML = origContent; btn.disabled = false; }
     }
 }
+
+/**
+ * Returns formatted HTML badge for deal channel / B2C subtype.
+ * @param {string} b2c
+ * @returns {string}
+ */
+function getDebtorChannelBadge(b2c) {
+    const ch = (b2c || "Не указан").trim();
+    if (ch === 'МП2') return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200 shadow-xs">МП2</span>`;
+    if (ch === 'Online') return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-700 border border-emerald-200 shadow-xs">Online</span>`;
+    if (ch === 'ФДЦ') return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-700 border border-purple-200 shadow-xs">ФДЦ</span>`;
+    if (ch === 'ФДЦ+ГП') return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-100 text-indigo-700 border border-indigo-200 shadow-xs">ФДЦ+ГП</span>`;
+    if (ch.startsWith('МП')) return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-100 text-cyan-700 border border-cyan-200 shadow-xs">${ch}</span>`;
+    if (ch.includes('лида') || ch.includes('Лид')) return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200 shadow-xs">${ch}</span>`;
+    return `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-700 border border-gray-200">${ch}</span>`;
+}
