@@ -480,11 +480,45 @@ function renderWaitingTable(filterCfg) {
         }
     });
 
+    // Also calculate unassigned retail advances in progress
+    let unassignedPrepay = { total: 0, mp2: 0, online: 0, fdc: 0, other: 0 };
+    let filteredOpenPrepay = db.filter(r => {
+        if (r.PrepayQty <= 0) return false;
+        if (r.SaleQty > 0 && r.SaleMonth === filterCfg.month) return false;
+        if (r.B2C === 'МП2') return false;
+        if (filterCfg.mode === 'all') return true;
+        if (filterCfg.mode === 'month') return r.PrepayMonth === filterCfg.month;
+        if (filterCfg.mode === 'custom') {
+            const fTime = filterCfg.from ? filterCfg.from.getTime() : -Infinity;
+            const tTime = filterCfg.to ? filterCfg.to.getTime() : Infinity;
+            const d = excelToJSDate(r.PrepayDate);
+            if (!d) return false;
+            const t = d.getTime();
+            return t >= fTime && t <= tTime;
+        }
+        return true;
+    });
+
+    filteredOpenPrepay.forEach(r => {
+        let c = (r.B2C || "Не указан").trim();
+        unassignedPrepay.total += 1;
+        if (c === 'Online') {
+            unassignedPrepay.online += 1;
+            channelTotals['Online'] += 1;
+        } else if (c === 'ФДЦ' || c === 'ФДЦ+ГП') {
+            unassignedPrepay.fdc += 1;
+            channelTotals['ФДЦ'] += 1;
+        } else {
+            unassignedPrepay.other += 1;
+            channelTotals['Прочие'] += 1;
+        }
+    });
+
     let sorted = Object.keys(wStats).sort((a, b) => wStats[b].total - wStats[a].total);
     let html = `<table id="tableWaiting" class="min-w-full">
         <thead>
             <tr>
-                <th class="!bg-slate-800 text-left">Марка Авто</th>
+                <th class="!bg-slate-800 text-left">Марка Авто / Категория</th>
                 <th class="!bg-slate-800 text-right text-blue-300">МП2 (Опт)</th>
                 <th class="!bg-slate-800 text-right text-emerald-300">Online</th>
                 <th class="!bg-slate-800 text-right text-purple-300">ФДЦ (Кредит)</th>
@@ -507,6 +541,20 @@ function renderWaitingTable(filterCfg) {
             <td class="text-right text-orange-600 font-black text-sm">${fmtNum(s.total)}</td>
         </tr>`;
     });
+
+    if (unassignedPrepay.total > 0) {
+        tw += unassignedPrepay.total;
+        html += `<tr class="bg-amber-50/50 hover:bg-amber-100/50 transition border-t-2 border-amber-200">
+            <td class="font-bold text-amber-900 text-left flex items-center gap-1.5">
+                <span>⚡ Внесение аванса (в оформлении ДЦ / подбор)</span>
+            </td>
+            <td class="text-right font-semibold text-blue-700"><span class="text-slate-300">—</span></td>
+            <td class="text-right font-semibold text-emerald-700"><span class="px-2 py-0.5 rounded bg-emerald-100/70 text-emerald-800 border border-emerald-200 font-bold">${fmtNum(unassignedPrepay.online)}</span></td>
+            <td class="text-right font-semibold text-purple-700"><span class="px-2 py-0.5 rounded bg-purple-100/70 text-purple-800 border border-purple-200 font-bold">${fmtNum(unassignedPrepay.fdc)}</span></td>
+            <td class="text-right font-medium text-slate-600"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200 font-semibold">${fmtNum(unassignedPrepay.other)}</span></td>
+            <td class="text-right text-amber-800 font-black text-sm">${fmtNum(unassignedPrepay.total)}</td>
+        </tr>`;
+    }
 
     const elWait = document.getElementById('tableWaitingContainer');
     if (elWait) {
