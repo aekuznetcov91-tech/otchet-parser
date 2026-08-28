@@ -71,11 +71,11 @@
             <div class="sber-card p-3 border-slate-700/60">
                 <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                     <span>Текущий факт</span>
-                    <span class="text-emerald-400 font-bold">1 271 шт</span>
+                    <span class="text-emerald-400 font-bold">1 313 шт</span>
                 </div>
-                <p class="text-lg font-black text-white mt-1">48,08M ₽</p>
+                <p class="text-lg font-black text-white mt-1">49,68M ₽</p>
                 <div class="text-[10px] mt-1 pt-1 border-t border-slate-800 text-slate-400">
-                    <span>ARPU: <b class="text-slate-200">37 826 ₽</b></span>
+                    <span>ARPU: <b class="text-slate-200">37 836 ₽</b></span>
                 </div>
             </div>
 
@@ -97,9 +97,9 @@
                     <span>Сценарий 1 (База)</span>
                     <span class="text-emerald-300">1 825 шт</span>
                 </div>
-                <p class="text-lg font-black text-emerald-400 mt-1">68,64M ₽</p>
+                <p class="text-lg font-black text-emerald-400 mt-1">68,75M ₽</p>
                 <div class="text-[10px] mt-1 pt-1 border-t border-emerald-900/40 text-slate-400">
-                    <span>vs Бюджет: <b class="text-[#00D084]">+16.0%</b></span>
+                    <span>vs Бюджет: <b class="text-[#00D084]">+16.2%</b></span>
                 </div>
             </div>
 
@@ -109,9 +109,9 @@
                     <span>Сцен. 2 (Все 20k)</span>
                     <span class="text-red-300">1 825 шт</span>
                 </div>
-                <p class="text-lg font-black text-red-400 mt-1">45,80M ₽</p>
+                <p class="text-lg font-black text-red-400 mt-1">45,97M ₽</p>
                 <div class="text-[10px] mt-1 pt-1 border-t border-red-900/40 text-slate-400">
-                    <span>vs Бюджет: <b class="text-red-400">-22.6%</b></span>
+                    <span>vs Бюджет: <b class="text-red-400">-22.3%</b></span>
                 </div>
             </div>
 
@@ -121,9 +121,9 @@
                     <span>Сцен. 3 (Jetour 20k)</span>
                     <span class="text-amber-300">1 825 шт</span>
                 </div>
-                <p class="text-lg font-black text-amber-400 mt-1">55,36M ₽</p>
+                <p class="text-lg font-black text-amber-400 mt-1">55,48M ₽</p>
                 <div class="text-[10px] mt-1 pt-1 border-t border-amber-900/40 text-slate-400">
-                    <span>vs Бюджет: <b class="text-amber-300">-6.4%</b></span>
+                    <span>vs Бюджет: <b class="text-amber-300">-6.2%</b></span>
                 </div>
             </div>
 
@@ -133,9 +133,9 @@
                     <span>Сцен. 4 (-50% МП2)</span>
                     <span class="text-purple-300">1 225 шт</span>
                 </div>
-                <p class="text-lg font-black text-purple-400 mt-1">45,61M ₽</p>
+                <p class="text-lg font-black text-purple-400 mt-1">45,78M ₽</p>
                 <div class="text-[10px] mt-1 pt-1 border-t border-purple-900/40 text-slate-400">
-                    <span>vs Бюджет: <b class="text-purple-300">-22.9%</b></span>
+                    <span>vs Бюджет: <b class="text-purple-300">-22.6%</b></span>
                 </div>
             </div>
 
@@ -145,9 +145,9 @@
                     <span>Сцен. 5 (МП2 25k)</span>
                     <span class="text-cyan-300">1 825 шт</span>
                 </div>
-                <p class="text-lg font-black text-cyan-400 mt-1">51,33M ₽</p>
+                <p class="text-lg font-black text-cyan-400 mt-1">51,48M ₽</p>
                 <div class="text-[10px] mt-1 pt-1 border-t border-cyan-900/40 text-slate-400">
-                    <span>vs Бюджет: <b class="text-cyan-300">-13.2%</b></span>
+                    <span>vs Бюджет: <b class="text-cyan-300">-13.0%</b></span>
                 </div>
             </div>
         </div>
@@ -167,7 +167,7 @@
                     <thead>
                         <tr class="bg-slate-900/90 text-slate-400 uppercase font-bold border-b border-slate-700">
                             <th class="py-3 px-3 rounded-l-xl">Показатель</th>
-                            <th class="py-3 px-2.5 text-right">Текущий факт<br><span class="text-[10px] text-emerald-400 font-bold">(1 271 авто)</span></th>
+                            <th class="py-3 px-2.5 text-right">Текущий факт<br><span class="text-[10px] text-emerald-400 font-bold">(1 313 авто)</span></th>
                             <th class="py-3 px-2.5 text-right text-emerald-400">Сценарий 1<br><span class="text-[10px] text-emerald-600 font-normal">(1825 авто, база)</span></th>
                             <th class="py-3 px-2.5 text-right text-red-400">Сценарий 2<br><span class="text-[10px] text-red-600 font-normal">(МП2=20k кроме LA)</span></th>
                             <th class="py-3 px-2.5 text-right text-amber-400">Сценарий 3<br><span class="text-[10px] text-amber-600 font-normal">(МП2=20k Jetour)</span></th>
@@ -181,7 +181,7 @@
                             <td class="py-2.5 px-3 font-bold text-white flex items-center gap-1.5">
                                 <i data-lucide="car" class="w-3.5 h-3.5 text-slate-400"></i> Всего авто (сделок)
                             </td>
-                            <td class="py-2.5 px-2.5 text-right font-bold text-emerald-400">1 271 шт.</td>
+                            <td class="py-2.5 px-2.5 text-right font-bold text-emerald-400">1 313 шт.</td>
                             <td class="py-2.5 px-2.5 text-right font-bold text-emerald-400">1 825 шт.</td>
                             <td class="py-2.5 px-2.5 text-right font-bold text-slate-200">1 825 шт.</td>
                             <td class="py-2.5 px-2.5 text-right font-bold text-slate-200">1 825 шт.</td>
@@ -192,7 +192,7 @@
 
                         <tr class="table-row-hover">
                             <td class="py-2 px-3 pl-6 text-slate-400">🏢 • Оптовые сделки МП2</td>
-                            <td class="py-2 px-2.5 text-right font-semibold text-slate-200">958 шт. <span class="text-[10px] text-slate-500">(75.4%)</span></td>
+                            <td class="py-2 px-2.5 text-right font-semibold text-slate-200">987 шт. <span class="text-[10px] text-slate-500">(75.2%)</span></td>
                             <td class="py-2 px-2.5 text-right font-semibold text-emerald-300">1 200 шт. <span class="text-[10px] text-emerald-500">(65.8%)</span></td>
                             <td class="py-2 px-2.5 text-right">1 200 шт. <span class="text-[10px] text-slate-500">(65.8%)</span></td>
                             <td class="py-2 px-2.5 text-right">1 200 шт. <span class="text-[10px] text-slate-500">(65.8%)</span></td>
@@ -203,7 +203,7 @@
 
                         <tr class="table-row-hover">
                             <td class="py-2 px-3 pl-6 text-slate-400">👤 • Розничные сделки</td>
-                            <td class="py-2 px-2.5 text-right font-semibold text-slate-200">313 шт. <span class="text-[10px] text-slate-500">(24.6%)</span></td>
+                            <td class="py-2 px-2.5 text-right font-semibold text-slate-200">326 шт. <span class="text-[10px] text-slate-500">(24.8%)</span></td>
                             <td class="py-2 px-2.5 text-right font-semibold text-emerald-300">625 шт. <span class="text-[10px] text-emerald-500">(34.2%)</span></td>
                             <td class="py-2 px-2.5 text-right">625 шт. <span class="text-[10px] text-slate-500">(34.2%)</span></td>
                             <td class="py-2 px-2.5 text-right">625 шт. <span class="text-[10px] text-slate-500">(34.2%)</span></td>
@@ -214,67 +214,67 @@
 
                         <tr class="table-row-hover bg-slate-900/30">
                             <td class="py-2.5 px-3 font-bold text-slate-300">💰 Выручка МП2 (без НДС)</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-100">36 766 258 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-emerald-300">46 053 771 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-red-300">23 215 049 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-amber-300">32 772 407 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-purple-300">23 026 886 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-cyan-300">28 745 320 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-100">37 779 387 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-emerald-300">45 932 388 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-red-300">23 159 038 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-amber-300">32 664 463 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-purple-300">22 966 194 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-cyan-300">28 666 637 ₽</td>
                             <td class="py-2.5 px-3 text-right text-slate-500 bg-blue-950/20">—</td>
                         </tr>
 
                         <tr class="table-row-hover bg-slate-900/30">
                             <td class="py-2.5 px-3 font-bold text-slate-300">🛍️ Выручка Розницы (без НДС)</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-100">11 310 528 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-emerald-300">22 584 917 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-200">22 584 917 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-200">22 584 917 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-200">22 584 917 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-200">22 584 917 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-100">11 899 829 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-emerald-300">22 814 087 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-200">22 814 087 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-200">22 814 087 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-200">22 814 087 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-semibold text-slate-200">22 814 087 ₽</td>
                             <td class="py-2.5 px-3 text-right text-slate-500 bg-blue-950/20">—</td>
                         </tr>
 
                         <tr class="table-row-hover border-t-2 border-emerald-500/30 bg-emerald-950/10">
                             <td class="py-3 px-3 font-black text-white text-sm">💵 ИТОГО ВЫРУЧКА (без НДС)</td>
-                            <td class="py-3 px-2.5 text-right font-black text-emerald-400 text-sm">48 076 786 ₽</td>
-                            <td class="py-3 px-2.5 text-right font-black text-[#00D084] text-sm">68 638 688 ₽</td>
-                            <td class="py-3 px-2.5 text-right font-black text-red-400 text-sm">45 799 966 ₽</td>
-                            <td class="py-3 px-2.5 text-right font-black text-amber-400 text-sm">55 357 324 ₽</td>
-                            <td class="py-3 px-2.5 text-right font-black text-purple-400 text-sm">45 611 804 ₽</td>
-                            <td class="py-3 px-2.5 text-right font-black text-cyan-400 text-sm">51 330 237 ₽</td>
+                            <td class="py-3 px-2.5 text-right font-black text-emerald-400 text-sm">49 679 216 ₽</td>
+                            <td class="py-3 px-2.5 text-right font-black text-[#00D084] text-sm">68 746 475 ₽</td>
+                            <td class="py-3 px-2.5 text-right font-black text-red-400 text-sm">45 973 125 ₽</td>
+                            <td class="py-3 px-2.5 text-right font-black text-amber-400 text-sm">55 478 550 ₽</td>
+                            <td class="py-3 px-2.5 text-right font-black text-purple-400 text-sm">45 780 282 ₽</td>
+                            <td class="py-3 px-2.5 text-right font-black text-cyan-400 text-sm">51 480 724 ₽</td>
                             <td class="py-3 px-3 text-right font-black text-blue-400 text-sm bg-blue-950/30">59 170 000 ₽</td>
                         </tr>
 
                         <tr class="table-row-hover">
                             <td class="py-2 px-3 text-slate-400">💎 ARPU МП2</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">38 378 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">38 378 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-red-400">19 346 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-amber-400">27 310 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-purple-300">38 378 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-cyan-400">23 954 ₽</td>
+                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">38 277 ₽</td>
+                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">38 277 ₽</td>
+                            <td class="py-2 px-2.5 text-right font-bold text-red-400">19 299 ₽</td>
+                            <td class="py-2 px-2.5 text-right font-bold text-amber-400">27 220 ₽</td>
+                            <td class="py-2 px-2.5 text-right font-bold text-purple-300">38 277 ₽</td>
+                            <td class="py-2 px-2.5 text-right font-bold text-cyan-400">23 889 ₽</td>
                             <td class="py-2 px-3 text-right text-slate-500 bg-blue-950/20">—</td>
                         </tr>
 
                         <tr class="table-row-hover">
                             <td class="py-2 px-3 text-slate-400">💎 ARPU Розницы</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">36 136 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">36 136 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">36 136 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">36 136 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">36 136 ₽</td>
-                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">36 136 ₽</td>
+                            <td class="py-2 px-2.5 text-right font-bold text-slate-200">36 503 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-bold text-slate-200">36 503 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-bold text-slate-200">36 503 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-bold text-slate-200">36 503 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-bold text-slate-200">36 503 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right font-bold text-slate-200">36 503 ₽</td>
                             <td class="py-2 px-3 text-right text-slate-500 bg-blue-950/20">—</td>
                         </tr>
 
                         <tr class="table-row-hover bg-slate-900/40 font-bold">
                             <td class="py-2.5 px-3 text-white">📊 ОБЩИЙ ARPU (на 1 авто)</td>
-                            <td class="py-2.5 px-2.5 text-right text-slate-100">37 826 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right text-emerald-400">37 610 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right text-red-400">25 096 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right text-amber-400">30 333 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right text-purple-400">37 234 ₽</td>
-                            <td class="py-2.5 px-2.5 text-right text-cyan-400">28 126 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right text-slate-100">37 836 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right text-emerald-400">37 669 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right text-red-400">25 191 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right text-amber-400">30 399 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right text-purple-400">37 372 ₽</td>
+                            <td class="py-2.5 px-2.5 text-right text-cyan-400">28 209 ₽</td>
                             <td class="py-2.5 px-3 text-right text-blue-300 bg-blue-950/30">37 167 ₽</td>
                         </tr>
 
@@ -283,22 +283,22 @@
                                 <i data-lucide="target" class="w-4 h-4 text-blue-400"></i> Отклонение vs БЮДЖЕТ
                             </td>
                             <td class="py-3 px-2.5 text-right">
-                                <span class="px-1.5 py-0.5 badge-red rounded-md text-[10px] font-bold">-11.09M (-18.7%)</span>
+                                <span class="px-1.5 py-0.5 badge-red rounded-md text-[10px] font-bold">-9.49M (-16.0%)</span>
                             </td>
                             <td class="py-3 px-2.5 text-right">
-                                <span class="px-1.5 py-0.5 badge-green rounded-md text-[10px] font-bold">+9.47M (+16.0%)</span>
+                                <span class="px-1.5 py-0.5 badge-green rounded-md text-[10px] font-bold">+9.58M (+16.2%)</span>
                             </td>
                             <td class="py-3 px-2.5 text-right">
-                                <span class="px-1.5 py-0.5 badge-red rounded-md text-[10px] font-bold">-13.37M (-22.6%)</span>
+                                <span class="px-1.5 py-0.5 badge-red rounded-md text-[10px] font-bold">-13.20M (-22.3%)</span>
                             </td>
                             <td class="py-3 px-2.5 text-right">
-                                <span class="px-1.5 py-0.5 badge-yellow rounded-md text-[10px] font-bold">-3.81M (-6.4%)</span>
+                                <span class="px-1.5 py-0.5 badge-yellow rounded-md text-[10px] font-bold">-3.69M (-6.2%)</span>
                             </td>
                             <td class="py-3 px-2.5 text-right">
-                                <span class="px-1.5 py-0.5 badge-purple rounded-md text-[10px] font-bold">-13.56M (-22.9%)</span>
+                                <span class="px-1.5 py-0.5 badge-purple rounded-md text-[10px] font-bold">-13.39M (-22.6%)</span>
                             </td>
                             <td class="py-3 px-2.5 text-right">
-                                <span class="px-1.5 py-0.5 badge-cyan rounded-md text-[10px] font-bold">-7.84M (-13.2%)</span>
+                                <span class="px-1.5 py-0.5 badge-cyan rounded-md text-[10px] font-bold">-7.69M (-13.0%)</span>
                             </td>
                             <td class="py-3 px-3 text-right bg-blue-950/30">
                                 <span class="px-2 py-0.5 badge-blue rounded-md text-[10px] font-bold">100% ПЛАН</span>
@@ -314,50 +314,50 @@
             <div class="sber-card p-4 border-l-4 border-l-[#00D084]">
                 <h4 class="font-bold text-white text-sm mb-1.5 flex items-center justify-between">
                     <span>Сценарий 1: База</span>
-                    <span class="text-[#00D084] font-black">+16.0%</span>
+                    <span class="text-[#00D084] font-black">+16.2%</span>
                 </h4>
                 <p class="text-slate-300 leading-relaxed">
-                    Выполняет Бюджет (<b class="text-[#00D084]">68,64M ₽ vs 59,17M ₽</b>). Общий ARPU <b class="text-white">37 610 ₽</b> при 1 825 авто. Целевой план.
+                    Выполняет Бюджет (<b class="text-[#00D084]">68,75M ₽ vs 59,17M ₽</b>). Общий ARPU <b class="text-white">37 669 ₽</b> при 1 825 авто. Целевой план.
                 </p>
             </div>
 
             <div class="sber-card p-4 border-l-4 border-l-red-500">
                 <h4 class="font-bold text-white text-sm mb-1.5 flex items-center justify-between">
                     <span>Сценарий 2: Все 20k</span>
-                    <span class="text-red-400 font-black">-22.6%</span>
+                    <span class="text-red-400 font-black">-22.3%</span>
                 </h4>
                 <p class="text-slate-300 leading-relaxed">
-                    Критический риск (<b class="text-red-400">45,80M ₽ vs 59,17M ₽</b>). Потеря <b class="text-red-300">22.84M ₽</b> выручки. Общий ARPU обваливается до 25 096 ₽.
+                    Критический риск (<b class="text-red-400">45,97M ₽ vs 59,17M ₽</b>). Потеря <b class="text-red-300">22.77M ₽</b> выручки. Общий ARPU обваливается до 25 191 ₽.
                 </p>
             </div>
 
             <div class="sber-card p-4 border-l-4 border-l-amber-500">
                 <h4 class="font-bold text-white text-sm mb-1.5 flex items-center justify-between">
                     <span>Сценарий 3: Jetour 20k</span>
-                    <span class="text-amber-400 font-black">-6.4%</span>
+                    <span class="text-amber-400 font-black">-6.2%</span>
                 </h4>
                 <p class="text-slate-300 leading-relaxed">
-                    Локальный риск (<b class="text-amber-300">55,36M ₽ vs 59,17M ₽</b>). Недобор <b class="text-amber-300">3.81M ₽</b> к плану при фиксации Jetour на 20k.
+                    Локальный риск (<b class="text-amber-300">55,48M ₽ vs 59,17M ₽</b>). Недобор <b class="text-amber-300">3.69M ₽</b> к плану при фиксации Jetour на 20k.
                 </p>
             </div>
 
             <div class="sber-card p-4 border-l-4 border-l-purple-500">
                 <h4 class="font-bold text-white text-sm mb-1.5 flex items-center justify-between">
                     <span>Сценарий 4: -50% МП2</span>
-                    <span class="text-purple-400 font-black">-22.9%</span>
+                    <span class="text-purple-400 font-black">-22.6%</span>
                 </h4>
                 <p class="text-slate-300 leading-relaxed">
-                    Объемный провал (<b class="text-purple-300">45,61M ₽ vs 59,17M ₽</b> при 1 225 авто). Недобор <b class="text-purple-400">13.56M ₽</b> к бюджету при 600 авто МП2.
+                    Объемный провал (<b class="text-purple-300">45,78M ₽ vs 59,17M ₽</b> при 1 225 авто). Недобор <b class="text-purple-400">13.39M ₽</b> к бюджету при 600 авто МП2.
                 </p>
             </div>
 
             <div class="sber-card p-4 border-l-4 border-l-cyan-500">
                 <h4 class="font-bold text-white text-sm mb-1.5 flex items-center justify-between">
                     <span>Сценарий 5: МП2 25k</span>
-                    <span class="text-cyan-400 font-black">-13.2%</span>
+                    <span class="text-cyan-400 font-black">-13.0%</span>
                 </h4>
                 <p class="text-slate-300 leading-relaxed">
-                    Компромиссная ставка (<b class="text-cyan-300">51,33M ₽ vs 59,17M ₽</b>). Недобор <b class="text-cyan-400">7.84M ₽</b> к бюджету. Потери vs База: 17.31M ₽.
+                    Компромиссная ставка (<b class="text-cyan-300">51,48M ₽ vs 59,17M ₽</b>). Недобор <b class="text-cyan-400">7.69M ₽</b> к бюджету. Потери vs База: 17.27M ₽.
                 </p>
             </div>
         </div>
@@ -378,13 +378,13 @@
                     datasets: [
                         {
                             label: 'Выручка МП2 (млн ₽)',
-                            data: [36.77, 46.05, 23.22, 32.77, 23.03, 28.75, 0],
+                            data: [37.78, 45.93, 23.16, 32.66, 22.97, 28.67, 0],
                             backgroundColor: '#3b82f6',
                             borderRadius: 6
                         },
                         {
                             label: 'Выручка Розницы (млн ₽)',
-                            data: [11.31, 22.58, 22.58, 22.58, 22.58, 22.58, 0],
+                            data: [11.90, 22.81, 22.81, 22.81, 22.81, 22.81, 0],
                             backgroundColor: '#10b981',
                             borderRadius: 6
                         },
