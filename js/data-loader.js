@@ -189,6 +189,9 @@ function updateAllTabs() {
     // Plan vs Fact KPI
     updatePlanVsFact(tS, revTotal, pTot);
 
+    // Linear Run Rate KPI
+    updateRunRate(sDb, currentFilterConfig);
+
     renderDashTables(sDb);
     let y, m;
     if (currentFilterConfig.mode === 'month') {
@@ -288,6 +291,235 @@ function updatePlanVsFact(totalDeals, totalRevenue, totalPrice) {
             <div class="flex justify-between items-center mt-1.5">
                 <span class="text-[10px] font-bold" style="color: ${trColor}">${trPct.toFixed(1)}%</span>
                 <span class="text-[10px] text-gray-400">${q3TR >= Q3_TARGETS.trPercent ? '✅ В целевом коридоре' : '⚠️ Ниже цели'}</span>
+            </div>
+        </div>
+    `;
+}
+
+// ====================================================================
+// Linear Run Rate KPI Card (Deals & Revenue)
+// ====================================================================
+function updateRunRate(sDb, filterConfig) {
+    const container = document.getElementById('runRateRow');
+    if (!container) return;
+
+    let year = 2026, monthNum = 8, monthStr = '2026-08', periodTitle = 'Август 2026';
+    let daysInMonth = 31, daysPassed = 1;
+
+    if (filterConfig.mode === 'month' && filterConfig.month) {
+        monthStr = filterConfig.month;
+        const parts = monthStr.split('-');
+        year = parseInt(parts[0]);
+        monthNum = parseInt(parts[1]);
+        daysInMonth = new Date(year, monthNum, 0).getDate();
+        periodTitle = formatMonthLabel(monthStr).replace('📅 ', '');
+    } else if (filterConfig.mode === 'custom' && filterConfig.from && filterConfig.to) {
+        const f = filterConfig.from;
+        const t = filterConfig.to;
+        const diffDays = Math.max(1, Math.round((t - f) / 86400000) + 1);
+        daysInMonth = diffDays;
+        daysPassed = diffDays;
+        periodTitle = `${formatDateDMY(f.getTime())} — ${formatDateDMY(t.getTime())}`;
+    } else {
+        // Mode 'all': default to latest active month
+        const months = Array.from(new Set(db.map(r => r.SaleMonth).filter(Boolean))).sort();
+        monthStr = months[months.length - 1] || '2026-08';
+        const parts = monthStr.split('-');
+        year = parseInt(parts[0]);
+        monthNum = parseInt(parts[1]);
+        daysInMonth = new Date(year, monthNum, 0).getDate();
+        periodTitle = `${formatMonthLabel(monthStr).replace('📅 ', '')} (Текущий месяц)`;
+    }
+
+    let targetSales = sDb;
+    if (filterConfig.mode === 'all') {
+        targetSales = db.filter(r => r.SaleQty > 0 && r.SaleMonth === monthStr);
+    }
+
+    // Determine max day with deals in dataset for this month
+    let maxDayInMonth = 0;
+    targetSales.forEach(r => {
+        const d = excelToJSDate(r.DealDate);
+        if (d && d.getFullYear() === year && (d.getMonth() + 1) === monthNum) {
+            if (d.getDate() > maxDayInMonth) maxDayInMonth = d.getDate();
+        }
+    });
+
+    const now = new Date();
+    const isThisCurrentMonth = (now.getFullYear() === year && (now.getMonth() + 1) === monthNum);
+
+    if (filterConfig.mode === 'custom') {
+        daysPassed = daysInMonth;
+    } else if (isThisCurrentMonth || maxDayInMonth < daysInMonth) {
+        daysPassed = maxDayInMonth > 0 ? Math.min(daysInMonth, maxDayInMonth) : Math.min(daysInMonth, now.getDate());
+    } else {
+        daysPassed = daysInMonth;
+    }
+
+    const dealsFact = targetSales.length;
+    const revFact = targetSales.reduce((sum, r) => sum + (r.Revenue || 0), 0);
+    const priceFact = targetSales.reduce((sum, r) => sum + (r.Price || 0), 0);
+
+    const dealsPace = daysPassed > 0 ? (dealsFact / daysPassed) : 0;
+    const revPace = daysPassed > 0 ? (revFact / daysPassed) : 0;
+
+    const dealsRunRate = Math.round(dealsPace * daysInMonth);
+    const revRunRate = revPace * daysInMonth;
+
+    const dealsRem = Math.max(0, dealsRunRate - dealsFact);
+    const revRem = Math.max(0, revRunRate - revFact);
+
+    const daysLeft = Math.max(0, daysInMonth - daysPassed);
+    const pctPassed = Math.min(100, Math.max(0, (daysPassed / daysInMonth) * 100));
+
+    const arpuFact = dealsFact > 0 ? (revFact / dealsFact) : 0;
+    const arpuRunRate = dealsRunRate > 0 ? (revRunRate / dealsRunRate) : arpuFact;
+    const avgCheckFact = dealsFact > 0 ? (priceFact / dealsFact) : 0;
+
+    // Monthly Target (Budget 1592 deals, 59.17M for Aug / 1500 for Jul / Q3 target / 3)
+    const targetMonthDeals = (monthStr === '2026-08') ? 1592 : ((monthStr === '2026-07') ? 1500 : Math.round(Q3_TARGETS.deals / 3));
+    const targetMonthRev = (monthStr === '2026-08') ? 59170000 : ((monthStr === '2026-07') ? 53500000 : (Q3_TARGETS.revenue / 3));
+
+    const dealsPlanPct = targetMonthDeals > 0 ? (dealsRunRate / targetMonthDeals * 100) : 100;
+    const revPlanPct = targetMonthRev > 0 ? (revRunRate / targetMonthRev * 100) : 100;
+
+    container.innerHTML = `
+        <div class="card !p-4 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl shadow-lg border border-slate-700/60">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-3 mb-4 border-b border-slate-700/80 gap-2">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-blue-600/30 border border-blue-400/40 flex items-center justify-center text-blue-400">
+                        <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-black text-white uppercase tracking-wide flex items-center gap-2">
+                            ⚡ Линейный Run Rate: ${periodTitle}
+                        </h2>
+                        <p class="text-[11px] text-slate-400 font-medium">
+                            Линейный прогноз сделок и выручки к концу месяца на основе фактического темпа
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="px-2.5 py-1 bg-slate-800/90 text-cyan-300 border border-cyan-500/30 rounded-lg text-xs font-bold flex items-center gap-1">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Прошло ${daysPassed} из ${daysInMonth} дн. (${pctPassed.toFixed(1)}%)
+                    </span>
+                    <span class="px-2.5 py-1 bg-slate-800/90 text-amber-300 border border-amber-500/30 rounded-lg text-xs font-bold flex items-center gap-1">
+                        <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${daysLeft > 0 ? `Осталось ${daysLeft} дн.` : 'Период завершен'}
+                    </span>
+                </div>
+            </div>
+
+            <!-- 3 RUN RATE CARDS -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- CARD 1: DEALS RUN RATE -->
+                <div class="bg-slate-800/70 border border-slate-700/70 rounded-xl p-3.5 flex flex-col justify-between hover:border-blue-500/40 transition">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[10px] uppercase font-bold text-blue-300 tracking-wider flex items-center gap-1">
+                                <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i> Ранрейт Сделок (Прогноз)
+                            </span>
+                            <span class="text-xs font-extrabold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                                ${dealsPlanPct.toFixed(1)}% плана
+                            </span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-2xl font-black text-white">${fmtNum(dealsRunRate)}</span>
+                            <span class="text-xs text-slate-400 font-medium">шт. к концу месяца</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 pt-2.5 border-t border-slate-700/60 text-[11px] space-y-1.5">
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">Текущий факт:</span>
+                            <b class="text-white">${fmtNum(dealsFact)} шт.</b>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">Прогноз остатка:</span>
+                            <b class="text-cyan-400">+${fmtNum(dealsRem)} шт.</b>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">Текущий темп:</span>
+                            <b class="text-amber-300">${dealsPace.toFixed(1)} шт./день</b>
+                        </div>
+                        <!-- Progress bar -->
+                        <div class="w-full bg-slate-700 rounded-full h-1.5 mt-2">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${Math.min(100, (dealsFact / Math.max(1, dealsRunRate) * 100))}%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2: REVENUE RUN RATE -->
+                <div class="bg-slate-800/70 border border-slate-700/70 rounded-xl p-3.5 flex flex-col justify-between hover:border-emerald-500/40 transition">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[10px] uppercase font-bold text-emerald-300 tracking-wider flex items-center gap-1">
+                                <i data-lucide="coins" class="w-3.5 h-3.5"></i> Ранрейт Выручки (Прогноз)
+                            </span>
+                            <span class="text-xs font-extrabold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                                ${revPlanPct.toFixed(1)}% плана
+                            </span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-2xl font-black text-emerald-400">${fmtMln(revRunRate)}</span>
+                            <span class="text-xs text-slate-400 font-medium">без НДС</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 pt-2.5 border-t border-slate-700/60 text-[11px] space-y-1.5">
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">Текущий факт:</span>
+                            <b class="text-white">${fmtMln(revFact)}</b>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">Прогноз остатка:</span>
+                            <b class="text-emerald-400">+${fmtMln(revRem)}</b>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">Текущий темп:</span>
+                            <b class="text-amber-300">+${fmtMln(revPace)}/день</b>
+                        </div>
+                        <!-- Progress bar -->
+                        <div class="w-full bg-slate-700 rounded-full h-1.5 mt-2">
+                            <div class="bg-emerald-500 h-1.5 rounded-full" style="width: ${Math.min(100, (revFact / Math.max(1, revRunRate) * 100))}%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3: ARPU & AVERAGE CHECK -->
+                <div class="bg-slate-800/70 border border-slate-700/70 rounded-xl p-3.5 flex flex-col justify-between hover:border-purple-500/40 transition">
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[10px] uppercase font-bold text-purple-300 tracking-wider flex items-center gap-1">
+                                <i data-lucide="receipt" class="w-3.5 h-3.5"></i> Эффективность & Чек
+                            </span>
+                            <span class="text-xs font-extrabold px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-400/30">
+                                Ориентир
+                            </span>
+                        </div>
+                        <div class="flex items-baseline gap-2 mt-1">
+                            <span class="text-2xl font-black text-purple-300">${fmtNum(arpuRunRate)} ₽</span>
+                            <span class="text-xs text-slate-400 font-medium">ARPU прогноз</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 pt-2.5 border-t border-slate-700/60 text-[11px] space-y-1.5">
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">Средний чек сделки:</span>
+                            <b class="text-white">${fmtMln(avgCheckFact)}</b>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">План сделок месяца:</span>
+                            <b class="text-slate-300">${fmtNum(targetMonthDeals)} шт.</b>
+                        </div>
+                        <div class="flex justify-between text-slate-300">
+                            <span class="text-slate-400">План выручки месяца:</span>
+                            <b class="text-slate-300">${fmtMln(targetMonthRev)}</b>
+                        </div>
+                        <div class="w-full bg-slate-700 rounded-full h-1.5 mt-2">
+                            <div class="bg-purple-500 h-1.5 rounded-full" style="width: ${Math.min(100, pctPassed)}%;"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     `;
