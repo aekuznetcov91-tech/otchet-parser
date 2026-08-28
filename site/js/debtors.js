@@ -84,6 +84,7 @@ function renderDebtorsTable(filterCfg) {
             <tr>
                 <th class="!bg-slate-800">Компания / КАМ</th>
                 <th class="!bg-slate-800">Дата предоплаты</th>
+                <th class="!bg-slate-800">Канал</th>
                 <th class="!bg-slate-800">Марка</th>
                 <th class="!bg-slate-800">Модель</th>
                 <th class="!bg-slate-800">ВИН</th>
@@ -112,6 +113,7 @@ function renderDebtorsTable(filterCfg) {
             }
             html += `
                 <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}</td>
+                <td>${getDebtorChannelBadge(car.b2c)}</td>
                 <td class="font-bold text-blue-900">${car.brand}</td>
                 <td class="text-slate-700 font-medium">${car.model || car.brand}</td>
                 <td class="font-mono text-xs text-slate-600 select-all font-semibold">${car.vin || "—"}</td>

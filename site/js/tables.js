@@ -441,6 +441,7 @@ function renderManagersTable(sDb, pDb) {
  */
 function renderWaitingTable(filterCfg) {
     let wStats = {};
+    let channelTotals = { 'МП2': 0, 'Online': 0, 'ФДЦ': 0, 'Прочие': 0 };
     let filteredWaiting = db.filter(r => {
         if (r.WaitQty <= 0) return false;
         if (filterCfg.mode === 'all') return true;
@@ -458,15 +459,65 @@ function renderWaitingTable(filterCfg) {
 
     filteredWaiting.forEach(r => {
         let b = r.Brand || "Неизвестно";
-        wStats[b] = (wStats[b]||0) + r.WaitQty;
+        let c = (r.B2C || "Не указан").trim();
+        let w = r.WaitQty || 1;
+        if (!wStats[b]) {
+            wStats[b] = { total: 0, mp2: 0, online: 0, fdc: 0, other: 0 };
+        }
+        wStats[b].total += w;
+        if (c === 'МП2') {
+            wStats[b].mp2 += w;
+            channelTotals['МП2'] += w;
+        } else if (c === 'Online') {
+            wStats[b].online += w;
+            channelTotals['Online'] += w;
+        } else if (c === 'ФДЦ' || c === 'ФДЦ+ГП') {
+            wStats[b].fdc += w;
+            channelTotals['ФДЦ'] += w;
+        } else {
+            wStats[b].other += w;
+            channelTotals['Прочие'] += w;
+        }
     });
 
-    let sorted = Object.keys(wStats).sort((a, b) => wStats[b] - wStats[a]);
-    let html = `<table id="tableWaiting"><thead><tr><th>Марка Авто</th><th>Клиенты в ожидании</th></tr></thead><tbody>`, tw = 0;
-    sorted.forEach(b => { tw += wStats[b]; html += `<tr><td class="font-semibold">${b}</td><td class="text-orange-500 font-bold">${fmtNum(wStats[b])}</td></tr>`;});
+    let sorted = Object.keys(wStats).sort((a, b) => wStats[b].total - wStats[a].total);
+    let html = `<table id="tableWaiting" class="min-w-full">
+        <thead>
+            <tr>
+                <th class="!bg-slate-800 text-left">Марка Авто</th>
+                <th class="!bg-slate-800 text-right text-blue-300">МП2 (Опт)</th>
+                <th class="!bg-slate-800 text-right text-emerald-300">Online</th>
+                <th class="!bg-slate-800 text-right text-purple-300">ФДЦ (Кредит)</th>
+                <th class="!bg-slate-800 text-right text-slate-300">Прочие (МП1/МП3)</th>
+                <th class="!bg-slate-800 text-right text-orange-400 font-bold">Всего в ожидании</th>
+            </tr>
+        </thead>
+        <tbody>`;
+    
+    let tw = 0;
+    sorted.forEach(b => {
+        let s = wStats[b];
+        tw += s.total;
+        html += `<tr class="hover:bg-amber-50/40 transition">
+            <td class="font-bold text-slate-800 text-left">${b}</td>
+            <td class="text-right font-semibold text-blue-700">${s.mp2 > 0 ? `<span class="px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-100 font-bold">${fmtNum(s.mp2)}</span>` : '<span class="text-slate-300">—</span>'}</td>
+            <td class="text-right font-semibold text-emerald-700">${s.online > 0 ? `<span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100 font-bold">${fmtNum(s.online)}</span>` : '<span class="text-slate-300">—</span>'}</td>
+            <td class="text-right font-semibold text-purple-700">${s.fdc > 0 ? `<span class="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-100 font-bold">${fmtNum(s.fdc)}</span>` : '<span class="text-slate-300">—</span>'}</td>
+            <td class="text-right font-medium text-slate-600">${s.other > 0 ? `<span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200 font-semibold">${fmtNum(s.other)}</span>` : '<span class="text-slate-300">—</span>'}</td>
+            <td class="text-right text-orange-600 font-black text-sm">${fmtNum(s.total)}</td>
+        </tr>`;
+    });
+
     const elWait = document.getElementById('tableWaitingContainer');
     if (elWait) {
-        elWait.innerHTML = html + `<tr class="table-total"><td>ВСЕГО</td><td>${fmtNum(tw)}</td></tr></tbody></table>`;
+        elWait.innerHTML = html + `<tr class="table-total font-black bg-slate-100">
+            <td class="text-left font-black">ВСЕГО</td>
+            <td class="text-right text-blue-800 font-black">${fmtNum(channelTotals['МП2'])}</td>
+            <td class="text-right text-emerald-800 font-black">${fmtNum(channelTotals['Online'])}</td>
+            <td class="text-right text-purple-800 font-black">${fmtNum(channelTotals['ФДЦ'])}</td>
+            <td class="text-right text-slate-800 font-black">${fmtNum(channelTotals['Прочие'])}</td>
+            <td class="text-right text-orange-600 font-black text-sm">${fmtNum(tw)}</td>
+        </tr></tbody></table>`;
         setupSmartSearch('searchWaiting', 'tableWaitingContainer');
     }
 }

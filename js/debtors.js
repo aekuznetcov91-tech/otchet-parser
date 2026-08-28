@@ -84,6 +84,7 @@ function renderDebtorsTable(filterCfg) {
             <tr>
                 <th class="!bg-slate-800">Компания / КАМ</th>
                 <th class="!bg-slate-800">Дата предоплаты</th>
+                <th class="!bg-slate-800">Канал</th>
                 <th class="!bg-slate-800">Марка</th>
                 <th class="!bg-slate-800">Модель</th>
                 <th class="!bg-slate-800">ВИН</th>
@@ -112,6 +113,7 @@ function renderDebtorsTable(filterCfg) {
             }
             html += `
                 <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}</td>
+                <td>${getDebtorChannelBadge(car.b2c)}</td>
                 <td class="font-bold text-blue-900">${car.brand}</td>
                 <td class="text-slate-700 font-medium">${car.model || car.brand}</td>
                 <td class="font-mono text-xs text-slate-600 select-all font-semibold">${car.vin || "—"}</td>
@@ -223,6 +225,58 @@ function updateModalSelectionStats() {
     const elCars = document.getElementById('modalSelectedCarsCount');
     if (elCount) elCount.innerText = checked.length;
     if (elCars) elCars.innerText = totalCars;
+}
+
+
+function executeDebtorsSingleTableExport() {
+    let checked = Array.from(document.querySelectorAll('.debtor-checkbox:checked'));
+    if (checked.length === 0) {
+        alert("Пожалуйста, выберите хотя бы одну компанию для выгрузки.");
+        return;
+    }
+
+    let selectedCompanyNames = checked.map(cb => decodeURIComponent(cb.getAttribute('data-company')));
+    let filtered = getFilteredDebtors(currentFilterConfig);
+
+    let wsData = [
+        ["Компания", "Дата аванса", "Марка", "ВИН"]
+    ];
+
+    let totalCars = 0;
+    filtered.forEach(d => {
+        if (selectedCompanyNames.includes(d.company)) {
+            wsData.push([
+                d.company || "—",
+                d.prepay_date || "—",
+                d.brand || "—",
+                d.vin || "—"
+            ]);
+            totalCars++;
+        }
+    });
+
+    if (totalCars === 0) {
+        alert("Нет данных для выгрузки по выбранным компаниям.");
+        return;
+    }
+
+    let ws = XLSX.utils.aoa_to_sheet(wsData);
+    ws['!cols'] = [
+        { wch: 35 }, // Компания
+        { wch: 18 }, // Дата аванса
+        { wch: 20 }, // Марка
+        { wch: 25 }  // ВИН
+    ];
+
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Должники_ДКП");
+
+    let todayStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '_');
+    let fileName = `Должники_ДКП_Общий_реестр_${todayStr}.xlsx`;
+
+    XLSX.writeFile(wb, fileName);
+    closeDebtorsExportModal();
+    alert(`✅ Успешно выгружена таблица должников ДКП (${totalCars} авто) в файл «${fileName}»!`);
 }
 
 function executeDebtorsExcelExport() {
