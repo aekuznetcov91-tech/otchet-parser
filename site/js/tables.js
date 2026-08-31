@@ -315,7 +315,7 @@ function exportPartnerDealsToExcel(key) {
     const rows = item.deals;
 
     const wsData = [
-        ['№', 'ID (Сумма id)', 'Client_ID', 'ВИН', 'Марка', 'Модель', 'АВ (КВ. Авто NEW, руб)']
+        ['№', 'Юр. лицо (CRM)', 'ID (Сумма id)', 'Client_ID', 'ВИН', 'Марка', 'Модель', 'АВ (КВ. Авто NEW, руб)']
     ];
 
     let totalAB = 0;
@@ -324,6 +324,7 @@ function exportPartnerDealsToExcel(key) {
         totalAB += ab;
         wsData.push([
             idx + 1,
+            d.rawPartner ? String(d.rawPartner) : '—',
             d.leadId ? String(d.leadId) : (d.dealId ? String(d.dealId) : '—'),
             d.clientId ? String(d.clientId) : '—',
             d.vin ? String(d.vin) : '—',
@@ -333,17 +334,18 @@ function exportPartnerDealsToExcel(key) {
         ]);
     });
 
-    wsData.push(['', '', '', '', 'ИТОГО:', `${rows.length} шт.`, totalAB]);
+    wsData.push(['', '', '', '', '', 'ИТОГО:', `${rows.length} шт.`, totalAB]);
 
     const ws = XLSX.utils.aoa_to_sheet(wsData);
 
     ws['!cols'] = [
         { wch: 6 },
+        { wch: 34 },
         { wch: 18 },
         { wch: 16 },
         { wch: 24 },
         { wch: 18 },
-        { wch: 24 },
+        { wch: 22 },
         { wch: 24 }
     ];
 
@@ -420,6 +422,7 @@ function renderPartnersTable(filterCfg) {
                 leadId: r.LeadId || '',
                 clientId: r.ClientId || '',
                 dealId: r.DealId || '',
+                rawPartner: r.RawPartner || '',
                 vin: r.VIN || '',
                 brand: r.Brand || '',
                 model: r.Model || '',
@@ -521,12 +524,17 @@ function renderPartnersTable(filterCfg) {
                     </a>` : 
                     '<span class="text-slate-300">—</span>';
 
+                let rawPartnerHtml = dl.rawPartner ? 
+                    `<span class="text-[11px] text-slate-600 font-medium truncate max-w-[220px] block" title="${escapeHtml(dl.rawPartner)}">${escapeHtml(dl.rawPartner)}</span>` : 
+                    '<span class="text-slate-300">—</span>';
+
                 let vinHtml = dl.vin ? 
                     `<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold select-all border border-slate-200">${escapeHtml(dl.vin)}</code>` : 
                     '<span class="text-slate-300">—</span>';
 
                 dealRowsHtml += `<tr class="hover:bg-blue-50/40 transition">
                     <td class="py-1.5 px-2.5 text-center text-slate-400 font-mono text-xs">${idx + 1}</td>
+                    <td class="py-1.5 px-2.5">${rawPartnerHtml}</td>
                     <td class="py-1.5 px-2.5">${leadIdHtml}</td>
                     <td class="py-1.5 px-2.5">${clientHtml}</td>
                     <td class="py-1.5 px-2.5">${vinHtml}</td>
@@ -564,6 +572,7 @@ function renderPartnersTable(filterCfg) {
                                 <thead class="bg-slate-800 text-slate-200 text-[11px] font-bold sticky top-0 z-10 shadow">
                                     <tr>
                                         <th class="py-2 px-2.5 w-10 text-center !bg-slate-800">№</th>
+                                        <th class="py-2 px-2.5 !bg-slate-800">Юр. лицо (CRM)</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">ID (Сумма id)</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">Client_ID</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">ВИН</th>
@@ -577,7 +586,7 @@ function renderPartnersTable(filterCfg) {
                                 </tbody>
                                 <tfoot class="bg-slate-100 font-black border-t-2 border-slate-300 text-slate-800 sticky bottom-0 z-10">
                                     <tr>
-                                        <td colspan="6" class="py-2 px-2.5 text-right font-bold text-slate-700">ИТОГО (${dCount} шт.):</td>
+                                        <td colspan="7" class="py-2 px-2.5 text-right font-bold text-slate-700">ИТОГО (${dCount} шт.):</td>
                                         <td class="py-2 px-2.5 text-right text-emerald-700 font-black text-sm">${fmtRub(totalAB)}</td>
                                     </tr>
                                 </tfoot>

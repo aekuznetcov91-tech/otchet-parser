@@ -3581,8 +3581,7 @@
         "ООО \"АВТОМИР-ТРЕЙД\" online",
         "ONLINE ООО \"АМКАПИТАЛ\"",
         "ГК Автомир / ООО \"ЛЕГАТ\" online",
-        "ГК Автомир",
-        "ONLINE ООО \"АВТОМИР\" Симферополь"
+        "ГК Автомир"
       ],
       "bi_aliases": [
         "ГК Автомир"
@@ -3679,32 +3678,6 @@
           "address": "МО,Новорязанское ш., 5в, Котельники",
           "responsible": "Андрей Кузнецов",
           "email": "promo@avtomir.ru"
-        },
-        {
-          "sheet": "JETOUR",
-          "brand": "JETOUR",
-          "city": "Симферополь",
-          "name": "Автомир",
-          "legal_entity": "ООО Автомир",
-          "inn": "9102289123",
-          "fdc_code": "109228",
-          "back_name": "",
-          "address": "г. Симферополь, ул. Героев Сталинграда, 6-в",
-          "responsible": "Валерия Солдатова",
-          "email": "v.goncharov@automir-jetour.ru, v.blagiy@automir-jetour.ru, info@automir-jetour.ru, y.gutarova@automir-jetour.ru"
-        },
-        {
-          "sheet": "Soueast",
-          "brand": "Soueast",
-          "city": "Симферополь",
-          "name": "Автомир",
-          "legal_entity": "ООО Автомир",
-          "inn": "9102289123",
-          "fdc_code": "109228",
-          "back_name": "",
-          "address": "г. Симферополь, ул. Героев Сталинграда, 6-в",
-          "responsible": "Валерия Солдатова",
-          "email": "v.goncharov@automir-jetour.ru, v.blagiy@automir-jetour.ru, info@automir-jetour.ru, y.gutarova@automir-jetour.ru"
         },
         {
           "sheet": "SOLARIS",
@@ -4891,16 +4864,44 @@
     {
       "partner_id": 1061,
       "canonical_name": "Автомир (Симферополь) Jetour",
-      "holding": "Автомир",
+      "holding": "Автомир (Симферополь)",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
-        "ONLINE ООО \"АВТОМИР\""
+        "ONLINE ООО \"АВТОМИР\"",
+        "ONLINE ООО \"АВТОМИР\" Симферополь"
       ],
       "bi_aliases": [
         "Автомир (Симферополь) Jetour"
       ],
       "pochta_aliases": [],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "brand": "JETOUR",
+          "city": "Симферополь",
+          "name": "Автомир",
+          "legal_entity": "ООО Автомир",
+          "inn": "9102289123",
+          "fdc_code": "109228",
+          "back_name": "",
+          "address": "г. Симферополь, ул. Героев Сталинграда, 6-в",
+          "responsible": "Валерия Солдатова",
+          "email": "v.goncharov@automir-jetour.ru, v.blagiy@automir-jetour.ru, info@automir-jetour.ru, y.gutarova@automir-jetour.ru"
+        },
+        {
+          "sheet": "Soueast",
+          "brand": "Soueast",
+          "city": "Симферополь",
+          "name": "Автомир",
+          "legal_entity": "ООО Автомир",
+          "inn": "9102289123",
+          "fdc_code": "109228",
+          "back_name": "",
+          "address": "г. Симферополь, ул. Героев Сталинграда, 6-в",
+          "responsible": "Валерия Солдатова",
+          "email": "v.goncharov@automir-jetour.ru, v.blagiy@automir-jetour.ru, info@automir-jetour.ru, y.gutarova@automir-jetour.ru"
+        }
+      ],
       "status": "verified"
     },
     {

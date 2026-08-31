@@ -3581,8 +3581,7 @@
         "ООО \"АВТОМИР-ТРЕЙД\" online",
         "ONLINE ООО \"АМКАПИТАЛ\"",
         "ГК Автомир / ООО \"ЛЕГАТ\" online",
-        "ГК Автомир",
-        "ONLINE ООО \"АВТОМИР\" Симферополь"
+        "ГК Автомир"
       ],
       "bi_aliases": [
         "ГК Автомир"
@@ -3679,32 +3678,6 @@
           "address": "МО,Новорязанское ш., 5в, Котельники",
           "responsible": "Андрей Кузнецов",
           "email": "promo@avtomir.ru"
-        },
-        {
-          "sheet": "JETOUR",
-          "brand": "JETOUR",
-          "city": "Симферополь",
-          "name": "Автомир",
-          "legal_entity": "ООО Автомир",
-          "inn": "9102289123",
-          "fdc_code": "109228",
-          "back_name": "",
-          "address": "г. Симферополь, ул. Героев Сталинграда, 6-в",
-          "responsible": "Валерия Солдатова",
-          "email": "v.goncharov@automir-jetour.ru, v.blagiy@automir-jetour.ru, info@automir-jetour.ru, y.gutarova@automir-jetour.ru"
-        },
-        {
-          "sheet": "Soueast",
-          "brand": "Soueast",
-          "city": "Симферополь",
-          "name": "Автомир",
-          "legal_entity": "ООО Автомир",
-          "inn": "9102289123",
-          "fdc_code": "109228",
-          "back_name": "",
-          "address": "г. Симферополь, ул. Героев Сталинграда, 6-в",
-          "responsible": "Валерия Солдатова",
-          "email": "v.goncharov@automir-jetour.ru, v.blagiy@automir-jetour.ru, info@automir-jetour.ru, y.gutarova@automir-jetour.ru"
         },
         {
           "sheet": "SOLARIS",
@@ -4891,16 +4864,44 @@
     {
       "partner_id": 1061,
       "canonical_name": "Автомир (Симферополь) Jetour",
-      "holding": "Автомир",
+      "holding": "Автомир (Симферополь)",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
-        "ONLINE ООО \"АВТОМИР\""
+        "ONLINE ООО \"АВТОМИР\"",
+        "ONLINE ООО \"АВТОМИР\" Симферополь"
       ],
       "bi_aliases": [
         "Автомир (Симферополь) Jetour"
       ],
       "pochta_aliases": [],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "brand": "JETOUR",
+          "city": "Симферополь",
+          "name": "Автомир",
+          "legal_entity": "ООО Автомир",
+          "inn": "9102289123",
+          "fdc_code": "109228",
+          "back_name": "",
+          "address": "г. Симферополь, ул. Героев Сталинграда, 6-в",
+          "responsible": "Валерия Солдатова",
+          "email": "v.goncharov@automir-jetour.ru, v.blagiy@automir-jetour.ru, info@automir-jetour.ru, y.gutarova@automir-jetour.ru"
+        },
+        {
+          "sheet": "Soueast",
+          "brand": "Soueast",
+          "city": "Симферополь",
+          "name": "Автомир",
+          "legal_entity": "ООО Автомир",
+          "inn": "9102289123",
+          "fdc_code": "109228",
+          "back_name": "",
+          "address": "г. Симферополь, ул. Героев Сталинграда, 6-в",
+          "responsible": "Валерия Солдатова",
+          "email": "v.goncharov@automir-jetour.ru, v.blagiy@automir-jetour.ru, info@automir-jetour.ru, y.gutarova@automir-jetour.ru"
+        }
+      ],
       "status": "verified"
     },
     {
@@ -7013,12 +7014,13 @@
     },
     {
       "partner_id": 1098,
-      "canonical_name": "Приоритет_Автогермес",
+      "canonical_name": "АвтоГермес",
       "holding": "Приоритет_Автогермес",
       "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE АВТОГЕРМЕС-ЗАПАД (ООО \"АВТОГЕРМЕС-ЗАПАД\")",
-        "Приоритет_Автогермес"
+        "Приоритет_Автогермес",
+        "АвтоГермес"
       ],
       "bi_aliases": [
         "Приоритет_Автогермес"
@@ -7026,56 +7028,173 @@
       "pochta_aliases": [],
       "oem_data": [
         {
-          "sheet": "CHERY&TENET",
-          "brand": "CHERY & TENET",
-          "city": "Мин. Воды",
-          "name": "Гермес",
-          "legal_entity": "ООО Гермес",
-          "inn": "2630050011",
+          "sheet": "Geely&Belgee",
+          "brand": "Geely & Belgee",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
           "fdc_code": "",
-          "back_name": "",
-          "address": "Ставропольский край, Минераловодский р-н, х. Красный Пахарь, ул. Автомобильная, д. 19",
-          "responsible": "Валерия Солдатова",
+          "back_name": "Приоритет_Автогермес",
+          "address": "г.Москва,ш. Энтузиастов, д. 12А",
+          "responsible": "",
           "email": ""
         },
         {
           "sheet": "Geely&Belgee",
           "brand": "Geely & Belgee",
-          "city": "Мин. Воды",
-          "name": "Гермес",
-          "legal_entity": "ООО Гермес",
-          "inn": "2630050011",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
           "fdc_code": "",
-          "back_name": "",
-          "address": "Ставропольский край, Минераловодский р-н, х. Красный Пахарь, ул. Автомобильная, д. 19",
-          "responsible": "Валерия Солдатова",
+          "back_name": "Приоритет_Автогермес",
+          "address": "г.Москва,МКАД 44км",
+          "responsible": "",
           "email": ""
         },
         {
-          "sheet": "Geely&Belgee",
-          "brand": "Geely & Belgee",
-          "city": "Ставропольский Край",
-          "name": "Гермес",
-          "legal_entity": "ООО Гермес",
-          "inn": "2630050011",
-          "fdc_code": "",
-          "back_name": "",
-          "address": "г. Ставрополь, ул. Южный обход, 57/2",
-          "responsible": "Валерия Солдатова",
-          "email": ""
+          "sheet": "LADA",
+          "brand": "LADA",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "106896",
+          "back_name": "Приоритет_Автогермес",
+          "address": "Москва,Варшавка 56",
+          "responsible": "Андрей Кузнецов",
+          "email": "Zakharov.aleksey@lada-avtogermes.ru guest@avtogermes.ru\n Ushakov.Sergey@lada-avtogermes.ru"
+        },
+        {
+          "sheet": "LADA",
+          "brand": "LADA",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "103494",
+          "back_name": "Приоритет_Автогермес",
+          "address": "Москва,ул. Сормовская 21а",
+          "responsible": "Андрей Кузнецов",
+          "email": "Kruglov.dmitry@avtogermes.ru guest@avtogermes.ru\n Eremeev.Eduard@belgee-avtogermes.ru"
+        },
+        {
+          "sheet": "LADA",
+          "brand": "LADA",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "103481",
+          "back_name": "Приоритет_Автогермес",
+          "address": "Москва,Дмитровское ш., 161А,",
+          "responsible": "Андрей Кузнецов",
+          "email": "Balashov.Alexander@lada-avtogermes.ru guest@avtogermes.ru"
+        },
+        {
+          "sheet": "LADA",
+          "brand": "LADA",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "103475",
+          "back_name": "Приоритет_Автогермес",
+          "address": "Москва,ш. Энтузиастов, 59",
+          "responsible": "Андрей Кузнецов",
+          "email": "Ramazanov.Rasul@lada-avtogermes.ru Kurmanov.Dmitriy@lada-avtogermes.ru guest@avtogermes.ru"
+        },
+        {
+          "sheet": "LADA",
+          "brand": "LADA",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "106895",
+          "back_name": "Приоритет_Автогермес",
+          "address": "Москва,Каширское ш., 41с2",
+          "responsible": "Андрей Кузнецов",
+          "email": "Ermakov.Semen@lada-avtogermes.ru Allaberdin.Marat@lada-avtogermes.ru guest@avtogermes.ru"
         },
         {
           "sheet": "CHANGAN",
           "brand": "CHANGAN",
-          "city": "Мин. Воды",
-          "name": "Гермес",
-          "legal_entity": "ООО Гермес",
-          "inn": "2630050011",
-          "fdc_code": "",
-          "back_name": "",
-          "address": "Ставропольский край, Минераловодский р-н, х. Красный Пахарь, ул. Автомобильная, д. 19",
-          "responsible": "Валерия Солдатова",
-          "email": ""
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "106897",
+          "back_name": "Приоритет_Автогермес",
+          "address": "г.Москва,ул. Рябиновая, д. 43Б",
+          "responsible": "Андрей Кузнецов",
+          "email": "alpatov.andrey@avtogermes.ru guest@avtogermes.ru\n bakulin.aleksej@avtogermes.ru"
+        },
+        {
+          "sheet": "JETOUR",
+          "brand": "JETOUR",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "103496",
+          "back_name": "Приоритет_Автогермес",
+          "address": "г.Москва,МКАД 44км",
+          "responsible": "Андрей Кузнецов",
+          "email": "korchagin.denis@avtogermes.ru guest@avtogermes.ru"
+        },
+        {
+          "sheet": "SOLARIS",
+          "brand": "SOLARIS",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "106897",
+          "back_name": "Приоритет_Автогермес",
+          "address": "г.Москва,ул. Рябиновая, д. 43Б",
+          "responsible": "Андрей Кузнецов",
+          "email": "alpatov.andrey@avtogermes.ru guest@avtogermes.ru\n bakulin.aleksej@avtogermes.ru"
+        },
+        {
+          "sheet": "SOLARIS",
+          "brand": "SOLARIS",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "103475",
+          "back_name": "Приоритет_Автогермес",
+          "address": "г.Москва,Шоссе Энтузиастов, д. 59",
+          "responsible": "Андрей Кузнецов",
+          "email": "kaftannikov.ilya@lada-avtogermes.ru guest@avtogermes.ru\n Simonyan.Armen@lada-avtogermes.ru\n Abramenkov.Viktor@lada-avtogermes.ru"
+        },
+        {
+          "sheet": "SOLARIS",
+          "brand": "SOLARIS",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "106894",
+          "back_name": "Приоритет_Автогермес",
+          "address": "г.Москва,ш. Энтузиастов, д. 12А",
+          "responsible": "Андрей Кузнецов",
+          "email": "Yudin.Igor@hyundai-avtogermes.ru guest@avtogermes.ru\n Dortman.Vadim@avtogermes.ru"
+        },
+        {
+          "sheet": "SOLARIS",
+          "brand": "SOLARIS",
+          "city": "Москва",
+          "name": "Автогермес",
+          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
+          "inn": "5032237788",
+          "fdc_code": "103496",
+          "back_name": "Приоритет_Автогермес",
+          "address": "г.Москва,МКАД 44км",
+          "responsible": "Андрей Кузнецов",
+          "email": "korchagin.denis@avtogermes.ru guest@avtogermes.ru"
         }
       ],
       "status": "verified"
@@ -8629,183 +8748,39 @@
     },
     {
       "partner_id": 1153,
-      "canonical_name": "АвтоГермес",
+      "canonical_name": "Гермес (Мин. Воды)",
       "holding": "АвтоГермес",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
+      "kam": "Андрей Кузнецов",
+      "bitrix_aliases": [
+        "Гермес",
+        "Гермес Минводы",
+        "ООО \"ГЕРМЕС\""
+      ],
       "bi_aliases": [
         "АвтоГермес"
       ],
       "pochta_aliases": [],
       "oem_data": [
         {
-          "sheet": "Geely&Belgee",
-          "brand": "Geely & Belgee",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "",
-          "back_name": "Приоритет_Автогермес",
-          "address": "г.Москва,ш. Энтузиастов, д. 12А",
-          "responsible": "",
-          "email": ""
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "brand": "Geely & Belgee",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "",
-          "back_name": "Приоритет_Автогермес",
-          "address": "г.Москва,МКАД 44км",
-          "responsible": "",
-          "email": ""
-        },
-        {
-          "sheet": "LADA",
-          "brand": "LADA",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "106896",
-          "back_name": "Приоритет_Автогермес",
-          "address": "Москва,Варшавка 56",
-          "responsible": "Андрей Кузнецов",
-          "email": "Zakharov.aleksey@lada-avtogermes.ru guest@avtogermes.ru\n Ushakov.Sergey@lada-avtogermes.ru"
-        },
-        {
-          "sheet": "LADA",
-          "brand": "LADA",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "103494",
-          "back_name": "Приоритет_Автогермес",
-          "address": "Москва,ул. Сормовская 21а",
-          "responsible": "Андрей Кузнецов",
-          "email": "Kruglov.dmitry@avtogermes.ru guest@avtogermes.ru\n Eremeev.Eduard@belgee-avtogermes.ru"
-        },
-        {
-          "sheet": "LADA",
-          "brand": "LADA",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "103481",
-          "back_name": "Приоритет_Автогермес",
-          "address": "Москва,Дмитровское ш., 161А,",
-          "responsible": "Андрей Кузнецов",
-          "email": "Balashov.Alexander@lada-avtogermes.ru guest@avtogermes.ru"
-        },
-        {
-          "sheet": "LADA",
-          "brand": "LADA",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "103475",
-          "back_name": "Приоритет_Автогермес",
-          "address": "Москва,ш. Энтузиастов, 59",
-          "responsible": "Андрей Кузнецов",
-          "email": "Ramazanov.Rasul@lada-avtogermes.ru Kurmanov.Dmitriy@lada-avtogermes.ru guest@avtogermes.ru"
-        },
-        {
-          "sheet": "LADA",
-          "brand": "LADA",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "106895",
-          "back_name": "Приоритет_Автогермес",
-          "address": "Москва,Каширское ш., 41с2",
-          "responsible": "Андрей Кузнецов",
-          "email": "Ermakov.Semen@lada-avtogermes.ru Allaberdin.Marat@lada-avtogermes.ru guest@avtogermes.ru"
+          "sheet": "CHERY&TENET",
+          "brand": "CHERY & TENET",
+          "city": "Мин. Воды",
+          "name": "Гермес",
+          "legal_entity": "ООО Гермес"
         },
         {
           "sheet": "CHANGAN",
           "brand": "CHANGAN",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "106897",
-          "back_name": "Приоритет_Автогермес",
-          "address": "г.Москва,ул. Рябиновая, д. 43Б",
-          "responsible": "Андрей Кузнецов",
-          "email": "alpatov.andrey@avtogermes.ru guest@avtogermes.ru\n bakulin.aleksej@avtogermes.ru"
+          "city": "Мин. Воды",
+          "name": "Гермес",
+          "legal_entity": "ООО Гермес"
         },
         {
-          "sheet": "JETOUR",
-          "brand": "JETOUR",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "103496",
-          "back_name": "Приоритет_Автогермес",
-          "address": "г.Москва,МКАД 44км",
-          "responsible": "Андрей Кузнецов",
-          "email": "korchagin.denis@avtogermes.ru guest@avtogermes.ru"
-        },
-        {
-          "sheet": "SOLARIS",
-          "brand": "SOLARIS",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "106897",
-          "back_name": "Приоритет_Автогермес",
-          "address": "г.Москва,ул. Рябиновая, д. 43Б",
-          "responsible": "Андрей Кузнецов",
-          "email": "alpatov.andrey@avtogermes.ru guest@avtogermes.ru\n bakulin.aleksej@avtogermes.ru"
-        },
-        {
-          "sheet": "SOLARIS",
-          "brand": "SOLARIS",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "103475",
-          "back_name": "Приоритет_Автогермес",
-          "address": "г.Москва,Шоссе Энтузиастов, д. 59",
-          "responsible": "Андрей Кузнецов",
-          "email": "kaftannikov.ilya@lada-avtogermes.ru guest@avtogermes.ru\n Simonyan.Armen@lada-avtogermes.ru\n Abramenkov.Viktor@lada-avtogermes.ru"
-        },
-        {
-          "sheet": "SOLARIS",
-          "brand": "SOLARIS",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "106894",
-          "back_name": "Приоритет_Автогермес",
-          "address": "г.Москва,ш. Энтузиастов, д. 12А",
-          "responsible": "Андрей Кузнецов",
-          "email": "Yudin.Igor@hyundai-avtogermes.ru guest@avtogermes.ru\n Dortman.Vadim@avtogermes.ru"
-        },
-        {
-          "sheet": "SOLARIS",
-          "brand": "SOLARIS",
-          "city": "Москва",
-          "name": "Автогермес",
-          "legal_entity": "ООО АвтоГЕРМЕС-Запад",
-          "inn": "5032237788",
-          "fdc_code": "103496",
-          "back_name": "Приоритет_Автогермес",
-          "address": "г.Москва,МКАД 44км",
-          "responsible": "Андрей Кузнецов",
-          "email": "korchagin.denis@avtogermes.ru guest@avtogermes.ru"
+          "sheet": "Geely&Belgee",
+          "brand": "Geely & Belgee",
+          "city": "Мин. Воды",
+          "name": "Гермес",
+          "legal_entity": "ООО Гермес"
         }
       ],
       "status": "verified"
