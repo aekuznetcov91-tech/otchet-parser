@@ -1184,7 +1184,7 @@ def run_pipeline():
                     print(f"[*] Файл: {fname} [{sname}] -> Тип: '{dtype.upper()}' ({len(rows)} строк)")
                     
                     if dtype == "deals":
-                        deals_candidates.append((fname, rows))
+                        deals_candidates.append((fname, fpath, rows))
                     elif dtype == "leads":
                         leads_candidates.append((fname, rows))
                         all_leads_data.extend(rows)
@@ -1195,13 +1195,15 @@ def run_pipeline():
         print("[!] Ошибка: Файл сделок не найден!")
         sys.exit(1)
 
+    # Filter strictly to Bitrix DEAL_*.xls exports if any exist
+    bitrix_deals = [c for c in deals_candidates if c[0].startswith('DEAL_')]
+    if bitrix_deals:
+        deals_candidates = bitrix_deals
+
     def file_rank_deals(item):
-        fname, rows = item
-        # Priority: DEAL_YYYYMMDD in raw_data > other deals in raw_data > root
-        is_deal_prefix = 1 if fname.startswith('DEAL_') else 0
-        date_match = re.search(r'(\d{8})', fname)
-        date_str = date_match.group(1) if date_match else ''
-        return (is_deal_prefix, date_str, len(rows))
+        fname, fpath, rows = item
+        mtime = os.path.getmtime(fpath) if os.path.exists(fpath) else 0
+        return mtime
 
     def file_rank_leads(item):
         fname, rows = item
@@ -1210,9 +1212,22 @@ def run_pipeline():
         lead_num = int(num_match.group(1)) if num_match else 0
         return (lead_num, len(rows))
 
-    deals_candidates.sort(key=file_rank_deals, reverse=True)
-    deals_file_name, deals_data = deals_candidates[0]
-    print(f"[*] Выбран основной файл сделок: {deals_file_name} ({len(deals_data)} строк)")
+    # Merge deal candidates in ascending order of file mtime (older first, newer overwrites)
+    # This preserves multi-month history (e.g. July) while updating fresh August deals.
+    deals_candidates.sort(key=file_rank_deals)
+    
+    merged_deals_dict = {}
+    for d_fname, d_fpath, d_rows in deals_candidates:
+        for r in d_rows:
+            did = str(get_exact_val(r, 'ID', 'IDСДЕЛКИ') or '').strip()
+            tovar = str(get_exact_val(r, 'ТОВАР') or '').strip()
+            vin = str(get_exact_val(r, 'VIN') or '').strip()
+            key = f"{did}::{tovar}" if (did and tovar) else (f"{did}::{vin}" if (did and vin) else f"{did}::{len(merged_deals_dict)}")
+            merged_deals_dict[key] = r
+
+    deals_data = list(merged_deals_dict.values())
+    latest_deal_file = deals_candidates[-1][0]
+    print(f"[*] Сформирован объединенный массив сделок: {len(deals_data)} записей (свежий файл: {latest_deal_file})")
 
     if leads_candidates:
         leads_candidates.sort(key=file_rank_leads, reverse=True)
