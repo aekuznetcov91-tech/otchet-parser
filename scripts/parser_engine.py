@@ -1153,16 +1153,16 @@ def run_pipeline():
 
     # 1. Collect files from raw_data or root with MD5 hash deduplication
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
-    deals_data = []
-    leads_data = []
+    deals_candidates = []
+    leads_candidates = []
+    directory_candidates = []
     all_leads_data = []
-    directory_data = []
     seen_file_hashes = set()
 
     for sdir in search_dirs:
         if not os.path.exists(sdir):
             continue
-        for fname in sorted(os.listdir(sdir)):
+        for fname in sorted(os.listdir(sdir), reverse=True):
             if fname.startswith('~$') or fname.startswith('.'):
                 continue
             if fname.lower().endswith(('.xlsx', '.xlsm', '.csv', '.xls')):
@@ -1183,14 +1183,45 @@ def run_pipeline():
                     dtype = identify_data_type(rows)
                     print(f"[*] Файл: {fname} [{sname}] -> Тип: '{dtype.upper()}' ({len(rows)} строк)")
                     
-                    if dtype == "deals" and not deals_data:
-                        deals_data = rows
+                    if dtype == "deals":
+                        deals_candidates.append((fname, rows))
                     elif dtype == "leads":
-                        if not leads_data:
-                            leads_data = rows
+                        leads_candidates.append((fname, rows))
                         all_leads_data.extend(rows)
-                    elif dtype == "directory" and not directory_data:
-                        directory_data = rows
+                    elif dtype == "directory":
+                        directory_candidates.append((fname, rows))
+
+    if not deals_candidates:
+        print("[!] Ошибка: Файл сделок не найден!")
+        sys.exit(1)
+
+    def file_rank_deals(item):
+        fname, rows = item
+        # Priority: DEAL_YYYYMMDD in raw_data > other deals in raw_data > root
+        is_deal_prefix = 1 if fname.startswith('DEAL_') else 0
+        date_match = re.search(r'(\d{8})', fname)
+        date_str = date_match.group(1) if date_match else ''
+        return (is_deal_prefix, date_str, len(rows))
+
+    def file_rank_leads(item):
+        fname, rows = item
+        # Priority: data (X).xlsx with highest number > other leads
+        num_match = re.search(r'data \((\d+)\)', fname)
+        lead_num = int(num_match.group(1)) if num_match else 0
+        return (lead_num, len(rows))
+
+    deals_candidates.sort(key=file_rank_deals, reverse=True)
+    deals_file_name, deals_data = deals_candidates[0]
+    print(f"[*] Выбран основной файл сделок: {deals_file_name} ({len(deals_data)} строк)")
+
+    if leads_candidates:
+        leads_candidates.sort(key=file_rank_leads, reverse=True)
+        leads_file_name, leads_data = leads_candidates[0]
+        print(f"[*] Выбран основной файл лидов: {leads_file_name} ({len(leads_data)} строк)")
+    else:
+        leads_data = []
+
+    directory_data = directory_candidates[0][1] if directory_candidates else []
 
     if not deals_data:
         print("[!] Ошибка: Файл сделок не найден!")
