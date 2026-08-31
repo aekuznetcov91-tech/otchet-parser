@@ -7,6 +7,11 @@
  * @param {HTMLInputElement} input
  * @param {string} targetId
  */
+/**
+ * Filters rows in a table container based on text query.
+ * @param {HTMLInputElement} input
+ * @param {string} targetId
+ */
 function filterTable(input, targetId) {
     let val = input.value.toLowerCase();
     let container = document.getElementById(targetId);
@@ -15,8 +20,21 @@ function filterTable(input, targetId) {
     if (table.tagName !== 'TABLE') { table = table.querySelector('table'); if (!table) return; }
     let rows = table.querySelectorAll('tbody tr');
     rows.forEach(row => {
+        if (row.classList.contains('partner-deals-row')) return;
         let text = row.textContent.toLowerCase();
-        row.style.display = text.includes(val) ? '' : 'none';
+        let match = text.includes(val);
+        row.style.display = match ? '' : 'none';
+        let rowKey = row.dataset.partnerKey;
+        if (rowKey) {
+            let detailsRow = document.getElementById('pdeals_row_' + rowKey);
+            if (detailsRow) {
+                if (!match) {
+                    detailsRow.style.display = 'none';
+                } else if (!detailsRow.classList.contains('hidden')) {
+                    detailsRow.style.display = '';
+                }
+            }
+        }
     });
 }
 
@@ -248,7 +266,101 @@ function renderDynMonthsTab(sDb, isAll, period) {
 }
 
 /**
- * Renders partners summary table with CR calculations and Master ID matching.
+ * Escapes HTML characters to prevent XSS.
+ * @param {string} str
+ * @returns {string}
+ */
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+/**
+ * Toggles visibility of partner deals details sub-table.
+ * @param {string} key
+ */
+function togglePartnerDeals(key) {
+    const row = document.getElementById('pdeals_row_' + key);
+    const icon = document.getElementById('picon_' + key);
+    if (!row) return;
+
+    const isHidden = row.classList.contains('hidden');
+    if (isHidden) {
+        row.classList.remove('hidden');
+        if (icon) icon.style.transform = 'rotate(90deg)';
+    } else {
+        row.classList.add('hidden');
+        if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+/**
+ * Exports partner deals to formatted Excel (.xlsx) file using SheetJS.
+ * @param {string} key
+ */
+function exportPartnerDealsToExcel(key) {
+    const item = window._partnerDealsCache ? window._partnerDealsCache[key] : null;
+    if (!item || !item.deals || item.deals.length === 0) {
+        showToast('Нет данных по сделкам для выгрузки', 'warning');
+        return;
+    }
+
+    const partnerName = item.name || 'Партнер';
+    const rows = item.deals;
+
+    const wsData = [
+        ['№', 'ID (Сумма id)', 'Client_ID', 'ВИН', 'Марка', 'Модель', 'АВ (КВ. Авто NEW, руб)']
+    ];
+
+    let totalAB = 0;
+    rows.forEach((d, idx) => {
+        const ab = Number(d.comm) || 0;
+        totalAB += ab;
+        wsData.push([
+            idx + 1,
+            d.leadId ? String(d.leadId) : (d.dealId ? String(d.dealId) : '—'),
+            d.clientId ? String(d.clientId) : '—',
+            d.vin ? String(d.vin) : '—',
+            d.brand ? String(d.brand) : '—',
+            d.model ? String(d.model) : '—',
+            ab
+        ]);
+    });
+
+    wsData.push(['', '', '', '', 'ИТОГО:', `${rows.length} шт.`, totalAB]);
+
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    ws['!cols'] = [
+        { wch: 6 },
+        { wch: 18 },
+        { wch: 16 },
+        { wch: 24 },
+        { wch: 18 },
+        { wch: 24 },
+        { wch: 24 }
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Сделки");
+
+    const cleanPartnerName = partnerName.replace(/[/\\?%*:|"<>]/g, '_').trim();
+    const periodStr = currentFilterConfig && currentFilterConfig.month ? currentFilterConfig.month : (new Date().toISOString().split('T')[0]);
+    const fileName = `Сделки_${cleanPartnerName}_${periodStr}.xlsx`;
+
+    XLSX.writeFile(wb, fileName);
+    showToast(`Выгружено ${rows.length} сделок в ${fileName}`, 'success');
+}
+
+/**
+ * Renders partners summary table with CR calculations, Master ID matching,
+ * and interactive expandable deal sub-tables with Excel export.
  * @param {Object} filterCfg
  */
 function renderPartnersTable(filterCfg) {
@@ -266,14 +378,17 @@ function renderPartnersTable(filterCfg) {
         return true;
     });
 
+    window._partnerDealsCache = {};
+
     let pStats = {};
     fPartners.forEach(r => {
         let pid = r.PartnerId;
         let pName = r.Partner || "Неизвестный";
-        let key = pid ? `ID_${pid}` : `RAW_${pName}`;
+        let key = pid ? `ID_${pid}` : `RAW_${pName.replace(/[^a-zA-Z0-9а-яА-Я_]/g, '_')}`;
 
         if (!pStats[key]) {
             pStats[key] = {
+                key: key,
                 id: pid,
                 name: pName,
                 leads: 0,
@@ -282,6 +397,7 @@ function renderPartnersTable(filterCfg) {
                 mpDeals: 0,
                 deals: 0,
                 kam: r.KAM || "",
+                dealsList: [],
                 rawBitrix: new Set(),
                 rawBi: new Set()
             };
@@ -299,6 +415,20 @@ function renderPartnersTable(filterCfg) {
                 pStats[key].mpDeals += (r.Qty || 1);
             }
             if (r.RawPartner) pStats[key].rawBitrix.add(r.RawPartner);
+
+            pStats[key].dealsList.push({
+                leadId: r.LeadId || '',
+                clientId: r.ClientId || '',
+                dealId: r.DealId || '',
+                vin: r.VIN || '',
+                brand: r.Brand || '',
+                model: r.Model || '',
+                comm: Number(r.Comm) || 0,
+                price: Number(r.Price) || 0,
+                date: r.Date || 0,
+                manager: r.Manager || '',
+                b2c: r.B2C || ''
+            });
         } else if (r.Type === 'Предоплата') {
             pStats[key].prepays += (r.Qty || 1);
             if (r.RawPartner) pStats[key].rawBitrix.add(r.RawPartner);
@@ -335,9 +465,33 @@ function renderPartnersTable(filterCfg) {
 
         let crColor = data.leads > 0 && data.deals > 0 ? 'text-emerald-700 font-black' : (data.deals > 0 ? 'text-blue-600 font-bold' : 'text-gray-500');
 
-        html += `<tr>
+        const k = data.key;
+        const dCount = data.dealsList.length;
+        window._partnerDealsCache[k] = {
+            name: data.name,
+            deals: data.dealsList
+        };
+
+        let partnerNameHtml = '';
+        if (dCount > 0) {
+            partnerNameHtml = `
+                <button type="button" onclick="togglePartnerDeals('${k}')" class="partner-title-btn text-left flex items-center justify-between gap-2 w-full font-bold text-gray-900 hover:text-blue-700 group transition py-0.5" title="Нажмите, чтобы развернуть сделки">
+                    <span class="group-hover:underline flex items-center gap-1.5">
+                        <i data-lucide="chevron-right" id="picon_${k}" class="w-4 h-4 text-blue-500 shrink-0 transition-transform duration-200"></i>
+                        <span>${escapeHtml(data.name)}</span>
+                    </span>
+                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 group-hover:bg-blue-100 transition whitespace-nowrap">
+                        ${fmtNum(dCount)} ${dCount === 1 ? 'сделка' : (dCount < 5 ? 'сделки' : 'сделок')} ▾
+                    </span>
+                </button>
+            `;
+        } else {
+            partnerNameHtml = `<span class="font-bold text-gray-900">${escapeHtml(data.name)}</span>`;
+        }
+
+        html += `<tr data-partner-key="${k}" class="hover:bg-blue-50/30 transition">
             <td>${idBadge}</td>
-            <td class="font-bold text-gray-900">${data.name}</td>
+            <td>${partnerNameHtml}</td>
             <td class="font-medium text-gray-600">${data.kam || "—"}</td>
             <td class="font-semibold text-gray-700">${fmtNum(data.leads)}</td>
             <td class="font-semibold text-amber-700">${fmtNum(data.prepays)}</td>
@@ -351,6 +505,98 @@ function renderPartnersTable(filterCfg) {
                 </a>
             </td>
         </tr>`;
+
+        if (dCount > 0) {
+            let totalAB = data.dealsList.reduce((sum, dl) => sum + (dl.comm || 0), 0);
+            let dealRowsHtml = '';
+            data.dealsList.forEach((dl, idx) => {
+                let leadIdHtml = dl.leadId ? 
+                    `<span class="px-2 py-0.5 rounded bg-blue-100 text-blue-900 font-bold text-[11px] border border-blue-200 font-mono">${escapeHtml(dl.leadId)}</span>` : 
+                    (dl.dealId ? `<span class="text-slate-500 font-mono text-[11px]">${escapeHtml(dl.dealId)}</span>` : '<span class="text-slate-300">—</span>');
+
+                let clientHtml = dl.clientId ? 
+                    `<a href="https://backoffice.x.sberauto.com/crm/manager/${escapeHtml(dl.clientId)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-[11px] border border-emerald-200 transition shadow-sm" title="Открыть карточку клиента в CRM БФС">
+                        <i data-lucide="external-link" class="w-3 h-3 text-emerald-600"></i>
+                        <span>BFS #${escapeHtml(dl.clientId)}</span>
+                    </a>` : 
+                    '<span class="text-slate-300">—</span>';
+
+                let vinHtml = dl.vin ? 
+                    `<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold select-all border border-slate-200">${escapeHtml(dl.vin)}</code>` : 
+                    '<span class="text-slate-300">—</span>';
+
+                dealRowsHtml += `<tr class="hover:bg-blue-50/40 transition">
+                    <td class="py-1.5 px-2.5 text-center text-slate-400 font-mono text-xs">${idx + 1}</td>
+                    <td class="py-1.5 px-2.5">${leadIdHtml}</td>
+                    <td class="py-1.5 px-2.5">${clientHtml}</td>
+                    <td class="py-1.5 px-2.5">${vinHtml}</td>
+                    <td class="py-1.5 px-2.5 font-bold text-slate-800">${escapeHtml(dl.brand || '—')}</td>
+                    <td class="py-1.5 px-2.5 text-slate-700 font-medium">${escapeHtml(dl.model || '—')}</td>
+                    <td class="py-1.5 px-2.5 text-right font-black text-emerald-700">${fmtRub(dl.comm)}</td>
+                </tr>`;
+            });
+
+            html += `<tr id="pdeals_row_${k}" class="partner-deals-row hidden bg-slate-50/90">
+                <td colspan="10" class="!p-0 border-b-2 border-blue-300">
+                    <div class="p-3 sm:p-4 bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/20 border-t border-blue-200 rounded-b-xl shadow-inner">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2.5 pb-2 border-b border-blue-100">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                                <span class="text-xs font-black uppercase text-slate-700 tracking-wider">
+                                    Сделки компании: <b class="text-blue-800">${escapeHtml(data.name)}</b>
+                                </span>
+                                <span class="text-[11px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold border border-blue-200">
+                                    ${dCount} шт.
+                                </span>
+                                <span class="text-xs text-slate-600 font-medium ml-1">
+                                    Сумма АВ: <b class="text-emerald-700 font-bold">${fmtRub(totalAB)}</b>
+                                </span>
+                            </div>
+                            <div>
+                                <button type="button" onclick="exportPartnerDealsToExcel('${k}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95">
+                                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Скачать в Excel (.xlsx)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm max-h-[360px] overflow-y-auto">
+                            <table class="min-w-full text-xs text-left">
+                                <thead class="bg-slate-800 text-slate-200 text-[11px] font-bold sticky top-0 z-10 shadow">
+                                    <tr>
+                                        <th class="py-2 px-2.5 w-10 text-center !bg-slate-800">№</th>
+                                        <th class="py-2 px-2.5 !bg-slate-800">ID (Сумма id)</th>
+                                        <th class="py-2 px-2.5 !bg-slate-800">Client_ID</th>
+                                        <th class="py-2 px-2.5 !bg-slate-800">ВИН</th>
+                                        <th class="py-2 px-2.5 !bg-slate-800">Марка</th>
+                                        <th class="py-2 px-2.5 !bg-slate-800">Модель</th>
+                                        <th class="py-2 px-2.5 text-right !bg-slate-800">АВ (КВ. Авто NEW)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    ${dealRowsHtml}
+                                </tbody>
+                                <tfoot class="bg-slate-100 font-black border-t-2 border-slate-300 text-slate-800 sticky bottom-0 z-10">
+                                    <tr>
+                                        <td colspan="6" class="py-2 px-2.5 text-right font-bold text-slate-700">ИТОГО (${dCount} шт.):</td>
+                                        <td class="py-2 px-2.5 text-right text-emerald-700 font-black text-sm">${fmtRub(totalAB)}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div class="mt-2.5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-[11px] text-slate-500">
+                            <span class="flex items-center gap-1">
+                                <i data-lucide="info" class="w-3.5 h-3.5 text-blue-500"></i>
+                                Нажмите на ссылку <b class="text-emerald-700">🔗 BFS #ID</b> для перехода в карточку клиента
+                            </span>
+                            <button type="button" onclick="exportPartnerDealsToExcel('${k}')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow hover:shadow-md active:scale-95">
+                                <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Скачать таблицу сделок в Excel (.xlsx)
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>`;
+        }
     });
 
     let tCr = tL > 0 ? fmtPct(tD / tL) : "0%";
@@ -371,6 +617,7 @@ function renderPartnersTable(filterCfg) {
     if (elPartners) {
         elPartners.innerHTML = html;
         setupSmartSearch('searchPartners', 'tablePartnersContainer');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 }
 
@@ -593,7 +840,7 @@ function initTableSorting() {
             th.classList.toggle('sort-desc', isAsc);
 
             const totalRows = rows.filter(r => r.classList.contains('table-total') || r.classList.contains('table-subtotal') || r.classList.contains('group-header'));
-            const sortableRows = rows.filter(r => !r.classList.contains('table-total') && !r.classList.contains('table-subtotal') && !r.classList.contains('group-header'));
+            const sortableRows = rows.filter(r => !r.classList.contains('table-total') && !r.classList.contains('table-subtotal') && !r.classList.contains('group-header') && !r.classList.contains('partner-deals-row'));
 
             sortableRows.sort((a, b) => {
                 let aVal = a.children[colIdx]?.innerText.trim() || '';
@@ -608,7 +855,14 @@ function initTableSorting() {
             });
 
             tbody.innerHTML = '';
-            sortableRows.forEach(r => tbody.appendChild(r));
+            sortableRows.forEach(r => {
+                tbody.appendChild(r);
+                const pKey = r.dataset.partnerKey;
+                if (pKey) {
+                    const childRow = document.getElementById('pdeals_row_' + pKey);
+                    if (childRow) tbody.appendChild(childRow);
+                }
+            });
             totalRows.forEach(r => tbody.appendChild(r));
         });
     });

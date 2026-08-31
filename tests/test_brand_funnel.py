@@ -212,8 +212,31 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         self.assertIn('onPartnerPlanChange', all_code, "onPartnerPlanChange функция должна быть в кодовой базе")
         self.assertIn('exportKamReportToExcel', all_code, "exportKamReportToExcel функция должна быть в кодовой базе")
 
+    def test_13_partner_deals_drilldown(self):
+        """Проверка обогащения данных сделок партнеров и функций выгрузки"""
+        sys_db_partners = self.data.get('sys_db_partners', [])
+        deals = [r for r in sys_db_partners if r.get('Type') == 'Сделка']
+        self.assertGreater(len(deals), 0, "В sys_db_partners должны быть закрытые сделки")
+        
+        sample_deal = deals[0]
+        self.assertIn('Brand', sample_deal, "В сделке должно быть поле Brand")
+        self.assertIn('Model', sample_deal, "В сделке должно быть поле Model")
+        self.assertIn('VIN', sample_deal, "В сделке должно быть поле VIN")
+        self.assertIn('Comm', sample_deal, "В сделке должно быть поле Comm (КВ. Авто NEW)")
+        self.assertIn('ClientId', sample_deal, "В сделке должно быть поле ClientId")
+        self.assertIn('LeadId', sample_deal, "В сделке должно быть поле LeadId (Сумма id)")
+
+        tables_js_path = os.path.join(PROJECT_ROOT, 'site', 'js', 'tables.js')
+        with open(tables_js_path, 'r', encoding='utf-8') as f:
+            tables_js = f.read()
+
+        self.assertIn('togglePartnerDeals', tables_js, "togglePartnerDeals функция должна быть в tables.js")
+        self.assertIn('exportPartnerDealsToExcel', tables_js, "exportPartnerDealsToExcel функция должна быть в tables.js")
+        self.assertIn('pdeals_row_', tables_js, "Идентификаторы строк сделок pdeals_row_ должны формироваться в tables.js")
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+
 
 
 

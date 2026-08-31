@@ -1254,6 +1254,18 @@ def run_pipeline():
 
     aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ")
 
+    # Build lookup map for Lead ID (Сумма id from leads transmission file)
+    leads_sum_id_by_client = {}
+    leads_sum_id_by_vin = {}
+    for lr in all_leads_data:
+        cid_l = str(get_exact_val(lr, 'CLIENTID', 'CLIENT_ID', 'IDКЛИЕНТА') or "").strip()
+        sid_l = str(get_exact_val(lr, 'СУММАID', 'СУММА_ID', 'ID') or "").strip()
+        vin_l = str(get_exact_val(lr, 'VIN', 'ВИН') or "").strip().upper()
+        if cid_l and sid_l and cid_l not in leads_sum_id_by_client:
+            leads_sum_id_by_client[cid_l] = sid_l
+        if vin_l and sid_l and len(vin_l) > 5 and vin_l not in leads_sum_id_by_vin:
+            leads_sum_id_by_vin[vin_l] = sid_l
+
     for row in deals_data:
         tovar = str(get_exact_val(row, 'ТОВАР') or "").upper()
         if any(kw in tovar for kw in aux_keywords):
@@ -1270,6 +1282,12 @@ def run_pipeline():
         except ValueError:
             comm = 0.0
 
+        raw_kv = get_exact_val(row, 'КВАВТОNEW', 'КВ. Авто NEW', 'КВ. АВТО NEW', 'КВАВТО')
+        try:
+            kv_auto_new = float(str(raw_kv).replace(' ', '').replace('\xa0', '').replace(',', '.')) if raw_kv else comm
+        except ValueError:
+            kv_auto_new = comm
+
         manager = str(get_exact_val(row, 'МЕНЕДЖЕРСДЕЛКИ') or "Не указан")
         stage = str(get_exact_val(row, 'СТАДИЯСДЕЛКИ') or "").upper()
 
@@ -1280,6 +1298,10 @@ def run_pipeline():
                 vin = words[-1]
             else:
                 vin = str(get_exact_val(row, 'ID') or "")
+
+        client_id = str(get_exact_val(row, 'CLIENTID', 'CLIENT_ID') or "").strip()
+        deal_id = str(get_exact_val(row, 'ID', 'IDСДЕЛКИ') or "").strip()
+        lead_id = leads_sum_id_by_client.get(client_id) or leads_sum_id_by_vin.get(vin.upper() if vin else "") or ""
 
         raw_deal_date = get_exact_val(row, 'ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ')
         raw_prepay_date = get_exact_val(row, 'ДАТАВНЕСЕНИЯПРЕДОПЛАТЫРОЗНИЦА', 'ДАТАПОЛУЧЕНИЯАВАНСА') or raw_deal_date
@@ -1319,10 +1341,12 @@ def run_pipeline():
             "SaleMonth": deal_month_str if is_sale else "",
             "PrepayMonth": prepay_month_str if is_prepay else "",
             "Brand": "ВНЕСЕНИЕ" if is_prepay else final_brand,
+            "Model": model if is_sale else "",
             "B2C": b2c,
             "SaleQty": 1 if is_sale else 0,
             "Price": price if is_sale else 0,
             "Comm": comm if is_sale else 0,
+            "KVAutoNew": kv_auto_new if is_sale else 0,
             "PrepayQty": 1 if is_prepay else 0,
             "WaitQty": 1 if is_wait else 0,
             "WaitMonth": deal_month_str if is_wait else "",
@@ -1332,6 +1356,9 @@ def run_pipeline():
             "PrepayDate": prepay_serial,
             "Revenue": final_revenue,
             "VIN": vin,
+            "ClientId": client_id,
+            "LeadId": lead_id,
+            "DealId": deal_id,
             "ChartGroup": chart_group
         })
 
@@ -1362,7 +1389,15 @@ def run_pipeline():
                     "Qty": 1,
                     "B2C": b2c,
                     "Brand": final_brand,
+                    "Model": model,
+                    "VIN": vin,
+                    "Comm": kv_auto_new,
+                    "Price": price,
                     "Date": deal_serial,
+                    "ClientId": client_id,
+                    "LeadId": lead_id,
+                    "DealId": deal_id,
+                    "Manager": manager,
                     "IsLeadSaleNoPrepay": 1 if is_lead_sale_no_prepay else 0,
                     "IsMpSale": 1 if is_mp else 0,
                     "HasPrepay": 1 if has_prepay_date else 0

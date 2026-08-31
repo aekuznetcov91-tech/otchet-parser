@@ -384,12 +384,38 @@
                     const kamPartner = kamDictBitrix[normalizedPartner] || "";
                     if (!kamPartner) newBitrixPartners.add(partner);
                     
+                    const rawKv = getExactVal(row, 'КВАВТОNEW', 'КВ. Авто NEW', 'КВ. АВТО NEW', 'КВАВТО');
+                    let kvAutoNew = comm;
+                    if (rawKv) {
+                        const parsedKv = parseFloat(String(rawKv).replace(/\s+/g, '').replace(/,/g, '.'));
+                        if (!isNaN(parsedKv)) kvAutoNew = parsedKv;
+                    }
+                    const clientId = String(getExactVal(row, 'CLIENTID', 'CLIENT_ID') || "").trim();
+                    const dealId = String(getExactVal(row, 'ID', 'IDСДЕЛКИ') || "").trim();
+
                     if (isSale) {
-                        sys_db_partners.push({ Month: dealMonthStr, Partner: partner, KAM: kamPartner, Type: "Сделка", Qty: 1, B2C: b2c, Brand: finalBrand });
+                        sys_db_partners.push({
+                            Month: dealMonthStr,
+                            Partner: partner,
+                            KAM: kamPartner,
+                            Type: "Сделка",
+                            Qty: 1,
+                            B2C: b2c,
+                            Brand: finalBrand,
+                            Model: tovar.replace(finalBrand, '').replace(vin, '').trim() || finalBrand,
+                            VIN: String(vin).trim(),
+                            Comm: kvAutoNew,
+                            Price: price,
+                            Date: dateToExcelSerial(dDealDate),
+                            ClientId: clientId,
+                            LeadId: "",
+                            DealId: dealId,
+                            Manager: manager
+                        });
                     } else if (isPrepay) {
-                        sys_db_partners.push({ Month: prepayMonthStr, Partner: partner, KAM: kamPartner, Type: "Предоплата", Qty: 1 });
+                        sys_db_partners.push({ Month: prepayMonthStr, Partner: partner, KAM: kamPartner, Type: "Предоплата", Qty: 1, Date: dateToExcelSerial(dPrepayDate) });
                     } else if (isWait) {
-                        sys_db_partners.push({ Month: dealMonthStr, Partner: partner, KAM: kamPartner, Type: "Без сделки", Qty: 1 });
+                        sys_db_partners.push({ Month: dealMonthStr, Partner: partner, KAM: kamPartner, Type: "Без сделки", Qty: 1, Date: dateToExcelSerial(dDealDate) });
                     }
                 }
             });

@@ -81,3 +81,27 @@ tbody tr:hover {
 .animate-fade-in {
     animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+.partner-deals-row td {
+    padding: 0 !important;
+    border-top: none !important;
+}
+.partner-deals-row:hover {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+.partner-title-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    box-shadow: none !important;
+    transform: none !important;
+}
+.partner-title-btn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+.partner-title-btn::after {
+    display: none !important;
+}
+
