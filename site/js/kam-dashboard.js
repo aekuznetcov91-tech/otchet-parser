@@ -201,11 +201,11 @@ function getKamAggregatedData(filterCfg) {
     const registry = payload.partners_registry || [];
     const lgd = payload.lead_geo_dealers || {};
     const lgdSummary = lgd.summary || {
-        total_clients: 25355,
-        qual_clients: 8878,
-        trans_clients: 1744,
-        trans_qual_clients: 1455,
-        deals_from_trans: 7390
+        total_clients: 23572,
+        qual_clients: 8961,
+        trans_clients: 1052,
+        trans_qual_clients: 1052,
+        deals_from_trans: 5545
     };
 
     // Determine active date filter safely
@@ -484,9 +484,9 @@ function getKamAggregatedData(filterCfg) {
 
     // If "All KAMs" selected, use company-wide totals
     if (currentKamFilter === 'all') {
-        sumTotalInLeads = lgdSummary.total_clients || 25355;
-        sumQualLeads = lgdSummary.qual_clients || 8878;
-        sumTransLeads = lgdSummary.trans_clients || 1744;
+        sumTotalInLeads = lgdSummary.total_clients || 23572;
+        sumQualLeads = lgdSummary.qual_clients || 8961;
+        sumTransLeads = lgdSummary.trans_clients || 1052;
     } else {
         if (sumTotalInLeads === 0 && sumQualLeads > 0) {
             sumTotalInLeads = Math.round(sumQualLeads * 3.1);

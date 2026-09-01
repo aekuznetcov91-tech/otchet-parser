@@ -965,15 +965,23 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             if vin and not d12_client_map[cid]['vin']: d12_client_map[cid]['vin'] = vin
             if price > 0 and d12_client_map[cid]['price'] == 0: d12_client_map[cid]['price'] = price
 
-    # Pass 2: Aggregate events, qualification and transfer flags by client_id
+    oem_13_brands = {'JETOUR', 'LADA', 'HAVAL', 'CHANGAN', 'GEELY', 'BELGEE', 'CHERY', 'TENET', 'SOLARIS', 'SOUEAST', 'GAC', 'МОСКВИЧ', 'OMODA', 'JAECOO', 'HONGQI', 'XCITE'}
+
+    # Pass 2: Aggregate events, qualification and transfer flags by client_id (matching BI New Cars criteria)
     clients_by_id = {}
     for r in leads_data:
         cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА', 'ID') or '').strip()
         if not cid:
             continue
         
-        is_qual = (str(get_exact_val(r, 'ЦЕЛЕВОЙМЕНЕДЖЕР', 'ЦЕЛЕВОЙ') or '').strip() == '1')
-        is_trans = (str(get_exact_val(r, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
+        raw_src = str(get_exact_val(r, 'SOURCE', 'ИСТОЧНИК', 'ДЕТАЛИ') or '').lower()
+        raw_brand = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').upper()
+
+        is_qual_row = (str(get_exact_val(r, 'ЦЕЛЕВОЙМЕНЕДЖЕР', 'ЦЕЛЕВОЙ') or '').strip() == '1')
+        is_trans_row = (str(get_exact_val(r, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
+        has_used_row = ('б/у' in raw_src or 'бу' in raw_src or 'пробег' in raw_src)
+        has_oem_row = any(ob in raw_brand for ob in oem_13_brands)
+        has_fdc_row = ('фдц' in raw_src)
         
         d12_info = d12_client_map.get(cid, {})
         deal_info = deals_client_map.get(cid, {})
@@ -999,8 +1007,11 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                 'dealer': dealer,
                 'brand': brand,
                 'model': model,
-                'is_qual': is_qual,
-                'is_trans': is_trans,
+                'is_qual': is_qual_row,
+                'is_raw_trans': is_trans_row,
+                'has_used': has_used_row,
+                'has_oem': has_oem_row,
+                'has_fdc': has_fdc_row,
                 'has_deal': has_deal,
                 'event': event or ('Сделка' if has_deal else 'В обработке'),
                 'date': date_val,
@@ -1008,17 +1019,31 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                 'vin': d12_info.get('vin', '')
             }
         else:
-            if is_qual: clients_by_id[cid]['is_qual'] = True
-            if is_trans: clients_by_id[cid]['is_trans'] = True
-            if has_deal: clients_by_id[cid]['has_deal'] = True
-            if not clients_by_id[cid]['brand'] or clients_by_id[cid]['brand'] == 'Другие':
-                clients_by_id[cid]['brand'] = brand
-            if not clients_by_id[cid]['model']:
-                clients_by_id[cid]['model'] = model
-            if dealer and clients_by_id[cid]['dealer'] == 'Пул СберАвто (ДЦ не назначен)':
-                clients_by_id[cid]['dealer'] = dealer
-            if norm_reg != 'Другие регионы' and clients_by_id[cid]['region'] == 'Другие регионы':
-                clients_by_id[cid]['region'] = norm_reg
+            c_entry = clients_by_id[cid]
+            if is_qual_row: c_entry['is_qual'] = True
+            if is_trans_row: c_entry['is_raw_trans'] = True
+            if has_used_row: c_entry['has_used'] = True
+            if has_oem_row: c_entry['has_oem'] = True
+            if has_fdc_row: c_entry['has_fdc'] = True
+            if has_deal: c_entry['has_deal'] = True
+            if not c_entry['brand'] or c_entry['brand'] == 'Другие':
+                c_entry['brand'] = brand
+            if not c_entry['model']:
+                c_entry['model'] = model
+            if dealer and c_entry['dealer'] == 'Пул СберАвто (ДЦ не назначен)':
+                c_entry['dealer'] = dealer
+            if norm_reg != 'Другие регионы' and c_entry['region'] == 'Другие регионы':
+                c_entry['region'] = norm_reg
+
+    # Finalize BI transfer flag for each client
+    for c_entry in clients_by_id.values():
+        c_entry['is_trans'] = (
+            c_entry.get('is_raw_trans', False) and
+            c_entry.get('is_qual', False) and
+            c_entry.get('has_oem', False) and
+            (not c_entry.get('has_used', False)) and
+            (not c_entry.get('has_fdc', False))
+        )
 
     clients_all = list(clients_by_id.values())
 
@@ -1026,7 +1051,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
     total_clients = len(clients_all)
     qual_clients = sum(1 for c in clients_all if c['is_qual'])
     trans_clients = sum(1 for c in clients_all if c['is_trans'])
-    trans_qual = sum(1 for c in clients_all if c['is_qual'] and c['is_trans'])
+    trans_qual = trans_clients  # strictly qualified per BI
     trans_qual_pct = round((trans_qual / qual_clients * 100), 1) if qual_clients > 0 else 0.0
     deals_cnt = sum(1 for c in clients_all if c['has_deal'])
     deals_cr_pct = round((deals_cnt / trans_clients * 100), 1) if trans_clients > 0 else 0.0
@@ -1199,6 +1224,13 @@ def run_pipeline():
     bitrix_deals = [c for c in deals_candidates if c[0].startswith('DEAL_')]
     if bitrix_deals:
         deals_candidates = bitrix_deals
+
+    # Filter strictly to dedicated data (*).xlsx leads files if any exist
+    data_leads = [c for c in leads_candidates if c[0].startswith('data (')]
+    if data_leads:
+        all_leads_data = []
+        for _, rows in data_leads:
+            all_leads_data.extend(rows)
 
     def file_rank_deals(item):
         fname, fpath, rows = item
