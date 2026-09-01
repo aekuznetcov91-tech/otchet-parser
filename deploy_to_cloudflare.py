@@ -100,7 +100,40 @@ def deploy():
     except Exception as e:
         print(f"[!] Oshibka: {e}")
 
+    # Synchronize and push all changes to Git (origin main)
+    sync_and_push_git()
+
+def sync_and_push_git(commit_message=None):
+    """Auto-syncs and pushes all tracked and modified files to Git origin main."""
+    print("\n[*] Sinkhronizatsiya i otpravka v Git (origin main)...")
+    try:
+        status_res = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True, errors='replace')
+        if status_res.returncode == 0:
+            changes = status_res.stdout.strip()
+            if changes:
+                print("[*] Obnaruzheny izmeneniya dlya Git:")
+                for l in changes.splitlines()[:10]:
+                    print(f"    {l}")
+                if len(changes.splitlines()) > 10:
+                    print(f"    ... i esche {len(changes.splitlines()) - 10} faylov")
+                
+                subprocess.run(["git", "add", "raw_data/", "data.json", "site/", "scripts/", "js/", "css/", "docs/", "README.md", "deploy_to_cloudflare.py", ".geminirules", ".cursorrules", ".windsurfrules", "AGENTS.md"], capture_output=True)
+                
+                msg = commit_message or "data(deploy): auto-sync data and assets with Cloudflare deployment"
+                subprocess.run(["git", "commit", "-m", msg], capture_output=True)
+                
+                push_res = subprocess.run(["git", "push", "origin", "main"], capture_output=True, text=True, errors='replace')
+                if push_res.returncode == 0:
+                    print("[+] Uspeshno zapusheno v Git (origin main)!")
+                else:
+                    print(f"[!] Warning Git push: {push_res.stderr.strip() or push_res.stdout.strip()}")
+            else:
+                print("[+] Git derevo chistoe, vse izmeneniya uzhe v Git.")
+    except Exception as e:
+        print(f"[!] Warning Git sync: {e}")
+
 if __name__ == '__main__':
     deploy()
+
 
 
