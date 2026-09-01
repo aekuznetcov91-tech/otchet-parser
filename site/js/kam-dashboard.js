@@ -436,9 +436,6 @@ function getKamAggregatedData(filterCfg) {
                     ps.in_leads += (d.total_clients || 0);
                     ps.qual_leads += (d.qual_clients || 0);
                     ps.trans_leads += (d.trans_clients || 0);
-                    if (d.deals > 0 && ps.trans_deals === 0) {
-                        ps.trans_deals += d.deals;
-                    }
                     (d.top_brands || []).forEach(tb => {
                         const ntb = normalizeBrandName(tb);
                         if (!ps.brands[ntb]) {
@@ -473,14 +470,6 @@ function getKamAggregatedData(filterCfg) {
         const plan = plansStore.partner_plans[p.key] || plansStore.partner_plans[`ID_${p.id}`] || plansStore.partner_plans[String(p.id)] || 0;
         p.plan = plan;
         p.plan_pct = plan > 0 ? (p.total_deals / plan * 100) : 0;
-        
-        // Lead fallback for partners with transactions
-        if (p.total_deals > 0 && p.trans_leads === 0) {
-            p.trans_leads = Math.max(p.total_deals, Math.round(p.total_deals * 1.8));
-            p.qual_leads = Math.round(p.trans_leads * 2.5);
-            p.in_leads = Math.round(p.qual_leads * 3.2);
-        }
-
         p.cr_pct = p.trans_leads > 0 ? (p.trans_deals / p.trans_leads * 100) : 0;
 
         sumTotalInLeads += p.in_leads;
