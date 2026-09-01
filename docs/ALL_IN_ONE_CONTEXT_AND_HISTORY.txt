@@ -1017,4 +1017,13 @@ Git:
 4. **Сквозной пайплайн:**
    - `scripts/parser_engine.py`, `parser.html`, `site/parser.html` обогащают `sys_db_partners` полями `LeadId` (`Сумма id`), `ClientId`, `DealId`, `VIN`, `Brand`, `Model`, `Comm` (`КВ. Авто NEW`).
 
+---
+
+## 🚨 СТРОГОЕ ПРАВИЛО ПРОЕКТА: СИНХРОНИЗАЦИЯ GIT И CLOUDFLARE
+**ВСЁ, ЧТО ДЕПЛОИТСЯ НА CLOUDFLARE PAGES, ОБЯЗАТЕЛЬНО И БЕЗУСЛОВНО ДЕПЛОИТСЯ И В GIT (origin main).**
+- Скрипт `deploy_to_cloudflare.py` автоматически выполняет `git add`, `git commit` и `git push origin main`.
+- Любой деплой или обновление данных фиксируется в истории репозитория.
+- Запрещено производить выгрузку на прод в отрыве от Git-репозитория.
+
+
 
