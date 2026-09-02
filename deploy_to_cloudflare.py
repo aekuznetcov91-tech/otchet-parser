@@ -65,38 +65,30 @@ def deploy():
         cmd = [npx_bin, "--yes", "wrangler", "pages", "deploy", site_dir, f"--project-name={project_name}", "--commit-dirty=true", "--branch=main"]
 
     try:
+    try:
         print(f"[*] Komanda: {' '.join(cmd)}")
-        # Stream live output
-        process = subprocess.Popen(
+        res = subprocess.run(
             cmd,
             env=env,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
+            capture_output=True,
             text=True,
             encoding='utf-8',
-            errors='replace'
+            errors='replace',
+            timeout=120
         )
+        combined = (res.stdout or "") + "\n" + (res.stderr or "")
+        print(combined)
         
-        output_lines = []
-        for line in process.stdout:
-            try:
-                sys.stdout.write(line)
-                sys.stdout.flush()
-            except Exception:
-                pass
-            output_lines.append(line)
-            
-        process.wait()
-        combined = "".join(output_lines)
-        
-        if process.returncode == 0 or 'Success' in combined or 'Deployment complete' in combined or 'pages.dev' in combined:
+        if res.returncode == 0 or 'Success' in combined or 'Deployment complete' in combined or 'pages.dev' in combined:
             print("\n[+] USPESHNO VYGRUZHENO NA CLOUDFLARE PAGES!")
             print("[+] Sayt s avtorizaciey: https://dashbord-partners.beckelaguas723.workers.dev")
             print("[+] Pryamaya ssylka:     https://dashbord-partners1.pages.dev")
         else:
             print("\n[!] Oshibka wrangler pri vygruzke:")
             if not combined.strip():
-                print(f"Protsess zavershilsya s kodom {process.returncode}")
+                print(f"Protsess zavershilsya s kodom {res.returncode}")
+    except subprocess.TimeoutExpired:
+        print("\n[!] Warning: Wrangler process timed out, continuing...")
     except Exception as e:
         print(f"[!] Oshibka: {e}")
 
