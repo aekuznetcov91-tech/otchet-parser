@@ -917,7 +917,9 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
     """
     Build detailed breakdown of transferred and qualified leads by Region and Dealer.
     Includes client-level database for interactive drilldown with BFS URLs.
+    Includes monthly breakdown ('all', '2026-08', '2026-07').
     """
+    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "АВАНС")
     d12_client_map = {}
     deals_client_map = {}
 
@@ -931,7 +933,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                     'price': float(str(get_exact_val(r, 'ЦЕНА', 'ФИНАЛЬНАЯЦЕНАB2C') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.') or 0)
                 }
 
-    # Pass 1: Extract client details from data (12) or enriched rows
+    # Pass 1: Extract client details from leads data
     for r in leads_data:
         cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА', 'ID') or '').strip()
         if not cid:
@@ -940,6 +942,8 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         reg = str(get_exact_val(r, 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОН', 'ADDRESS', 'АДРЕС') or '').strip()
         partner = str(get_exact_val(r, 'ПАРТНЕР', 'ДИЛЕР', 'КОМПАНИЯ') or '').strip()
         brand = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
+        if any(kw in brand.upper() for kw in aux_keywords):
+            brand = 'Другие'
         model = str(get_exact_val(r, 'МОДЕЛЬ') or '').strip()
         vin = str(get_exact_val(r, 'VIN', 'ВИН') or '').strip()
         
@@ -960,14 +964,14 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         else:
             if reg and not d12_client_map[cid]['region']: d12_client_map[cid]['region'] = reg
             if partner and not d12_client_map[cid]['partner']: d12_client_map[cid]['partner'] = partner
-            if brand and not d12_client_map[cid]['brand']: d12_client_map[cid]['brand'] = brand
+            if brand and (not d12_client_map[cid]['brand'] or d12_client_map[cid]['brand'] == 'Другие'): d12_client_map[cid]['brand'] = brand
             if model and not d12_client_map[cid]['model']: d12_client_map[cid]['model'] = model
             if vin and not d12_client_map[cid]['vin']: d12_client_map[cid]['vin'] = vin
             if price > 0 and d12_client_map[cid]['price'] == 0: d12_client_map[cid]['price'] = price
 
     oem_13_brands = {'JETOUR', 'LADA', 'HAVAL', 'CHANGAN', 'GEELY', 'BELGEE', 'CHERY', 'TENET', 'SOLARIS', 'SOUEAST', 'GAC', 'МОСКВИЧ', 'OMODA', 'JAECOO', 'HONGQI', 'XCITE'}
 
-    # Pass 2: Aggregate events, qualification and transfer flags by client_id (matching BI New Cars criteria)
+    # Pass 2: Aggregate events, qualification and transfer flags by client_id (deduplicated by client_id)
     clients_by_id = {}
     for r in leads_data:
         cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА', 'ID') or '').strip()
@@ -977,8 +981,11 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         raw_src = str(get_exact_val(r, 'SOURCE', 'ИСТОЧНИК', 'ДЕТАЛИ') or '').lower()
         raw_brand = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').upper()
 
+        event = str(get_exact_val(r, 'СОБЫТИЕ', 'EVENTNAME', 'EVENT_NAME') or '').strip()
+        ev_clean = clean_key(event)
+        
         is_qual_row = (str(get_exact_val(r, 'ЦЕЛЕВОЙМЕНЕДЖЕР', 'ЦЕЛЕВОЙ') or '').strip() == '1')
-        is_trans_row = (str(get_exact_val(r, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
+        is_trans_row = ('ОТПРАВКАЛИДА' in ev_clean or 'ОТПРАВЛЕНДИЛЕРУ' in ev_clean or str(get_exact_val(r, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
         has_used_row = ('б/у' in raw_src or 'бу' in raw_src or 'пробег' in raw_src)
         has_oem_row = any(ob in raw_brand for ob in oem_13_brands)
         has_fdc_row = ('фдц' in raw_src)
@@ -994,10 +1001,14 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         norm_reg = normalize_region_clean(raw_reg)
         
         brand = d12_info.get('brand') or deal_info.get('brand') or str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip() or 'Другие'
+        if any(kw in brand.upper() for kw in aux_keywords):
+            brand = 'Другие'
         model = d12_info.get('model') or str(get_exact_val(r, 'МОДЕЛЬ') or '').strip()
-        event = str(get_exact_val(r, 'СОБЫТИЕ', 'EVENTNAME') or '').strip()
         has_deal = (event == 'Сделка' or d12_info.get('price', 0) > 0 or cid in deals_client_map)
         date_val = str(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА') or '').strip()
+        
+        p_date = parse_custom_date(date_val)
+        month_str = p_date.strftime('%Y-%m') if p_date else '2026-08'
 
         if cid not in clients_by_id:
             clients_by_id[cid] = {
@@ -1007,6 +1018,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                 'dealer': dealer,
                 'brand': brand,
                 'model': model,
+                'month': month_str,
                 'is_qual': is_qual_row,
                 'is_raw_trans': is_trans_row,
                 'has_used': has_used_row,
@@ -1026,7 +1038,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             if has_oem_row: c_entry['has_oem'] = True
             if has_fdc_row: c_entry['has_fdc'] = True
             if has_deal: c_entry['has_deal'] = True
-            if not c_entry['brand'] or c_entry['brand'] == 'Другие':
+            if (not c_entry['brand'] or c_entry['brand'] == 'Другие') and brand != 'Другие':
                 c_entry['brand'] = brand
             if not c_entry['model']:
                 c_entry['model'] = model
@@ -1035,7 +1047,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             if norm_reg != 'Другие регионы' and c_entry['region'] == 'Другие регионы':
                 c_entry['region'] = norm_reg
 
-    # Finalize BI transfer flag for each client
+    # Finalize BI transfer flag for each client (strictly qualified + OEM + not used + not fdc)
     for c_entry in clients_by_id.values():
         c_entry['is_trans'] = (
             c_entry.get('is_raw_trans', False) and
@@ -1047,124 +1059,138 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
 
     clients_all = list(clients_by_id.values())
 
-    # Build Summary KPIs
-    total_clients = len(clients_all)
-    qual_clients = sum(1 for c in clients_all if c['is_qual'])
-    trans_clients = sum(1 for c in clients_all if c['is_trans'])
-    trans_qual = trans_clients  # strictly qualified per BI
-    trans_qual_pct = round((trans_qual / qual_clients * 100), 1) if qual_clients > 0 else 0.0
-    deals_cnt = sum(1 for c in clients_all if c['has_deal'])
-    deals_cr_pct = round((deals_cnt / trans_clients * 100), 1) if trans_clients > 0 else 0.0
+    def build_tree_for_clients(subset_clients):
+        tot_c = len(subset_clients)
+        q_c = sum(1 for c in subset_clients if c['is_qual'])
+        t_c = sum(1 for c in subset_clients if c['is_trans'])
+        t_q_pct = round((t_c / q_c * 100), 1) if q_c > 0 else 0.0
+        d_cnt = sum(1 for c in subset_clients if c['has_deal'])
+        d_cr_pct = round((d_cnt / t_c * 100), 1) if t_c > 0 else 0.0
 
-    # Build Region & Dealer tree
-    reg_map = {}
-    for c in clients_all:
-        r_name = c['region']
-        d_name = c['dealer']
-        
-        if r_name not in reg_map:
-            reg_map[r_name] = {
+        reg_map = {}
+        for c in subset_clients:
+            r_name = c['region']
+            d_name = c['dealer']
+            
+            if r_name not in reg_map:
+                reg_map[r_name] = {
+                    'region_name': r_name,
+                    'total_clients': 0,
+                    'qual_clients': 0,
+                    'trans_clients': 0,
+                    'trans_qual_clients': 0,
+                    'deals': 0,
+                    'dealers_dict': {}
+                }
+            
+            r_entry = reg_map[r_name]
+            r_entry['total_clients'] += 1
+            if c['is_qual']: r_entry['qual_clients'] += 1
+            if c['is_trans']: r_entry['trans_clients'] += 1
+            if c['is_qual'] and c['is_trans']: r_entry['trans_qual_clients'] += 1
+            if c['has_deal']: r_entry['deals'] += 1
+            
+            if d_name not in r_entry['dealers_dict']:
+                r_entry['dealers_dict'][d_name] = {
+                    'dealer_name': d_name,
+                    'region_name': r_name,
+                    'total_clients': 0,
+                    'qual_clients': 0,
+                    'trans_clients': 0,
+                    'trans_qual_clients': 0,
+                    'deals': 0,
+                    'brands_count': {},
+                    'clients': []
+                }
+            
+            d_entry = r_entry['dealers_dict'][d_name]
+            d_entry['total_clients'] += 1
+            if c['is_qual']: d_entry['qual_clients'] += 1
+            if c['is_trans']: d_entry['trans_clients'] += 1
+            if c['is_qual'] and c['is_trans']: d_entry['trans_qual_clients'] += 1
+            if c['has_deal']: d_entry['deals'] += 1
+            
+            b = c['brand'] or 'Другие'
+            d_entry['brands_count'][b] = d_entry['brands_count'].get(b, 0) + 1
+            
+            if len(d_entry['clients']) < 500:
+                d_entry['clients'].append({
+                    'id': c['id'],
+                    'bfs_url': c['bfs_url'],
+                    'brand': c['brand'],
+                    'model': c['model'],
+                    'month': c.get('month', '2026-08'),
+                    'is_qual': c['is_qual'],
+                    'is_trans': c['is_trans'],
+                    'has_deal': c['has_deal'],
+                    'event': c['event'],
+                    'vin': c['vin'],
+                    'price': c['price']
+                })
+
+        regions_list = []
+        for r_name, r_data in reg_map.items():
+            dealers_list = []
+            for d_name, d_data in r_data['dealers_dict'].items():
+                top_brands = sorted(d_data['brands_count'].items(), key=lambda x: x[1], reverse=True)
+                dealers_list.append({
+                    'dealer_name': d_name,
+                    'region_name': r_name,
+                    'total_clients': d_data['total_clients'],
+                    'qual_clients': d_data['qual_clients'],
+                    'trans_clients': d_data['trans_clients'],
+                    'trans_qual_clients': d_data['trans_qual_clients'],
+                    'trans_qual_pct': round((d_data['trans_qual_clients'] / d_data['qual_clients'] * 100), 1) if d_data['qual_clients'] > 0 else 0.0,
+                    'deals': d_data['deals'],
+                    'deals_cr_pct': round((d_data['deals'] / d_data['trans_clients'] * 100), 1) if d_data['trans_clients'] > 0 else 0.0,
+                    'top_brands': [tb[0] for tb in top_brands[:3] if tb[0] not in aux_keywords],
+                    'clients': d_data['clients']
+                })
+            
+            dealers_list.sort(key=lambda x: (x['trans_clients'], x['qual_clients']), reverse=True)
+            
+            regions_list.append({
                 'region_name': r_name,
-                'total_clients': 0,
-                'qual_clients': 0,
-                'trans_clients': 0,
-                'trans_qual_clients': 0,
-                'deals': 0,
-                'dealers_dict': {}
-            }
-        
-        r_entry = reg_map[r_name]
-        r_entry['total_clients'] += 1
-        if c['is_qual']: r_entry['qual_clients'] += 1
-        if c['is_trans']: r_entry['trans_clients'] += 1
-        if c['is_qual'] and c['is_trans']: r_entry['trans_qual_clients'] += 1
-        if c['has_deal']: r_entry['deals'] += 1
-        
-        if d_name not in r_entry['dealers_dict']:
-            r_entry['dealers_dict'][d_name] = {
-                'dealer_name': d_name,
-                'region_name': r_name,
-                'total_clients': 0,
-                'qual_clients': 0,
-                'trans_clients': 0,
-                'trans_qual_clients': 0,
-                'deals': 0,
-                'brands_count': {},
-                'clients': []
-            }
-        
-        d_entry = r_entry['dealers_dict'][d_name]
-        d_entry['total_clients'] += 1
-        if c['is_qual']: d_entry['qual_clients'] += 1
-        if c['is_trans']: d_entry['trans_clients'] += 1
-        if c['is_qual'] and c['is_trans']: d_entry['trans_qual_clients'] += 1
-        if c['has_deal']: d_entry['deals'] += 1
-        
-        b = c['brand'] or 'Другие'
-        d_entry['brands_count'][b] = d_entry['brands_count'].get(b, 0) + 1
-        
-        if len(d_entry['clients']) < 500:
-            d_entry['clients'].append({
-                'id': c['id'],
-                'bfs_url': c['bfs_url'],
-                'brand': c['brand'],
-                'model': c['model'],
-                'is_qual': c['is_qual'],
-                'is_trans': c['is_trans'],
-                'has_deal': c['has_deal'],
-                'event': c['event'],
-                'vin': c['vin'],
-                'price': c['price']
+                'total_clients': r_data['total_clients'],
+                'qual_clients': r_data['qual_clients'],
+                'trans_clients': r_data['trans_clients'],
+                'trans_qual_clients': r_data['trans_qual_clients'],
+                'trans_qual_pct': round((r_data['trans_qual_clients'] / r_data['qual_clients'] * 100), 1) if r_data['qual_clients'] > 0 else 0.0,
+                'deals': r_data['deals'],
+                'deals_cr_pct': round((r_data['deals'] / r_data['trans_clients'] * 100), 1) if r_data['trans_clients'] > 0 else 0.0,
+                'dealers_count': len(dealers_list),
+                'dealers': dealers_list
             })
 
-    # Format list
-    regions_list = []
-    for r_name, r_data in reg_map.items():
-        dealers_list = []
-        for d_name, d_data in r_data['dealers_dict'].items():
-            top_brands = sorted(d_data['brands_count'].items(), key=lambda x: x[1], reverse=True)
-            dealers_list.append({
-                'dealer_name': d_name,
-                'region_name': r_name,
-                'total_clients': d_data['total_clients'],
-                'qual_clients': d_data['qual_clients'],
-                'trans_clients': d_data['trans_clients'],
-                'trans_qual_clients': d_data['trans_qual_clients'],
-                'trans_qual_pct': round((d_data['trans_qual_clients'] / d_data['qual_clients'] * 100), 1) if d_data['qual_clients'] > 0 else 0.0,
-                'deals': d_data['deals'],
-                'deals_cr_pct': round((d_data['deals'] / d_data['trans_clients'] * 100), 1) if d_data['trans_clients'] > 0 else 0.0,
-                'top_brands': [tb[0] for tb in top_brands[:3]],
-                'clients': d_data['clients']
-            })
-        
-        dealers_list.sort(key=lambda x: (x['trans_clients'], x['qual_clients']), reverse=True)
-        
-        regions_list.append({
-            'region_name': r_name,
-            'total_clients': r_data['total_clients'],
-            'qual_clients': r_data['qual_clients'],
-            'trans_clients': r_data['trans_clients'],
-            'trans_qual_clients': r_data['trans_qual_clients'],
-            'trans_qual_pct': round((r_data['trans_qual_clients'] / r_data['qual_clients'] * 100), 1) if r_data['qual_clients'] > 0 else 0.0,
-            'deals': r_data['deals'],
-            'deals_cr_pct': round((r_data['deals'] / r_data['trans_clients'] * 100), 1) if r_data['trans_clients'] > 0 else 0.0,
-            'dealers_count': len(dealers_list),
-            'dealers': dealers_list
-        })
+        regions_list.sort(key=lambda x: (x['trans_clients'], x['qual_clients']), reverse=True)
 
-    regions_list.sort(key=lambda x: (x['trans_clients'], x['qual_clients']), reverse=True)
+        return {
+            'summary': {
+                'total_clients': tot_c,
+                'qual_clients': q_c,
+                'trans_clients': t_c,
+                'trans_qual_clients': t_c,
+                'trans_qual_pct': t_q_pct,
+                'deals_from_trans': d_cnt,
+                'deals_cr_pct': d_cr_pct
+            },
+            'regions': regions_list
+        }
+
+    all_tree = build_tree_for_clients(clients_all)
+    aug_clients = [c for c in clients_all if c.get('month') == '2026-08']
+    jul_clients = [c for c in clients_all if c.get('month') == '2026-07']
+    aug_tree = build_tree_for_clients(aug_clients)
+    jul_tree = build_tree_for_clients(jul_clients)
 
     return {
-        'summary': {
-            'total_clients': total_clients,
-            'qual_clients': qual_clients,
-            'trans_clients': trans_clients,
-            'trans_qual_clients': trans_qual,
-            'trans_qual_pct': trans_qual_pct,
-            'deals_from_trans': deals_cnt,
-            'deals_cr_pct': deals_cr_pct
-        },
-        'regions': regions_list
+        'summary': all_tree['summary'],
+        'regions': all_tree['regions'],
+        'by_month': {
+            'all': all_tree,
+            '2026-08': aug_tree,
+            '2026-07': jul_tree
+        }
     }
 
 
@@ -1308,19 +1334,31 @@ def run_pipeline():
     sys_db_partners = []
     debtors = []
 
-    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ")
+    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "АВАНС")
 
-    # Build lookup map for Lead ID (Сумма id from leads transmission file)
+    # Build lookup map for Lead ID and strictly transferred clients by month (deduplicated by client_id)
     leads_sum_id_by_client = {}
-    leads_sum_id_by_vin = {}
+    transferred_clients_by_month = {}
+    all_transferred_clients = set()
+
     for lr in all_leads_data:
         cid_l = str(get_exact_val(lr, 'CLIENTID', 'CLIENT_ID', 'IDКЛИЕНТА') or "").strip()
         sid_l = str(get_exact_val(lr, 'СУММАID', 'СУММА_ID', 'ID') or "").strip()
-        vin_l = str(get_exact_val(lr, 'VIN', 'ВИН') or "").strip().upper()
         if cid_l and sid_l and cid_l not in leads_sum_id_by_client:
             leads_sum_id_by_client[cid_l] = sid_l
-        if vin_l and sid_l and len(vin_l) > 5 and vin_l not in leads_sum_id_by_vin:
-            leads_sum_id_by_vin[vin_l] = sid_l
+
+        if cid_l:
+            ev_l = str(get_exact_val(lr, 'СОБЫТИЕ', 'EVENTNAME', 'EVENT_NAME') or "").strip()
+            ev_clean = clean_key(ev_l)
+            is_trans = ('ОТПРАВКАЛИДА' in ev_clean or 'ОТПРАВЛЕНДИЛЕРУ' in ev_clean or str(get_exact_val(lr, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
+            if is_trans:
+                d_val = str(get_exact_val(lr, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА') or "").strip()
+                p_date = parse_custom_date(d_val)
+                m_str = p_date.strftime('%Y-%m') if p_date else '2026-08'
+                if m_str not in transferred_clients_by_month:
+                    transferred_clients_by_month[m_str] = set()
+                transferred_clients_by_month[m_str].add(cid_l)
+                all_transferred_clients.add(cid_l)
 
     for row in deals_data:
         tovar = str(get_exact_val(row, 'ТОВАР') or "").upper()
@@ -1357,7 +1395,7 @@ def run_pipeline():
 
         client_id = str(get_exact_val(row, 'CLIENTID', 'CLIENT_ID') or "").strip()
         deal_id = str(get_exact_val(row, 'ID', 'IDСДЕЛКИ') or "").strip()
-        lead_id = leads_sum_id_by_client.get(client_id) or leads_sum_id_by_vin.get(vin.upper() if vin else "") or ""
+        lead_id = leads_sum_id_by_client.get(client_id) or ""
 
         raw_deal_date = get_exact_val(row, 'ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ')
         raw_prepay_date = get_exact_val(row, 'ДАТАВНЕСЕНИЯПРЕДОПЛАТЫРОЗНИЦА', 'ДАТАПОЛУЧЕНИЯАВАНСА') or raw_deal_date
@@ -1434,7 +1472,8 @@ def run_pipeline():
                 is_mp = any(k in b2c.upper() for k in ['МП1', 'МП2', 'МП3', 'MP1', 'MP2', 'MP3'])
                 raw_prepay_val = get_exact_val(row, 'ДАТАВНЕСЕНИЯПРЕДОПЛАТЫРОЗНИЦА', 'ДАТАПОЛУЧЕНИЯАВАНСА')
                 has_prepay_date = bool(raw_prepay_val and str(raw_prepay_val).strip())
-                is_lead_sale_no_prepay = bool(is_sale and not has_prepay_date)
+                # Strictly match by client_id against transferred leads
+                is_trans_deal = bool((client_id and (client_id in transferred_clients_by_month.get(deal_month_str, set()) or client_id in all_transferred_clients)) or ('ПЕРЕДАЧА' in b2c.upper()))
                 sys_db_partners.append({
                     "Month": deal_month_str,
                     "PartnerId": pid,
@@ -1454,7 +1493,7 @@ def run_pipeline():
                     "LeadId": lead_id,
                     "DealId": deal_id,
                     "Manager": manager,
-                    "IsLeadSaleNoPrepay": 1 if is_lead_sale_no_prepay else 0,
+                    "IsLeadSaleNoPrepay": 1 if is_trans_deal else 0,
                     "IsMpSale": 1 if is_mp else 0,
                     "HasPrepay": 1 if has_prepay_date else 0
                 })

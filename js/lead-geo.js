@@ -15,8 +15,10 @@ let currentModalClients = [];
  * Initializes and renders the Lead Geo & Dealers Tab
  */
 function renderLeadGeoTab() {
+    const activeMonth = (window.currentFilterConfig && window.currentFilterConfig.month) || '2026-08';
     const lgd = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
-    const summary = lgd.summary || {
+    const monthData = (lgd.by_month && (lgd.by_month[activeMonth] || (activeMonth === 'all' ? lgd.by_month['all'] : lgd))) || lgd;
+    const summary = monthData.summary || lgd.summary || {
         total_clients: 0,
         qual_clients: 0,
         trans_clients: 0,
@@ -25,7 +27,7 @@ function renderLeadGeoTab() {
         deals_from_trans: 0,
         deals_cr_pct: 0
     };
-    const regions = lgd.regions || [];
+    const regions = monthData.regions || lgd.regions || [];
 
     // Render KPI Cards
     const elQual = document.getElementById('kpiGeoQualClients');
@@ -43,10 +45,15 @@ function renderLeadGeoTab() {
     // Populate Brand Filter if empty
     const brandSel = document.getElementById('leadGeoBrandFilter');
     if (brandSel && brandSel.options.length <= 1) {
+        const auxKeywords = ["КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "АВАНС"];
         const brandsSet = new Set();
-        regions.forEach(r => {
+        (lgd.regions || []).forEach(r => {
             (r.dealers || []).forEach(d => {
-                (d.top_brands || []).forEach(b => brandsSet.add(b));
+                (d.top_brands || []).forEach(b => {
+                    if (b && !auxKeywords.some(kw => b.toUpperCase().includes(kw))) {
+                        brandsSet.add(b);
+                    }
+                });
             });
         });
         Array.from(brandsSet).sort().forEach(b => {
@@ -69,8 +76,10 @@ function renderLeadGeoTable() {
     const container = document.getElementById('leadGeoTableContainer');
     if (!container) return;
 
+    const activeMonth = (window.currentFilterConfig && window.currentFilterConfig.month) || '2026-08';
     const lgd = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
-    const rawRegions = lgd.regions || [];
+    const monthData = (lgd.by_month && (lgd.by_month[activeMonth] || (activeMonth === 'all' ? lgd.by_month['all'] : lgd))) || lgd;
+    const rawRegions = monthData.regions || lgd.regions || [];
 
     const q = (currentLeadGeoFilter.search || '').toLowerCase().trim();
     const selBrand = currentLeadGeoFilter.brand;

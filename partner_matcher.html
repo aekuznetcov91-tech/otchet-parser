@@ -679,6 +679,32 @@
                 console.error("Load registry/geo error:", e);
             }
             updateAllViews();
+
+            // Handle URL Query Params for direct partner editing
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const pId = urlParams.get('partner_id');
+                const pSearch = urlParams.get('search');
+
+                if (pId || pSearch) {
+                    switchTab('registry');
+                    if (pSearch) {
+                        const searchInput = document.getElementById('searchRegistry');
+                        if (searchInput) {
+                            searchInput.value = pSearch;
+                            searchRegistryQuery = pSearch.toLowerCase();
+                            renderRegistryTable();
+                        }
+                    }
+                    if (pId) {
+                        setTimeout(() => {
+                            openEditModal(pId);
+                        }, 150);
+                    }
+                }
+            } catch (err) {
+                console.warn("URL params parse error:", err);
+            }
         }
 
         function updateAllViews() {
@@ -1376,7 +1402,7 @@
 
         function openEditModal(pid) {
             currentEditingPid = pid;
-            const p = registryData.partners.find(x => x.partner_id === pid);
+            const p = registryData.partners.find(x => String(x.partner_id) === String(pid));
             if (!p) return;
 
             document.getElementById('modalPartnerId').textContent = `ID: ${p.partner_id}`;

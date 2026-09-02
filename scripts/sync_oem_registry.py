@@ -250,6 +250,13 @@ def sync_oem_to_registry(oem_file_path=None):
         os.makedirs(os.path.dirname(rp), exist_ok=True)
         with open(rp, 'w', encoding='utf-8') as f:
             json.dump(reg_data, f, ensure_ascii=False, indent=2)
+
+    # Re-apply manual partner splits & KAM overrides
+    try:
+        from scripts.fix_partners_splits import apply_partners_splits
+        apply_partners_splits()
+    except Exception as e:
+        print(f"[!] Warning applying partner splits: {e}")
             
     # Trigger benchmark update
     try:

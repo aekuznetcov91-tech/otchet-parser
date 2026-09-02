@@ -136,19 +136,6 @@
           "brand": "CHERY & TENET"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Тула",
-          "group_link": "https://max.ru/join/la9MJ-WAF_ySpzZKmv0yBXDe6T1bdfVZGCWPz-6-mgo",
-          "name": "Чери Центр Автокласс на Оборонной",
-          "legal_entity": "ООО М-АВТО",
-          "inn": "7106511456",
-          "address": "г. Тула ул. Оборонная 116",
-          "back_name": "Нет",
-          "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
-          "responsible": "Алексей Чихарев",
-          "brand": "CHERY & TENET"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Санкт-Петербург",
           "group_link": "https://max.ru/join/Pib6eWLbwRZd84OcgJ6z9cgM5R79LTsDnhY5Y_C7XhI",
@@ -343,10 +330,18 @@
       "partner_id": 1007,
       "canonical_name": "O&J ОПТИМА КУБАНЬ",
       "holding": "O&J",
-      "kam": "Валерия Солдатова",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE O&J (ООО \"ОПТИМА КУБАНЬ\")",
-        "O&J ОПТИМА КУБАНЬ"
+        "O&J ОПТИМА КУБАНЬ",
+        "ГК Автодом / (ООО \"ДЦ АЛТУФЬЕВО\")",
+        "ГК Автодом / (ООО \"ДЦ Алтуфьево\")",
+        "ООО \"ДЦ АЛТУФЬЕВО\"",
+        "ООО \"ДЦ Алтуфьево\"",
+        "ДЦ АЛТУФЬЕВО",
+        "ДЦ Алтуфьево",
+        "Автодом JAECOO Алтуфьево ДЦА Москва, 85-й км МКАД, вл. 5, с. 1",
+        "Автодом Алтуфьево"
       ],
       "bi_aliases": [
         "СберАвто",
@@ -693,9 +688,9 @@
     },
     {
       "partner_id": 1014,
-      "canonical_name": "Моторленд",
+      "canonical_name": "Моторленд (Воронеж)",
       "holding": "Моторленд",
-      "kam": "Светлана Дариенко",
+      "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ONLINE ООО \"СОКРАТ СПБ\"",
         "АВТОПРОЕКТ",
@@ -745,19 +740,6 @@
           "back_name": "Online Моторленд",
           "email": "hostes@jetour-motorland.ru, v.dyakova@jetour-motorland.ru, a.malevaniy@jetour-motorland.ru, spodakin@jetour-motorland.ru",
           "responsible": "Валерия Солдатова",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/UYyazrw2aZgYM4mIwE1iyLcHOGg_2faU78aEX48aSAY",
-          "name": "Моторленд",
-          "legal_entity": "ООО Сократ СПБ",
-          "inn": "3662259794",
-          "address": "Ириновский пр. 10",
-          "back_name": "Online Моторленд",
-          "email": "d.ionova@belgee-motorland78.ru hostes@belgee-motorland78.ru hostes@jetour-motorland78.ru",
-          "responsible": "Светлана Дариенко",
           "brand": "JETOUR"
         }
       ],
@@ -2628,19 +2610,6 @@
           "email": "lead-jetour@dynamica.su",
           "responsible": "",
           "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Вологда",
-          "group_link": "https://max.ru/join/wFSXy0WfhjopCNKXZyZzOlZi94-CsjoUD7FGsJba5Yo",
-          "name": "Динамика",
-          "legal_entity": "ООО Динамика",
-          "inn": "3525469447",
-          "address": "г.  Вологда, ш, Окружное, 51, помещение 4",
-          "back_name": "ГК Динамика",
-          "email": "tatyana.abysova@dynamica-cherepovets.ru andrey.shabalov@dynamica-vologda.su",
-          "responsible": "Дариенко Светлана",
-          "brand": "JETOUR"
         }
       ],
       "status": "verified"
@@ -2737,7 +2706,7 @@
     },
     {
       "partner_id": 1035,
-      "canonical_name": "Эксперт Авто",
+      "canonical_name": "Эксперт Авто (Новосибирск)",
       "holding": "Эксперт",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
@@ -2791,51 +2760,6 @@
           "email": "aabramov@geely-expertauto-nsk.ru asusoeva@geely-expertauto-nsk.ru",
           "responsible": "Светлана Дариенко",
           "brand": "Geely & Belgee"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Самара, Южное шоссе, 12, строение 1",
-          "name": "Online Эксперт Авто",
-          "brand": "Geely & Belgee"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Самара",
-          "group_link": "https://max.ru/join/44YwevLjU2QDBYrfuowQ9Hhlzf9iNF4kkVJd3z8I4Uc",
-          "name": "Эксперт Альфа Джетур",
-          "legal_entity": "ООО «ЭКСПЕРТ САМАРА»",
-          "inn": "9709054813",
-          "address": "Самара, Ново-Урицкая,  д.22",
-          "back_name": "Эксперт Альфа Джетур",
-          "email": "kambarova.i@jetour-alpha.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Самара",
-          "group_link": "https://max.ru/join/i4noHfb43zS19D77pS7-Kw5guHLmdABuBF7sJQfLA14",
-          "name": "ЭКСПЕРТ АВТО",
-          "legal_entity": "ООО САВ",
-          "inn": "6314034107",
-          "address": "г. Самара,Южное ш., 12, стр. 4",
-          "back_name": "",
-          "email": "sales@jetour-samara-ug.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Самара",
-          "group_link": "https://max.ru/join/jDSwWuURr3bx_WGWqDKurPSg8y6D_D07KBD3yIfgq1o",
-          "name": "Эксперт Авто",
-          "legal_entity": "ООО Эксперт Авто Самара",
-          "inn": "6312147970",
-          "address": "г. Самара,Демократическая ул., 55,",
-          "back_name": "нет фида",
-          "email": "vkokurkin@solaris-expertauto.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "SOLARIS"
         }
       ],
       "status": "verified"
@@ -6599,6 +6523,19 @@
       "pochta_aliases": [],
       "oem_data": [
         {
+          "sheet": "CHERY&TENET",
+          "city": "Тула",
+          "group_link": "https://max.ru/join/la9MJ-WAF_ySpzZKmv0yBXDe6T1bdfVZGCWPz-6-mgo",
+          "name": "Чери Центр Автокласс на Оборонной",
+          "legal_entity": "ООО М-АВТО",
+          "inn": "7106511456",
+          "address": "г. Тула ул. Оборонная 116",
+          "back_name": "Нет",
+          "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHERY & TENET"
+        },
+        {
           "sheet": "Geely&Belgee",
           "city": "Тула,Новомосковское ш., 15",
           "name": "ONLINE пилот ФДЦ Автокласс Тула",
@@ -7478,16 +7415,32 @@
     },
     {
       "partner_id": 1132,
-      "canonical_name": "ООО \"ДИНАМИКА ВОЛОГДА",
+      "canonical_name": "Динамика Вологда",
       "holding": "ООО",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "ООО \"ДИНАМИКА ВОЛОГДА\" ONLINE",
-        "ООО \"ДИНАМИКА ВОЛОГДА"
+        "ООО \"ДИНАМИКА ВОЛОГДА",
+        "3525469447",
+        "ООО Динамика Вологда"
       ],
       "bi_aliases": [],
       "pochta_aliases": [],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Вологда",
+          "group_link": "https://max.ru/join/wFSXy0WfhjopCNKXZyZzOlZi94-CsjoUD7FGsJba5Yo",
+          "name": "Динамика",
+          "legal_entity": "ООО Динамика",
+          "inn": "3525469447",
+          "address": "г.  Вологда, ш, Окружное, 51, помещение 4",
+          "back_name": "ГК Динамика",
+          "email": "tatyana.abysova@dynamica-cherepovets.ru andrey.shabalov@dynamica-vologda.su",
+          "responsible": "Дариенко Светлана",
+          "brand": "JETOUR"
+        }
+      ],
       "status": "verified"
     },
     {
@@ -12422,6 +12375,399 @@
       "bitrix_aliases": [],
       "bi_aliases": [],
       "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": 1280,
+      "canonical_name": "Сократ (Моторленд)",
+      "kam": "Светлана Дариенко",
+      "bitrix_aliases": [
+        "Сократ",
+        "ООО Сократ",
+        "ООО \"Сократ\"",
+        "3662259794",
+        "Скорат",
+        "ООО Скорат"
+      ],
+      "bi_aliases": [
+        "Сократ"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/UYyazrw2aZgYM4mIwE1iyLcHOGg_2faU78aEX48aSAY",
+          "name": "Моторленд",
+          "legal_entity": "ООО Сократ СПБ",
+          "inn": "3662259794",
+          "address": "Ириновский пр. 10",
+          "back_name": "Online Моторленд",
+          "email": "d.ionova@belgee-motorland78.ru hostes@belgee-motorland78.ru hostes@jetour-motorland78.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "JETOUR"
+        }
+      ]
+    },
+    {
+      "partner_id": 1281,
+      "canonical_name": "Эксперт Авто (Самара)",
+      "kam": "Евгения Добролюбова",
+      "bitrix_aliases": [
+        "Эксперт Авто Самара",
+        "ООО Эксперт Авто Самара",
+        "6314034107",
+        "6312147970",
+        "Эксперт Самара"
+      ],
+      "bi_aliases": [
+        "Эксперт Авто Самара"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Самара, Южное шоссе, 12, строение 1",
+          "name": "Online Эксперт Авто",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Самара",
+          "group_link": "https://max.ru/join/i4noHfb43zS19D77pS7-Kw5guHLmdABuBF7sJQfLA14",
+          "name": "ЭКСПЕРТ АВТО",
+          "legal_entity": "ООО САВ",
+          "inn": "6314034107",
+          "address": "г. Самара,Южное ш., 12, стр. 4",
+          "back_name": "",
+          "email": "sales@jetour-samara-ug.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "JETOUR"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
       "oem_data": [
         {
           "sheet": "Geely&Belgee",
@@ -12668,6 +13014,29 @@
           "city": "Октябрьский пр., 373",
           "name": "",
           "brand": "LADA"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_d33020ac",
+      "canonical_name": "Эксперт Альфа Джетур",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Самара",
+          "group_link": "https://max.ru/join/44YwevLjU2QDBYrfuowQ9Hhlzf9iNF4kkVJd3z8I4Uc",
+          "name": "Эксперт Альфа Джетур",
+          "legal_entity": "ООО «ЭКСПЕРТ САМАРА»",
+          "inn": "9709054813",
+          "address": "Самара, Ново-Урицкая,  д.22",
+          "back_name": "Эксперт Альфа Джетур",
+          "email": "kambarova.i@jetour-alpha.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "JETOUR"
         }
       ]
     },

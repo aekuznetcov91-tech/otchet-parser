@@ -503,7 +503,7 @@ function renderPartnersTable(filterCfg) {
             <td class="font-black text-blue-700">${fmtNum(data.deals)}</td>
             <td class="${crColor}">${cr}</td>
             <td style="text-align: right;">
-                <a href="partner_matcher.html" target="_blank" class="px-2.5 py-1 bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 rounded-lg text-xs font-bold transition inline-flex items-center gap-1 shadow-sm">
+                <a href="partner_matcher.html?partner_id=${encodeURIComponent(data.id || '')}&search=${encodeURIComponent(data.name || '')}" target="_blank" class="px-2.5 py-1 bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 rounded-lg text-xs font-bold transition inline-flex items-center gap-1 shadow-sm" title="Редактировать партнера в Реестре">
                     Править ➔
                 </a>
             </td>

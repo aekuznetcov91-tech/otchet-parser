@@ -56,8 +56,10 @@ function normalizeKamName(name) {
  * Normalizes brand name to match OEM standards.
  */
 function normalizeBrandName(b) {
-    if (!b) return 'Другие';
+    if (!b) return null;
     let ub = String(b).toUpperCase().trim();
+    const aux = ["ВНЕСЕНИЕ АВАНСА", "АВАНС", "КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП", "СЕРВИС", "ФИНАНС"];
+    if (aux.some(k => ub.includes(k))) return null;
     if (ub.includes('JETOUR')) return 'JETOUR';
     if (ub.includes('LADA') || ub.includes('ЛАДА')) return 'LADA';
     if (ub.includes('HAVAL') || ub.includes('ХАВЕЙЛ')) return 'HAVAL';
@@ -113,8 +115,10 @@ function onKamOverallPlanChange(kamName, val) {
     store.kam_plans[kamName] = num;
     saveKamPlansStore(store);
     
-    // Re-render UI KPI and progress
-    renderKamTab(currentFilterConfig);
+    // In-place refresh header KPI and progress bar without losing DOM focus
+    const agg = getKamAggregatedData(currentFilterConfig);
+    renderKamPlanHeader(agg.summary);
+
     if (typeof showToast === 'function') {
         showToast(`План для «${kamName === 'all' ? 'Все КАМы' : kamName}» сохранен: ${fmtNum(num)} сделок`, 'success', 2000);
     }
@@ -129,10 +133,31 @@ function onPartnerPlanChange(partnerKey, val) {
     store.partner_plans[partnerKey] = num;
     saveKamPlansStore(store);
     
-    // Re-render table and header stats without resetting scroll
-    renderKamTab(currentFilterConfig, true);
+    // In-place DOM update for row % and plan badge
+    const safeKey = partnerKey.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const row = document.querySelector(`tr[onclick*="${safeKey}"]`);
+    if (row) {
+        const tds = row.querySelectorAll('td');
+        const planPctCell = tds[3];
+        const totalDealsText = tds[9] ? tds[9].textContent.trim() : '0';
+        const totalDeals = parseInt(totalDealsText.replace(/\D/g, ''), 10) || 0;
+        if (planPctCell) {
+            const pct = num > 0 ? (totalDeals / num * 100) : 0;
+            let planBadge = 'text-gray-400';
+            if (num > 0) {
+                planBadge = pct >= 100 ? 'text-emerald-700 font-black' : (pct >= 70 ? 'text-blue-600 font-bold' : 'text-amber-600 font-bold');
+            }
+            planPctCell.className = `text-center ${planBadge}`;
+            planPctCell.textContent = num > 0 ? `${pct.toFixed(0)}%` : '—';
+        }
+    }
+
+    // Refresh summary in header
+    const agg = getKamAggregatedData(currentFilterConfig);
+    renderKamPlanHeader(agg.summary);
+
     if (typeof showToast === 'function') {
-        showToast(`План партнера обновлен: ${fmtNum(num)} сделок`, 'success', 1500);
+        showToast(`План партнера сохранен: ${fmtNum(num)} сделок`, 'success', 1500);
     }
 }
 
@@ -447,7 +472,59 @@ function getKamAggregatedData(filterCfg) {
         });
     });
 
-    // 4. Calculate Totals & CR
+    // 4. Calculate Legal Entities with Deals for Selected KAM
+    const legalEntitiesMap = {};
+    fPartners.forEach(r => {
+        if (r.Type !== 'Сделка') return;
+        const normKam = normalizeKamName(r.KAM);
+        if (currentKamFilter !== 'all' && normKam !== normalizeKamName(currentKamFilter)) return;
+
+        const rawName = (r.RawPartner || r.Partner || 'Неизвестная компания').trim();
+        const leKey = rawName.toUpperCase();
+
+        if (!legalEntitiesMap[leKey]) {
+            const regEntry = r.PartnerId ? partnerLookup[`ID_${r.PartnerId}`] : matchDealerToPartner(r.Partner);
+            let inn = '';
+            let cities = new Set();
+            let brands = new Set();
+            if (regEntry && regEntry.oem_data) {
+                regEntry.oem_data.forEach(o => {
+                    if (o.inn) inn = o.inn;
+                    if (o.city) cities.add(o.city);
+                    if (o.brand) brands.add(o.brand);
+                });
+            }
+            legalEntitiesMap[leKey] = {
+                name: rawName,
+                canonical_partner: regEntry ? regEntry.name : r.Partner,
+                partner_id: r.PartnerId || (regEntry ? regEntry.id : ''),
+                kam: normKam,
+                inn: inn,
+                mp_deals: 0,
+                fdc_online_deals: 0,
+                total_deals: 0,
+                cities: cities,
+                brands: brands
+            };
+        }
+
+        const le = legalEntitiesMap[leKey];
+        le.total_deals += (r.Qty || 1);
+        const b2c = (r.B2C || '').toUpperCase();
+        if (r.IsMpSale === 1 || b2c.includes('МП1') || b2c.includes('МП2') || b2c.includes('МП3') || b2c.includes('MP')) {
+            le.mp_deals += (r.Qty || 1);
+        }
+        if (b2c.includes('ФДЦ') || b2c.includes('ONLINE') || b2c.includes('ОНЛАЙН')) {
+            le.fdc_online_deals += (r.Qty || 1);
+        }
+        const nb = normalizeBrandName(r.Brand);
+        if (nb) le.brands.add(nb);
+    });
+
+    const legalEntitiesList = Object.values(legalEntitiesMap);
+    legalEntitiesList.sort((a, b) => b.total_deals - a.total_deals);
+
+    // 5. Calculate Totals & CR
     const plansStore = getKamPlansStore();
     const allPartnersList = Object.values(partnerStats);
 
@@ -510,7 +587,9 @@ function getKamAggregatedData(filterCfg) {
             overall_cr_pct: overallCrPct,
             overall_plan: overallKamPlan,
             overall_plan_pct: overallPlanPct,
-            sum_partner_plans: sumPartnerPlans
+            sum_partner_plans: sumPartnerPlans,
+            legal_entities_count: legalEntitiesList.length,
+            legal_entities: legalEntitiesList
         }
     };
 }
@@ -595,7 +674,7 @@ function renderKamPlanHeader(s) {
 
     cont.innerHTML = `
     <div class="card !p-4 bg-gradient-to-r from-blue-50/70 via-indigo-50/40 to-white border border-blue-200 shadow-sm rounded-2xl">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-xl shadow-md shrink-0">
                     🎯
@@ -614,20 +693,38 @@ function renderKamPlanHeader(s) {
                 </div>
             </div>
 
-            <!-- Interactive Plan Input with Auto-Save -->
-            <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
-                <div class="text-right">
-                    <span class="text-[11px] font-bold text-gray-500 uppercase block">Общий план сделок</span>
-                    <span class="text-[10px] text-emerald-600 font-semibold">⚡ Автосохранение</span>
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Item 4: Legal Entities with Deals Card -->
+                <div class="flex items-center gap-2.5 bg-white px-3 py-2 rounded-xl border border-indigo-200 shadow-sm cursor-pointer hover:bg-indigo-50/70 hover:border-indigo-400 transition" onclick="openKamLegalEntitiesModal()" title="Нажмите, чтобы посмотреть детализацию всех юридических лиц">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
+                        🏢
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Юр. лиц со сделками</span>
+                        <div class="text-sm font-black text-gray-900 leading-none mt-0.5 flex items-center gap-1">
+                            <span>${fmt(s.legal_entities_count || 0)}</span>
+                            <span class="text-[11px] text-indigo-600 font-semibold underline">список ➔</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="relative">
-                    <input type="number" min="0" step="1" 
-                        value="${planVal || ''}" 
-                        placeholder="0"
-                        class="w-28 text-center text-base font-black text-blue-700 bg-blue-50/70 border border-blue-300 rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 transition"
-                        oninput="onKamOverallPlanChange('${kamName}', this.value)">
+
+                <!-- Interactive Plan Input with Auto-Save -->
+                <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
+                    <div class="text-right">
+                        <span class="text-[11px] font-bold text-gray-500 uppercase block">Общий план сделок</span>
+                        <span class="text-[10px] text-emerald-600 font-semibold">⚡ Автосохранение</span>
+                    </div>
+                    <div class="relative">
+                        <input type="number" min="0" step="1" 
+                            value="${planVal || ''}" 
+                            placeholder="0"
+                            class="w-24 text-center text-base font-black text-blue-700 bg-blue-50/70 border border-blue-300 rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 transition"
+                            onchange="onKamOverallPlanChange('${kamName}', this.value)"
+                            onkeyup="if(event.key==='Enter') this.blur();"
+                            title="Введите общий план сделок (сохраняется автоматически)">
+                    </div>
+                    <span class="text-xs font-bold text-gray-400">шт.</span>
                 </div>
-                <span class="text-xs font-bold text-gray-400">шт.</span>
             </div>
         </div>
 
@@ -684,8 +781,10 @@ function renderKamTable(partners) {
                 <th style="width: 130px; text-align: center;">План сделок</th>
                 <th style="width: 120px; text-align: center;">% плана</th>
                 <th style="width: 120px; text-align: center;">Передано лидов</th>
-                <th style="width: 130px; text-align: center;">Сделки с передачи</th>
-                <th style="width: 120px; text-align: center;">CR (Передача)</th>
+                <th style="width: 140px; text-align: center;" title="Сделки, пришедшие из переданных лидов (входят в состав сделок МП/ФДЦ)">
+                    Сделки с передачи <span class="text-[10px] text-purple-600 block">(из переданных)</span>
+                </th>
+                <th style="width: 120px; text-align: center;" title="Конверсия: Сделки с передачи / Передано лидов">CR (Передача)</th>
                 <th style="width: 110px; text-align: center;">Сделки МП</th>
                 <th style="width: 140px; text-align: center;">Сделки ФДЦ / Online</th>
                 <th style="width: 120px; text-align: center;">Сделки Всего</th>
@@ -758,7 +857,8 @@ function renderKamTable(partners) {
                         value="${p.plan || ''}" 
                         placeholder="—"
                         class="w-16 text-center text-xs font-bold text-blue-700 bg-gray-50 border border-gray-300 rounded px-1.5 py-0.5 outline-none focus:bg-white focus:border-blue-500 transition"
-                        oninput="onPartnerPlanChange('${p.key}', this.value)"
+                        onchange="onPartnerPlanChange('${p.key}', this.value)"
+                        onkeyup="if(event.key==='Enter') this.blur();"
                         title="Введите план сделок (сохраняется автоматически)">
                 </div>
             </td>
@@ -856,9 +956,11 @@ function renderKamBrandsSplit(partners) {
     
     partners.forEach(p => {
         Object.entries(p.brands || {}).forEach(([brand, stats]) => {
-            if (!brandTotals[brand]) {
-                brandTotals[brand] = {
-                    name: brand,
+            const nb = normalizeBrandName(brand);
+            if (!nb) return; // exclude non-auto categories
+            if (!brandTotals[nb]) {
+                brandTotals[nb] = {
+                    name: nb,
                     trans_leads: 0,
                     trans_deals: 0,
                     mp_deals: 0,
@@ -866,11 +968,11 @@ function renderKamBrandsSplit(partners) {
                     total_deals: 0
                 };
             }
-            brandTotals[brand].trans_leads += stats.trans_leads;
-            brandTotals[brand].trans_deals += stats.trans_deals;
-            brandTotals[brand].mp_deals += stats.mp_deals;
-            brandTotals[brand].fdc_online_deals += stats.fdc_online_deals;
-            brandTotals[brand].total_deals += stats.total_deals;
+            brandTotals[nb].trans_leads += stats.trans_leads;
+            brandTotals[nb].trans_deals += stats.trans_deals;
+            brandTotals[nb].mp_deals += stats.mp_deals;
+            brandTotals[nb].fdc_online_deals += stats.fdc_online_deals;
+            brandTotals[nb].total_deals += stats.total_deals;
         });
     });
 
@@ -951,3 +1053,180 @@ function exportKamReportToExcel() {
         if (typeof showToast === 'function') showToast('Ошибка при выгрузке Excel: ' + e.message, 'error');
     }
 }
+
+// ================= ITEM 4: LEGAL ENTITIES MODAL =================
+let currentKamLegalEntities = [];
+let kamLegalEntitiesSearchQuery = '';
+
+function openKamLegalEntitiesModal() {
+    const agg = getKamAggregatedData(currentFilterConfig);
+    currentKamLegalEntities = agg.summary.legal_entities || [];
+    kamLegalEntitiesSearchQuery = '';
+
+    let modal = document.getElementById('kamLegalEntitiesModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'kamLegalEntitiesModal';
+        modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4';
+        document.body.appendChild(modal);
+    }
+    modal.classList.remove('hidden');
+    renderKamLegalEntitiesModalContent();
+}
+
+function closeKamLegalEntitiesModal() {
+    const modal = document.getElementById('kamLegalEntitiesModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function onKamLegalEntitiesSearch(val) {
+    kamLegalEntitiesSearchQuery = (val || '').toLowerCase().trim();
+    renderKamLegalEntitiesModalTable();
+}
+
+function renderKamLegalEntitiesModalContent() {
+    const modal = document.getElementById('kamLegalEntitiesModal');
+    if (!modal) return;
+
+    const kamName = currentKamFilter === 'all' ? 'Все КАМ-менеджеры' : currentKamFilter;
+    const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
+
+    modal.innerHTML = `
+    <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        <!-- Header -->
+        <div class="p-4 sm:p-5 border-b border-gray-200 bg-slate-900 text-white flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-500 text-white flex items-center justify-center font-bold text-lg shadow-md">
+                    🏢
+                </div>
+                <div>
+                    <h3 class="text-base font-bold flex items-center gap-2">
+                        <span>Юридические лица со сделками</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-400/30 text-indigo-200 border border-indigo-400/40">
+                            ${kamName}
+                        </span>
+                    </h3>
+                    <p class="text-xs text-slate-300 mt-0.5">
+                        Всего найдено: <b>${fmt(currentKamLegalEntities.length)}</b> компаний | Сделок: <b>${fmt(currentKamLegalEntities.reduce((s, x) => s + x.total_deals, 0))}</b>
+                    </p>
+                </div>
+            </div>
+            <button onclick="closeKamLegalEntitiesModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-lg font-bold transition">
+                ✕
+            </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="p-4 bg-slate-50 border-b border-gray-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div class="relative flex-1">
+                <input type="text" 
+                    id="searchKamLegalEntitiesInput"
+                    placeholder="Поиск по юрлицу, ИНН, Master Partner, городу или бренду..."
+                    class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-4 py-2 text-xs font-semibold text-gray-800 placeholder-gray-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
+                    oninput="onKamLegalEntitiesSearch(this.value)">
+                <span class="absolute left-3 top-2.5 text-gray-400 text-xs">🔍</span>
+            </div>
+            <div class="text-xs font-semibold text-gray-500 text-right shrink-0">
+                За выбранный период: <b>${(window.currentFilterConfig && window.currentFilterConfig.month) === 'all' ? 'Все месяцы' : (window.currentFilterConfig && window.currentFilterConfig.month) || 'Август 2026'}</b>
+            </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="flex-1 overflow-y-auto p-4" id="kamLegalEntitiesTableContainer">
+            <!-- Rendered by renderKamLegalEntitiesModalTable() -->
+        </div>
+
+        <!-- Footer -->
+        <div class="p-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
+            <span>💡 Список сформирован на основе сделок CRM и реестра Master Partners</span>
+            <button onclick="closeKamLegalEntitiesModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition shadow-sm">
+                Закрыть
+            </button>
+        </div>
+    </div>
+    `;
+
+    renderKamLegalEntitiesModalTable();
+}
+
+function renderKamLegalEntitiesModalTable() {
+    const cont = document.getElementById('kamLegalEntitiesTableContainer');
+    if (!cont) return;
+
+    const q = kamLegalEntitiesSearchQuery;
+    const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
+
+    const filtered = currentKamLegalEntities.filter(le => {
+        if (!q) return true;
+        const mName = (le.name || '').toLowerCase().includes(q);
+        const mPartner = (le.canonical_partner || '').toLowerCase().includes(q);
+        const mInn = (le.inn || '').toLowerCase().includes(q);
+        const mKam = (le.kam || '').toLowerCase().includes(q);
+        const mCity = Array.from(le.cities || []).some(c => c.toLowerCase().includes(q));
+        const mBrand = Array.from(le.brands || []).some(b => b.toLowerCase().includes(q));
+        return mName || mPartner || mInn || mKam || mCity || mBrand;
+    });
+
+    if (filtered.length === 0) {
+        cont.innerHTML = `
+        <div class="text-center py-12 text-gray-400">
+            <div class="text-3xl mb-2">🔍</div>
+            <p class="font-bold text-sm">Юридические лица не найдены</p>
+            <p class="text-xs text-gray-400 mt-1">Попробуйте изменить поисковый запрос</p>
+        </div>`;
+        return;
+    }
+
+    let html = `
+    <table class="min-w-full text-xs">
+        <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 border-b border-slate-200">
+            <tr>
+                <th class="py-2.5 px-3 text-left w-10">#</th>
+                <th class="py-2.5 px-3 text-left min-w-[220px]">Юридическое лицо / Название</th>
+                <th class="py-2.5 px-3 text-center w-28">ИНН</th>
+                <th class="py-2.5 px-3 text-left min-w-[180px]">Master Partner</th>
+                <th class="py-2.5 px-3 text-center w-32">КАМ</th>
+                <th class="py-2.5 px-3 text-center w-20">Сделки МП</th>
+                <th class="py-2.5 px-3 text-center w-24">ФДЦ/Онлайн</th>
+                <th class="py-2.5 px-3 text-center w-24">Всего сделок</th>
+                <th class="py-2.5 px-3 text-left min-w-[160px]">Города / Бренды</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+    `;
+
+    filtered.forEach((le, idx) => {
+        const citiesStr = Array.from(le.cities || []).slice(0, 2).join(', ') + (le.cities.size > 2 ? ` (+${le.cities.size - 2})` : '');
+        const brandsStr = Array.from(le.brands || []).slice(0, 3).join(', ') + (le.brands.size > 3 ? ` (+${le.brands.size - 3})` : '');
+
+        html += `
+        <tr class="hover:bg-indigo-50/40 transition font-medium">
+            <td class="py-2 px-3 text-gray-400 font-mono">${idx + 1}</td>
+            <td class="py-2 px-3 font-bold text-gray-900">
+                <div class="truncate max-w-[280px]" title="${le.name}">${le.name}</div>
+            </td>
+            <td class="py-2 px-3 text-center font-mono font-semibold text-gray-600">
+                ${le.inn ? `<span class="px-2 py-0.5 bg-gray-100 rounded text-[11px] border border-gray-200 font-mono font-bold">${le.inn}</span>` : '<span class="text-gray-300">—</span>'}
+            </td>
+            <td class="py-2 px-3 text-gray-800">
+                <div class="flex items-center gap-1">
+                    ${le.partner_id ? `<span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">ID:${le.partner_id}</span>` : ''}
+                    <span class="font-semibold truncate max-w-[200px]" title="${le.canonical_partner}">${le.canonical_partner}</span>
+                </div>
+            </td>
+            <td class="py-2 px-3 text-center text-gray-600 font-medium">${le.kam || '—'}</td>
+            <td class="py-2 px-3 text-center font-bold text-amber-700">${fmt(le.mp_deals)}</td>
+            <td class="py-2 px-3 text-center font-bold text-sky-700">${fmt(le.fdc_online_deals)}</td>
+            <td class="py-2 px-3 text-center font-black text-blue-700 bg-blue-50/50 text-sm">${fmt(le.total_deals)}</td>
+            <td class="py-2 px-3 text-gray-500 text-[11px]">
+                <div>🏙️ ${citiesStr || '—'}</div>
+                <div class="text-[10px] text-gray-400">🏷️ ${brandsStr || '—'}</div>
+            </td>
+        </tr>
+        `;
+    });
+
+    html += `</tbody></table>`;
+    cont.innerHTML = html;
+}
+
