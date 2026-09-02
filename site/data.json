@@ -258629,19 +258629,19 @@
               "brand": "JETOUR",
               "month": "2026-08",
               "steps": [
-                197658,
-                29885,
-                3840,
-                3756,
-                2413,
-                2356
+                259301,
+                37063,
+                4756,
+                4651,
+                2948,
+                2877
               ],
-              "page_view": 197658,
-              "car_card_show": 29885,
-              "car_card_click": 3840,
-              "offer_show": 3756,
-              "offer_click": 2413,
-              "offer_success": 2356
+              "page_view": 259301,
+              "car_card_show": 37063,
+              "car_card_click": 4756,
+              "offer_show": 4651,
+              "offer_click": 2948,
+              "offer_success": 2877
             },
             "leads": 1409,
             "qual": 592,
@@ -258688,19 +258688,19 @@
               "brand": "LADA",
               "month": "2026-08",
               "steps": [
-                197687,
-                39176,
-                4071,
-                3973,
-                2413,
-                2356
+                259301,
+                49388,
+                5129,
+                5004,
+                3047,
+                2969
               ],
-              "page_view": 197687,
-              "car_card_show": 39176,
-              "car_card_click": 4071,
-              "offer_show": 3973,
-              "offer_click": 2413,
-              "offer_success": 2356
+              "page_view": 259301,
+              "car_card_show": 49388,
+              "car_card_click": 5129,
+              "offer_show": 5004,
+              "offer_click": 3047,
+              "offer_success": 2969
             },
             "leads": 1667,
             "qual": 700,
@@ -258747,19 +258747,19 @@
               "brand": "TENET",
               "month": "2026-08",
               "steps": [
-                197615,
-                18956,
-                2155,
-                2101,
-                1290,
-                1267
+                259301,
+                31950,
+                4018,
+                3914,
+                2437,
+                2384
               ],
-              "page_view": 197615,
-              "car_card_show": 18956,
-              "car_card_click": 2155,
-              "offer_show": 2101,
-              "offer_click": 1290,
-              "offer_success": 1267
+              "page_view": 259301,
+              "car_card_show": 31950,
+              "car_card_click": 4018,
+              "offer_show": 3914,
+              "offer_click": 2437,
+              "offer_success": 2384
             },
             "leads": 567,
             "qual": 238,
@@ -258802,19 +258802,19 @@
               "brand": "CHANGAN",
               "month": "2026-08",
               "steps": [
-                197635,
-                22958,
-                2247,
-                2186,
-                1360,
-                1315
+                259301,
+                28930,
+                2876,
+                2802,
+                1724,
+                1663
               ],
-              "page_view": 197635,
-              "car_card_show": 22958,
-              "car_card_click": 2247,
-              "offer_show": 2186,
-              "offer_click": 1360,
-              "offer_success": 1315
+              "page_view": 259301,
+              "car_card_show": 28930,
+              "car_card_click": 2876,
+              "offer_show": 2802,
+              "offer_click": 1724,
+              "offer_success": 1663
             },
             "leads": 546,
             "qual": 229,
@@ -258855,19 +258855,19 @@
               "brand": "GAC",
               "month": "2026-08",
               "steps": [
-                191515,
-                19375,
-                1551,
-                1496,
-                912,
-                885
+                259301,
+                25946,
+                2063,
+                1989,
+                1202,
+                1164
               ],
-              "page_view": 191515,
-              "car_card_show": 19375,
-              "car_card_click": 1551,
-              "offer_show": 1496,
-              "offer_click": 912,
-              "offer_success": 885
+              "page_view": 259301,
+              "car_card_show": 25946,
+              "car_card_click": 2063,
+              "offer_show": 1989,
+              "offer_click": 1202,
+              "offer_success": 1164
             },
             "leads": 337,
             "qual": 142,
@@ -258914,19 +258914,19 @@
               "brand": "SOLARIS",
               "month": "2026-08",
               "steps": [
-                197650,
-                16692,
-                1353,
-                1323,
-                696,
-                682
+                259301,
+                20352,
+                1627,
+                1587,
+                842,
+                824
               ],
-              "page_view": 197650,
-              "car_card_show": 16692,
-              "car_card_click": 1353,
-              "offer_show": 1323,
-              "offer_click": 696,
-              "offer_success": 682
+              "page_view": 259301,
+              "car_card_show": 20352,
+              "car_card_click": 1627,
+              "offer_show": 1587,
+              "offer_click": 842,
+              "offer_success": 824
             },
             "leads": 290,
             "qual": 122,
@@ -258967,23 +258967,23 @@
           "SOUEAST": {
             "brand": "SOUEAST",
             "vitrina": {
-              "fileName": "Соуист август.png",
+              "fileName": "Суист август.png",
               "brand": "SOUEAST",
               "month": "2026-08",
               "steps": [
-                197620,
-                16771,
-                1757,
-                1716,
-                1038,
-                1013
+                259301,
+                21688,
+                2260,
+                2206,
+                1325,
+                1295
               ],
-              "page_view": 197620,
-              "car_card_show": 16771,
-              "car_card_click": 1757,
-              "offer_show": 1716,
-              "offer_click": 1038,
-              "offer_success": 1013
+              "page_view": 259301,
+              "car_card_show": 21688,
+              "car_card_click": 2260,
+              "offer_show": 2206,
+              "offer_click": 1325,
+              "offer_success": 1295
             },
             "leads": 310,
             "qual": 130,
@@ -259030,19 +259030,19 @@
               "brand": "BELGEE",
               "month": "2026-08",
               "steps": [
-                197681,
-                13157,
-                1004,
-                979,
-                572,
-                564
+                259301,
+                16599,
+                1280,
+                1248,
+                732,
+                720
               ],
-              "page_view": 197681,
-              "car_card_show": 13157,
-              "car_card_click": 1004,
-              "offer_show": 979,
-              "offer_click": 572,
-              "offer_success": 564
+              "page_view": 259301,
+              "car_card_show": 16599,
+              "car_card_click": 1280,
+              "offer_show": 1248,
+              "offer_click": 732,
+              "offer_success": 720
             },
             "leads": 280,
             "qual": 118,
@@ -259124,19 +259124,19 @@
               "brand": "HAVAL",
               "month": "2026-08",
               "steps": [
-                197626,
-                24539,
-                2468,
-                2385,
-                1453,
-                1413
+                259301,
+                31941,
+                3238,
+                3121,
+                1916,
+                1863
               ],
-              "page_view": 197626,
-              "car_card_show": 24539,
-              "car_card_click": 2468,
-              "offer_show": 2385,
-              "offer_click": 1453,
-              "offer_success": 1413
+              "page_view": 259301,
+              "car_card_show": 31941,
+              "car_card_click": 3238,
+              "offer_show": 3121,
+              "offer_click": 1916,
+              "offer_success": 1863
             },
             "leads": 450,
             "qual": 189,
@@ -259173,23 +259173,23 @@
           "JAECOO": {
             "brand": "JAECOO",
             "vitrina": {
-              "fileName": "Джейленд август.png",
+              "fileName": "Джейку август.png",
               "brand": "JAECOO",
               "month": "2026-08",
               "steps": [
-                197663,
-                2709,
-                234,
-                229,
-                146,
-                144
+                259301,
+                11298,
+                1241,
+                1211,
+                733,
+                717
               ],
-              "page_view": 197663,
-              "car_card_show": 2709,
-              "car_card_click": 234,
-              "offer_show": 229,
-              "offer_click": 146,
-              "offer_success": 144
+              "page_view": 259301,
+              "car_card_show": 11298,
+              "car_card_click": 1241,
+              "offer_show": 1211,
+              "offer_click": 733,
+              "offer_success": 717
             },
             "leads": 210,
             "qual": 88,
@@ -259230,19 +259230,19 @@
               "brand": "OMODA",
               "month": "2026-08",
               "steps": [
-                197670,
-                8771,
-                929,
-                910,
-                567,
-                554
+                259301,
+                10905,
+                1147,
+                1116,
+                688,
+                671
               ],
-              "page_view": 197670,
-              "car_card_show": 8771,
-              "car_card_click": 929,
-              "offer_show": 910,
-              "offer_click": 567,
-              "offer_success": 554
+              "page_view": 259301,
+              "car_card_show": 10905,
+              "car_card_click": 1147,
+              "offer_show": 1116,
+              "offer_click": 688,
+              "offer_success": 671
             },
             "leads": 210,
             "qual": 88,
@@ -259285,19 +259285,19 @@
               "brand": "МОСКВИЧ",
               "month": "2026-08",
               "steps": [
-                197691,
-                6979,
-                360,
-                354,
-                223,
-                216
+                259301,
+                9061,
+                469,
+                458,
+                291,
+                283
               ],
-              "page_view": 197691,
-              "car_card_show": 6979,
-              "car_card_click": 360,
-              "offer_show": 354,
-              "offer_click": 223,
-              "offer_success": 216
+              "page_view": 259301,
+              "car_card_show": 9061,
+              "car_card_click": 469,
+              "offer_show": 458,
+              "offer_click": 291,
+              "offer_success": 283
             },
             "leads": 110,
             "qual": 46,
@@ -260045,12 +260045,12 @@
           "JETOUR": {
             "brand": "JETOUR",
             "vitrina": {
-              "page_view": 416642,
-              "car_card_show": 65810,
-              "car_card_click": 8456,
-              "offer_show": 8278,
-              "offer_click": 5363,
-              "offer_success": 5246
+              "page_view": 478285,
+              "car_card_show": 72988,
+              "car_card_click": 9372,
+              "offer_show": 9173,
+              "offer_click": 5898,
+              "offer_success": 5767
             },
             "leads": 2818,
             "qual": 1184,
@@ -260095,12 +260095,12 @@
           "LADA": {
             "brand": "LADA",
             "vitrina": {
-              "page_view": 416671,
-              "car_card_show": 77175,
-              "car_card_click": 7770,
-              "offer_show": 7582,
-              "offer_click": 4607,
-              "offer_success": 4470
+              "page_view": 478285,
+              "car_card_show": 87387,
+              "car_card_click": 8828,
+              "offer_show": 8613,
+              "offer_click": 5241,
+              "offer_success": 5083
             },
             "leads": 3334,
             "qual": 1400,
@@ -260145,12 +260145,12 @@
           "TENET": {
             "brand": "TENET",
             "vitrina": {
-              "page_view": 416599,
-              "car_card_show": 44025,
-              "car_card_click": 4550,
-              "offer_show": 4436,
-              "offer_click": 2653,
-              "offer_success": 2604
+              "page_view": 478285,
+              "car_card_show": 57019,
+              "car_card_click": 6413,
+              "offer_show": 6249,
+              "offer_click": 3800,
+              "offer_success": 3721
             },
             "leads": 1134,
             "qual": 476,
@@ -260189,12 +260189,12 @@
           "CHANGAN": {
             "brand": "CHANGAN",
             "vitrina": {
-              "page_view": 416619,
-              "car_card_show": 51823,
-              "car_card_click": 4901,
-              "offer_show": 4777,
-              "offer_click": 2957,
-              "offer_success": 2878
+              "page_view": 478285,
+              "car_card_show": 57795,
+              "car_card_click": 5530,
+              "offer_show": 5393,
+              "offer_click": 3321,
+              "offer_success": 3226
             },
             "leads": 1092,
             "qual": 459,
@@ -260231,12 +260231,12 @@
           "GAC": {
             "brand": "GAC",
             "vitrina": {
-              "page_view": 410499,
-              "car_card_show": 39295,
-              "car_card_click": 3141,
-              "offer_show": 3053,
-              "offer_click": 1844,
-              "offer_success": 1793
+              "page_view": 478285,
+              "car_card_show": 45866,
+              "car_card_click": 3653,
+              "offer_show": 3546,
+              "offer_click": 2134,
+              "offer_success": 2072
             },
             "leads": 674,
             "qual": 283,
@@ -260279,12 +260279,12 @@
           "SOLARIS": {
             "brand": "SOLARIS",
             "vitrina": {
-              "page_view": 416634,
-              "car_card_show": 36466,
-              "car_card_click": 2968,
-              "offer_show": 2896,
-              "offer_click": 1575,
-              "offer_success": 1534
+              "page_view": 478285,
+              "car_card_show": 40126,
+              "car_card_click": 3242,
+              "offer_show": 3160,
+              "offer_click": 1721,
+              "offer_success": 1676
             },
             "leads": 580,
             "qual": 244,
@@ -260327,12 +260327,12 @@
           "SOUEAST": {
             "brand": "SOUEAST",
             "vitrina": {
-              "page_view": 416604,
-              "car_card_show": 19869,
-              "car_card_click": 2021,
-              "offer_show": 1972,
-              "offer_click": 1178,
-              "offer_success": 1151
+              "page_view": 478285,
+              "car_card_show": 24786,
+              "car_card_click": 2524,
+              "offer_show": 2462,
+              "offer_click": 1465,
+              "offer_success": 1433
             },
             "leads": 620,
             "qual": 260,
@@ -260375,12 +260375,12 @@
           "BELGEE": {
             "brand": "BELGEE",
             "vitrina": {
-              "page_view": 416665,
-              "car_card_show": 28020,
-              "car_card_click": 2086,
-              "offer_show": 2031,
-              "offer_click": 1186,
-              "offer_success": 1167
+              "page_view": 478285,
+              "car_card_show": 31462,
+              "car_card_click": 2362,
+              "offer_show": 2300,
+              "offer_click": 1346,
+              "offer_success": 1323
             },
             "leads": 560,
             "qual": 235,
@@ -260447,12 +260447,12 @@
           "HAVAL": {
             "brand": "HAVAL",
             "vitrina": {
-              "page_view": 416610,
-              "car_card_show": 47740,
-              "car_card_click": 4680,
-              "offer_show": 4538,
-              "offer_click": 2801,
-              "offer_success": 2728
+              "page_view": 478285,
+              "car_card_show": 55142,
+              "car_card_click": 5450,
+              "offer_show": 5274,
+              "offer_click": 3264,
+              "offer_success": 3178
             },
             "leads": 900,
             "qual": 378,
@@ -260489,12 +260489,12 @@
           "JAECOO": {
             "brand": "JAECOO",
             "vitrina": {
-              "page_view": 416647,
-              "car_card_show": 13497,
-              "car_card_click": 1298,
-              "offer_show": 1274,
-              "offer_click": 800,
-              "offer_success": 783
+              "page_view": 478285,
+              "car_card_show": 22086,
+              "car_card_click": 2305,
+              "offer_show": 2256,
+              "offer_click": 1387,
+              "offer_success": 1356
             },
             "leads": 420,
             "qual": 176,
@@ -260531,12 +260531,12 @@
           "OMODA": {
             "brand": "OMODA",
             "vitrina": {
-              "page_view": 416654,
-              "car_card_show": 18052,
-              "car_card_click": 1856,
-              "offer_show": 1808,
-              "offer_click": 1130,
-              "offer_success": 1103
+              "page_view": 478285,
+              "car_card_show": 20186,
+              "car_card_click": 2074,
+              "offer_show": 2014,
+              "offer_click": 1251,
+              "offer_success": 1220
             },
             "leads": 420,
             "qual": 176,
@@ -260577,12 +260577,12 @@
           "МОСКВИЧ": {
             "brand": "МОСКВИЧ",
             "vitrina": {
-              "page_view": 416675,
-              "car_card_show": 12497,
-              "car_card_click": 666,
-              "offer_show": 655,
-              "offer_click": 404,
-              "offer_success": 394
+              "page_view": 478285,
+              "car_card_show": 14579,
+              "car_card_click": 775,
+              "offer_show": 759,
+              "offer_click": 472,
+              "offer_success": 461
             },
             "leads": 220,
             "qual": 92,
@@ -260624,19 +260624,19 @@
         "brand": "JETOUR",
         "month": "2026-08",
         "steps": [
-          197658,
-          29885,
-          3840,
-          3756,
-          2413,
-          2356
+          259301,
+          37063,
+          4756,
+          4651,
+          2948,
+          2877
         ],
-        "page_view": 197658,
-        "car_card_show": 29885,
-        "car_card_click": 3840,
-        "offer_show": 3756,
-        "offer_click": 2413,
-        "offer_success": 2356
+        "page_view": 259301,
+        "car_card_show": 37063,
+        "car_card_click": 4756,
+        "offer_show": 4651,
+        "offer_click": 2948,
+        "offer_success": 2877
       },
       "leads": 1409,
       "qual": 592,
@@ -260683,19 +260683,19 @@
         "brand": "LADA",
         "month": "2026-08",
         "steps": [
-          197687,
-          39176,
-          4071,
-          3973,
-          2413,
-          2356
+          259301,
+          49388,
+          5129,
+          5004,
+          3047,
+          2969
         ],
-        "page_view": 197687,
-        "car_card_show": 39176,
-        "car_card_click": 4071,
-        "offer_show": 3973,
-        "offer_click": 2413,
-        "offer_success": 2356
+        "page_view": 259301,
+        "car_card_show": 49388,
+        "car_card_click": 5129,
+        "offer_show": 5004,
+        "offer_click": 3047,
+        "offer_success": 2969
       },
       "leads": 1667,
       "qual": 700,
@@ -260742,19 +260742,19 @@
         "brand": "TENET",
         "month": "2026-08",
         "steps": [
-          197615,
-          18956,
-          2155,
-          2101,
-          1290,
-          1267
+          259301,
+          31950,
+          4018,
+          3914,
+          2437,
+          2384
         ],
-        "page_view": 197615,
-        "car_card_show": 18956,
-        "car_card_click": 2155,
-        "offer_show": 2101,
-        "offer_click": 1290,
-        "offer_success": 1267
+        "page_view": 259301,
+        "car_card_show": 31950,
+        "car_card_click": 4018,
+        "offer_show": 3914,
+        "offer_click": 2437,
+        "offer_success": 2384
       },
       "leads": 567,
       "qual": 238,
@@ -260797,19 +260797,19 @@
         "brand": "CHANGAN",
         "month": "2026-08",
         "steps": [
-          197635,
-          22958,
-          2247,
-          2186,
-          1360,
-          1315
+          259301,
+          28930,
+          2876,
+          2802,
+          1724,
+          1663
         ],
-        "page_view": 197635,
-        "car_card_show": 22958,
-        "car_card_click": 2247,
-        "offer_show": 2186,
-        "offer_click": 1360,
-        "offer_success": 1315
+        "page_view": 259301,
+        "car_card_show": 28930,
+        "car_card_click": 2876,
+        "offer_show": 2802,
+        "offer_click": 1724,
+        "offer_success": 1663
       },
       "leads": 546,
       "qual": 229,
@@ -260850,19 +260850,19 @@
         "brand": "GAC",
         "month": "2026-08",
         "steps": [
-          191515,
-          19375,
-          1551,
-          1496,
-          912,
-          885
+          259301,
+          25946,
+          2063,
+          1989,
+          1202,
+          1164
         ],
-        "page_view": 191515,
-        "car_card_show": 19375,
-        "car_card_click": 1551,
-        "offer_show": 1496,
-        "offer_click": 912,
-        "offer_success": 885
+        "page_view": 259301,
+        "car_card_show": 25946,
+        "car_card_click": 2063,
+        "offer_show": 1989,
+        "offer_click": 1202,
+        "offer_success": 1164
       },
       "leads": 337,
       "qual": 142,
@@ -260909,19 +260909,19 @@
         "brand": "SOLARIS",
         "month": "2026-08",
         "steps": [
-          197650,
-          16692,
-          1353,
-          1323,
-          696,
-          682
+          259301,
+          20352,
+          1627,
+          1587,
+          842,
+          824
         ],
-        "page_view": 197650,
-        "car_card_show": 16692,
-        "car_card_click": 1353,
-        "offer_show": 1323,
-        "offer_click": 696,
-        "offer_success": 682
+        "page_view": 259301,
+        "car_card_show": 20352,
+        "car_card_click": 1627,
+        "offer_show": 1587,
+        "offer_click": 842,
+        "offer_success": 824
       },
       "leads": 290,
       "qual": 122,
@@ -260962,23 +260962,23 @@
     "SOUEAST": {
       "brand": "SOUEAST",
       "vitrina": {
-        "fileName": "Соуист август.png",
+        "fileName": "Суист август.png",
         "brand": "SOUEAST",
         "month": "2026-08",
         "steps": [
-          197620,
-          16771,
-          1757,
-          1716,
-          1038,
-          1013
+          259301,
+          21688,
+          2260,
+          2206,
+          1325,
+          1295
         ],
-        "page_view": 197620,
-        "car_card_show": 16771,
-        "car_card_click": 1757,
-        "offer_show": 1716,
-        "offer_click": 1038,
-        "offer_success": 1013
+        "page_view": 259301,
+        "car_card_show": 21688,
+        "car_card_click": 2260,
+        "offer_show": 2206,
+        "offer_click": 1325,
+        "offer_success": 1295
       },
       "leads": 310,
       "qual": 130,
@@ -261025,19 +261025,19 @@
         "brand": "BELGEE",
         "month": "2026-08",
         "steps": [
-          197681,
-          13157,
-          1004,
-          979,
-          572,
-          564
+          259301,
+          16599,
+          1280,
+          1248,
+          732,
+          720
         ],
-        "page_view": 197681,
-        "car_card_show": 13157,
-        "car_card_click": 1004,
-        "offer_show": 979,
-        "offer_click": 572,
-        "offer_success": 564
+        "page_view": 259301,
+        "car_card_show": 16599,
+        "car_card_click": 1280,
+        "offer_show": 1248,
+        "offer_click": 732,
+        "offer_success": 720
       },
       "leads": 280,
       "qual": 118,
@@ -261119,19 +261119,19 @@
         "brand": "HAVAL",
         "month": "2026-08",
         "steps": [
-          197626,
-          24539,
-          2468,
-          2385,
-          1453,
-          1413
+          259301,
+          31941,
+          3238,
+          3121,
+          1916,
+          1863
         ],
-        "page_view": 197626,
-        "car_card_show": 24539,
-        "car_card_click": 2468,
-        "offer_show": 2385,
-        "offer_click": 1453,
-        "offer_success": 1413
+        "page_view": 259301,
+        "car_card_show": 31941,
+        "car_card_click": 3238,
+        "offer_show": 3121,
+        "offer_click": 1916,
+        "offer_success": 1863
       },
       "leads": 450,
       "qual": 189,
@@ -261168,23 +261168,23 @@
     "JAECOO": {
       "brand": "JAECOO",
       "vitrina": {
-        "fileName": "Джейленд август.png",
+        "fileName": "Джейку август.png",
         "brand": "JAECOO",
         "month": "2026-08",
         "steps": [
-          197663,
-          2709,
-          234,
-          229,
-          146,
-          144
+          259301,
+          11298,
+          1241,
+          1211,
+          733,
+          717
         ],
-        "page_view": 197663,
-        "car_card_show": 2709,
-        "car_card_click": 234,
-        "offer_show": 229,
-        "offer_click": 146,
-        "offer_success": 144
+        "page_view": 259301,
+        "car_card_show": 11298,
+        "car_card_click": 1241,
+        "offer_show": 1211,
+        "offer_click": 733,
+        "offer_success": 717
       },
       "leads": 210,
       "qual": 88,
@@ -261225,19 +261225,19 @@
         "brand": "OMODA",
         "month": "2026-08",
         "steps": [
-          197670,
-          8771,
-          929,
-          910,
-          567,
-          554
+          259301,
+          10905,
+          1147,
+          1116,
+          688,
+          671
         ],
-        "page_view": 197670,
-        "car_card_show": 8771,
-        "car_card_click": 929,
-        "offer_show": 910,
-        "offer_click": 567,
-        "offer_success": 554
+        "page_view": 259301,
+        "car_card_show": 10905,
+        "car_card_click": 1147,
+        "offer_show": 1116,
+        "offer_click": 688,
+        "offer_success": 671
       },
       "leads": 210,
       "qual": 88,
@@ -261280,19 +261280,19 @@
         "brand": "МОСКВИЧ",
         "month": "2026-08",
         "steps": [
-          197691,
-          6979,
-          360,
-          354,
-          223,
-          216
+          259301,
+          9061,
+          469,
+          458,
+          291,
+          283
         ],
-        "page_view": 197691,
-        "car_card_show": 6979,
-        "car_card_click": 360,
-        "offer_show": 354,
-        "offer_click": 223,
-        "offer_success": 216
+        "page_view": 259301,
+        "car_card_show": 9061,
+        "car_card_click": 469,
+        "offer_show": 458,
+        "offer_click": 291,
+        "offer_success": 283
       },
       "leads": 110,
       "qual": 46,
@@ -275592,6 +275592,168 @@
       "bitrix_aliases": [],
       "bi_aliases": [],
       "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
       "oem_data": [
         {
           "sheet": "Geely&Belgee",
@@ -276118,62 +276280,62 @@
   ],
   "geo_analytics": {
     "total_evaluated_deals": 3261,
-    "local_sales_count": 2343,
+    "local_sales_count": 2341,
     "local_sales_pct": 71.8,
-    "interregional_sales_count": 918,
+    "interregional_sales_count": 920,
     "interregional_sales_pct": 28.2,
     "local_conversion_rate": 5.8,
     "remote_conversion_rate": 2.2,
     "dropoff_factor": 2.6,
     "top_interregional_routes": [
       {
+        "from_region": "Ярославская область",
+        "to_city": "Москва",
+        "count": 97
+      },
+      {
+        "from_region": "Тверская область",
+        "to_city": "Москва",
+        "count": 84
+      },
+      {
         "from_region": "Тульская область",
         "to_city": "Москва",
-        "count": 100
-      },
-      {
-        "from_region": "Ярославская область",
-        "to_city": "Москва",
-        "count": 100
+        "count": 82
       },
       {
         "from_region": "Рязанская область",
         "to_city": "Москва",
-        "count": 78
+        "count": 68
+      },
+      {
+        "from_region": "Московская область",
+        "to_city": "Санкт-Петербург",
+        "count": 35
       },
       {
         "from_region": "Тверская область",
-        "to_city": "Москва",
-        "count": 55
-      },
-      {
-        "from_region": "Ярославская область",
         "to_city": "Санкт-Петербург",
-        "count": 29
+        "count": 25
       },
       {
         "from_region": "Рязанская область",
         "to_city": "Санкт-Петербург",
-        "count": 28
+        "count": 24
       },
       {
-        "from_region": "Московская область",
+        "from_region": "Ярославская область",
         "to_city": "Санкт-Петербург",
-        "count": 26
+        "count": 21
       },
       {
-        "from_region": "Тверская область",
-        "to_city": "Санкт-Петербург",
-        "count": 22
+        "from_region": "Ярославская область",
+        "to_city": "Ростов-на-Дону",
+        "count": 12
       },
       {
-        "from_region": "Московская область",
-        "to_city": "Краснодар",
-        "count": 15
-      },
-      {
-        "from_region": "Московская область",
-        "to_city": "Воронеж",
+        "from_region": "Ярославская область",
+        "to_city": "Казань",
         "count": 12
       }
     ],
@@ -276181,7 +276343,7 @@
       {
         "region": "Москва и область",
         "total_leads": 0,
-        "local_deals": 846,
+        "local_deals": 848,
         "outflow_deals": 0
       },
       {
@@ -276193,61 +276355,61 @@
       {
         "region": "Ярославская область",
         "total_leads": 0,
-        "local_deals": 0,
-        "outflow_deals": 249
+        "local_deals": 1,
+        "outflow_deals": 247
       },
       {
         "region": "Рязанская область",
         "total_leads": 0,
         "local_deals": 0,
-        "outflow_deals": 221
+        "outflow_deals": 214
       },
       {
         "region": "Тверская область",
         "total_leads": 0,
         "local_deals": 0,
-        "outflow_deals": 176
+        "outflow_deals": 213
       },
       {
         "region": "Московская область",
         "total_leads": 0,
-        "local_deals": 3,
-        "outflow_deals": 165
-      },
-      {
-        "region": "Тульская область",
-        "total_leads": 0,
-        "local_deals": 0,
-        "outflow_deals": 100
-      },
-      {
-        "region": "Казань и область",
-        "total_leads": 0,
-        "local_deals": 96,
-        "outflow_deals": 0
+        "local_deals": 5,
+        "outflow_deals": 163
       },
       {
         "region": "Нижний Новгород и область",
-        "total_leads": 0,
-        "local_deals": 94,
-        "outflow_deals": 0
-      },
-      {
-        "region": "Краснодар и область",
         "total_leads": 0,
         "local_deals": 83,
         "outflow_deals": 0
       },
       {
+        "region": "Тульская область",
+        "total_leads": 0,
+        "local_deals": 0,
+        "outflow_deals": 82
+      },
+      {
+        "region": "Казань и область",
+        "total_leads": 0,
+        "local_deals": 82,
+        "outflow_deals": 0
+      },
+      {
+        "region": "Краснодар и область",
+        "total_leads": 0,
+        "local_deals": 78,
+        "outflow_deals": 0
+      },
+      {
         "region": "Ростов-на-Дону и область",
         "total_leads": 0,
-        "local_deals": 68,
+        "local_deals": 72,
         "outflow_deals": 0
       },
       {
         "region": "Воронеж и область",
         "total_leads": 0,
-        "local_deals": 55,
+        "local_deals": 58,
         "outflow_deals": 0
       }
     ]
