@@ -65,7 +65,6 @@ def deploy():
         cmd = [npx_bin, "--yes", "wrangler", "pages", "deploy", site_dir, f"--project-name={project_name}", "--commit-dirty=true", "--branch=main"]
 
     try:
-    try:
         print(f"[*] Komanda: {' '.join(cmd)}")
         res = subprocess.run(
             cmd,
