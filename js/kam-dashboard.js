@@ -384,7 +384,10 @@ function getKamAggregatedData(filterCfg) {
 
     // 1. Seed partners from registry so all assigned partners appear with their STRICT OEM geography
     registry.forEach(p => {
-        const normKam = normalizeKamName(p.kam);
+        let normKam = normalizeKamName(p.kam);
+        if (activeMonth <= '2026-08' && normKam === 'Евгения Добролюбова') {
+            normKam = 'Андрей Кузнецов';
+        }
         getPartnerStats(p.partner_id, p.canonical_name, normKam);
     });
 
@@ -392,6 +395,9 @@ function getKamAggregatedData(filterCfg) {
     fPartners.forEach(r => {
         const normKam = normalizeKamName(r.KAM);
         const ps = getPartnerStats(r.PartnerId, r.Partner, normKam);
+        if (normKam && normKam !== 'Не назначен') {
+            ps.kam = normKam;
+        }
         const rawBrand = r.Brand || 'Другие';
         const brand = normalizeBrandName(rawBrand);
         const b2c = (r.B2C || '').toUpperCase().trim();
