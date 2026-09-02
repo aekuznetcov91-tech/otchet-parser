@@ -1331,6 +1331,14 @@ def run_pipeline():
     except Exception as e:
         print(f"[!] OEM sync check skipped/warning: {e}")
 
+    try:
+        if PROJECT_ROOT not in sys.path:
+            sys.path.insert(0, PROJECT_ROOT)
+        from scripts.sync_inn_dealers import sync_inn_dealers
+        sync_inn_dealers()
+    except Exception as e:
+        print(f"[!] INN dealers sync check skipped/warning: {e}")
+
     # 1. Collect files from raw_data or root with MD5 hash deduplication
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
     deals_candidates = []
@@ -1585,6 +1593,8 @@ def run_pipeline():
             
             if p_lower in bitrix_map:
                 pid, cname, kam_partner = bitrix_map[p_lower]
+            elif p_lower in oem_map:
+                pid, cname, kam_partner = oem_map[p_lower]
             elif kam_dict_bitrix.get(p_lower):
                 kam_partner = kam_dict_bitrix.get(p_lower)
 
@@ -1689,6 +1699,8 @@ def run_pipeline():
                     pid, cname, kam = bi_map[p_lower]
             elif p_lower in bi_map:
                 pid, cname, kam = bi_map[p_lower]
+            elif p_lower in oem_map:
+                pid, cname, kam = oem_map[p_lower]
             elif p_lower in kam_dict_bi:
                 kam = kam_dict_bi.get(p_lower, "")
 
