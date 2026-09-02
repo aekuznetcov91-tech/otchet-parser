@@ -660,30 +660,9 @@ def calculate_geo_match_analytics(deals_data, leads_data, sys_db):
         'иркутская': ['иркутск', 'братск', 'ангарск'],
         'кемеровская': ['кемерово', 'новокузнецк', 'прокопьевск'],
         'ставропольский': ['ставрополь', 'пятигорск', 'кисловодск', 'невинномысск', 'минеральные воды'],
-<<<<<<< Updated upstream
         'оренбургская': ['оренбург', 'орск', 'новотроицк']
     }
 
-=======
-        'оренбургская': ['оренбург', 'орск', 'новотроицк'],
-        'тульская': ['тула', 'новомосковск'],
-        'владимирская': ['владимир', 'ковров', 'муром'],
-        'тверская': ['тверь', 'ржев'],
-        'рязанская': ['рязань'],
-        'чувашская': ['чебоксары', 'новочебоксарск'],
-        'удмуртская': ['ижевск', 'сарапул', 'глазов'],
-        'ханты-мансийский': ['сургут', 'нижневартовск', 'нефтеюганск', 'ханты-мансийск']
-    }
-
-    client_to_region = {}
-    if leads_data:
-        for r in leads_data:
-            cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА') or '').strip()
-            reg = str(get_exact_val(r, 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОН') or '').strip()
-            if cid and reg:
-                client_to_region[cid] = reg
-
->>>>>>> Stashed changes
     local_count = 0
     interregional_count = 0
     route_stats = {}
@@ -702,7 +681,6 @@ def calculate_geo_match_analytics(deals_data, leads_data, sys_db):
             deal_city = 'Москва'
         
         cid = str(get_exact_val(r, 'CLIENTID') or '').strip()
-<<<<<<< Updated upstream
         rnd = (hash(cid or str(r.get('ID', ''))) % 100)
         if rnd < 72:
             client_reg = deal_city + " и область"
@@ -714,23 +692,6 @@ def calculate_geo_match_analytics(deals_data, leads_data, sys_db):
             client_reg = "Тверская область" if deal_city != "Тверь" else "Калужская область"
         else:
             client_reg = "Рязанская область"
-=======
-        client_reg = client_to_region.get(cid, '')
-
-        if not client_reg:
-            import random
-            rnd = (hash(cid or str(r.get('ID', ''))) % 100)
-            if rnd < 72:
-                client_reg = deal_city + " и область"
-            elif rnd < 80:
-                client_reg = "Московская область" if deal_city != "Москва" else "Тульская область"
-            elif rnd < 88:
-                client_reg = "Ярославская область" if deal_city != "Ярославль" else "Владимирская область"
-            elif rnd < 94:
-                client_reg = "Тверская область" if deal_city != "Тверь" else "Калужская область"
-            else:
-                client_reg = "Рязанская область"
->>>>>>> Stashed changes
 
         is_match = False
         deal_city_lower = deal_city.lower()
@@ -792,21 +753,7 @@ def calculate_city_expansion_potential(deals_data, leads_data):
         {"city": "Иркутск", "region": "Иркутская область", "population": 610, "current_leads": 480, "active_dealers": 1, "tier": "Средний"},
         {"city": "Хабаровск", "region": "Хабаровский край", "population": 615, "current_leads": 430, "active_dealers": 0, "tier": "Средний"},
         {"city": "Ставрополь", "region": "Ставропольский край", "population": 550, "current_leads": 410, "active_dealers": 1, "tier": "Средний"},
-<<<<<<< Updated upstream
         {"city": "Ярославль", "region": "Ярославская область", "population": 570, "current_leads": 390, "active_dealers": 1, "tier": "Средний"}
-=======
-        {"city": "Ярославль", "region": "Ярославская область", "population": 570, "current_leads": 390, "active_dealers": 1, "tier": "Средний"},
-        {"city": "Владивосток", "region": "Приморский край", "population": 600, "current_leads": 380, "active_dealers": 0, "tier": "Средний"},
-        {"city": "Кемерово", "region": "Кемеровская область", "population": 550, "current_leads": 360, "active_dealers": 1, "tier": "Средний"},
-        {"city": "Оренбург", "region": "Оренбургская область", "population": 540, "current_leads": 340, "active_dealers": 1, "tier": "Средний"},
-        {"city": "Барнаул", "region": "Алтайский край", "population": 620, "current_leads": 330, "active_dealers": 0, "tier": "Перспективный"},
-        {"city": "Ульяновск", "region": "Ульяновская область", "population": 610, "current_leads": 310, "active_dealers": 1, "tier": "Перспективный"},
-        {"city": "Рязань", "region": "Рязанская область", "population": 530, "current_leads": 290, "active_dealers": 1, "tier": "Перспективный"},
-        {"city": "Пенза", "region": "Пензенская область", "population": 500, "current_leads": 280, "active_dealers": 1, "tier": "Перспективный"},
-        {"city": "Липецк", "region": "Липецкая область", "population": 490, "current_leads": 260, "active_dealers": 1, "tier": "Перспективный"},
-        {"city": "Тула", "region": "Тульская область", "population": 470, "current_leads": 250, "active_dealers": 1, "tier": "Перспективный"},
-        {"city": "Киров", "region": "Кировская область", "population": 470, "current_leads": 240, "active_dealers": 0, "tier": "Перспективный"}
->>>>>>> Stashed changes
     ]
 
     city_results = []
@@ -818,11 +765,7 @@ def calculate_city_expansion_potential(deals_data, leads_data):
     for c in cities_database:
         mult = 2.2 if c['active_dealers'] == 0 else 1.6
         inc_leads = int(round(c['current_leads'] * mult))
-<<<<<<< Updated upstream
         conv = 0.045 if c['tier'] == 'Высокий' else 0.040
-=======
-        conv = 0.045 if c['tier'] == 'Высокий' else (0.040 if c['tier'] == 'Средний' else 0.035)
->>>>>>> Stashed changes
         inc_sales = int(round(inc_leads * conv))
         inc_revenue = round(inc_sales * avg_arpu, 2)
 
@@ -847,18 +790,11 @@ def calculate_city_expansion_potential(deals_data, leads_data):
         "cities": city_results,
         "total_top20_incremental_leads": tot_inc_leads,
         "total_top20_forecast_sales": tot_inc_sales,
-<<<<<<< Updated upstream
         "total_top20_forecast_revenue": tot_inc_revenue
-=======
-        "total_top20_forecast_revenue": tot_inc_revenue,
-        "top5_forecast_revenue": sum(c["forecast_monthly_revenue"] for c in city_results[:5]),
-        "top10_forecast_revenue": sum(c["forecast_monthly_revenue"] for c in city_results[:10])
->>>>>>> Stashed changes
     }
 
 def calculate_competitor_benchmarks(deals_data):
     models_benchmark = [
-<<<<<<< Updated upstream
         {"brand": "JETOUR", "model": "DASHING 1.5T Comfort Plus", "rrc_price": 2489900, "sberauto_price": 2100000, "sberauto_discount_rub": 389900, "sberauto_discount_pct": 15.7, "oem_price": 2339900, "t_auto_price": 2240000, "ozon_price": 2290000, "advantage_vs_oem": 239900, "advantage_vs_t_auto": 140000, "advantage_vs_ozon": 190000, "badge": "Лучшая цена в РФ (-140k vs Т-Авто)"},
         {"brand": "JETOUR", "model": "X70 PLUS 1.6T Luxury", "rrc_price": 2999900, "sberauto_price": 2490000, "sberauto_discount_rub": 509900, "sberauto_discount_pct": 17.0, "oem_price": 2799900, "t_auto_price": 2650000, "ozon_price": 2680000, "advantage_vs_oem": 309900, "advantage_vs_t_auto": 160000, "advantage_vs_ozon": 190000, "badge": "Супер-скидка 510 000 ₽"},
         {"brand": "LADA", "model": "VESTA NG 1.6 Life", "rrc_price": 1591900, "sberauto_price": 1495000, "sberauto_discount_rub": 96900, "sberauto_discount_pct": 6.1, "oem_price": 1561900, "t_auto_price": 1520000, "ozon_price": 1540000, "advantage_vs_oem": 66900, "advantage_vs_t_auto": 25000, "advantage_vs_ozon": 45000, "badge": "Выгоднее OEM на 67k ₽"},
@@ -870,220 +806,16 @@ def calculate_competitor_benchmarks(deals_data):
         "avg_advantage_vs_oem": 225000,
         "avg_advantage_vs_t_auto": 115000,
         "avg_advantage_vs_ozon": 150000
-=======
-        {
-            "brand": "JETOUR",
-            "model": "DASHING 1.5T Comfort Plus",
-            "rrc_price": 2489900,
-            "sberauto_price": 2100000,
-            "sberauto_discount_rub": 389900,
-            "sberauto_discount_pct": 15.7,
-            "oem_price": 2339900,
-            "t_auto_price": 2240000,
-            "ozon_price": 2290000,
-            "advantage_vs_oem": 239900,
-            "advantage_vs_t_auto": 140000,
-            "advantage_vs_ozon": 190000,
-            "badge": "Лучшая цена в РФ (-140k vs Т-Авто)"
-        },
-        {
-            "brand": "JETOUR",
-            "model": "X70 PLUS 1.6T Luxury",
-            "rrc_price": 2999900,
-            "sberauto_price": 2490000,
-            "sberauto_discount_rub": 509900,
-            "sberauto_discount_pct": 17.0,
-            "oem_price": 2799900,
-            "t_auto_price": 2650000,
-            "ozon_price": 2680000,
-            "advantage_vs_oem": 309900,
-            "advantage_vs_t_auto": 160000,
-            "advantage_vs_ozon": 190000,
-            "badge": "Супер-скидка 510 000 ₽"
-        },
-        {
-            "brand": "LADA",
-            "model": "VESTA NG 1.6 Life",
-            "rrc_price": 1591900,
-            "sberauto_price": 1495000,
-            "sberauto_discount_rub": 96900,
-            "sberauto_discount_pct": 6.1,
-            "oem_price": 1561900,
-            "t_auto_price": 1520000,
-            "ozon_price": 1540000,
-            "advantage_vs_oem": 66900,
-            "advantage_vs_t_auto": 250000,
-            "advantage_vs_ozon": 45000,
-            "badge": "Выгоднее OEM на 67k ₽"
-        },
-        {
-            "brand": "LADA",
-            "model": "GRANTA 1.6 Standard Plus",
-            "rrc_price": 890000,
-            "sberauto_price": 845000,
-            "sberauto_discount_rub": 45000,
-            "sberauto_discount_pct": 5.1,
-            "oem_price": 880000,
-            "t_auto_price": 860000,
-            "ozon_price": 870000,
-            "advantage_vs_oem": 35000,
-            "advantage_vs_t_auto": 15000,
-            "advantage_vs_ozon": 25000,
-            "badge": "Хит продаж в кредит"
-        },
-        {
-            "brand": "HAVAL",
-            "model": "JOLION 1.5T Elite 2WD",
-            "rrc_price": 2449000,
-            "sberauto_price": 2190000,
-            "sberauto_discount_rub": 259000,
-            "sberauto_discount_pct": 10.6,
-            "oem_price": 2349000,
-            "t_auto_price": 2280000,
-            "ozon_price": 2310000,
-            "advantage_vs_oem": 159000,
-            "advantage_vs_t_auto": 90000,
-            "advantage_vs_ozon": 120000,
-            "badge": "Скидка СберАвто 259k ₽"
-        },
-        {
-            "brand": "GEELY",
-            "model": "MONJARO 2.0T 4WD Exclusive",
-            "rrc_price": 4999990,
-            "sberauto_price": 4390000,
-            "sberauto_discount_rub": 609990,
-            "sberauto_discount_pct": 12.2,
-            "oem_price": 4749990,
-            "t_auto_price": 4550000,
-            "ozon_price": 4600000,
-            "advantage_vs_oem": 359990,
-            "advantage_vs_t_auto": 160000,
-            "advantage_vs_ozon": 210000,
-            "badge": "Выгода 610 000 ₽"
-        },
-        {
-            "brand": "CHANGAN",
-            "model": "CS55 PLUS 1.5T Tech",
-            "rrc_price": 2749900,
-            "sberauto_price": 2390000,
-            "sberauto_discount_rub": 359900,
-            "sberauto_discount_pct": 13.1,
-            "oem_price": 2599900,
-            "t_auto_price": 2490000,
-            "ozon_price": 2520000,
-            "advantage_vs_oem": 209900,
-            "advantage_vs_t_auto": 100000,
-            "advantage_vs_ozon": 130000,
-            "badge": "Выгоднее Т-Авто на 100k ₽"
-        },
-        {
-            "brand": "TENET",
-            "model": "TIGGO 7 PRO MAX 1.6T Ultimate",
-            "rrc_price": 3100000,
-            "sberauto_price": 2680000,
-            "sberauto_discount_rub": 420000,
-            "sberauto_discount_pct": 13.5,
-            "oem_price": 2950000,
-            "t_auto_price": 2820000,
-            "ozon_price": 2850000,
-            "advantage_vs_oem": 270000,
-            "advantage_vs_t_auto": 140000,
-            "advantage_vs_ozon": 170000,
-            "badge": "Субсидия + Трейд-ин"
-        },
-        {
-            "brand": "SOLARIS",
-            "model": "HS 1.6 Elegance 6AT",
-            "rrc_price": 2110000,
-            "sberauto_price": 1890000,
-            "sberauto_discount_rub": 220000,
-            "sberauto_discount_pct": 10.4,
-            "oem_price": 2050000,
-            "t_auto_price": 1980000,
-            "ozon_price": 1990000,
-            "advantage_vs_oem": 160000,
-            "advantage_vs_t_auto": 90000,
-            "advantage_vs_ozon": 100000,
-            "badge": "В наличии с ПТС"
-        },
-        {
-            "brand": "GAC",
-            "model": "GS8 2.0T 4WD GL",
-            "rrc_price": 4399000,
-            "sberauto_price": 3950000,
-            "sberauto_discount_rub": 449000,
-            "sberauto_discount_pct": 10.2,
-            "oem_price": 4249000,
-            "t_auto_price": 4120000,
-            "ozon_price": 4150000,
-            "advantage_vs_oem": 299000,
-            "advantage_vs_t_auto": 170000,
-            "advantage_vs_ozon": 200000,
-            "badge": "Премиум выгода 449k ₽"
-        },
-        {
-            "brand": "BELGEE",
-            "model": "X50 1.5T Style",
-            "rrc_price": 2400000,
-            "sberauto_price": 2160000,
-            "sberauto_discount_rub": 240000,
-            "sberauto_discount_pct": 10.0,
-            "oem_price": 2320000,
-            "t_auto_price": 2250000,
-            "ozon_price": 2270000,
-            "advantage_vs_oem": 160000,
-            "advantage_vs_t_auto": 90000,
-            "advantage_vs_ozon": 110000,
-            "badge": "Госпрограмма / Субсидия"
-        },
-        {
-            "brand": "OMODA",
-            "model": "C5 1.5T Ultimate CVT",
-            "rrc_price": 2679900,
-            "sberauto_price": 2340000,
-            "sberauto_discount_rub": 339900,
-            "sberauto_discount_pct": 12.7,
-            "oem_price": 2549900,
-            "t_auto_price": 2450000,
-            "ozon_price": 2480000,
-            "advantage_vs_oem": 209900,
-            "advantage_vs_t_auto": 110000,
-            "advantage_vs_ozon": 140000,
-            "badge": "Онлайн выгода 340k ₽"
-        }
-    ]
-
-    avg_adv_oem = round(sum(m["advantage_vs_oem"] for m in models_benchmark) / len(models_benchmark), 0)
-    avg_adv_t_auto = round(sum(m["advantage_vs_t_auto"] for m in models_benchmark) / len(models_benchmark), 0)
-    avg_adv_ozon = round(sum(m["advantage_vs_ozon"] for m in models_benchmark) / len(models_benchmark), 0)
-
-    return {
-        "models": models_benchmark,
-        "avg_advantage_vs_oem": avg_adv_oem,
-        "avg_advantage_vs_t_auto": avg_adv_t_auto,
-        "avg_advantage_vs_ozon": avg_adv_ozon,
-        "market_position_summary": "СберАвто удерживает среднее ценовое преимущество 120 000 – 210 000 ₽ относительно агрегаторов и дистрибьюторов."
->>>>>>> Stashed changes
     }
 
 def calculate_discount_analytics(deals_data):
     brand_stats = {}
-<<<<<<< Updated upstream
     tot_sales = 0
     tot_rrc = 0.0
     tot_final = 0.0
     tot_disc_amount = 0.0
     tot_sa_disc = 0.0
     tot_dc_disc = 0.0
-=======
-    model_stats = {}
-    tot_sales = 0
-    tot_rrc = 0.0
-    tot_final = 0.0
-    tot_sa_disc = 0.0
-    tot_dc_disc = 0.0
-    tot_disc_amount = 0.0
->>>>>>> Stashed changes
 
     aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА")
 
@@ -1096,7 +828,6 @@ def calculate_discount_analytics(deals_data):
             continue
 
         brand = normalize_brand(tovar)
-<<<<<<< Updated upstream
         try: p_before = float(str(get_exact_val(r, 'СТОИМОСТЬТСДОСКИДКИB2C') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
         except: p_before = 0.0
         try: disc_sa = float(str(get_exact_val(r, 'СКИДКАСАB2C', 'СКИДКАСА') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
@@ -1104,27 +835,10 @@ def calculate_discount_analytics(deals_data):
         try: disc_dc = float(str(get_exact_val(r, 'СКИДКАДЦB2C', 'СКИДКАДЦ') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
         except: disc_dc = 0.0
         try: p_final = float(str(get_exact_val(r, 'ФИНАЛЬНАЯЦЕНАB2C', 'ФИНАЛЬНАЯЦЕНА', 'ЦЕНА') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
-=======
-        try:
-            p_before = float(str(get_exact_val(r, 'СТОИМОСТЬТСДОСКИДКИB2C') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
-        except: p_before = 0.0
-        try:
-            disc_sa = float(str(get_exact_val(r, 'СКИДКАСАB2C', 'СКИДКАСА') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
-        except: disc_sa = 0.0
-        try:
-            disc_dc = float(str(get_exact_val(r, 'СКИДКАДЦB2C', 'СКИДКАДЦ') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
-        except: disc_dc = 0.0
-        try:
-            p_final = float(str(get_exact_val(r, 'ФИНАЛЬНАЯЦЕНАB2C', 'ФИНАЛЬНАЯЦЕНА', 'ЦЕНА') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.'))
->>>>>>> Stashed changes
         except: p_final = 0.0
 
         if p_final <= 0 and p_before <= 0:
             continue
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
         if p_before == 0 and p_final > 0:
             p_before = p_final + disc_sa + disc_dc
         tot_d = disc_sa + disc_dc
@@ -1133,21 +847,6 @@ def calculate_discount_analytics(deals_data):
             disc_sa = tot_d * 0.8
             disc_dc = tot_d * 0.2
 
-<<<<<<< Updated upstream
-=======
-        if p_final == 0 and p_before > 0:
-            p_final = p_before - tot_d
-
-        # Model cleanup
-        model = tovar
-        if brand in model: model = model.replace(brand, '')
-        words = model.split()
-        if words and len(words[-1]) > 10 and bool(re.search(r'[A-Z0-9]', words[-1])):
-            model = ' '.join(words[:-1])
-        model = model.strip(' ,-')
-        if not model: model = brand
-
->>>>>>> Stashed changes
         tot_sales += 1
         tot_rrc += p_before
         tot_final += p_final
@@ -1155,10 +854,6 @@ def calculate_discount_analytics(deals_data):
         tot_dc_disc += disc_dc
         tot_disc_amount += tot_d
 
-<<<<<<< Updated upstream
-=======
-        # Brand
->>>>>>> Stashed changes
         if brand not in brand_stats:
             brand_stats[brand] = {'brand': brand, 'count': 0, 'rrc': 0.0, 'final': 0.0, 'sa_disc': 0.0, 'dc_disc': 0.0, 'tot_disc': 0.0}
         brand_stats[brand]['count'] += 1
@@ -1168,36 +863,13 @@ def calculate_discount_analytics(deals_data):
         brand_stats[brand]['dc_disc'] += disc_dc
         brand_stats[brand]['tot_disc'] += tot_d
 
-<<<<<<< Updated upstream
-=======
-        # Model
-        model_key = f"{brand} {model}"
-        if model_key not in model_stats:
-            model_stats[model_key] = {'brand': brand, 'model': model, 'count': 0, 'rrc': 0.0, 'final': 0.0, 'sa_disc': 0.0, 'dc_disc': 0.0, 'tot_disc': 0.0}
-        model_stats[model_key]['count'] += 1
-        model_stats[model_key]['rrc'] += p_before
-        model_stats[model_key]['final'] += p_final
-        model_stats[model_key]['sa_disc'] += disc_sa
-        model_stats[model_key]['dc_disc'] += disc_dc
-        model_stats[model_key]['tot_disc'] += tot_d
-
-    # Format Brand results
->>>>>>> Stashed changes
     brand_results = []
     for b, s in sorted(brand_stats.items(), key=lambda x: x[1]['count'], reverse=True):
         if s['count'] < 5: continue
         avg_rrc = round(s['rrc'] / s['count'], 2)
         avg_final = round(s['final'] / s['count'], 2)
         avg_disc = round(s['tot_disc'] / s['count'], 2)
-<<<<<<< Updated upstream
         pct = round((avg_disc / avg_rrc * 100), 1) if avg_rrc > 0 else 0.0
-=======
-        avg_sa = round(s['sa_disc'] / s['count'], 2)
-        avg_dc = round(s['dc_disc'] / s['count'], 2)
-        pct = round((avg_disc / avg_rrc * 100), 1) if avg_rrc > 0 else 0.0
-        sa_share = round((avg_sa / avg_disc * 100), 1) if avg_disc > 0 else 0.0
-
->>>>>>> Stashed changes
         brand_results.append({
             "brand": b,
             "sales_count": s['count'],
@@ -1205,38 +877,8 @@ def calculate_discount_analytics(deals_data):
             "avg_final": avg_final,
             "avg_discount_rub": avg_disc,
             "avg_discount_pct": pct,
-<<<<<<< Updated upstream
             "avg_sa_discount": round(s['sa_disc'] / s['count'], 2),
             "avg_dc_discount": round(s['dc_disc'] / s['count'], 2)
-=======
-            "avg_sa_discount": avg_sa,
-            "avg_dc_discount": avg_dc,
-            "sa_share_pct": sa_share
-        })
-
-    # Format Model results
-    model_results = []
-    for mk, s in sorted(model_stats.items(), key=lambda x: x[1]['count'], reverse=True):
-        if s['count'] < 3: continue
-        avg_rrc = round(s['rrc'] / s['count'], 2)
-        avg_final = round(s['final'] / s['count'], 2)
-        avg_disc = round(s['tot_disc'] / s['count'], 2)
-        avg_sa = round(s['sa_disc'] / s['count'], 2)
-        avg_dc = round(s['dc_disc'] / s['count'], 2)
-        pct = round((avg_disc / avg_rrc * 100), 1) if avg_rrc > 0 else 0.0
-
-        model_results.append({
-            "brand": s['brand'],
-            "model": s['model'],
-            "full_name": mk,
-            "sales_count": s['count'],
-            "avg_rrc": avg_rrc,
-            "avg_final": avg_final,
-            "avg_discount_rub": avg_disc,
-            "avg_discount_pct": pct,
-            "avg_sa_discount": avg_sa,
-            "avg_dc_discount": avg_dc
->>>>>>> Stashed changes
         })
 
     avg_overall_rrc = round(tot_rrc / tot_sales, 2) if tot_sales > 0 else 0
@@ -1245,7 +887,6 @@ def calculate_discount_analytics(deals_data):
 
     return {
         "brands": brand_results,
-<<<<<<< Updated upstream
         "total_evaluated_sales": tot_sales,
         "avg_company_discount_rub": avg_overall_disc,
         "avg_company_discount_pct": avg_overall_pct
@@ -1675,17 +1316,6 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
 
 
 
-=======
-        "top_models": model_results[:25],
-        "total_evaluated_sales": tot_sales,
-        "avg_company_discount_rub": avg_overall_disc,
-        "avg_company_discount_pct": avg_overall_pct,
-        "total_discounts_given_rub": round(tot_disc_amount, 2),
-        "total_sa_subsidy_rub": round(tot_sa_disc, 2),
-        "total_dc_discount_rub": round(tot_dc_disc, 2)
-    }
-
->>>>>>> Stashed changes
 def run_pipeline():
     """Main execution pipeline: parse raw data, generate optimized data.json and sync static assets."""
     print("=" * 60)
