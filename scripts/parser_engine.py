@@ -1176,6 +1176,15 @@ def run_pipeline():
     print("   AUTOMATED PARSER ENGINE: B2C Auto Analytics & Funnel")
     print("=" * 60)
 
+    # 0. Sync OEM dealers & benchmarks if an OEM file exists in raw_data or root
+    try:
+        if PROJECT_ROOT not in sys.path:
+            sys.path.insert(0, PROJECT_ROOT)
+        from scripts.sync_oem_registry import sync_oem_to_registry
+        sync_oem_to_registry()
+    except Exception as e:
+        print(f"[!] OEM sync check skipped/warning: {e}")
+
     # 1. Collect files from raw_data or root with MD5 hash deduplication
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
     deals_candidates = []

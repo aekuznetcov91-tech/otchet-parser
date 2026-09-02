@@ -228,11 +228,7 @@ def generate_benchmark_data():
         with open(p, 'w', encoding='utf-8') as f:
             json.dump(output_benchmark, f, ensure_ascii=False, indent=2)
 
-    # Also save scripts/fetch_market_dealers.py
-    script_target = os.path.join(SCRIPTS_DIR, 'fetch_market_dealers.py')
-    with open(__file__, 'r', encoding='utf-8') as f_src:
-        with open(script_target, 'w', encoding='utf-8') as f_dst:
-            f_dst.write(f_src.read())
+
 
     sys.stdout.buffer.write((f"✅ База бенчмарка дилерских сетей РФ успешно сохранена в {p}\n").encode('utf-8'))
     sys.stdout.buffer.write((f"📊 Всего ДЦ в РФ: {output_benchmark['market_summary']['total_dealers_rf_market']} | Подключено: {total_connected} ({output_benchmark['market_summary']['total_coverage_pct']}%)\n").encode('utf-8'))
