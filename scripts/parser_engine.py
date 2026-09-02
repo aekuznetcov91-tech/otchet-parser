@@ -1666,6 +1666,10 @@ def run_pipeline():
                         "b2c": b2c
                     })
 
+    # Deduplicate & exclude from debtors if the car (VIN) was already closed and sold in a main deal
+    sold_vins = {r['VIN'].upper().strip() for r in sys_db if r.get('SaleQty') == 1 and r.get('VIN') and len(r.get('VIN').strip()) >= 8}
+    debtors = [d for d in debtors if not (d.get('vin') and d.get('vin').upper().strip() in sold_vins)]
+
     # 4. Process Leads
     if leads_data:
         seen_clients = set()
