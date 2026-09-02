@@ -1598,6 +1598,14 @@ def run_pipeline():
             elif kam_dict_bitrix.get(p_lower):
                 kam_partner = kam_dict_bitrix.get(p_lower)
 
+            # Portfolio handover rule: in August 2026 and earlier, deals of Dobrolyubova's portfolio are attributed to Kuznetsov
+            if kam_partner == "Евгения Добролюбова" and (deal_month_str <= "2026-08" or not deal_month_str):
+                kam_partner = "Андрей Кузнецов"
+
+            kam_prepay = kam_partner
+            if kam_prepay == "Евгения Добролюбова" and (prepay_month_str <= "2026-08" or not prepay_month_str):
+                kam_prepay = "Андрей Кузнецов"
+
             if is_sale:
                 is_mp = any(k in b2c.upper() for k in ['МП1', 'МП2', 'МП3', 'MP1', 'MP2', 'MP3'])
                 raw_prepay_val = get_exact_val(row, 'ДАТАВНЕСЕНИЯПРЕДОПЛАТЫРОЗНИЦА', 'ДАТАПОЛУЧЕНИЯАВАНСА')
@@ -1633,7 +1641,7 @@ def run_pipeline():
                     "PartnerId": pid,
                     "Partner": cname,
                     "RawPartner": partner_raw,
-                    "KAM": kam_partner,
+                    "KAM": kam_prepay,
                     "Type": "Предоплата",
                     "Qty": 1,
                     "Date": prepay_serial
@@ -1711,6 +1719,9 @@ def run_pipeline():
             d_lead_date = parse_custom_date(get_exact_val(row, 'ДАТА'))
             lead_month_str = f"{d_lead_date.year}-{str(d_lead_date.month).zfill(2)}" if d_lead_date else ""
             lead_serial = date_to_excel_serial(d_lead_date)
+
+            if kam == "Евгения Добролюбова" and (lead_month_str <= "2026-08" or not lead_month_str):
+                kam = "Андрей Кузнецов"
 
             sys_db_partners.append({
                 "Month": lead_month_str,

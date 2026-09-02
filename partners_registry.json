@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 557,
+  "total_master_partners": 629,
   "partners": [
     {
       "partner_id": 1001,
@@ -396,10 +396,11 @@
       "partner_id": 1009,
       "canonical_name": "Темп Авто",
       "holding": "Темп",
-      "kam": "Валерия Солдатова",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE ООО \"ТЕМП АВТО К\"",
-        "Темп Авто"
+        "Темп Авто",
+        "ONLINE Олимп (ООО \"ТЕМП АВТО КУБАНЬ\")"
       ],
       "bi_aliases": [
         "Темп Авто"
@@ -572,7 +573,7 @@
       "partner_id": 1012,
       "canonical_name": "Jetour Авто Премиум",
       "holding": "Jetour",
-      "kam": "Светлана Дариенко",
+      "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "Online Авто Премиум / ООО Лидер Сервис",
         "Jetour Авто Премиум",
@@ -855,7 +856,7 @@
       "partner_id": 1016,
       "canonical_name": "ЛЕОН-АВТО (ООО \"ДМ-АВТО\" СЕВЕР\")",
       "holding": "ЛЕОН-АВТО",
-      "kam": "Валерия Солдатова",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "Online ЛЕОН-АВТО (ООО \"ДМ-АВТО\" СЕВЕР\")",
         "Online ООО \"ЛЕОН\""
@@ -944,7 +945,7 @@
       "partner_id": 1018,
       "canonical_name": "Дактор",
       "holding": "Дактор",
-      "kam": "Валерия Солдатова",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ООО \"ДАКТОР КУБАНЬ\" online",
         "Online ДАКТОР УФА СЕЛЬСКАЯ"
@@ -2737,7 +2738,8 @@
         "Online Эксперт Авто Самара",
         "Эксперт Авто",
         "ООО \"ЭКСПЕРТ САМАРА\" ONLINE",
-        "ONLINE ГК Эксперт Авто \\ ООО \"ЭКСПЕРТ АВТО НСК\""
+        "ONLINE ГК Эксперт Авто \\ ООО \"ЭКСПЕРТ АВТО НСК\"",
+        "ЭКСПЕРТ АВТО ОРЕНБУРГ"
       ],
       "bi_aliases": [
         "Online Эксперт Авто",
@@ -3703,7 +3705,7 @@
       "partner_id": 1049,
       "canonical_name": "ГК АГАТ",
       "holding": "ГК",
-      "kam": "Андрей Кузнецов",
+      "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ГК АГАТ/ ООО \"КВАНТ\"",
         "ООО \"МАКСИМА АВТО\" online",
@@ -3899,7 +3901,8 @@
         "ONLINE Сызранская СТА (АО \"СЫЗРАНСКАЯ СТО\")",
         "Форвард",
         "Online ООО АВТО РИТЕЙЛ ДИАМАНТ / ГК Форвард",
-        "Online ООО Автосеть Уфа"
+        "Online ООО Автосеть Уфа",
+        "ONLINE ФОРВАРД Авто Ижевск (ООО \"ФОРВАРД-АВТО\")"
       ],
       "bi_aliases": [
         "Форвард",
@@ -4233,13 +4236,14 @@
       "partner_id": 1058,
       "canonical_name": "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
       "holding": "ЧЕРИ",
-      "kam": "Андрей Кузнецов",
+      "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ONLINE ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК (ООО \"АВТОГАРАНТИЯ\")",
         "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
         "ONLINE CHERY Измайлово (ООО \"ИЗМАЙЛОВО-СЕРВИС\")",
         "ООО \"АВТОЦЕНТР \"ГОЛЬФСТРИМ\" online",
-        "ONLINE CHERY Автофорум (ООО \"АВТОФОРУМ ЦЕНТР\")"
+        "ONLINE CHERY Автофорум (ООО \"АВТОФОРУМ ЦЕНТР\")",
+        "ООО \"АВТОФОРУМ\" ONLINE"
       ],
       "bi_aliases": [
         "СберАвто",
@@ -5028,7 +5032,9 @@
       "bitrix_aliases": [
         "ONLINE Автоимпорт (ООО \"Кармен\") ONLINE",
         "Автоимпорт",
-        "ГК Автоимпорт"
+        "ГК Автоимпорт",
+        "Online ООО Компания Автоимпорт",
+        "ONLINE Автоимпорт / ООО Автоимпорт Центр"
       ],
       "bi_aliases": [
         "ONLINE пилот ФДЦ Автоимпорт Рязань",
@@ -5896,7 +5902,8 @@
       "bitrix_aliases": [
         "ООО \"Кунцево Авто Трейдинг\" (ООО \"КУНЦЕВО АТ\") Online",
         "Кунцево",
-        "ООО КУНЦЕВО АТ"
+        "ООО КУНЦЕВО АТ",
+        "ООО \"ТЦ \"КУНЦЕВО ЛИМИТЕД\" ONLINE"
       ],
       "bi_aliases": [
         "Кунцево"
@@ -6723,7 +6730,7 @@
       "partner_id": 1116,
       "canonical_name": "Кунцево",
       "holding": "Кунцево",
-      "kam": "Алексей Чихарев",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ООО \"ТЦ \"КУНЦЕВО ЛИМИТЕД\" ONLINE",
         "АО \"РОЛЬФ\" ONLINE",
@@ -7106,7 +7113,7 @@
       "partner_id": 1121,
       "canonical_name": "АВТОЦЕНТР АВТОГРАД",
       "holding": "АВТОЦЕНТР",
-      "kam": "Светлана Дариенко",
+      "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ONLINE АВТОЦЕНТР АВТОГРАД (ООО \"АВТОЦЕНТР АВТОГРАД\")"
       ],
@@ -7868,7 +7875,9 @@
       "canonical_name": "Русская Ладья",
       "holding": "Русская",
       "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [],
+      "bitrix_aliases": [
+        "ONLINE LADA Русская Ладья (ООО \"РУССКАЯ ЛАДЬЯ\")"
+      ],
       "bi_aliases": [
         "ONLINE Русская Ладья",
         "Русская Ладья"
@@ -8262,7 +8271,7 @@
       "partner_id": 1163,
       "canonical_name": "Автохолдинг Максимум",
       "holding": "Автохолдинг",
-      "kam": "Светлана Дариенко",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ЗАО \"АВТОХОЛДИНГ\" LUCKY MOTORS ONLINE",
         "ООО \"МАКСИМУМ КРЕДИТ\" online"
@@ -10843,7 +10852,7 @@
       "partner_id": 1242,
       "canonical_name": "Рус-Авто Трейд",
       "holding": "Рус-Авто",
-      "kam": "Дариенко Светлана",
+      "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "ООО «РУС-АВТО ТРЕЙД»",
         "РУС-АВТО ТРЕЙД ONLINE"
@@ -10906,7 +10915,7 @@
       "partner_id": 1244,
       "canonical_name": "ГК КОРС Джетур",
       "holding": "ГК",
-      "kam": "Кузнецов Андрей",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ООО Корс Новомосковск",
         "ООО \"КОРС НОВОМОСКОВСК\" ONLINE"
@@ -10990,7 +10999,7 @@
       "partner_id": 1245,
       "canonical_name": "Картель",
       "holding": "Картель",
-      "kam": "Дариенко Светлана",
+      "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "ООО КАРТЕЛЬ",
         "ONLINE ООО \"КАРТЕЛЬ АВТО\"",
@@ -11125,7 +11134,7 @@
       "partner_id": 1248,
       "canonical_name": "ГК Сильвер Джетур",
       "holding": "ГК",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "Сильвер-Авто ПЛЮС",
         "ООО \"СИЛЬВЕР-АВТО ПЛЮС\" ONLINE"
@@ -11264,7 +11273,7 @@
       "partner_id": 1252,
       "canonical_name": "АБМ",
       "holding": "АБМ",
-      "kam": "Дариенко Светлана",
+      "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "Авто Брокер"
       ],
@@ -11798,7 +11807,7 @@
       "partner_id": 1265,
       "canonical_name": "Гак Верра",
       "holding": "Гак",
-      "kam": "Кузнецов Андрей",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "Урал Моторс"
       ],
@@ -11822,7 +11831,7 @@
       "partner_id": 1266,
       "canonical_name": "Автолидер ГАК",
       "holding": "Автолидер",
-      "kam": "Кузнецов Андрей",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ООО «АВТОЛИДЕР»."
       ],
@@ -12012,7 +12021,7 @@
     {
       "partner_id": "P_OEM_632011d7",
       "canonical_name": "СибАвтоцентр",
-      "kam": "Дариенко Светлана",
+      "kam": "Светлана Дариенко",
       "bitrix_aliases": [],
       "bi_aliases": [],
       "pochta_aliases": [],
@@ -13881,7 +13890,7 @@
       "partner_id": 632013,
       "canonical_name": "Форвард Авто Лада Ижевск",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE ФОРВАРД Авто Ижевск (ООО \"ФОРВАРД-АВТО\")"
       ],
@@ -13896,7 +13905,7 @@
       "partner_id": 632014,
       "canonical_name": "ONLINE пилот ФДЦ ЮНИКОР Дзержинск НН",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE ЮНИКОР (ООО \"ЮНИКОР\")"
       ],
@@ -13911,7 +13920,7 @@
       "partner_id": 632015,
       "canonical_name": "ONLINE ФДЦ Русская Ладья",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE LADA Русская Ладья (ООО \"РУССКАЯ ЛАДЬЯ\")"
       ],
@@ -13955,7 +13964,7 @@
       "partner_id": 632018,
       "canonical_name": "Урал Лада Красный Яр",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE АМК Самара ООО \"УРАЛ-ЛАДА\""
       ],
@@ -13983,7 +13992,7 @@
       "partner_id": 632020,
       "canonical_name": "ONLINE пилот ФДЦ Форвард Ижевск Сызрань",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE Сызранская СТА (АО \"СЫЗРАНСКАЯ СТО\")"
       ],
@@ -14071,7 +14080,7 @@
       "partner_id": 632026,
       "canonical_name": "ООО \"УРАЛ-МОТОРС\" ONLINE",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ООО \"УРАЛ-МОТОРС\" ONLINE"
       ],
@@ -14097,7 +14106,7 @@
       "partner_id": 632028,
       "canonical_name": "ООО \"ЛАДА ЦЕНТР НА ЛЕНИНА\"",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ООО \"ЛАДА ЦЕНТР НА ЛЕНИНА\""
       ],
@@ -14110,7 +14119,7 @@
       "partner_id": 632029,
       "canonical_name": "ООО \"АРТКАР\" ONLINE",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ООО \"АРТКАР\" ONLINE"
       ],
@@ -14163,7 +14172,7 @@
       "partner_id": 632032,
       "canonical_name": "Премиум Авто ONLINE",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "Премиум Авто ONLINE"
       ],
@@ -14176,7 +14185,7 @@
       "partner_id": 632033,
       "canonical_name": "Online ООО МБ-Измайлово",
       "holding": "",
-      "kam": "Не назначен",
+      "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "Online ООО МБ-Измайлово"
       ],
@@ -14288,6 +14297,330 @@
       "pochta_aliases": [],
       "oem_data": [],
       "status": "verified"
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
     },
     {
       "partner_id": "P_OEM_621324b8",
