@@ -1454,7 +1454,7 @@ def run_pipeline():
     sys_db_partners = []
     debtors = []
 
-    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "АВАНС")
+    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП. ОБОРУДОВАНИЕ")
 
     # Build lookup map for Lead ID and strictly transferred clients by month (deduplicated by client_id)
     leads_sum_id_by_client = {}
