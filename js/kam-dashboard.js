@@ -58,7 +58,7 @@ function normalizeKamName(name) {
 function normalizeBrandName(b) {
     if (!b) return null;
     let ub = String(b).toUpperCase().trim();
-    const aux = ["ВНЕСЕНИЕ АВАНСА", "АВАНС", "КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП", "СЕРВИС", "ФИНАНС"];
+    const aux = ["ВНЕСЕНИЕ", "АВАНС", "КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП", "СЕРВИС", "ФИНАНС", "ДОГОВОР", "ОФОРМЛЕН", "КОМИСС", "УСЛУГ", "НЕИЗВЕСТН", "ДРУГИЕ", "NULL", "UNDEFINED"];
     if (aux.some(k => ub.includes(k))) return null;
     if (ub.includes('JETOUR')) return 'JETOUR';
     if (ub.includes('LADA') || ub.includes('ЛАДА')) return 'LADA';
@@ -73,6 +73,11 @@ function normalizeBrandName(b) {
     if (ub.includes('OMODA') || ub.includes('JAECOO')) return 'OMODA & JAECOO';
     if (ub.includes('HONGQI')) return 'HONGQI';
     if (ub.includes('XCITE')) return 'XCITE';
+    if (ub.includes('KIA') || ub.includes('КИА')) return 'KIA';
+    if (ub.includes('HYUNDAI') || ub.includes('ХЕНДЭ')) return 'HYUNDAI';
+    if (ub.includes('TOYOTA') || ub.includes('ТОЙОТА')) return 'TOYOTA';
+    if (ub.includes('TANK') || ub.includes('ТАНК')) return 'TANK';
+    if (ub.includes('EXEED') || ub.includes('ЭКСИД')) return 'EXEED';
     return b.trim();
 }
 
@@ -90,7 +95,7 @@ function getKamPlansStore() {
             };
         }
     } catch (e) {
-        console.warn('Ошибка чтения sberauto_kam_plans из localStorage:', e);
+        console.warn('Error reading KAM plans from localStorage:', e);
     }
     return JSON.parse(JSON.stringify(DEFAULT_KAM_PLANS));
 }
@@ -225,7 +230,12 @@ function getKamAggregatedData(filterCfg) {
     const rawDbPartners = payload.sys_db_partners || (typeof dbPartners !== 'undefined' ? dbPartners : []);
     const registry = payload.partners_registry || [];
     const lgd = payload.lead_geo_dealers || {};
-    const lgdSummary = lgd.summary || {
+    
+    // Determine active date filter safely
+    const cfg = filterCfg || (typeof currentFilterConfig !== 'undefined' ? currentFilterConfig : { mode: 'all' });
+    const activeMonth = (cfg.mode === 'month' && cfg.month) ? cfg.month : (cfg.mode === 'all' ? 'all' : '2026-08');
+    const monthLgd = (lgd.by_month && (lgd.by_month[activeMonth] || (activeMonth === 'all' ? lgd.by_month['all'] : lgd.by_month['2026-08']))) || lgd;
+    const lgdSummary = monthLgd.summary || lgd.summary || {
         total_clients: 23572,
         qual_clients: 8961,
         trans_clients: 1052,
@@ -233,8 +243,6 @@ function getKamAggregatedData(filterCfg) {
         deals_from_trans: 5545
     };
 
-    // Determine active date filter safely
-    const cfg = filterCfg || (typeof currentFilterConfig !== 'undefined' ? currentFilterConfig : { mode: 'all' });
     const fPartners = rawDbPartners.filter(r => {
         if (!cfg || cfg.mode === 'all' || !cfg.mode) return true;
         if (cfg.mode === 'month') {
@@ -449,8 +457,8 @@ function getKamAggregatedData(filterCfg) {
         }
     });
 
-    // 3. Match with lead_geo_dealers to enrich inbound & qualified leads (WITHOUT overriding OEM cities!)
-    (lgd.regions || []).forEach(reg => {
+    // 3. Match with lead_geo_dealers to enrich inbound & qualified leads for the active month (WITHOUT overriding OEM cities!)
+    (monthLgd.regions || []).forEach(reg => {
         (reg.dealers || []).forEach(d => {
             const dName = d.dealer_name || '';
             const matchedEntry = matchDealerToPartner(dName);

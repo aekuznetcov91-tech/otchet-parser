@@ -28,8 +28,13 @@ function renderDashTables(sDb) {
  * @returns {Array<[string, number]>}
  */
 function getTopBrands(salesDb) {
+    const aux = ["ВНЕСЕНИЕ", "АВАНС", "КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП", "СЕРВИС", "ФИНАНС", "ДОГОВОР", "ОФОРМЛЕН", "КОМИСС", "УСЛУГ", "НЕИЗВЕСТН", "ДРУГИЕ", "NULL", "UNDEFINED"];
     let counts = {};
-    salesDb.forEach(r => counts[r.Brand] = (counts[r.Brand]||0)+1);
+    salesDb.forEach(r => {
+        let b = r.Brand;
+        if (!b || b === 'null' || b === 'undefined' || b === 'Другие' || aux.some(k => String(b).toUpperCase().includes(k))) return;
+        counts[b] = (counts[b] || 0) + 1;
+    });
     let sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
     let top = sorted.slice(0,7), others = sorted.slice(7).reduce((sum,item)=>sum+item[1],0);
     if (others > 0) top.push(["Прочие", others]);

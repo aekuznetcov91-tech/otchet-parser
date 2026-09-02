@@ -46,38 +46,52 @@ def get_exact_val(row, *search_keys):
 
 def normalize_brand(tovar_str):
     """Normalize vehicle brand name from raw product/deal text."""
-    t = str(tovar_str or "").upper()
+    t = str(tovar_str or "").upper().strip()
+    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "ВНЕСЕНИЕ", "АВАНС", "ОФОРМЛЕНИЕ", "ДОГОВОР", "УСЛУГА", "КОМИССИЯ", "ДОП")
+    if any(kw in t for kw in aux_keywords):
+        return None
     if "DASHING" in t or "X70 PLUS" in t or "JETOUR" in t:
         return "JETOUR"
     if "LADA" in t or "ЛАДА" in t:
         return "LADA"
-    if "HAVAL" in t:
+    if "HAVAL" in t or "ХАВЕЙЛ" in t or "JOLION" in t or "F7" in t or "DARGO" in t or "H3" in t:
         return "HAVAL"
-    if "SOLARIS" in t:
+    if "SOLARIS" in t or "СОЛЯРИС" in t:
         return "SOLARIS"
-    if "CHANGAN" in t:
+    if "CHANGAN" in t or "ЧАНГАН" in t or "UNI-V" in t or "UNI-K" in t or "CS35" in t or "CS55" in t or "CS75" in t:
         return "CHANGAN"
-    if "G B K" in t or "GEELY" in t or "BELGEE" in t or "KNEWSTAR" in t:
-        return "G B K"
+    if "G B K" in t or "GEELY" in t or "BELGEE" in t or "KNEWSTAR" in t or "ДЖИЛИ" in t or "БЕЛДЖИ" in t or "MONJARO" in t or "COOLRAY" in t or "ATLAS" in t or "X50" in t or "X70" in t:
+        return "Geely & Belgee"
     if "SOUEAST" in t:
         return "SOUEAST"
-    if "GAC" in t:
+    if "GAC" in t or "GS3" in t or "GS8" in t or "M8" in t:
         return "GAC"
-    if "TENET" in t or "CHERY" in t:
-        return "TENET"
+    if "TENET" in t or "CHERY" in t or "ЧЕРИ" in t or "TIGGO" in t or "ARRIZO" in t:
+        return "CHERY & TENET"
     if "HONGQI" in t:
         return "HONGQI"
-    if "XCITE" in t:
+    if "XCITE" in t or "X-CITE" in t:
         return "XCITE"
     if "МОСКВИЧ" in t:
         return "МОСКВИЧ"
-    if "OMODA" in t:
-        return "OMODA"
-    if "KIA" in t:
+    if "OMODA" in t or "JAECOO" in t or "C5" in t or "S5" in t or "J7" in t or "J8" in t:
+        return "OMODA & JAECOO"
+    if "KIA" in t or "КИА" in t:
         return "KIA"
+    if "HYUNDAI" in t or "ХЕНДЭ" in t or "ХЕНДАЙ" in t:
+        return "HYUNDAI"
+    if "TOYOTA" in t or "ТОЙОТА" in t:
+        return "TOYOTA"
+    if "TANK" in t or "ТАНК" in t:
+        return "TANK"
+    if "EXEED" in t or "ЭКСИД" in t:
+        return "EXEED"
     
     words = re.split(r'[\s,/-]+', t.strip())
-    return words[0] if words and words[0] else "НЕИЗВЕСТНЫЙ БРЕНД"
+    first_word = words[0] if words and words[0] else ""
+    if len(first_word) >= 2 and re.match(r'^[A-ZА-Я0-9]+$', first_word) and not any(kw in first_word for kw in aux_keywords):
+        return first_word
+    return None
 
 def parse_custom_date(date_value):
     """Parse Excel serial, ISO format, or standard date strings into datetime.date."""
@@ -1024,10 +1038,18 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         for r in deals_data:
             cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА') or '').strip()
             if cid:
+                raw_deal_date = get_exact_val(r, 'ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ')
+                d_deal_date = parse_custom_date(raw_deal_date)
+                deal_month_str = f"{d_deal_date.year}-{str(d_deal_date.month).zfill(2)}" if d_deal_date else "2026-08"
+                stage = str(get_exact_val(r, 'СТАДИЯСДЕЛКИ') or "").upper()
+                is_sale = ("ЗАКРЫТО И РЕАЛИЗОВАН" in stage) and not ("ВНЕСЕНИЕ АВАНСА" in str(get_exact_val(r, 'ТОВАР') or "").upper())
+
                 deals_client_map[cid] = {
-                    'partner': str(get_exact_val(r, 'КОМПАНИЯ', 'ПАРТНЕР') or '').strip(),
-                    'brand': str(get_exact_val(r, 'ТОВАР', 'БРЕНД') or '').strip(),
-                    'price': float(str(get_exact_val(r, 'ЦЕНА', 'ФИНАЛЬНАЯЦЕНАB2C') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.') or 0)
+                    'partner': str(get_exact_val(r, 'КОМПАНИЯНАЗВАНИЕКОМПАНИИ', 'КОМПАНИЯ', 'ПАРТНЕР') or '').strip(),
+                    'brand': normalize_brand(str(get_exact_val(r, 'ТОВАР', 'БРЕНД') or '').strip()),
+                    'price': float(str(get_exact_val(r, 'ЦЕНА', 'ФИНАЛЬНАЯЦЕНАB2C') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.') or 0),
+                    'month': deal_month_str,
+                    'is_sale': is_sale
                 }
 
     # Pass 1: Extract client details from leads data
@@ -1038,9 +1060,8 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         
         reg = str(get_exact_val(r, 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОН', 'ADDRESS', 'АДРЕС') or '').strip()
         partner = str(get_exact_val(r, 'ПАРТНЕР', 'ДИЛЕР', 'КОМПАНИЯ') or '').strip()
-        brand = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
-        if any(kw in brand.upper() for kw in aux_keywords):
-            brand = 'Другие'
+        raw_b = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
+        brand = normalize_brand(raw_b) or 'Другие'
         model = str(get_exact_val(r, 'МОДЕЛЬ') or '').strip()
         vin = str(get_exact_val(r, 'VIN', 'ВИН') or '').strip()
         
@@ -1097,15 +1118,17 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         raw_reg = d12_info.get('region') or str(get_exact_val(r, 'РЕГИОН', 'АДРЕС') or '').strip()
         norm_reg = normalize_region_clean(raw_reg)
         
-        brand = d12_info.get('brand') or deal_info.get('brand') or str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip() or 'Другие'
-        if any(kw in brand.upper() for kw in aux_keywords):
-            brand = 'Другие'
+        raw_b = d12_info.get('brand') or deal_info.get('brand') or str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
+        brand = normalize_brand(raw_b) or 'Другие'
         model = d12_info.get('model') or str(get_exact_val(r, 'МОДЕЛЬ') or '').strip()
-        has_deal = (event == 'Сделка' or d12_info.get('price', 0) > 0 or cid in deals_client_map)
-        date_val = str(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА') or '').strip()
         
+        has_deal = bool(deal_info.get('is_sale'))
+        deal_month = deal_info.get('month')
+        
+        date_val = str(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА') or '').strip()
         p_date = parse_custom_date(date_val)
-        month_str = p_date.strftime('%Y-%m') if p_date else '2026-08'
+        lead_month = p_date.strftime('%Y-%m') if p_date else '2026-08'
+        client_month = deal_month if has_deal else lead_month
 
         if cid not in clients_by_id:
             clients_by_id[cid] = {
@@ -1115,7 +1138,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                 'dealer': dealer,
                 'brand': brand,
                 'model': model,
-                'month': month_str,
+                'month': client_month,
                 'is_qual': is_qual_row,
                 'is_raw_trans': is_trans_row,
                 'has_used': has_used_row,
@@ -1520,13 +1543,13 @@ def run_pipeline():
 
         # Model extraction
         model = tovar
-        if final_brand in model:
+        if final_brand and final_brand in model:
             model = model.replace(final_brand, '')
         if vin and vin in model:
             model = model.replace(vin, '')
         model = model.strip(' ,-')
         if not model:
-            model = final_brand
+            model = final_brand or ""
 
         sys_db.append({
             "SaleMonth": deal_month_str if is_sale else "",
