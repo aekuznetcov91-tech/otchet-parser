@@ -258611,7 +258611,7 @@
     "sbol_offer_success_show": 2269
   },
   "brand_funnel": {
-    "OVERALL_LATEST_DATE": "25.08.2026 в 12:00",
+    "OVERALL_LATEST_DATE": "02.09.2026 в 12:00",
     "months": [
       "2026-08",
       "2026-07",
@@ -258643,15 +258643,15 @@
               "offer_click": 2948,
               "offer_success": 2877
             },
-            "leads": 1409,
-            "qual": 592,
-            "calc_total": 676,
-            "calc_matched": 270,
-            "offer_total": 500,
-            "offer_matched": 200,
-            "dealer": 113,
-            "fdc_app": 141,
-            "fdc_appr": 78,
+            "leads": 5034,
+            "qual": 2119,
+            "calc_total": 2416,
+            "calc_matched": 966,
+            "offer_total": 1788,
+            "offer_matched": 715,
+            "dealer": 342,
+            "fdc_app": 509,
+            "fdc_appr": 126,
             "deals_total_all": 909,
             "mp2_count": 717,
             "mp2_rev": 28470673.85,
@@ -258674,12 +258674,12 @@
             "arpu_no_mp2": 43837.11,
             "arpu_total": 40580.2,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 1296,
-              "Без источника": 70,
-              "Органика СберАвто": 28,
-              "Органика СБОЛ": 14
+              "ОМ + Баннеры + Лендинги": 3337,
+              "Без источника": 1554,
+              "Органика СберАвто": 47,
+              "Органика СБОЛ": 96
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "LADA": {
             "brand": "LADA",
@@ -258702,15 +258702,15 @@
               "offer_click": 3047,
               "offer_success": 2969
             },
-            "leads": 1667,
-            "qual": 700,
-            "calc_total": 800,
-            "calc_matched": 320,
-            "offer_total": 592,
-            "offer_matched": 237,
-            "dealer": 133,
-            "fdc_app": 167,
-            "fdc_appr": 92,
+            "leads": 4461,
+            "qual": 1878,
+            "calc_total": 2141,
+            "calc_matched": 856,
+            "offer_total": 1584,
+            "offer_matched": 634,
+            "dealer": 342,
+            "fdc_app": 599,
+            "fdc_appr": 307,
             "deals_total_all": 225,
             "mp2_count": 100,
             "mp2_rev": 1135198.62,
@@ -258733,12 +258733,12 @@
             "arpu_no_mp2": 20058.1,
             "arpu_total": 16188.72,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 1534,
-              "Без источника": 83,
-              "Органика СберАвто": 33,
-              "Органика СБОЛ": 17
+              "ОМ + Баннеры + Лендинги": 3160,
+              "Без источника": 1153,
+              "Органика СберАвто": 69,
+              "Органика СБОЛ": 80
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "TENET": {
             "brand": "TENET",
@@ -258761,15 +258761,15 @@
               "offer_click": 2437,
               "offer_success": 2384
             },
-            "leads": 567,
-            "qual": 238,
-            "calc_total": 272,
-            "calc_matched": 109,
-            "offer_total": 201,
-            "offer_matched": 80,
-            "dealer": 45,
-            "fdc_app": 57,
-            "fdc_appr": 31,
+            "leads": 2816,
+            "qual": 1186,
+            "calc_total": 1352,
+            "calc_matched": 541,
+            "offer_total": 1000,
+            "offer_matched": 400,
+            "dealer": 244,
+            "fdc_app": 270,
+            "fdc_appr": 111,
             "deals_total_all": 33,
             "mp2_count": 1,
             "mp2_rev": 39278.69,
@@ -258788,12 +258788,12 @@
             "arpu_no_mp2": 66336.1,
             "arpu_total": 65516.18,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 522,
-              "Без источника": 28,
-              "Органика СберАвто": 11,
-              "Органика СБОЛ": 6
+              "ОМ + Баннеры + Лендинги": 2225,
+              "Без источника": 433,
+              "Органика СберАвто": 95,
+              "Органика СБОЛ": 64
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "CHANGAN": {
             "brand": "CHANGAN",
@@ -258816,15 +258816,15 @@
               "offer_click": 1724,
               "offer_success": 1663
             },
-            "leads": 546,
-            "qual": 229,
-            "calc_total": 262,
-            "calc_matched": 105,
-            "offer_total": 194,
-            "offer_matched": 78,
-            "dealer": 44,
-            "fdc_app": 55,
-            "fdc_appr": 30,
+            "leads": 1199,
+            "qual": 505,
+            "calc_total": 576,
+            "calc_matched": 230,
+            "offer_total": 426,
+            "offer_matched": 170,
+            "dealer": 70,
+            "fdc_app": 75,
+            "fdc_appr": 40,
             "deals_total_all": 35,
             "mp2_count": 32,
             "mp2_rev": 1307288.5,
@@ -258841,12 +258841,12 @@
             "arpu_no_mp2": 43655.74,
             "arpu_total": 41093.02,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 502,
-              "Без источника": 27,
-              "Органика СберАвто": 11,
-              "Органика СБОЛ": 5
+              "ОМ + Баннеры + Лендинги": 985,
+              "Без источника": 197,
+              "Органика СберАвто": 4,
+              "Органика СБОЛ": 14
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "GAC": {
             "brand": "GAC",
@@ -258869,15 +258869,15 @@
               "offer_click": 1202,
               "offer_success": 1164
             },
-            "leads": 337,
-            "qual": 142,
-            "calc_total": 162,
-            "calc_matched": 65,
-            "offer_total": 120,
-            "offer_matched": 48,
-            "dealer": 27,
-            "fdc_app": 34,
-            "fdc_appr": 19,
+            "leads": 851,
+            "qual": 358,
+            "calc_total": 408,
+            "calc_matched": 163,
+            "offer_total": 302,
+            "offer_matched": 121,
+            "dealer": 49,
+            "fdc_app": 48,
+            "fdc_appr": 13,
             "deals_total_all": 134,
             "mp2_count": 122,
             "mp2_rev": 7551355.62,
@@ -258900,12 +258900,12 @@
             "arpu_no_mp2": 66941.09,
             "arpu_total": 62348.12,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 310,
-              "Без источника": 17,
+              "ОМ + Баннеры + Лендинги": 659,
+              "Без источника": 166,
               "Органика СберАвто": 7,
-              "Органика СБОЛ": 3
+              "Органика СБОЛ": 19
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "SOLARIS": {
             "brand": "SOLARIS",
@@ -258928,14 +258928,14 @@
               "offer_click": 842,
               "offer_success": 824
             },
-            "leads": 290,
-            "qual": 122,
-            "calc_total": 139,
-            "calc_matched": 56,
-            "offer_total": 103,
-            "offer_matched": 41,
-            "dealer": 23,
-            "fdc_app": 29,
+            "leads": 561,
+            "qual": 236,
+            "calc_total": 269,
+            "calc_matched": 108,
+            "offer_total": 199,
+            "offer_matched": 80,
+            "dealer": 38,
+            "fdc_app": 12,
             "fdc_appr": 16,
             "deals_total_all": 124,
             "mp2_count": 112,
@@ -258957,12 +258957,12 @@
             "arpu_no_mp2": 44706.97,
             "arpu_total": 35819.17,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 267,
-              "Без источника": 14,
-              "Органика СберАвто": 6,
-              "Органика СБОЛ": 3
+              "ОМ + Баннеры + Лендинги": 182,
+              "Без источника": 355,
+              "Органика СберАвто": 21,
+              "Органика СБОЛ": 4
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "SOUEAST": {
             "brand": "SOUEAST",
@@ -258985,15 +258985,15 @@
               "offer_click": 1325,
               "offer_success": 1295
             },
-            "leads": 310,
-            "qual": 130,
-            "calc_total": 149,
-            "calc_matched": 60,
-            "offer_total": 110,
-            "offer_matched": 44,
-            "dealer": 25,
-            "fdc_app": 31,
-            "fdc_appr": 17,
+            "leads": 829,
+            "qual": 349,
+            "calc_total": 398,
+            "calc_matched": 159,
+            "offer_total": 295,
+            "offer_matched": 118,
+            "dealer": 32,
+            "fdc_app": 55,
+            "fdc_appr": 11,
             "deals_total_all": 138,
             "mp2_count": 106,
             "mp2_rev": 3796517.92,
@@ -259016,12 +259016,12 @@
             "arpu_no_mp2": 37610.65,
             "arpu_total": 36232.31,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 285,
-              "Без источника": 16,
-              "Органика СберАвто": 6,
-              "Органика СБОЛ": 3
+              "ОМ + Баннеры + Лендинги": 743,
+              "Без источника": 69,
+              "Органика СберАвто": 9,
+              "Органика СБОЛ": 8
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "BELGEE": {
             "brand": "BELGEE",
@@ -259044,15 +259044,15 @@
               "offer_click": 732,
               "offer_success": 720
             },
-            "leads": 280,
-            "qual": 118,
-            "calc_total": 134,
-            "calc_matched": 54,
-            "offer_total": 99,
-            "offer_matched": 40,
-            "dealer": 22,
-            "fdc_app": 28,
-            "fdc_appr": 15,
+            "leads": 607,
+            "qual": 256,
+            "calc_total": 291,
+            "calc_matched": 116,
+            "offer_total": 215,
+            "offer_matched": 86,
+            "dealer": 57,
+            "fdc_app": 49,
+            "fdc_appr": 31,
             "deals_total_all": 0,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -259063,12 +259063,12 @@
             "arpu_no_mp2": 0,
             "arpu_total": 0,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 258,
-              "Без источника": 14,
-              "Органика СберАвто": 6,
-              "Органика СБОЛ": 3
+              "ОМ + Баннеры + Лендинги": 373,
+              "Без источника": 218,
+              "Органика СберАвто": 11,
+              "Органика СБОЛ": 5
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "GEELY": {
             "brand": "GEELY",
@@ -259091,15 +259091,15 @@
               "offer_click": 265,
               "offer_success": 262
             },
-            "leads": 280,
-            "qual": 118,
-            "calc_total": 134,
-            "calc_matched": 54,
-            "offer_total": 99,
-            "offer_matched": 40,
-            "dealer": 22,
-            "fdc_app": 28,
-            "fdc_appr": 15,
+            "leads": 417,
+            "qual": 176,
+            "calc_total": 200,
+            "calc_matched": 80,
+            "offer_total": 148,
+            "offer_matched": 59,
+            "dealer": 39,
+            "fdc_app": 27,
+            "fdc_appr": 26,
             "deals_total_all": 0,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -259110,12 +259110,12 @@
             "arpu_no_mp2": 0,
             "arpu_total": 0,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 258,
-              "Без источника": 14,
-              "Органика СберАвто": 6,
-              "Органика СБОЛ": 3
+              "ОМ + Баннеры + Лендинги": 167,
+              "Без источника": 233,
+              "Органика СберАвто": 9,
+              "Органика СБОЛ": 8
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "HAVAL": {
             "brand": "HAVAL",
@@ -259138,15 +259138,15 @@
               "offer_click": 1916,
               "offer_success": 1863
             },
-            "leads": 450,
-            "qual": 189,
-            "calc_total": 216,
-            "calc_matched": 86,
-            "offer_total": 160,
-            "offer_matched": 64,
-            "dealer": 36,
-            "fdc_app": 45,
-            "fdc_appr": 25,
+            "leads": 1401,
+            "qual": 590,
+            "calc_total": 672,
+            "calc_matched": 269,
+            "offer_total": 497,
+            "offer_matched": 199,
+            "dealer": 167,
+            "fdc_app": 103,
+            "fdc_appr": 68,
             "deals_total_all": 8,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -259163,12 +259163,12 @@
             "arpu_no_mp2": 41245.9,
             "arpu_total": 41245.9,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 414,
-              "Без источника": 22,
-              "Органика СберАвто": 9,
-              "Органика СБОЛ": 4
+              "ОМ + Баннеры + Лендинги": 781,
+              "Без источника": 593,
+              "Органика СберАвто": 16,
+              "Органика СБОЛ": 12
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "JAECOO": {
             "brand": "JAECOO",
@@ -259191,15 +259191,15 @@
               "offer_click": 733,
               "offer_success": 717
             },
-            "leads": 210,
-            "qual": 88,
-            "calc_total": 101,
-            "calc_matched": 40,
-            "offer_total": 75,
-            "offer_matched": 30,
-            "dealer": 17,
-            "fdc_app": 21,
-            "fdc_appr": 12,
+            "leads": 567,
+            "qual": 239,
+            "calc_total": 272,
+            "calc_matched": 109,
+            "offer_total": 201,
+            "offer_matched": 80,
+            "dealer": 36,
+            "fdc_app": 61,
+            "fdc_appr": 20,
             "deals_total_all": 4,
             "mp2_count": 2,
             "mp2_rev": 49180.32,
@@ -259216,12 +259216,12 @@
             "arpu_no_mp2": 52549.18,
             "arpu_total": 38569.67,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 193,
-              "Без источника": 10,
-              "Органика СберАвто": 4,
-              "Органика СБОЛ": 2
+              "ОМ + Баннеры + Лендинги": 465,
+              "Без источника": 88,
+              "Органика СберАвто": 9,
+              "Органика СБОЛ": 6
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "OMODA": {
             "brand": "OMODA",
@@ -259244,15 +259244,15 @@
               "offer_click": 688,
               "offer_success": 671
             },
-            "leads": 210,
-            "qual": 88,
-            "calc_total": 101,
-            "calc_matched": 40,
-            "offer_total": 75,
-            "offer_matched": 30,
-            "dealer": 17,
-            "fdc_app": 21,
-            "fdc_appr": 12,
+            "leads": 540,
+            "qual": 227,
+            "calc_total": 259,
+            "calc_matched": 104,
+            "offer_total": 192,
+            "offer_matched": 77,
+            "dealer": 35,
+            "fdc_app": 54,
+            "fdc_appr": 19,
             "deals_total_all": 10,
             "mp2_count": 3,
             "mp2_rev": 73770.48,
@@ -259271,12 +259271,12 @@
             "arpu_no_mp2": 46882.9,
             "arpu_total": 40195.08,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 193,
-              "Без источника": 10,
-              "Органика СберАвто": 4,
-              "Органика СБОЛ": 2
+              "ОМ + Баннеры + Лендинги": 462,
+              "Без источника": 61,
+              "Органика СберАвто": 7,
+              "Органика СБОЛ": 10
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "МОСКВИЧ": {
             "brand": "МОСКВИЧ",
@@ -259299,15 +259299,15 @@
               "offer_click": 291,
               "offer_success": 283
             },
-            "leads": 110,
-            "qual": 46,
-            "calc_total": 53,
-            "calc_matched": 21,
-            "offer_total": 39,
-            "offer_matched": 16,
-            "dealer": 9,
-            "fdc_app": 11,
-            "fdc_appr": 6,
+            "leads": 84,
+            "qual": 35,
+            "calc_total": 40,
+            "calc_matched": 16,
+            "offer_total": 30,
+            "offer_matched": 12,
+            "dealer": 18,
+            "fdc_app": 7,
+            "fdc_appr": 15,
             "deals_total_all": 0,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -259318,12 +259318,12 @@
             "arpu_no_mp2": 0,
             "arpu_total": 0,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 101,
-              "Без источника": 6,
-              "Органика СберАвто": 2,
+              "ОМ + Баннеры + Лендинги": 19,
+              "Без источника": 57,
+              "Органика СберАвто": 6,
               "Органика СБОЛ": 1
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           }
         }
       },
@@ -259353,14 +259353,14 @@
               "offer_success": 2890
             },
             "leads": 1550,
-            "qual": 651,
+            "qual": 653,
             "calc_total": 744,
             "calc_matched": 298,
             "offer_total": 551,
             "offer_matched": 220,
             "dealer": 124,
             "fdc_app": 155,
-            "fdc_appr": 85,
+            "fdc_appr": 83,
             "deals_total_all": 988,
             "mp2_count": 613,
             "mp2_rev": 22220075.46,
@@ -259390,7 +259390,7 @@
               "Органика СберАвто": 31,
               "Органика СБОЛ": 16
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "LADA": {
             "brand": "LADA",
@@ -259414,14 +259414,14 @@
               "offer_success": 2114
             },
             "leads": 1720,
-            "qual": 722,
+            "qual": 724,
             "calc_total": 826,
             "calc_matched": 330,
             "offer_total": 611,
             "offer_matched": 244,
             "dealer": 138,
             "fdc_app": 172,
-            "fdc_appr": 95,
+            "fdc_appr": 92,
             "deals_total_all": 171,
             "mp2_count": 81,
             "mp2_rev": 801219.14,
@@ -259449,7 +259449,7 @@
               "Органика СберАвто": 34,
               "Органика СБОЛ": 17
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "TENET": {
             "brand": "TENET",
@@ -259473,7 +259473,7 @@
               "offer_success": 1337
             },
             "leads": 567,
-            "qual": 238,
+            "qual": 239,
             "calc_total": 272,
             "calc_matched": 109,
             "offer_total": 201,
@@ -259504,7 +259504,7 @@
               "Органика СберАвто": 11,
               "Органика СБОЛ": 6
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "CHANGAN": {
             "brand": "CHANGAN",
@@ -259528,14 +259528,14 @@
               "offer_success": 1563
             },
             "leads": 546,
-            "qual": 229,
+            "qual": 230,
             "calc_total": 262,
             "calc_matched": 105,
             "offer_total": 194,
             "offer_matched": 78,
             "dealer": 44,
             "fdc_app": 55,
-            "fdc_appr": 30,
+            "fdc_appr": 29,
             "deals_total_all": 11,
             "mp2_count": 8,
             "mp2_rev": 210327.84,
@@ -259555,7 +259555,7 @@
               "Органика СберАвто": 11,
               "Органика СБОЛ": 5
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "GAC": {
             "brand": "GAC",
@@ -259586,7 +259586,7 @@
             "offer_matched": 48,
             "dealer": 27,
             "fdc_app": 34,
-            "fdc_appr": 19,
+            "fdc_appr": 18,
             "deals_total_all": 41,
             "mp2_count": 30,
             "mp2_rev": 2452361.88,
@@ -259612,7 +259612,7 @@
               "Органика СберАвто": 7,
               "Органика СБОЛ": 3
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "SOLARIS": {
             "brand": "SOLARIS",
@@ -259669,7 +259669,7 @@
               "Органика СберАвто": 6,
               "Органика СБОЛ": 3
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "SOUEAST": {
             "brand": "SOUEAST",
@@ -259693,7 +259693,7 @@
               "offer_success": 138
             },
             "leads": 310,
-            "qual": 130,
+            "qual": 131,
             "calc_total": 149,
             "calc_matched": 60,
             "offer_total": 110,
@@ -259726,7 +259726,7 @@
               "Органика СберАвто": 6,
               "Органика СБОЛ": 3
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "BELGEE": {
             "brand": "BELGEE",
@@ -259773,7 +259773,7 @@
               "Органика СберАвто": 6,
               "Органика СБОЛ": 3
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "GEELY": {
             "brand": "GEELY",
@@ -259820,7 +259820,7 @@
               "Органика СберАвто": 6,
               "Органика СБОЛ": 3
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "HAVAL": {
             "brand": "HAVAL",
@@ -259851,7 +259851,7 @@
             "offer_matched": 64,
             "dealer": 36,
             "fdc_app": 45,
-            "fdc_appr": 25,
+            "fdc_appr": 24,
             "deals_total_all": 6,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -259873,7 +259873,7 @@
               "Органика СберАвто": 9,
               "Органика СБОЛ": 4
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "JAECOO": {
             "brand": "JAECOO",
@@ -259904,7 +259904,7 @@
             "offer_matched": 30,
             "dealer": 17,
             "fdc_app": 21,
-            "fdc_appr": 12,
+            "fdc_appr": 11,
             "deals_total_all": 3,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -259926,7 +259926,7 @@
               "Органика СберАвто": 4,
               "Органика СБОЛ": 2
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "OMODA": {
             "brand": "OMODA",
@@ -259957,7 +259957,7 @@
             "offer_matched": 30,
             "dealer": 17,
             "fdc_app": 21,
-            "fdc_appr": 12,
+            "fdc_appr": 11,
             "deals_total_all": 6,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -259983,7 +259983,7 @@
               "Органика СберАвто": 4,
               "Органика СБОЛ": 2
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "МОСКВИЧ": {
             "brand": "МОСКВИЧ",
@@ -260034,7 +260034,7 @@
               "Органика СберАвто": 2,
               "Органика СБОЛ": 1
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           }
         }
       },
@@ -260052,15 +260052,15 @@
               "offer_click": 5898,
               "offer_success": 5767
             },
-            "leads": 2818,
-            "qual": 1184,
-            "calc_total": 1353,
-            "calc_matched": 541,
-            "offer_total": 1001,
-            "offer_matched": 400,
-            "dealer": 225,
-            "fdc_app": 282,
-            "fdc_appr": 155,
+            "leads": 5143,
+            "qual": 2165,
+            "calc_total": 2469,
+            "calc_matched": 988,
+            "offer_total": 1827,
+            "offer_matched": 731,
+            "dealer": 344,
+            "fdc_app": 529,
+            "fdc_appr": 127,
             "deals_total_all": 1899,
             "mp2_count": 1331,
             "mp2_rev": 50750913.24,
@@ -260085,12 +260085,12 @@
             "arpu_no_mp2": 40718.47,
             "arpu_total": 38904.16,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 2593,
-              "Без источника": 141,
-              "Органика СберАвто": 56,
-              "Органика СБОЛ": 28
+              "ОМ + Баннеры + Лендинги": 3439,
+              "Без источника": 1559,
+              "Органика СберАвто": 47,
+              "Органика СБОЛ": 97
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "LADA": {
             "brand": "LADA",
@@ -260102,15 +260102,15 @@
               "offer_click": 5241,
               "offer_success": 5083
             },
-            "leads": 3334,
-            "qual": 1400,
-            "calc_total": 1600,
-            "calc_matched": 640,
-            "offer_total": 1184,
-            "offer_matched": 474,
-            "dealer": 267,
-            "fdc_app": 333,
-            "fdc_appr": 183,
+            "leads": 4655,
+            "qual": 1960,
+            "calc_total": 2234,
+            "calc_matched": 894,
+            "offer_total": 1653,
+            "offer_matched": 661,
+            "dealer": 343,
+            "fdc_app": 632,
+            "fdc_appr": 316,
             "deals_total_all": 399,
             "mp2_count": 183,
             "mp2_rev": 1952811.2,
@@ -260135,12 +260135,12 @@
             "arpu_no_mp2": 19312.1,
             "arpu_total": 15348.94,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 3067,
-              "Без источника": 167,
-              "Органика СберАвто": 67,
-              "Органика СБОЛ": 33
+              "ОМ + Баннеры + Лендинги": 3330,
+              "Без источника": 1172,
+              "Органика СберАвто": 71,
+              "Органика СБОЛ": 82
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "TENET": {
             "brand": "TENET",
@@ -260152,15 +260152,15 @@
               "offer_click": 3800,
               "offer_success": 3721
             },
-            "leads": 1134,
-            "qual": 476,
-            "calc_total": 544,
-            "calc_matched": 218,
-            "offer_total": 403,
-            "offer_matched": 161,
-            "dealer": 91,
-            "fdc_app": 113,
-            "fdc_appr": 62,
+            "leads": 3055,
+            "qual": 1286,
+            "calc_total": 1466,
+            "calc_matched": 586,
+            "offer_total": 1085,
+            "offer_matched": 434,
+            "dealer": 250,
+            "fdc_app": 287,
+            "fdc_appr": 113,
             "deals_total_all": 56,
             "mp2_count": 1,
             "mp2_rev": 39278.69,
@@ -260179,12 +260179,12 @@
             "arpu_no_mp2": 66886.92,
             "arpu_total": 66393.92,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 1043,
-              "Без источника": 57,
-              "Органика СберАвто": 23,
-              "Органика СБОЛ": 11
+              "ОМ + Баннеры + Лендинги": 2441,
+              "Без источника": 446,
+              "Органика СберАвто": 103,
+              "Органика СБОЛ": 65
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "CHANGAN": {
             "brand": "CHANGAN",
@@ -260196,15 +260196,15 @@
               "offer_click": 3321,
               "offer_success": 3226
             },
-            "leads": 1092,
-            "qual": 459,
-            "calc_total": 524,
-            "calc_matched": 210,
-            "offer_total": 388,
-            "offer_matched": 155,
-            "dealer": 87,
-            "fdc_app": 109,
-            "fdc_appr": 60,
+            "leads": 1277,
+            "qual": 538,
+            "calc_total": 613,
+            "calc_matched": 245,
+            "offer_total": 454,
+            "offer_matched": 182,
+            "dealer": 71,
+            "fdc_app": 82,
+            "fdc_appr": 41,
             "deals_total_all": 46,
             "mp2_count": 40,
             "mp2_rev": 1517616.34,
@@ -260221,12 +260221,12 @@
             "arpu_no_mp2": 44818.85,
             "arpu_total": 38837.6,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 1005,
-              "Без источника": 55,
-              "Органика СберАвто": 22,
-              "Органика СБОЛ": 11
+              "ОМ + Баннеры + Лендинги": 1058,
+              "Без источника": 200,
+              "Органика СберАвто": 4,
+              "Органика СБОЛ": 15
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "GAC": {
             "brand": "GAC",
@@ -260238,15 +260238,15 @@
               "offer_click": 2134,
               "offer_success": 2072
             },
-            "leads": 674,
-            "qual": 283,
-            "calc_total": 324,
-            "calc_matched": 130,
-            "offer_total": 240,
-            "offer_matched": 96,
-            "dealer": 54,
-            "fdc_app": 67,
-            "fdc_appr": 37,
+            "leads": 891,
+            "qual": 375,
+            "calc_total": 428,
+            "calc_matched": 171,
+            "offer_total": 317,
+            "offer_matched": 127,
+            "dealer": 50,
+            "fdc_app": 51,
+            "fdc_appr": 14,
             "deals_total_all": 177,
             "mp2_count": 153,
             "mp2_rev": 10022774.88,
@@ -260269,12 +260269,12 @@
             "arpu_no_mp2": 74493.97,
             "arpu_total": 66726.72,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 620,
-              "Без источника": 34,
-              "Органика СберАвто": 13,
-              "Органика СБОЛ": 7
+              "ОМ + Баннеры + Лендинги": 691,
+              "Без источника": 172,
+              "Органика СберАвто": 7,
+              "Органика СБОЛ": 20
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "SOLARIS": {
             "brand": "SOLARIS",
@@ -260286,15 +260286,15 @@
               "offer_click": 1721,
               "offer_success": 1676
             },
-            "leads": 580,
-            "qual": 244,
-            "calc_total": 278,
-            "calc_matched": 111,
-            "offer_total": 206,
-            "offer_matched": 82,
-            "dealer": 46,
-            "fdc_app": 58,
-            "fdc_appr": 32,
+            "leads": 568,
+            "qual": 239,
+            "calc_total": 273,
+            "calc_matched": 109,
+            "offer_total": 202,
+            "offer_matched": 81,
+            "dealer": 38,
+            "fdc_app": 13,
+            "fdc_appr": 18,
             "deals_total_all": 249,
             "mp2_count": 222,
             "mp2_rev": 7448699.78,
@@ -260317,12 +260317,12 @@
             "arpu_no_mp2": 44640.7,
             "arpu_total": 34755.02,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 534,
-              "Без источника": 29,
-              "Органика СберАвто": 12,
-              "Органика СБОЛ": 6
+              "ОМ + Баннеры + Лендинги": 184,
+              "Без источника": 359,
+              "Органика СберАвто": 21,
+              "Органика СБОЛ": 4
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "SOUEAST": {
             "brand": "SOUEAST",
@@ -260334,15 +260334,15 @@
               "offer_click": 1465,
               "offer_success": 1433
             },
-            "leads": 620,
-            "qual": 260,
-            "calc_total": 298,
-            "calc_matched": 119,
-            "offer_total": 221,
-            "offer_matched": 88,
-            "dealer": 50,
-            "fdc_app": 62,
-            "fdc_appr": 34,
+            "leads": 891,
+            "qual": 375,
+            "calc_total": 428,
+            "calc_matched": 171,
+            "offer_total": 317,
+            "offer_matched": 127,
+            "dealer": 32,
+            "fdc_app": 58,
+            "fdc_appr": 12,
             "deals_total_all": 177,
             "mp2_count": 139,
             "mp2_rev": 4802960.46,
@@ -260365,12 +260365,12 @@
             "arpu_no_mp2": 37588.98,
             "arpu_total": 35205.32,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 570,
-              "Без источника": 31,
-              "Органика СберАвто": 12,
-              "Органика СБОЛ": 6
+              "ОМ + Баннеры + Лендинги": 802,
+              "Без источника": 71,
+              "Органика СберАвто": 9,
+              "Органика СБОЛ": 9
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "BELGEE": {
             "brand": "BELGEE",
@@ -260382,14 +260382,14 @@
               "offer_click": 1346,
               "offer_success": 1323
             },
-            "leads": 560,
-            "qual": 235,
-            "calc_total": 269,
-            "calc_matched": 108,
-            "offer_total": 199,
-            "offer_matched": 80,
-            "dealer": 45,
-            "fdc_app": 56,
+            "leads": 633,
+            "qual": 266,
+            "calc_total": 304,
+            "calc_matched": 122,
+            "offer_total": 225,
+            "offer_matched": 90,
+            "dealer": 58,
+            "fdc_app": 51,
             "fdc_appr": 31,
             "deals_total_all": 0,
             "mp2_count": 0,
@@ -260401,12 +260401,12 @@
             "arpu_no_mp2": 0,
             "arpu_total": 0,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 515,
-              "Без источника": 28,
+              "ОМ + Баннеры + Лендинги": 394,
+              "Без источника": 222,
               "Органика СберАвто": 11,
               "Органика СБОЛ": 6
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "GEELY": {
             "brand": "GEELY",
@@ -260418,15 +260418,15 @@
               "offer_click": 602,
               "offer_success": 594
             },
-            "leads": 560,
-            "qual": 235,
-            "calc_total": 269,
-            "calc_matched": 108,
-            "offer_total": 199,
-            "offer_matched": 80,
-            "dealer": 45,
-            "fdc_app": 56,
-            "fdc_appr": 31,
+            "leads": 425,
+            "qual": 179,
+            "calc_total": 204,
+            "calc_matched": 82,
+            "offer_total": 151,
+            "offer_matched": 60,
+            "dealer": 40,
+            "fdc_app": 28,
+            "fdc_appr": 28,
             "deals_total_all": 0,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -260437,12 +260437,12 @@
             "arpu_no_mp2": 0,
             "arpu_total": 0,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 515,
-              "Без источника": 28,
-              "Органика СберАвто": 11,
-              "Органика СБОЛ": 6
+              "ОМ + Баннеры + Лендинги": 173,
+              "Без источника": 235,
+              "Органика СберАвто": 9,
+              "Органика СБОЛ": 8
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "HAVAL": {
             "brand": "HAVAL",
@@ -260454,15 +260454,15 @@
               "offer_click": 3264,
               "offer_success": 3178
             },
-            "leads": 900,
-            "qual": 378,
-            "calc_total": 432,
-            "calc_matched": 173,
-            "offer_total": 320,
-            "offer_matched": 128,
-            "dealer": 72,
-            "fdc_app": 90,
-            "fdc_appr": 50,
+            "leads": 1495,
+            "qual": 629,
+            "calc_total": 718,
+            "calc_matched": 287,
+            "offer_total": 531,
+            "offer_matched": 212,
+            "dealer": 170,
+            "fdc_app": 109,
+            "fdc_appr": 69,
             "deals_total_all": 14,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -260479,12 +260479,12 @@
             "arpu_no_mp2": 40059.13,
             "arpu_total": 40059.13,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 828,
-              "Без источника": 45,
-              "Органика СберАвто": 18,
-              "Органика СБОЛ": 9
+              "ОМ + Баннеры + Лендинги": 857,
+              "Без источника": 609,
+              "Органика СберАвто": 16,
+              "Органика СБОЛ": 12
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "JAECOO": {
             "brand": "JAECOO",
@@ -260496,15 +260496,15 @@
               "offer_click": 1387,
               "offer_success": 1356
             },
-            "leads": 420,
-            "qual": 176,
-            "calc_total": 202,
-            "calc_matched": 81,
-            "offer_total": 149,
-            "offer_matched": 60,
-            "dealer": 34,
-            "fdc_app": 42,
-            "fdc_appr": 23,
+            "leads": 596,
+            "qual": 251,
+            "calc_total": 286,
+            "calc_matched": 114,
+            "offer_total": 212,
+            "offer_matched": 85,
+            "dealer": 38,
+            "fdc_app": 64,
+            "fdc_appr": 20,
             "deals_total_all": 7,
             "mp2_count": 2,
             "mp2_rev": 49180.32,
@@ -260521,12 +260521,12 @@
             "arpu_no_mp2": 61553.77,
             "arpu_total": 50992.74,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 386,
-              "Без источника": 21,
-              "Органика СберАвто": 8,
-              "Органика СБОЛ": 4
+              "ОМ + Баннеры + Лендинги": 492,
+              "Без источника": 88,
+              "Органика СберАвто": 9,
+              "Органика СБОЛ": 6
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "OMODA": {
             "brand": "OMODA",
@@ -260538,15 +260538,15 @@
               "offer_click": 1251,
               "offer_success": 1220
             },
-            "leads": 420,
-            "qual": 176,
-            "calc_total": 202,
-            "calc_matched": 81,
-            "offer_total": 149,
-            "offer_matched": 60,
-            "dealer": 34,
-            "fdc_app": 42,
-            "fdc_appr": 23,
+            "leads": 559,
+            "qual": 235,
+            "calc_total": 268,
+            "calc_matched": 107,
+            "offer_total": 198,
+            "offer_matched": 79,
+            "dealer": 36,
+            "fdc_app": 57,
+            "fdc_appr": 21,
             "deals_total_all": 16,
             "mp2_count": 3,
             "mp2_rev": 73770.48,
@@ -260567,12 +260567,12 @@
             "arpu_no_mp2": 46077.24,
             "arpu_total": 42048.41,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 386,
-              "Без источника": 21,
-              "Органика СберАвто": 8,
-              "Органика СБОЛ": 4
+              "ОМ + Баннеры + Лендинги": 479,
+              "Без источника": 62,
+              "Органика СберАвто": 7,
+              "Органика СБОЛ": 12
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           },
           "МОСКВИЧ": {
             "brand": "МОСКВИЧ",
@@ -260584,15 +260584,15 @@
               "offer_click": 472,
               "offer_success": 461
             },
-            "leads": 220,
-            "qual": 92,
-            "calc_total": 106,
-            "calc_matched": 42,
-            "offer_total": 78,
-            "offer_matched": 31,
+            "leads": 86,
+            "qual": 36,
+            "calc_total": 41,
+            "calc_matched": 16,
+            "offer_total": 30,
+            "offer_matched": 12,
             "dealer": 18,
-            "fdc_app": 22,
-            "fdc_appr": 12,
+            "fdc_app": 7,
+            "fdc_appr": 15,
             "deals_total_all": 1,
             "mp2_count": 0,
             "mp2_rev": 0,
@@ -260607,12 +260607,12 @@
             "arpu_no_mp2": 10655.74,
             "arpu_total": 10655.74,
             "src_breakdown": {
-              "ОМ + Баннеры + Лендинги": 202,
-              "Без источника": 11,
-              "Органика СберАвто": 4,
-              "Органика СБОЛ": 2
+              "ОМ + Баннеры + Лендинги": 22,
+              "Без источника": 56,
+              "Органика СберАвто": 7,
+              "Органика СБОЛ": 1
             },
-            "latest_lead_date": "25.08.2026"
+            "latest_lead_date": "02.09.2026"
           }
         }
       }
@@ -260638,15 +260638,15 @@
         "offer_click": 2948,
         "offer_success": 2877
       },
-      "leads": 1409,
-      "qual": 592,
-      "calc_total": 676,
-      "calc_matched": 270,
-      "offer_total": 500,
-      "offer_matched": 200,
-      "dealer": 113,
-      "fdc_app": 141,
-      "fdc_appr": 78,
+      "leads": 5034,
+      "qual": 2119,
+      "calc_total": 2416,
+      "calc_matched": 966,
+      "offer_total": 1788,
+      "offer_matched": 715,
+      "dealer": 342,
+      "fdc_app": 509,
+      "fdc_appr": 126,
       "deals_total_all": 909,
       "mp2_count": 717,
       "mp2_rev": 28470673.85,
@@ -260669,12 +260669,12 @@
       "arpu_no_mp2": 43837.11,
       "arpu_total": 40580.2,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 1296,
-        "Без источника": 70,
-        "Органика СберАвто": 28,
-        "Органика СБОЛ": 14
+        "ОМ + Баннеры + Лендинги": 3337,
+        "Без источника": 1554,
+        "Органика СберАвто": 47,
+        "Органика СБОЛ": 96
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "LADA": {
       "brand": "LADA",
@@ -260697,15 +260697,15 @@
         "offer_click": 3047,
         "offer_success": 2969
       },
-      "leads": 1667,
-      "qual": 700,
-      "calc_total": 800,
-      "calc_matched": 320,
-      "offer_total": 592,
-      "offer_matched": 237,
-      "dealer": 133,
-      "fdc_app": 167,
-      "fdc_appr": 92,
+      "leads": 4461,
+      "qual": 1878,
+      "calc_total": 2141,
+      "calc_matched": 856,
+      "offer_total": 1584,
+      "offer_matched": 634,
+      "dealer": 342,
+      "fdc_app": 599,
+      "fdc_appr": 307,
       "deals_total_all": 225,
       "mp2_count": 100,
       "mp2_rev": 1135198.62,
@@ -260728,12 +260728,12 @@
       "arpu_no_mp2": 20058.1,
       "arpu_total": 16188.72,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 1534,
-        "Без источника": 83,
-        "Органика СберАвто": 33,
-        "Органика СБОЛ": 17
+        "ОМ + Баннеры + Лендинги": 3160,
+        "Без источника": 1153,
+        "Органика СберАвто": 69,
+        "Органика СБОЛ": 80
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "TENET": {
       "brand": "TENET",
@@ -260756,15 +260756,15 @@
         "offer_click": 2437,
         "offer_success": 2384
       },
-      "leads": 567,
-      "qual": 238,
-      "calc_total": 272,
-      "calc_matched": 109,
-      "offer_total": 201,
-      "offer_matched": 80,
-      "dealer": 45,
-      "fdc_app": 57,
-      "fdc_appr": 31,
+      "leads": 2816,
+      "qual": 1186,
+      "calc_total": 1352,
+      "calc_matched": 541,
+      "offer_total": 1000,
+      "offer_matched": 400,
+      "dealer": 244,
+      "fdc_app": 270,
+      "fdc_appr": 111,
       "deals_total_all": 33,
       "mp2_count": 1,
       "mp2_rev": 39278.69,
@@ -260783,12 +260783,12 @@
       "arpu_no_mp2": 66336.1,
       "arpu_total": 65516.18,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 522,
-        "Без источника": 28,
-        "Органика СберАвто": 11,
-        "Органика СБОЛ": 6
+        "ОМ + Баннеры + Лендинги": 2225,
+        "Без источника": 433,
+        "Органика СберАвто": 95,
+        "Органика СБОЛ": 64
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "CHANGAN": {
       "brand": "CHANGAN",
@@ -260811,15 +260811,15 @@
         "offer_click": 1724,
         "offer_success": 1663
       },
-      "leads": 546,
-      "qual": 229,
-      "calc_total": 262,
-      "calc_matched": 105,
-      "offer_total": 194,
-      "offer_matched": 78,
-      "dealer": 44,
-      "fdc_app": 55,
-      "fdc_appr": 30,
+      "leads": 1199,
+      "qual": 505,
+      "calc_total": 576,
+      "calc_matched": 230,
+      "offer_total": 426,
+      "offer_matched": 170,
+      "dealer": 70,
+      "fdc_app": 75,
+      "fdc_appr": 40,
       "deals_total_all": 35,
       "mp2_count": 32,
       "mp2_rev": 1307288.5,
@@ -260836,12 +260836,12 @@
       "arpu_no_mp2": 43655.74,
       "arpu_total": 41093.02,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 502,
-        "Без источника": 27,
-        "Органика СберАвто": 11,
-        "Органика СБОЛ": 5
+        "ОМ + Баннеры + Лендинги": 985,
+        "Без источника": 197,
+        "Органика СберАвто": 4,
+        "Органика СБОЛ": 14
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "GAC": {
       "brand": "GAC",
@@ -260864,15 +260864,15 @@
         "offer_click": 1202,
         "offer_success": 1164
       },
-      "leads": 337,
-      "qual": 142,
-      "calc_total": 162,
-      "calc_matched": 65,
-      "offer_total": 120,
-      "offer_matched": 48,
-      "dealer": 27,
-      "fdc_app": 34,
-      "fdc_appr": 19,
+      "leads": 851,
+      "qual": 358,
+      "calc_total": 408,
+      "calc_matched": 163,
+      "offer_total": 302,
+      "offer_matched": 121,
+      "dealer": 49,
+      "fdc_app": 48,
+      "fdc_appr": 13,
       "deals_total_all": 134,
       "mp2_count": 122,
       "mp2_rev": 7551355.62,
@@ -260895,12 +260895,12 @@
       "arpu_no_mp2": 66941.09,
       "arpu_total": 62348.12,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 310,
-        "Без источника": 17,
+        "ОМ + Баннеры + Лендинги": 659,
+        "Без источника": 166,
         "Органика СберАвто": 7,
-        "Органика СБОЛ": 3
+        "Органика СБОЛ": 19
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "SOLARIS": {
       "brand": "SOLARIS",
@@ -260923,14 +260923,14 @@
         "offer_click": 842,
         "offer_success": 824
       },
-      "leads": 290,
-      "qual": 122,
-      "calc_total": 139,
-      "calc_matched": 56,
-      "offer_total": 103,
-      "offer_matched": 41,
-      "dealer": 23,
-      "fdc_app": 29,
+      "leads": 561,
+      "qual": 236,
+      "calc_total": 269,
+      "calc_matched": 108,
+      "offer_total": 199,
+      "offer_matched": 80,
+      "dealer": 38,
+      "fdc_app": 12,
       "fdc_appr": 16,
       "deals_total_all": 124,
       "mp2_count": 112,
@@ -260952,12 +260952,12 @@
       "arpu_no_mp2": 44706.97,
       "arpu_total": 35819.17,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 267,
-        "Без источника": 14,
-        "Органика СберАвто": 6,
-        "Органика СБОЛ": 3
+        "ОМ + Баннеры + Лендинги": 182,
+        "Без источника": 355,
+        "Органика СберАвто": 21,
+        "Органика СБОЛ": 4
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "SOUEAST": {
       "brand": "SOUEAST",
@@ -260980,15 +260980,15 @@
         "offer_click": 1325,
         "offer_success": 1295
       },
-      "leads": 310,
-      "qual": 130,
-      "calc_total": 149,
-      "calc_matched": 60,
-      "offer_total": 110,
-      "offer_matched": 44,
-      "dealer": 25,
-      "fdc_app": 31,
-      "fdc_appr": 17,
+      "leads": 829,
+      "qual": 349,
+      "calc_total": 398,
+      "calc_matched": 159,
+      "offer_total": 295,
+      "offer_matched": 118,
+      "dealer": 32,
+      "fdc_app": 55,
+      "fdc_appr": 11,
       "deals_total_all": 138,
       "mp2_count": 106,
       "mp2_rev": 3796517.92,
@@ -261011,12 +261011,12 @@
       "arpu_no_mp2": 37610.65,
       "arpu_total": 36232.31,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 285,
-        "Без источника": 16,
-        "Органика СберАвто": 6,
-        "Органика СБОЛ": 3
+        "ОМ + Баннеры + Лендинги": 743,
+        "Без источника": 69,
+        "Органика СберАвто": 9,
+        "Органика СБОЛ": 8
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "BELGEE": {
       "brand": "BELGEE",
@@ -261039,15 +261039,15 @@
         "offer_click": 732,
         "offer_success": 720
       },
-      "leads": 280,
-      "qual": 118,
-      "calc_total": 134,
-      "calc_matched": 54,
-      "offer_total": 99,
-      "offer_matched": 40,
-      "dealer": 22,
-      "fdc_app": 28,
-      "fdc_appr": 15,
+      "leads": 607,
+      "qual": 256,
+      "calc_total": 291,
+      "calc_matched": 116,
+      "offer_total": 215,
+      "offer_matched": 86,
+      "dealer": 57,
+      "fdc_app": 49,
+      "fdc_appr": 31,
       "deals_total_all": 0,
       "mp2_count": 0,
       "mp2_rev": 0,
@@ -261058,12 +261058,12 @@
       "arpu_no_mp2": 0,
       "arpu_total": 0,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 258,
-        "Без источника": 14,
-        "Органика СберАвто": 6,
-        "Органика СБОЛ": 3
+        "ОМ + Баннеры + Лендинги": 373,
+        "Без источника": 218,
+        "Органика СберАвто": 11,
+        "Органика СБОЛ": 5
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "GEELY": {
       "brand": "GEELY",
@@ -261086,15 +261086,15 @@
         "offer_click": 265,
         "offer_success": 262
       },
-      "leads": 280,
-      "qual": 118,
-      "calc_total": 134,
-      "calc_matched": 54,
-      "offer_total": 99,
-      "offer_matched": 40,
-      "dealer": 22,
-      "fdc_app": 28,
-      "fdc_appr": 15,
+      "leads": 417,
+      "qual": 176,
+      "calc_total": 200,
+      "calc_matched": 80,
+      "offer_total": 148,
+      "offer_matched": 59,
+      "dealer": 39,
+      "fdc_app": 27,
+      "fdc_appr": 26,
       "deals_total_all": 0,
       "mp2_count": 0,
       "mp2_rev": 0,
@@ -261105,12 +261105,12 @@
       "arpu_no_mp2": 0,
       "arpu_total": 0,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 258,
-        "Без источника": 14,
-        "Органика СберАвто": 6,
-        "Органика СБОЛ": 3
+        "ОМ + Баннеры + Лендинги": 167,
+        "Без источника": 233,
+        "Органика СберАвто": 9,
+        "Органика СБОЛ": 8
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "HAVAL": {
       "brand": "HAVAL",
@@ -261133,15 +261133,15 @@
         "offer_click": 1916,
         "offer_success": 1863
       },
-      "leads": 450,
-      "qual": 189,
-      "calc_total": 216,
-      "calc_matched": 86,
-      "offer_total": 160,
-      "offer_matched": 64,
-      "dealer": 36,
-      "fdc_app": 45,
-      "fdc_appr": 25,
+      "leads": 1401,
+      "qual": 590,
+      "calc_total": 672,
+      "calc_matched": 269,
+      "offer_total": 497,
+      "offer_matched": 199,
+      "dealer": 167,
+      "fdc_app": 103,
+      "fdc_appr": 68,
       "deals_total_all": 8,
       "mp2_count": 0,
       "mp2_rev": 0,
@@ -261158,12 +261158,12 @@
       "arpu_no_mp2": 41245.9,
       "arpu_total": 41245.9,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 414,
-        "Без источника": 22,
-        "Органика СберАвто": 9,
-        "Органика СБОЛ": 4
+        "ОМ + Баннеры + Лендинги": 781,
+        "Без источника": 593,
+        "Органика СберАвто": 16,
+        "Органика СБОЛ": 12
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "JAECOO": {
       "brand": "JAECOO",
@@ -261186,15 +261186,15 @@
         "offer_click": 733,
         "offer_success": 717
       },
-      "leads": 210,
-      "qual": 88,
-      "calc_total": 101,
-      "calc_matched": 40,
-      "offer_total": 75,
-      "offer_matched": 30,
-      "dealer": 17,
-      "fdc_app": 21,
-      "fdc_appr": 12,
+      "leads": 567,
+      "qual": 239,
+      "calc_total": 272,
+      "calc_matched": 109,
+      "offer_total": 201,
+      "offer_matched": 80,
+      "dealer": 36,
+      "fdc_app": 61,
+      "fdc_appr": 20,
       "deals_total_all": 4,
       "mp2_count": 2,
       "mp2_rev": 49180.32,
@@ -261211,12 +261211,12 @@
       "arpu_no_mp2": 52549.18,
       "arpu_total": 38569.67,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 193,
-        "Без источника": 10,
-        "Органика СберАвто": 4,
-        "Органика СБОЛ": 2
+        "ОМ + Баннеры + Лендинги": 465,
+        "Без источника": 88,
+        "Органика СберАвто": 9,
+        "Органика СБОЛ": 6
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "OMODA": {
       "brand": "OMODA",
@@ -261239,15 +261239,15 @@
         "offer_click": 688,
         "offer_success": 671
       },
-      "leads": 210,
-      "qual": 88,
-      "calc_total": 101,
-      "calc_matched": 40,
-      "offer_total": 75,
-      "offer_matched": 30,
-      "dealer": 17,
-      "fdc_app": 21,
-      "fdc_appr": 12,
+      "leads": 540,
+      "qual": 227,
+      "calc_total": 259,
+      "calc_matched": 104,
+      "offer_total": 192,
+      "offer_matched": 77,
+      "dealer": 35,
+      "fdc_app": 54,
+      "fdc_appr": 19,
       "deals_total_all": 10,
       "mp2_count": 3,
       "mp2_rev": 73770.48,
@@ -261266,12 +261266,12 @@
       "arpu_no_mp2": 46882.9,
       "arpu_total": 40195.08,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 193,
-        "Без источника": 10,
-        "Органика СберАвто": 4,
-        "Органика СБОЛ": 2
+        "ОМ + Баннеры + Лендинги": 462,
+        "Без источника": 61,
+        "Органика СберАвто": 7,
+        "Органика СБОЛ": 10
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     },
     "МОСКВИЧ": {
       "brand": "МОСКВИЧ",
@@ -261294,15 +261294,15 @@
         "offer_click": 291,
         "offer_success": 283
       },
-      "leads": 110,
-      "qual": 46,
-      "calc_total": 53,
-      "calc_matched": 21,
-      "offer_total": 39,
-      "offer_matched": 16,
-      "dealer": 9,
-      "fdc_app": 11,
-      "fdc_appr": 6,
+      "leads": 84,
+      "qual": 35,
+      "calc_total": 40,
+      "calc_matched": 16,
+      "offer_total": 30,
+      "offer_matched": 12,
+      "dealer": 18,
+      "fdc_app": 7,
+      "fdc_appr": 15,
       "deals_total_all": 0,
       "mp2_count": 0,
       "mp2_rev": 0,
@@ -261313,12 +261313,12 @@
       "arpu_no_mp2": 0,
       "arpu_total": 0,
       "src_breakdown": {
-        "ОМ + Баннеры + Лендинги": 101,
-        "Без источника": 6,
-        "Органика СберАвто": 2,
+        "ОМ + Баннеры + Лендинги": 19,
+        "Без источника": 57,
+        "Органика СберАвто": 6,
         "Органика СБОЛ": 1
       },
-      "latest_lead_date": "25.08.2026"
+      "latest_lead_date": "02.09.2026"
     }
   },
   "debtors": [
@@ -276280,10 +276280,10 @@
   ],
   "geo_analytics": {
     "total_evaluated_deals": 3261,
-    "local_sales_count": 2341,
-    "local_sales_pct": 71.8,
-    "interregional_sales_count": 920,
-    "interregional_sales_pct": 28.2,
+    "local_sales_count": 2388,
+    "local_sales_pct": 73.2,
+    "interregional_sales_count": 873,
+    "interregional_sales_pct": 26.8,
     "local_conversion_rate": 5.8,
     "remote_conversion_rate": 2.2,
     "dropoff_factor": 2.6,
@@ -276291,51 +276291,51 @@
       {
         "from_region": "Ярославская область",
         "to_city": "Москва",
-        "count": 97
-      },
-      {
-        "from_region": "Тверская область",
-        "to_city": "Москва",
-        "count": 84
+        "count": 86
       },
       {
         "from_region": "Тульская область",
         "to_city": "Москва",
-        "count": 82
+        "count": 83
       },
       {
         "from_region": "Рязанская область",
         "to_city": "Москва",
-        "count": 68
-      },
-      {
-        "from_region": "Московская область",
-        "to_city": "Санкт-Петербург",
-        "count": 35
+        "count": 72
       },
       {
         "from_region": "Тверская область",
+        "to_city": "Москва",
+        "count": 69
+      },
+      {
+        "from_region": "Ярославская область",
         "to_city": "Санкт-Петербург",
-        "count": 25
+        "count": 36
       },
       {
         "from_region": "Рязанская область",
         "to_city": "Санкт-Петербург",
-        "count": 24
+        "count": 32
       },
       {
-        "from_region": "Ярославская область",
+        "from_region": "Московская область",
+        "to_city": "Санкт-Петербург",
+        "count": 29
+      },
+      {
+        "from_region": "Тверская область",
         "to_city": "Санкт-Петербург",
         "count": 21
       },
       {
-        "from_region": "Ярославская область",
-        "to_city": "Ростов-на-Дону",
-        "count": 12
+        "from_region": "Московская область",
+        "to_city": "Казань",
+        "count": 13
       },
       {
         "from_region": "Ярославская область",
-        "to_city": "Казань",
+        "to_city": "Нижний Новгород",
         "count": 12
       }
     ],
@@ -276343,73 +276343,73 @@
       {
         "region": "Москва и область",
         "total_leads": 0,
-        "local_deals": 848,
-        "outflow_deals": 0
-      },
-      {
-        "region": "Санкт-Петербург и область",
-        "total_leads": 0,
-        "local_deals": 267,
+        "local_deals": 869,
         "outflow_deals": 0
       },
       {
         "region": "Ярославская область",
         "total_leads": 0,
-        "local_deals": 1,
-        "outflow_deals": 247
+        "local_deals": 0,
+        "outflow_deals": 268
+      },
+      {
+        "region": "Санкт-Петербург и область",
+        "total_leads": 0,
+        "local_deals": 254,
+        "outflow_deals": 0
       },
       {
         "region": "Рязанская область",
         "total_leads": 0,
         "local_deals": 0,
-        "outflow_deals": 214
+        "outflow_deals": 190
       },
       {
         "region": "Тверская область",
         "total_leads": 0,
         "local_deals": 0,
-        "outflow_deals": 213
+        "outflow_deals": 176
       },
       {
         "region": "Московская область",
         "total_leads": 0,
-        "local_deals": 5,
-        "outflow_deals": 163
+        "local_deals": 9,
+        "outflow_deals": 149
       },
       {
         "region": "Нижний Новгород и область",
         "total_leads": 0,
-        "local_deals": 83,
+        "local_deals": 89,
+        "outflow_deals": 0
+      },
+      {
+        "region": "Краснодар и область",
+        "total_leads": 0,
+        "local_deals": 89,
+        "outflow_deals": 0
+      },
+      {
+        "region": "Казань и область",
+        "total_leads": 0,
+        "local_deals": 88,
         "outflow_deals": 0
       },
       {
         "region": "Тульская область",
         "total_leads": 0,
         "local_deals": 0,
-        "outflow_deals": 82
-      },
-      {
-        "region": "Казань и область",
-        "total_leads": 0,
-        "local_deals": 82,
-        "outflow_deals": 0
-      },
-      {
-        "region": "Краснодар и область",
-        "total_leads": 0,
-        "local_deals": 78,
-        "outflow_deals": 0
+        "outflow_deals": 83
       },
       {
         "region": "Ростов-на-Дону и область",
         "total_leads": 0,
-        "local_deals": 72,
+        "local_deals": 68,
         "outflow_deals": 0
       },
       {
         "region": "Воронеж и область",
         "total_leads": 0,
-        "local_deals": 58,
+        "local_deals": 61,
         "outflow_deals": 0
       }
     ]
