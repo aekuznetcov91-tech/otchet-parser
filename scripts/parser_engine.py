@@ -1598,6 +1598,16 @@ def run_pipeline():
             elif kam_dict_bitrix.get(p_lower):
                 kam_partner = kam_dict_bitrix.get(p_lower)
 
+            # Explicit KAM reallocations:
+            if 'рольф' in p_lower:
+                kam_partner = "Андрей Кузнецов"
+            elif 'кунцево' in p_lower:
+                kam_partner = "Алексей Чихарев"
+            elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс']):
+                kam_partner = "Андрей Кузнецов"
+            elif any(k in p_lower for k in ['максима авто', 'платинум', 'лидер сервис', 'лидер online']):
+                kam_partner = "Алексей Чихарев"
+
             # Portfolio handover rule: in August 2026 and earlier, deals of Dobrolyubova's portfolio are attributed to Kuznetsov
             if kam_partner == "Евгения Добролюбова" and (deal_month_str <= "2026-08" or not deal_month_str):
                 kam_partner = "Андрей Кузнецов"
@@ -1719,6 +1729,16 @@ def run_pipeline():
             d_lead_date = parse_custom_date(get_exact_val(row, 'ДАТА'))
             lead_month_str = f"{d_lead_date.year}-{str(d_lead_date.month).zfill(2)}" if d_lead_date else ""
             lead_serial = date_to_excel_serial(d_lead_date)
+
+            # Explicit KAM reallocations:
+            if 'рольф' in p_lower:
+                kam = "Андрей Кузнецов"
+            elif 'кунцево' in p_lower:
+                kam = "Алексей Чихарев"
+            elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс']):
+                kam = "Андрей Кузнецов"
+            elif any(k in p_lower for k in ['максима авто', 'платинум', 'лидер сервис', 'лидер online']):
+                kam = "Алексей Чихарев"
 
             if kam == "Евгения Добролюбова" and (lead_month_str <= "2026-08" or not lead_month_str):
                 kam = "Андрей Кузнецов"
