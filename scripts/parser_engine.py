@@ -1607,10 +1607,18 @@ def run_pipeline():
                 kam_partner = "Андрей Кузнецов"
             elif 'армада-авто' in p_lower:
                 kam_partner = "Алексей Чихарев"
-            elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим']):
+            elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто']):
                 kam_partner = "Андрей Кузнецов"
-            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автолидер', 'автоград', 'автопилот', 'максимум', 'вагнер авто']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
+            elif 'автолидер' in p_lower:
+                kam_partner = "Алексей Чихарев"
+            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автопилот', 'максимум', 'вагнер авто']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
                 kam_partner = "Светлана Дариенко"
+            elif 'автоград' in p_lower:
+                deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or "").strip().lower()
+                if 'калининград' in deal_city:
+                    kam_partner = "Светлана Дариенко"
+                else:
+                    kam_partner = "Алексей Чихарев"
             elif 'премиум авто' in p_lower:
                 if any(spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']) or (final_brand and 'geely' in str(final_brand).lower()):
                     kam_partner = "Светлана Дариенко"
@@ -1760,10 +1768,18 @@ def run_pipeline():
                 kam = "Андрей Кузнецов"
             elif 'армада-авто' in p_lower:
                 kam = "Алексей Чихарев"
-            elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим']):
+            elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто']):
                 kam = "Андрей Кузнецов"
-            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автолидер', 'автоград', 'автопилот', 'максимум', 'вагнер авто']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
+            elif 'автолидер' in p_lower:
+                kam = "Алексей Чихарев"
+            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автопилот', 'максимум', 'вагнер авто']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
                 kam = "Светлана Дариенко"
+            elif 'автоград' in p_lower:
+                lead_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or "").strip().lower()
+                if 'калининград' in lead_city:
+                    kam = "Светлана Дариенко"
+                else:
+                    kam = "Алексей Чихарев"
             elif 'премиум авто' in p_lower:
                 if any(spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']):
                     kam = "Светлана Дариенко"

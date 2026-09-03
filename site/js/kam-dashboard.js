@@ -314,7 +314,7 @@ function getKamAggregatedData(filterCfg) {
     // Helper to get or initialize partner entry
     const getPartnerStats = (pid, pName, rawKam) => {
         let normKam = normalizeKamName(rawKam);
-        let key = pid ? `ID_${pid}` : `RAW_${pName}`;
+        let key = pid ? (normKam ? `ID_${pid}__${normKam}` : `ID_${pid}`) : (normKam ? `RAW_${pName}__${normKam}` : `RAW_${pName}`);
         
         if (!partnerStats[key]) {
             let regEntry = pid ? partnerLookup[`ID_${pid}`] : matchDealerToPartner(pName);
@@ -588,6 +588,18 @@ function getKamAggregatedData(filterCfg) {
     const overallPlanPct = overallKamPlan > 0 ? (sumTotalDeals / overallKamPlan * 100) : 0;
     const overallCrPct = sumTransLeads > 0 ? (sumTransDeals / sumTransLeads * 100) : 0;
 
+    let assignedPartnersCount = 0;
+    const assignedMasterPartners = [];
+    registry.forEach(p => {
+        let pKam = normalizeKamName(p.kam);
+        if (activeMonth <= '2026-08' && pKam === 'Евгения Добролюбова') pKam = 'Андрей Кузнецов';
+        if (currentKamFilter === 'all' || pKam === normalizeKamName(currentKamFilter)) {
+            assignedPartnersCount++;
+            assignedMasterPartners.push(p);
+        }
+    });
+    const activePct = assignedPartnersCount > 0 ? (legalEntitiesList.length / assignedPartnersCount * 100) : 0;
+
     return {
         partners: filteredPartners,
         summary: {
@@ -603,6 +615,9 @@ function getKamAggregatedData(filterCfg) {
             overall_plan_pct: overallPlanPct,
             sum_partner_plans: sumPartnerPlans,
             legal_entities_count: legalEntitiesList.length,
+            total_assigned_partners: assignedPartnersCount,
+            active_pct: activePct,
+            assigned_master_partners: assignedMasterPartners,
             legal_entities: legalEntitiesList
         }
     };
@@ -709,15 +724,16 @@ function renderKamPlanHeader(s) {
 
             <div class="flex flex-wrap items-center gap-3">
                 <!-- Item 4: Legal Entities with Deals Card -->
-                <div class="flex items-center gap-2.5 bg-white px-3 py-2 rounded-xl border border-indigo-200 shadow-sm cursor-pointer hover:bg-indigo-50/70 hover:border-indigo-400 transition" onclick="openKamLegalEntitiesModal()" title="Нажмите, чтобы посмотреть детализацию всех юридических лиц">
+                <div class="flex items-center gap-2.5 bg-white px-3 py-2 rounded-xl border border-indigo-200 shadow-sm cursor-pointer hover:bg-indigo-50/70 hover:border-indigo-400 transition" onclick="openKamLegalEntitiesModal()" title="Нажмите, чтобы посмотреть детализацию юридических лиц и активность базы">
                     <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
                         🏢
                     </div>
                     <div>
-                        <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Юр. лиц со сделками</span>
-                        <div class="text-sm font-black text-gray-900 leading-none mt-0.5 flex items-center gap-1">
-                            <span>${fmt(s.legal_entities_count || 0)}</span>
-                            <span class="text-[11px] text-indigo-600 font-semibold underline">список ➔</span>
+                        <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Юр. лица / Активность</span>
+                        <div class="text-sm font-black text-gray-900 leading-none mt-0.5 flex items-center gap-1.5">
+                            <span><b class="text-indigo-900">${fmt(s.legal_entities_count || 0)}</b> <span class="text-gray-400 font-medium text-xs">из</span> <b class="text-gray-700">${fmt(s.total_assigned_partners || s.legal_entities_count)}</b></span>
+                            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-200">${(s.active_pct || 0).toFixed(0)}%</span>
+                            <span class="text-[11px] text-indigo-600 font-semibold underline ml-0.5">список ➔</span>
                         </div>
                     </div>
                 </div>
