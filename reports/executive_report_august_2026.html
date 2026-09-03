@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Итоги Августа 2026 — Executive Report · Lieflat R04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════════════════════════
+     LIEFLAT EXECUTIVE REPORT · AUGUST 2026
+     Palette: PORCELAIN (Deep porcelain ink #081F5C on ivory #F7F2EB)
+     Format: R04 Broadsheet Executive One-Pager (1080px)
+     Charts: Lupi & Basics Gallery Authentic SVG Embeds
+  ═══════════════════════════════════════════════════════════════ */
+  :root {
+    --bg: #F7F2EB;
+    --ink: #081F5C;
+    --muted: rgba(8, 31, 92, 0.65);
+    --faint: rgba(8, 31, 92, 0.32);
+    --grid: rgba(8, 31, 92, 0.14);
+    --num: 'Oswald', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums lining-nums;
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+  }
+  .sheet {
+    width: 1080px;
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    background: var(--bg);
+  }
+
+  /* ── Spine (Шмуцтитул / Боковое ребро) ── */
+  .spine {
+    position: relative;
+    border-right: 1.5px solid var(--ink);
+  }
+  .spine .t {
+    position: absolute;
+    top: 0;
+    left: 4px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--num);
+    font-weight: 700;
+    font-size: 58px;
+    line-height: .9;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .spine .b {
+    position: absolute;
+    bottom: 0;
+    left: 36px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .content { padding-left: 36px; }
+
+  /* ── Tophead ── */
+  .tophead {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    border-bottom: 1.5px solid var(--ink);
+    padding-bottom: 10px;
+    margin-bottom: 32px;
+  }
+  .tophead .brand {
+    font-family: var(--num);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .tophead .sep { color: var(--faint); }
+  .tophead .tag {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Section Header ── */
+  .secthead {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin: 36px 0 8px;
+  }
+  .secthead .line {
+    flex: 1;
+    border-top: 1.5px solid var(--ink);
+  }
+  .secthead .t {
+    font-family: var(--num);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .secthead.first { margin-top: 0; }
+
+  .claim {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 4px 0 6px;
+    line-height: 1.4;
+  }
+  .fig svg { width: 100%; height: auto; display: block; }
+  svg text { font-family: 'Inter', sans-serif; }
+  .srcline {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 6px;
+  }
+
+  .duo {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 36px;
+  }
+
+  /* ── Bottom Notable Statistics ── */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.15fr 1.05fr;
+    gap: 0;
+    margin-top: 14px;
+    border-top: 1.5px solid var(--ink);
+  }
+  .stats > div {
+    padding: 20px 18px 8px;
+    border-right: 1px dotted var(--faint);
+  }
+  .stats > div:first-child { padding-left: 0; }
+  .stats > div:last-child { border-right: 0; padding-right: 0; }
+  
+  .stats .kpi { margin-bottom: 16px; }
+  .stats .kpi .v {
+    font-family: var(--num);
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .stats .kpi .r {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+  .stats .kpi .l {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 2px;
+  }
+  .stats h4 {
+    font-family: var(--num);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .ranked .row {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--faint);
+  }
+  .ranked .row:last-child { border-bottom: 0; }
+  .ranked .n {
+    font-family: var(--num);
+    font-weight: 700;
+    font-size: 20px;
+    min-width: 44px;
+  }
+  .ranked .d {
+    font-size: 9.5px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .ranked .d b { color: var(--ink); font-weight: 700; }
+
+  /* ── Strategic Executive Takeaways ── */
+  .takeaways {
+    margin-top: 28px;
+    padding: 16px 20px;
+    background: rgba(8, 31, 92, 0.04);
+    border: 1px solid var(--ink);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  .takeaways .box h5 {
+    font-family: var(--num);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .takeaways .box p {
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .takeaways .box p strong { color: var(--ink); }
+
+  .foot {
+    margin-top: 36px;
+    border-top: 1.5px solid var(--ink);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Motion & Animation ── */
+  .pop { transform-box: fill-box; transform-origin: center; animation: pop .5s cubic-bezier(.2,.7,.3,1.3) both; }
+  @keyframes pop { from { transform: scale(0); } to { transform: none; } }
+  .fade { animation: fade .9s ease both; }
+  @keyframes fade { from { opacity: 0; } }
+  .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.2s cubic-bezier(.4,0,.2,1) both; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  
+  @media print {
+    body { padding: 0; background: #FFF; }
+    .sheet { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- ══ LEFT VERTICAL SPINE (ШМУЦТИТУЛ) ══ -->
+  <div class="spine">
+    <div class="t">АВГУСТ 2026 · ИТОГИ</div>
+    <div class="b">EXECUTIVE REVIEW · B2C SBERAUTO</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ TOP HEADER ══ -->
+    <div class="tophead">
+      <span class="brand">СБЕРАВТО B2C</span><span class="sep">|</span>
+      <span class="tag">Ежемесячный управленческий отчет · База 3 304 сделок · Сравнение с июлем</span>
+    </div>
+
+    <!-- ══ CHART A · F2 HAIRLINE LINE: ДИНАМИКА ЗАКРЫТИЙ ПО ДНЯМ ══ -->
+    <div class="secthead first">
+      <span class="line"></span>
+      <span class="t">01 · Динамика закрытий по дням месяца</span>
+    </div>
+    <div class="claim">Рекордные 1 778 сделок (+18.2% к июлю) обеспечены мощным стартом (136 авто) и финальным рывком (278 авто)</div>
+    <div class="fig">
+      <svg id="dayline" viewBox="0 0 940 210" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <div class="srcline">Hairline Line · 31 день августа · точки = закрытия дня · контурные круги = выходные дни</div>
+
+    <!-- ══ DUO SECTION: БРЕНДЫ И КАНАЛЫ B2C ══ -->
+    <div class="duo">
+      <!-- ══ CHART B · F4 TICK DONUT: БРЕНДЫ ══ -->
+      <div>
+        <div class="secthead">
+          <span class="line"></span>
+          <span class="t">02 · Диверсификация брендов</span>
+        </div>
+        <div class="claim">Доля Jetour снизилась с 65.7% до 52.0% за счет Soueast (+278%) и GAC (+234%)</div>
+        <div class="fig">
+          <svg id="donut" viewBox="0 0 450 250" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="srcline">Tick Donut · 1 засечка = 1% структуры · 924 авто Jetour, 226 Lada, 140 Soueast</div>
+      </div>
+
+      <!-- ══ CHART C · F5 TICK ROWS: КАНАЛЫ B2C ══ -->
+      <div>
+        <div class="secthead">
+          <span class="line"></span>
+          <span class="t">03 · Структура каналов B2C</span>
+        </div>
+        <div class="claim">Опт МП2 вырос до 74.8%, в то время как маржинальный ФДЦ и Online просели на 30%</div>
+        <div class="fig">
+          <svg id="channels" viewBox="0 0 420 250" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="srcline">Tick Rows · 1 деление = 15 сделок · заполнение = объем канала</div>
+      </div>
+    </div>
+
+    <!-- ══ NOTABLE STATISTICS (СТАТИСТИКА И РЕЙТИНГИ) ══ -->
+    <div class="secthead">
+      <span class="line"></span>
+      <span class="t">04 · Ключевые показатели и рейтинги</span>
+    </div>
+    <div class="stats">
+      <!-- Col 1 -->
+      <div>
+        <div class="kpi">
+          <div class="v">1 778</div>
+          <div class="r">+18.2% к июлю (+274 шт.)</div>
+          <div class="l">Закрытых сделок</div>
+        </div>
+        <div class="kpi">
+          <div class="v">66.71M ₽</div>
+          <div class="r">+24.7% к июлю (+13.2M ₽)</div>
+          <div class="l">Выручка без НДС</div>
+        </div>
+        <div class="kpi">
+          <div class="v">37 518 ₽</div>
+          <div class="r">+5.5% (+1 943 ₽ на авто)</div>
+          <div class="l">ARPU (доходность)</div>
+        </div>
+      </div>
+
+      <!-- Col 2 -->
+      <div>
+        <div class="kpi">
+          <div class="v">1 376</div>
+          <div class="r">-8.9% к июлю (-134 шт.) ⚠️</div>
+          <div class="l">Внесено авансов</div>
+        </div>
+        <div class="kpi">
+          <div class="v">2.69M ₽</div>
+          <div class="r">+9.6% (+236K ₽ сдвиг в D-класс)</div>
+          <div class="l">Средний чек авто</div>
+        </div>
+        <div class="kpi">
+          <div class="v">719</div>
+          <div class="r">18 новых сетей подключено</div>
+          <div class="l">Master Partners</div>
+        </div>
+      </div>
+
+      <!-- Col 3: Дилерская сеть & КАМы -->
+      <div class="ranked">
+        <h4>Лидеры продаж (КАМы)</h4>
+        <div class="row">
+          <div class="n">636</div>
+          <div class="d"><b>А. Чихарев</b> — 35.8% объема (+9.7% MoM)</div>
+        </div>
+        <div class="row">
+          <div class="n">564</div>
+          <div class="d"><b>А. Кузнецов</b> — 31.7% объема (+20.8% MoM)</div>
+        </div>
+        <div class="row">
+          <div class="n">310</div>
+          <div class="d"><b>С. Дариенко</b> — 17.4% объема (+42.2% MoM)</div>
+        </div>
+        <div class="row">
+          <div class="n">187</div>
+          <div class="d"><b>Е. Солдатова</b> — 10.5% объема (стабильно)</div>
+        </div>
+      </div>
+
+      <!-- Col 4: Долги ДКП и модели -->
+      <div class="ranked">
+        <h4>Контроль дебиторки (ДКП)</h4>
+        <div class="row">
+          <div class="n">104</div>
+          <div class="d"><b>Авто висят без ДКП</b> (-25 к июлю)</div>
+        </div>
+        <div class="row">
+          <div class="n">21</div>
+          <div class="d"><b>Кунцево</b> — топ-должник сети</div>
+        </div>
+        <div class="row">
+          <div class="n">19</div>
+          <div class="d"><b>ГК АГАТ</b> — зависшие поставки</div>
+        </div>
+        <div class="row">
+          <div class="n">9</div>
+          <div class="d"><b>АвтоГермес</b> — просрочка ДКП</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ EXECUTIVE TAKEAWAYS (ВЫВОДЫ ДЛЯ СЕНТЯБРЯ) ══ -->
+    <div class="takeaways">
+      <div class="box">
+        <h5>1. Рекорд сдвинул маржу</h5>
+        <p>Выручка росла быстрее штук (<strong>+24.7% vs +18.2%</strong>) за счет экспансии GAC и Soueast. Средняя цена авто выросла до <strong>2.69 млн ₽</strong>, а ARPU до <strong>37.5 тыс. ₽</strong>.</p>
+      </div>
+      <div class="box">
+        <h5>2. Риск: истощение авансов</h5>
+        <p>В августе закрыли 1 778 сделок, а авансов собрали только <strong>1 376 (-8.9%)</strong>. Пайплайн «проеден». Срочный фокус сентября — поднять темп до <strong>400+ задатков в неделю</strong>.</p>
+      </div>
+      <div class="box">
+        <h5>3. Спасение 319 одобрений</h5>
+        <p>Сбер одобрил 533 кредита, но выдано лишь 214 авто (<strong>40.2%</strong>). Дожим одобренных ФДЦ до 60% даст компании <strong>+4.5 млн ₽ чистой маржи</strong> без затрат на трафик.</p>
+      </div>
+    </div>
+
+    <!-- ══ FOOTER ══ -->
+    <div class="foot">
+      <span>Executive Performance Summary · Август 2026</span>
+      <span>СберАвто B2C Analytics · Выгрузка CRM & Калькулятор · 03.09.2026</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ── PORCELAIN TOKENS & UTILITIES ── */
+const INK = '#081F5C',
+      PAPER = '#F7F2EB',
+      MUTED = 'rgba(8, 31, 92, 0.65)',
+      FAINT = 'rgba(8, 31, 92, 0.32)',
+      GRID = 'rgba(8, 31, 92, 0.14)';
+const NS = 'http://www.w3.org/2000/svg';
+
+const el = (p, t, a) => {
+  const n = document.createElementNS(NS, t);
+  for (const k in a) n.setAttribute(k, a[k]);
+  p.appendChild(n);
+  return n;
+};
+const txt = (p, a, s) => {
+  const n = el(p, 'text', a);
+  n.textContent = s;
+  return n;
+};
+
+/* ════ CHART A · F2 HAIRLINE LINE: ДИНАМИКА ЗАКРЫТИЙ ПО ДНЯМ ════ */
+(()=>{
+  // 31 days of August 2026
+  const data = [3, 5, 136, 60, 22, 33, 46, 44, 23, 35, 49, 66, 45, 31, 41, 41, 62, 58, 48, 43, 51, 55, 35, 60, 76, 99, 46, 52, 37, 98, 278];
+  // August 2026 weekends: 1, 2, 8, 9, 15, 16, 22, 23, 29, 30 (0-indexed: 0,1, 7,8, 14,15, 21,22, 28,29)
+  const weekends = new Set([0, 1, 7, 8, 14, 15, 21, 22, 28, 29]);
+  
+  const s = document.getElementById('dayline');
+  const W = 940, H = 210;
+  const padL = 30, padR = 30, base = 180, topY = 25;
+  const maxV = 285;
+  
+  const x = d => padL + d * ((W - padL - padR) / 30);
+  const y = v => base - (v / maxV) * (base - topY);
+
+  // Baseline & gridlines
+  el(s, 'line', { x1: padL - 10, y1: base, x2: W - padR + 10, y2: base, stroke: INK, 'stroke-width': 1.2 });
+  [50, 100, 150, 200, 250].forEach(lvl => {
+    const gy = y(lvl);
+    el(s, 'line', { x1: padL - 10, y1: gy, x2: W - padR + 10, y2: gy, stroke: GRID, 'stroke-dasharray': '3,3' });
+    txt(s, { x: padL - 14, y: gy + 3, 'font-size': '8.5', fill: FAINT, 'text-anchor': 'end', 'font-family': 'Oswald' }, lvl);
+  });
+
+  // Vertical day ticks
+  data.forEach((_, d) => {
+    el(s, 'line', { x1: x(d), y1: base, x2: x(d), y2: base + 4, stroke: INK, 'stroke-width': .8 });
+    if (d === 0 || (d + 1) % 5 === 0 || d === 30) {
+      txt(s, { x: x(d), y: base + 15, 'font-size': '9', 'font-weight': '600', fill: MUTED, 'text-anchor': 'middle', 'font-family': 'Oswald' }, d + 1);
+    }
+  });
+
+  // Line path
+  const pts = data.map((v, d) => `${x(d).toFixed(1)} ${y(v).toFixed(1)}`).join(' L ');
+  el(s, 'path', { d: 'M ' + pts, fill: 'none', stroke: INK, 'stroke-width': 1.6, class: 'draw' });
+
+  // Area under curve
+  const areaPts = `M ${x(0)} ${base} L ` + pts + ` L ${x(30)} ${base} Z`;
+  el(s, 'path', { d: areaPts, fill: INK, opacity: 0.05 });
+
+  // Data points
+  data.forEach((v, d) => {
+    const cx = x(d), cy = y(v);
+    const isWk = weekends.has(d);
+    
+    // Highlight big spike days: 3 Aug (136) and 31 Aug (278)
+    if (d === 2 || d === 30) {
+      el(s, 'circle', { cx, cy, r: 5, fill: INK });
+      el(s, 'circle', { cx, cy, r: 8, fill: 'none', stroke: INK, 'stroke-width': 1 });
+      txt(s, { x: cx, y: cy - 12, 'font-size': '11', 'font-weight': '700', fill: INK, 'text-anchor': 'middle', 'font-family': 'Oswald' }, v + ' шт.');
+      txt(s, { x: cx, y: cy - 24, 'font-size': '8', 'font-weight': '600', fill: MUTED, 'text-anchor': 'middle' }, d === 2 ? 'Разгруз выходных' : 'Финал месяца');
+    } else {
+      el(s, 'circle', {
+        cx, cy, r: 2.8,
+        fill: isWk ? PAPER : INK,
+        stroke: INK,
+        'stroke-width': isWk ? 1.4 : 0,
+        class: 'pop'
+      });
+    }
+  });
+})();
+
+/* ════ CHART B · F4 TICK DONUT: СТРУКТУРА БРЕНДОВ ════ */
+(()=>{
+  const s = document.getElementById('donut');
+  const cx = 130, cy = 125, rOut = 88, rIn = 58;
+  
+  const brands = [
+    { name: 'JETOUR', pct: 52.0, count: 924, fill: '#081F5C' },
+    { name: 'LADA', pct: 12.7, count: 226, fill: 'rgba(8, 31, 92, 0.78)' },
+    { name: 'SOUEAST', pct: 7.9, count: 140, fill: 'rgba(8, 31, 92, 0.60)' },
+    { name: 'GAC', pct: 7.7, count: 137, fill: 'rgba(8, 31, 92, 0.46)' },
+    { name: 'SOLARIS', pct: 7.1, count: 126, fill: 'rgba(8, 31, 92, 0.35)' },
+    { name: 'GEELY/BELGEE', pct: 5.7, count: 102, fill: 'rgba(8, 31, 92, 0.25)' },
+    { name: 'ПРОЧИЕ', pct: 6.9, count: 123, fill: 'rgba(8, 31, 92, 0.15)' }
+  ];
+
+  // Draw 100 ticks around ring (1 tick = 1%)
+  let currentPct = 0;
+  for (let i = 0; i < 100; i++) {
+    const angle = (i / 100) * 360 - 90;
+    const rad = angle * Math.PI / 180;
+    
+    // find segment
+    let seg = brands[0];
+    let cum = 0;
+    for (const b of brands) {
+      cum += b.pct;
+      if (i < cum) { seg = b; break; }
+    }
+
+    const x1 = cx + (rIn + 2) * Math.cos(rad);
+    const y1 = cy + (rIn + 2) * Math.sin(rad);
+    const x2 = cx + (rOut - 2) * Math.cos(rad);
+    const y2 = cy + (rOut - 2) * Math.sin(rad);
+
+    el(s, 'line', {
+      x1: x1.toFixed(1), y1: y1.toFixed(1),
+      x2: x2.toFixed(1), y2: y2.toFixed(1),
+      stroke: seg.fill,
+      'stroke-width': 2.2,
+      class: 'fade',
+      style: `animation-delay: ${i * 0.005}s`
+    });
+  }
+
+  // Center text
+  txt(s, { x: cx, y: cy - 2, 'font-size': '24', 'font-weight': '700', fill: INK, 'text-anchor': 'middle', 'font-family': 'Oswald' }, '1 778');
+  txt(s, { x: cx, y: cy + 12, 'font-size': '8.5', 'font-weight': '600', fill: MUTED, 'text-anchor': 'middle', 'letter-spacing': '.1em' }, 'СДЕЛОК АВГУСТА');
+
+  // Legend on the right
+  let legY = 32;
+  brands.forEach(b => {
+    el(s, 'rect', { x: 260, y: legY - 7, width: 10, height: 10, fill: b.fill });
+    txt(s, { x: 278, y: legY + 2, 'font-size': '10.5', 'font-weight': '700', fill: INK }, b.name);
+    txt(s, { x: 395, y: legY + 2, 'font-size': '11', 'font-weight': '700', fill: INK, 'text-anchor': 'end', 'font-family': 'Oswald' }, b.pct.toFixed(1) + '%');
+    txt(s, { x: 440, y: legY + 2, 'font-size': '9', 'font-weight': '500', fill: MUTED, 'text-anchor': 'end', 'font-family': 'Oswald' }, '(' + b.count + ')');
+    legY += 28;
+  });
+})();
+
+/* ════ CHART C · F5 TICK ROWS: КАНАЛЫ B2C ════ */
+(()=>{
+  const s = document.getElementById('channels');
+  const channels = [
+    { name: 'МП2 (Оптовый выкуп)', deals: 1330, share: '74.8%', rev: '49.9M ₽', arpu: '37.5K' },
+    { name: 'ФДЦ (Автокредит Сбер)', deals: 145, share: '8.2%', rev: '6.2M ₽', arpu: '43.1K' },
+    { name: 'Передача лида', deals: 114, share: '6.4%', rev: '4.0M ₽', arpu: '35.4K' },
+    { name: 'Online продажи', deals: 96, share: '5.4%', rev: '4.0M ₽', arpu: '41.8K' },
+    { name: 'МП3 (Агентская схема)', deals: 39, share: '2.2%', rev: '1.3M ₽', arpu: '34.3K' },
+    { name: 'МП1 (Прямая розница)', deals: 11, share: '0.6%', rev: '0.4M ₽', arpu: '38.6K' }
+  ];
+
+  let curY = 32;
+  const maxDeals = 1350;
+  const barW = 190;
+
+  channels.forEach((c, idx) => {
+    // Title & share
+    txt(s, { x: 10, y: curY, 'font-size': '10', 'font-weight': '700', fill: INK }, c.name);
+    txt(s, { x: 410, y: curY, 'font-size': '10', 'font-weight': '700', fill: INK, 'text-anchor': 'end', 'font-family': 'Oswald' }, `${c.deals} шт. · ${c.rev}`);
+
+    // Bar line & ticks
+    const barY = curY + 8;
+    const len = Math.max(8, (c.deals / maxDeals) * barW);
+
+    // Background track
+    el(s, 'line', { x1: 10, y1: barY, x2: 10 + barW, y2: barY, stroke: GRID, 'stroke-width': 5 });
+    // Active bar
+    el(s, 'line', { x1: 10, y1: barY, x2: 10 + len, y2: barY, stroke: INK, 'stroke-width': 5, opacity: idx === 0 ? 1 : 0.65 });
+
+    // Subtext
+    txt(s, { x: 10, y: barY + 14, 'font-size': '8', 'font-weight': '600', fill: MUTED }, `Доля: ${c.share} · ARPU: ${c.arpu} ₽/авто`);
+
+    curY += 36;
+  });
+})();
+</script>
+
+</body>
+</html>

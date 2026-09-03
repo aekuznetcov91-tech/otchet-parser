@@ -25,9 +25,16 @@
     <!-- Header & Global Controls -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-gray-200 pb-4">
         <div>
-            <h1 class="text-2xl font-black text-gray-800 tracking-tight flex items-center gap-2">
-                <i data-lucide="bar-chart-3" class="w-6 h-6 text-blue-600"></i> B2C Analytics Dashboard
-            </h1>
+            <div class="flex items-center gap-3 flex-wrap">
+                <h1 class="text-2xl font-black text-gray-800 tracking-tight flex items-center gap-2">
+                    <i data-lucide="bar-chart-3" class="w-6 h-6 text-blue-600"></i> B2C Analytics Dashboard
+                </h1>
+                <div id="dataFreshnessBadge" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="dataFreshnessText">Данные актуальны</span>
+                </div>
+            </div>
+            <p id="dataFreshnessSub" class="text-[11px] text-gray-400 mt-0.5">Загрузка информации об обновлении...</p>
         </div>
         <div class="flex items-center gap-3 flex-wrap">
             <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm">
