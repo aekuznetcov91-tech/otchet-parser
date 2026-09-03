@@ -1605,8 +1605,14 @@ def run_pipeline():
                 kam_partner = "Алексей Чихарев"
             elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс']):
                 kam_partner = "Андрей Кузнецов"
-            elif any(k in p_lower for k in ['максима авто', 'платинум', 'лидер сервис', 'лидер online']):
+            elif any(k in p_lower for k in ['максима авто', 'платинум', 'лидер сервис', 'лидер online', 'эксперт св', 'автоимпорт центр']):
                 kam_partner = "Алексей Чихарев"
+            elif 'спектр' in p_lower and 'апельсин' in p_lower:
+                kam_partner = "Алексей Чихарев"
+            elif any(k in p_lower for k in ['техно-темп', 'трансфор']):
+                kam_partner = "Валерия Солдатова"
+            elif 'фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower):
+                kam_partner = "Светлана Дариенко"
 
             # Portfolio handover rule: in August 2026 and earlier, deals of Dobrolyubova's portfolio are attributed to Kuznetsov
             if kam_partner == "Евгения Добролюбова" and (deal_month_str <= "2026-08" or not deal_month_str):
@@ -1737,8 +1743,14 @@ def run_pipeline():
                 kam = "Алексей Чихарев"
             elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс']):
                 kam = "Андрей Кузнецов"
-            elif any(k in p_lower for k in ['максима авто', 'платинум', 'лидер сервис', 'лидер online']):
+            elif any(k in p_lower for k in ['максима авто', 'платинум', 'лидер сервис', 'лидер online', 'эксперт св', 'автоимпорт центр']):
                 kam = "Алексей Чихарев"
+            elif 'спектр' in p_lower and 'апельсин' in p_lower:
+                kam = "Алексей Чихарев"
+            elif any(k in p_lower for k in ['техно-темп', 'трансфор']):
+                kam = "Валерия Солдатова"
+            elif 'фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower):
+                kam = "Светлана Дариенко"
 
             if kam == "Евгения Добролюбова" and (lead_month_str <= "2026-08" or not lead_month_str):
                 kam = "Андрей Кузнецов"

@@ -2,9 +2,9 @@
   "updated_at": "2026-08-26 14:45:00",
   "market_summary": {
     "total_dealers_rf_market": 1633,
-    "total_connected_roofs": 649,
+    "total_connected_roofs": 648,
     "total_coverage_pct": 39.7,
-    "total_potential_growth": 984,
+    "total_potential_growth": 985,
     "tracked_brands_count": 15,
     "tracked_cities_count": 50
   },
@@ -71,10 +71,10 @@
     },
     {
       "brand": "JETOUR",
-      "connected_roofs": 131,
+      "connected_roofs": 130,
       "total_rf_market": 148,
-      "coverage_pct": 88.5,
-      "potential_growth": 17,
+      "coverage_pct": 87.8,
+      "potential_growth": 18,
       "connected_cities": 68,
       "official_site": "https://jetour-ru.com/dealers",
       "description": "Официальная сеть ДЦ JETOUR в РФ"
@@ -168,35 +168,35 @@
       "coverage_pct": 31.9,
       "potential_growth": 218,
       "brands_connected": [
-        "JETTA",
-        "Geely & Belgee",
-        "CHERY & TENET",
-        "SOLARIS",
-        "Soueast",
         "Рольф Импорт",
+        "SOLARIS",
+        "OMODA & JAECOO",
         "HAVAL",
         "JETOUR",
+        "CHERY & TENET",
         "GAC",
-        "CHANGAN",
-        "OMODA & JAECOO"
+        "JETTA",
+        "Soueast",
+        "Geely & Belgee",
+        "CHANGAN"
       ]
     },
     {
       "city": "Санкт-Петербург",
-      "connected_roofs": 42,
+      "connected_roofs": 41,
       "total_market": 145,
-      "coverage_pct": 29.0,
-      "potential_growth": 103,
+      "coverage_pct": 28.3,
+      "potential_growth": 104,
       "brands_connected": [
-        "CHERY & TENET",
-        "SOLARIS",
-        "Soueast",
-        "JETOUR",
-        "HAVAL",
         "DEEPAL",
+        "SOLARIS",
+        "OMODA & JAECOO",
+        "HAVAL",
+        "JETOUR",
+        "CHERY & TENET",
+        "Soueast",
         "Москвич",
-        "CHANGAN",
-        "OMODA & JAECOO"
+        "CHANGAN"
       ]
     },
     {
@@ -206,16 +206,16 @@
       "coverage_pct": 43.8,
       "potential_growth": 36,
       "brands_connected": [
-        "Geely & Belgee",
+        "DEEPAL",
+        "SOLARIS",
+        "OMODA & JAECOO",
+        "HAVAL",
+        "JETOUR",
         "CHERY & TENET",
         "Soueast",
-        "SOLARIS",
-        "JETOUR",
-        "HAVAL",
-        "OMODA & JAECOO",
-        "DEEPAL",
-        "CHANGAN",
-        "Москвич"
+        "Geely & Belgee",
+        "Москвич",
+        "CHANGAN"
       ]
     },
     {
@@ -237,15 +237,15 @@
       "coverage_pct": 41.8,
       "potential_growth": 32,
       "brands_connected": [
-        "Geely & Belgee",
-        "CHERY & TENET",
         "SOLARIS",
+        "OMODA & JAECOO",
         "JETOUR",
-        "GAC",
+        "CHERY & TENET",
         "Voyah",
+        "GAC",
+        "Geely & Belgee",
         "Москвич",
-        "CHANGAN",
-        "OMODA & JAECOO"
+        "CHANGAN"
       ]
     },
     {
@@ -256,10 +256,10 @@
       "potential_growth": 36,
       "brands_connected": [
         "SOLARIS",
-        "Soueast",
-        "JETOUR",
         "HAVAL",
-        "GAC"
+        "JETOUR",
+        "GAC",
+        "Soueast"
       ]
     },
     {
@@ -280,13 +280,13 @@
       "coverage_pct": 28.9,
       "potential_growth": 27,
       "brands_connected": [
-        "Geely & Belgee",
-        "CHERY & TENET",
-        "SOLARIS",
-        "JETOUR",
         "DEEPAL",
-        "CHANGAN",
-        "OMODA & JAECOO"
+        "SOLARIS",
+        "OMODA & JAECOO",
+        "JETOUR",
+        "CHERY & TENET",
+        "Geely & Belgee",
+        "CHANGAN"
       ]
     },
     {
@@ -296,10 +296,10 @@
       "coverage_pct": 17.1,
       "potential_growth": 29,
       "brands_connected": [
+        "OMODA & JAECOO",
         "JETOUR",
-        "CHANGAN",
         "CHERY & TENET",
-        "OMODA & JAECOO"
+        "CHANGAN"
       ]
     },
     {
@@ -309,11 +309,11 @@
       "coverage_pct": 20.0,
       "potential_growth": 28,
       "brands_connected": [
-        "Geely & Belgee",
-        "CHERY & TENET",
         "SOLARIS",
+        "OMODA & JAECOO",
         "JETOUR",
-        "OMODA & JAECOO"
+        "CHERY & TENET",
+        "Geely & Belgee"
       ]
     },
     {
@@ -323,10 +323,10 @@
       "coverage_pct": 21.9,
       "potential_growth": 25,
       "brands_connected": [
-        "CHERY & TENET",
+        "DEEPAL",
         "SOLARIS",
         "JETOUR",
-        "DEEPAL",
+        "CHERY & TENET",
         "CHANGAN"
       ]
     },
@@ -337,10 +337,10 @@
       "coverage_pct": 25.0,
       "potential_growth": 21,
       "brands_connected": [
-        "CHERY & TENET",
-        "JETOUR",
-        "GAC",
         "DEEPAL",
+        "JETOUR",
+        "CHERY & TENET",
+        "GAC",
         "CHANGAN"
       ]
     },
@@ -352,8 +352,8 @@
       "potential_growth": 23,
       "brands_connected": [
         "JETOUR",
-        "CHANGAN",
         "CHERY & TENET",
+        "CHANGAN",
         "OMODA & JAECOO"
       ]
     },
@@ -365,8 +365,8 @@
       "potential_growth": 21,
       "brands_connected": [
         "JETOUR",
-        "Geely & Belgee",
         "CHERY & TENET",
+        "Geely & Belgee",
         "OMODA & JAECOO"
       ]
     },
@@ -418,8 +418,8 @@
       "potential_growth": 17,
       "brands_connected": [
         "JETOUR",
-        "Geely & Belgee",
-        "CHERY & TENET"
+        "CHERY & TENET",
+        "Geely & Belgee"
       ]
     },
     {
@@ -429,11 +429,11 @@
       "coverage_pct": 40.0,
       "potential_growth": 12,
       "brands_connected": [
-        "CHERY & TENET",
+        "DEEPAL",
         "SOLARIS",
         "HAVAL",
         "JETOUR",
-        "DEEPAL",
+        "CHERY & TENET",
         "CHANGAN"
       ]
     },
@@ -455,8 +455,8 @@
       "potential_growth": 14,
       "brands_connected": [
         "JETOUR",
-        "Geely & Belgee",
-        "CHERY & TENET"
+        "CHERY & TENET",
+        "Geely & Belgee"
       ]
     },
     {
@@ -478,11 +478,11 @@
       "coverage_pct": 33.3,
       "potential_growth": 12,
       "brands_connected": [
-        "Geely & Belgee",
-        "CHERY & TENET",
+        "OMODA & JAECOO",
         "JETOUR",
+        "CHERY & TENET",
         "GAC",
-        "OMODA & JAECOO"
+        "Geely & Belgee"
       ]
     },
     {
@@ -513,12 +513,12 @@
       "coverage_pct": 43.8,
       "potential_growth": 9,
       "brands_connected": [
-        "CHERY & TENET",
         "SOLARIS",
-        "Soueast",
+        "OMODA & JAECOO",
         "JETOUR",
+        "CHERY & TENET",
         "GAC",
-        "OMODA & JAECOO"
+        "Soueast"
       ]
     },
     {
@@ -560,8 +560,8 @@
       "coverage_pct": 12.5,
       "potential_growth": 14,
       "brands_connected": [
-        "CHANGAN",
-        "CHERY & TENET"
+        "CHERY & TENET",
+        "CHANGAN"
       ]
     },
     {
@@ -582,9 +582,9 @@
       "coverage_pct": 40.0,
       "potential_growth": 9,
       "brands_connected": [
-        "CHERY & TENET",
         "SOLARIS",
         "JETOUR",
+        "CHERY & TENET",
         "GAC",
         "CHANGAN"
       ]
@@ -614,10 +614,10 @@
       "coverage_pct": 42.9,
       "potential_growth": 8,
       "brands_connected": [
-        "Geely & Belgee",
         "SOLARIS",
         "JETOUR",
         "GAC",
+        "Geely & Belgee",
         "CHANGAN"
       ]
     },
@@ -652,10 +652,10 @@
       "coverage_pct": 33.3,
       "potential_growth": 8,
       "brands_connected": [
-        "JETOUR",
         "GAC",
-        "OMODA & JAECOO",
-        "SOLARIS"
+        "JETOUR",
+        "SOLARIS",
+        "OMODA & JAECOO"
       ]
     },
     {
@@ -665,9 +665,9 @@
       "coverage_pct": 33.3,
       "potential_growth": 8,
       "brands_connected": [
+        "OMODA & JAECOO",
         "JETOUR",
-        "CHANGAN",
-        "OMODA & JAECOO"
+        "CHANGAN"
       ]
     },
     {
@@ -677,12 +677,12 @@
       "coverage_pct": 58.3,
       "potential_growth": 5,
       "brands_connected": [
-        "CHERY & TENET",
-        "Soueast",
+        "OMODA & JAECOO",
         "HAVAL",
         "JETOUR",
-        "LADA",
-        "OMODA & JAECOO"
+        "CHERY & TENET",
+        "Soueast",
+        "LADA"
       ]
     },
     {
@@ -693,9 +693,9 @@
       "potential_growth": 8,
       "brands_connected": [
         "JETOUR",
-        "CHANGAN",
+        "CHERY & TENET",
         "Geely & Belgee",
-        "CHERY & TENET"
+        "CHANGAN"
       ]
     },
     {
@@ -724,8 +724,8 @@
       "potential_growth": 6,
       "brands_connected": [
         "JETOUR",
-        "LADA",
-        "CHERY & TENET"
+        "CHERY & TENET",
+        "LADA"
       ]
     },
     {
@@ -745,13 +745,13 @@
       "coverage_pct": 87.5,
       "potential_growth": 1,
       "brands_connected": [
-        "Geely & Belgee",
-        "CHERY & TENET",
+        "OMODA & JAECOO",
         "HAVAL",
         "JETOUR",
+        "CHERY & TENET",
         "GAC",
-        "CHANGAN",
-        "OMODA & JAECOO"
+        "Geely & Belgee",
+        "CHANGAN"
       ]
     },
     {
@@ -771,10 +771,10 @@
       "coverage_pct": 83.3,
       "potential_growth": 1,
       "brands_connected": [
-        "Geely & Belgee",
         "SOLARIS",
         "HAVAL",
         "JETOUR",
+        "Geely & Belgee",
         "CHANGAN"
       ]
     }
