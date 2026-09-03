@@ -600,6 +600,102 @@ function getKamAggregatedData(filterCfg) {
     });
     const activePct = assignedPartnersCount > 0 ? (legalEntitiesList.length / assignedPartnersCount * 100) : 0;
 
+    // 4.1 Build Rooftops (Город + Бренд) for the selected KAM (or all)
+    const rooftopsMap = {};
+    
+    // Seed from assigned partners & OEM data
+    registry.forEach(p => {
+        let pKam = normalizeKamName(p.kam);
+        if (activeMonth <= '2026-08' && pKam === 'Евгения Добролюбова') pKam = 'Андрей Кузнецов';
+        if (currentKamFilter !== 'all' && pKam !== normalizeKamName(currentKamFilter)) return;
+
+        const pid = p.partner_id;
+        const pname = p.canonical_name || `Партнер #${pid}`;
+        const oemData = p.oem_data || [];
+
+        if (oemData.length > 0) {
+            oemData.forEach(o => {
+                const city = (o.city || 'Город не указан').trim();
+                const brand = normalizeBrandName(o.brand || 'Другие');
+                const rkey = `${pid}__${city.toLowerCase()}__${brand.toLowerCase()}`;
+                if (!rooftopsMap[rkey]) {
+                    rooftopsMap[rkey] = {
+                        key: rkey,
+                        partner_id: pid,
+                        partner_name: pname,
+                        city: city,
+                        brand: brand,
+                        address: o.address || '',
+                        dealer_name: o.name || '',
+                        kam: pKam,
+                        deals_count: 0,
+                        mp_deals: 0,
+                        fdc_online_deals: 0
+                    };
+                }
+            });
+        }
+    });
+
+    // Process transactions from sys_db_partners (deals only) into rooftops
+    fPartners.forEach(r => {
+        if (r.Type !== 'Сделка') return;
+        const normKam = normalizeKamName(r.KAM);
+        if (currentKamFilter !== 'all' && normKam !== normalizeKamName(currentKamFilter)) return;
+
+        const pid = r.PartnerId || (matchDealerToPartner(r.Partner) ? matchDealerToPartner(r.Partner).id : null);
+        const pname = r.Partner || r.RawPartner || 'Неизвестный партнер';
+        const rawBrand = r.Brand || 'Другие';
+        const brand = normalizeBrandName(rawBrand);
+        const city = (r.City || 'Город не указан').trim();
+
+        let rkey = `${pid}__${city.toLowerCase()}__${brand.toLowerCase()}`;
+        if (!rooftopsMap[rkey]) {
+            let foundKey = null;
+            for (let k in rooftopsMap) {
+                if (rooftopsMap[k].partner_id === pid && rooftopsMap[k].brand.toLowerCase() === brand.toLowerCase()) {
+                    foundKey = k;
+                    break;
+                }
+            }
+            rkey = foundKey || rkey;
+        }
+
+        if (!rooftopsMap[rkey]) {
+            rooftopsMap[rkey] = {
+                key: rkey,
+                partner_id: pid,
+                partner_name: pname,
+                city: city,
+                brand: brand,
+                address: '',
+                dealer_name: '',
+                kam: normKam,
+                deals_count: 0,
+                mp_deals: 0,
+                fdc_online_deals: 0
+            };
+        }
+
+        const rt = rooftopsMap[rkey];
+        const qty = (r.Qty || 1);
+        rt.deals_count += qty;
+        const b2c = (r.B2C || '').toUpperCase();
+        if (r.IsMpSale === 1 || b2c.includes('МП1') || b2c.includes('МП2') || b2c.includes('МП3') || b2c.includes('MP')) {
+            rt.mp_deals += qty;
+        }
+        if (b2c.includes('ФДЦ') || b2c.includes('ONLINE') || b2c.includes('ОНЛАЙН')) {
+            rt.fdc_online_deals += qty;
+        }
+    });
+
+    const rooftopsList = Object.values(rooftopsMap);
+    rooftopsList.sort((a, b) => b.deals_count - a.deals_count || a.partner_name.localeCompare(b.partner_name));
+
+    const activeRooftops = rooftopsList.filter(rt => rt.deals_count > 0);
+    const sleepingRooftops = rooftopsList.filter(rt => rt.deals_count === 0);
+    const rooftopsActivePct = rooftopsList.length > 0 ? (activeRooftops.length / rooftopsList.length * 100) : 0;
+
     return {
         partners: filteredPartners,
         summary: {
@@ -618,7 +714,13 @@ function getKamAggregatedData(filterCfg) {
             total_assigned_partners: assignedPartnersCount,
             active_pct: activePct,
             assigned_master_partners: assignedMasterPartners,
-            legal_entities: legalEntitiesList
+            legal_entities: legalEntitiesList,
+            rooftops_count: activeRooftops.length,
+            total_assigned_rooftops: rooftopsList.length,
+            rooftops_active_pct: rooftopsActivePct,
+            rooftops: rooftopsList,
+            active_rooftops_count: activeRooftops.length,
+            sleeping_rooftops_count: sleepingRooftops.length
         }
     };
 }
@@ -723,17 +825,34 @@ function renderKamPlanHeader(s) {
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-                <!-- Item 4: Legal Entities with Deals Card -->
-                <div class="flex items-center gap-2.5 bg-white px-3 py-2 rounded-xl border border-indigo-200 shadow-sm cursor-pointer hover:bg-indigo-50/70 hover:border-indigo-400 transition" onclick="openKamLegalEntitiesModal()" title="Нажмите, чтобы посмотреть детализацию юридических лиц и активность базы">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
-                        🏢
+                <!-- Item 4: Legal Entities & Rooftops Card -->
+                <div class="bg-white px-3.5 py-2 rounded-xl border border-indigo-200 shadow-sm cursor-pointer hover:bg-indigo-50/70 hover:border-indigo-400 transition min-w-[280px]" onclick="openKamLegalEntitiesModal('rooftops')" title="Нажмите, чтобы посмотреть детализацию по крышам и юр. лицам">
+                    <div class="flex items-center justify-between gap-2 mb-1">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xs">🏢</span>
+                            <span class="text-[10px] font-black text-indigo-900 uppercase tracking-wider">Юр. лица и Крыши</span>
+                        </div>
+                        <span class="text-[10px] text-indigo-600 font-bold underline">детализация ➔</span>
                     </div>
-                    <div>
-                        <span class="text-[10px] font-bold text-indigo-700 uppercase tracking-wider block">Юр. лица / Активность</span>
-                        <div class="text-sm font-black text-gray-900 leading-none mt-0.5 flex items-center gap-1.5">
-                            <span><b class="text-indigo-900">${fmt(s.legal_entities_count || 0)}</b> <span class="text-gray-400 font-medium text-xs">из</span> <b class="text-gray-700">${fmt(s.total_assigned_partners || s.legal_entities_count)}</b></span>
-                            <span class="text-[10px] font-bold px-1.5 py-0.5 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-200">${(s.active_pct || 0).toFixed(0)}%</span>
-                            <span class="text-[11px] text-indigo-600 font-semibold underline ml-0.5">список ➔</span>
+                    <div class="flex items-center justify-between gap-2 text-xs">
+                        <div class="flex-1">
+                            <span class="text-[9px] font-bold text-gray-400 uppercase block leading-none">Юр. лица</span>
+                            <div class="font-black text-gray-900 flex items-center gap-1 mt-0.5">
+                                <span class="text-indigo-950 font-black text-xs">${fmt(s.legal_entities_count || 0)}</span>
+                                <span class="text-gray-400 text-[10px] font-normal">из ${fmt(s.total_assigned_partners || s.legal_entities_count)}</span>
+                                <span class="text-[9px] font-bold px-1 py-0.2 bg-indigo-50 text-indigo-700 rounded border border-indigo-200">${(s.active_pct || 0).toFixed(0)}%</span>
+                            </div>
+                            <span class="text-[9px] text-gray-500 block leading-tight mt-0.5">Сделок: <b class="text-gray-800">${fmt(s.total_deals || 0)}</b></span>
+                        </div>
+                        <div class="h-8 w-[1px] bg-indigo-100 shrink-0"></div>
+                        <div class="flex-1 pl-1">
+                            <span class="text-[9px] font-bold text-gray-400 uppercase block leading-none">Крыши (Город+Бренд)</span>
+                            <div class="font-black text-gray-900 flex items-center gap-1 mt-0.5">
+                                <span class="text-indigo-950 font-black text-xs">${fmt(s.rooftops_count || 0)}</span>
+                                <span class="text-gray-400 text-[10px] font-normal">из ${fmt(s.total_assigned_rooftops || s.rooftops_count)}</span>
+                                <span class="text-[9px] font-bold px-1 py-0.2 bg-purple-50 text-purple-700 rounded border border-purple-200">${(s.rooftops_active_pct || 0).toFixed(0)}%</span>
+                            </div>
+                            <span class="text-[9px] text-gray-500 block leading-tight mt-0.5">Сделок: <b class="text-gray-800">${fmt(s.total_deals || 0)}</b></span>
                         </div>
                     </div>
                 </div>
@@ -1086,18 +1205,25 @@ function exportKamReportToExcel() {
 
 // ================= ITEM 4: LEGAL ENTITIES MODAL =================
 let currentKamLegalEntities = [];
+let currentKamRooftops = [];
+let kamModalActiveTab = 'rooftops'; // 'rooftops' | 'legal_entities'
+let kamModalStatusFilter = 'all'; // 'all' | 'active' | 'sleeping'
 let kamLegalEntitiesSearchQuery = '';
 
-function openKamLegalEntitiesModal() {
+function openKamLegalEntitiesModal(defaultTab = 'rooftops') {
+    kamModalActiveTab = defaultTab;
+    kamModalStatusFilter = 'all';
+    kamLegalEntitiesSearchQuery = '';
+
     const agg = getKamAggregatedData(currentFilterConfig);
     currentKamLegalEntities = agg.summary.legal_entities || [];
-    kamLegalEntitiesSearchQuery = '';
+    currentKamRooftops = agg.summary.rooftops || [];
 
     let modal = document.getElementById('kamLegalEntitiesModal');
     if (!modal) {
         modal = document.createElement('div');
         modal.id = 'kamLegalEntitiesModal';
-        modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4';
+        modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 sm:p-4';
         document.body.appendChild(modal);
     }
     modal.classList.remove('hidden');
@@ -1107,6 +1233,16 @@ function openKamLegalEntitiesModal() {
 function closeKamLegalEntitiesModal() {
     const modal = document.getElementById('kamLegalEntitiesModal');
     if (modal) modal.classList.add('hidden');
+}
+
+function setKamModalTab(tab) {
+    kamModalActiveTab = tab;
+    renderKamLegalEntitiesModalContent();
+}
+
+function setKamModalStatusFilter(status) {
+    kamModalStatusFilter = status;
+    renderKamLegalEntitiesModalTable();
 }
 
 function onKamLegalEntitiesSearch(val) {
@@ -1121,43 +1257,78 @@ function renderKamLegalEntitiesModalContent() {
     const kamName = currentKamFilter === 'all' ? 'Все КАМ-менеджеры' : currentKamFilter;
     const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
 
+    const totalDeals = currentKamRooftops.reduce((s, x) => s + (x.deals_count || 0), 0);
+    const activeRooftopsCount = currentKamRooftops.filter(r => r.deals_count > 0).length;
+    const activeLeCount = currentKamLegalEntities.filter(l => l.total_deals > 0).length;
+
     modal.innerHTML = `
-    <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 w-full max-w-6xl max-h-[92vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         <!-- Header -->
-        <div class="p-4 sm:p-5 border-b border-gray-200 bg-slate-900 text-white flex items-center justify-between">
+        <div class="p-4 sm:p-5 border-b border-gray-200 bg-slate-900 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-indigo-500 text-white flex items-center justify-center font-bold text-lg shadow-md">
+                <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-md shrink-0">
                     🏢
                 </div>
                 <div>
                     <h3 class="text-base font-bold flex items-center gap-2">
-                        <span>Юридические лица со сделками</span>
+                        <span>Детализация: Юр. лица и Крыши</span>
                         <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-400/30 text-indigo-200 border border-indigo-400/40">
                             ${kamName}
                         </span>
                     </h3>
                     <p class="text-xs text-slate-300 mt-0.5">
-                        Всего найдено: <b>${fmt(currentKamLegalEntities.length)}</b> компаний | Сделок: <b>${fmt(currentKamLegalEntities.reduce((s, x) => s + x.total_deals, 0))}</b>
+                        Юр. лиц: <b>${activeLeCount} из ${currentKamLegalEntities.length}</b> | 
+                        Крыш (Город+Бренд): <b>${activeRooftopsCount} из ${currentKamRooftops.length}</b> | 
+                        Сделок: <b class="text-emerald-300">${fmt(totalDeals)}</b>
                     </p>
                 </div>
             </div>
-            <button onclick="closeKamLegalEntitiesModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-lg font-bold transition">
+            <button onclick="closeKamLegalEntitiesModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-lg font-bold transition self-end sm:self-auto">
                 ✕
             </button>
         </div>
 
+        <!-- Mode Tabs & Controls Bar -->
+        <div class="p-3 sm:px-5 bg-slate-50 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3">
+            <!-- Mode Switcher -->
+            <div class="flex items-center bg-gray-200/80 p-1 rounded-xl shadow-inner gap-1">
+                <button onclick="setKamModalTab('rooftops')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${kamModalActiveTab === 'rooftops' ? 'bg-white text-indigo-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
+                    <span>🏷️ Крыши (Город + Бренд)</span>
+                    <span class="px-1.5 py-0.2 rounded-full text-[10px] ${kamModalActiveTab === 'rooftops' ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-300/80 text-gray-700'}">${currentKamRooftops.length}</span>
+                </button>
+                <button onclick="setKamModalTab('legal_entities')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${kamModalActiveTab === 'legal_entities' ? 'bg-white text-indigo-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'}">
+                    <span>🏢 Юридические лица</span>
+                    <span class="px-1.5 py-0.2 rounded-full text-[10px] ${kamModalActiveTab === 'legal_entities' ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-300/80 text-gray-700'}">${currentKamLegalEntities.length}</span>
+                </button>
+            </div>
+
+            <!-- Status Filter Pills -->
+            <div class="flex items-center gap-1 text-xs">
+                <button onclick="setKamModalStatusFilter('all')" class="px-2.5 py-1 rounded-lg font-semibold border transition ${kamModalStatusFilter === 'all' ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-gray-600 border-gray-300 hover:bg-gray-100'}">
+                    Все
+                </button>
+                <button onclick="setKamModalStatusFilter('active')" class="px-2.5 py-1 rounded-lg font-semibold border transition flex items-center gap-1 ${kamModalStatusFilter === 'active' ? 'bg-emerald-700 text-white border-emerald-700' : 'bg-white text-emerald-700 border-emerald-300 hover:bg-emerald-50'}">
+                    <span>🟢 Со сделками</span>
+                </button>
+                <button onclick="setKamModalStatusFilter('sleeping')" class="px-2.5 py-1 rounded-lg font-semibold border transition flex items-center gap-1 ${kamModalStatusFilter === 'sleeping' ? 'bg-amber-700 text-white border-amber-700' : 'bg-white text-amber-700 border-amber-300 hover:bg-amber-50'}">
+                    <span>💤 Спящие (0 сделок)</span>
+                </button>
+            </div>
+        </div>
+
         <!-- Search Bar -->
-        <div class="p-4 bg-slate-50 border-b border-gray-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div class="px-4 py-2.5 bg-white border-b border-gray-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <div class="relative flex-1">
                 <input type="text" 
                     id="searchKamLegalEntitiesInput"
-                    placeholder="Поиск по юрлицу, ИНН, Master Partner, городу или бренду..."
-                    class="w-full bg-white border border-gray-300 rounded-xl pl-9 pr-4 py-2 text-xs font-semibold text-gray-800 placeholder-gray-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition shadow-sm"
+                    placeholder="${kamModalActiveTab === 'rooftops' ? 'Поиск по партнеру, городу или бренду крыши...' : 'Поиск по юрлицу, ИНН, Master Partner, городу или бренду...'}"
+                    value="${kamLegalEntitiesSearchQuery}"
+                    class="w-full bg-slate-50 border border-gray-200 rounded-xl pl-9 pr-4 py-1.5 text-xs font-semibold text-gray-800 placeholder-gray-400 outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition shadow-sm"
                     oninput="onKamLegalEntitiesSearch(this.value)">
-                <span class="absolute left-3 top-2.5 text-gray-400 text-xs">🔍</span>
+                <span class="absolute left-3 top-2 text-gray-400 text-xs">🔍</span>
             </div>
-            <div class="text-xs font-semibold text-gray-500 text-right shrink-0">
-                За выбранный период: <b>${(window.currentFilterConfig && window.currentFilterConfig.month) === 'all' ? 'Все месяцы' : (window.currentFilterConfig && window.currentFilterConfig.month) || 'Август 2026'}</b>
+            <div class="text-[11px] font-semibold text-gray-500 text-right shrink-0">
+                Период: <b>${(window.currentFilterConfig && window.currentFilterConfig.month) === 'all' ? 'Все месяцы' : (window.currentFilterConfig && window.currentFilterConfig.month) || 'Август 2026'}</b>
             </div>
         </div>
 
@@ -1168,7 +1339,7 @@ function renderKamLegalEntitiesModalContent() {
 
         <!-- Footer -->
         <div class="p-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
-            <span>💡 Список сформирован на основе сделок CRM и реестра Master Partners</span>
+            <span>💡 1 крыша = 1 бренд в 1 городе (Rooftop). Показывает фактическое распределение продаж и утилизацию дилерской сети.</span>
             <button onclick="closeKamLegalEntitiesModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold transition shadow-sm">
                 Закрыть
             </button>
@@ -1186,77 +1357,160 @@ function renderKamLegalEntitiesModalTable() {
     const q = kamLegalEntitiesSearchQuery;
     const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
 
-    const filtered = currentKamLegalEntities.filter(le => {
-        if (!q) return true;
-        const mName = (le.name || '').toLowerCase().includes(q);
-        const mPartner = (le.canonical_partner || '').toLowerCase().includes(q);
-        const mInn = (le.inn || '').toLowerCase().includes(q);
-        const mKam = (le.kam || '').toLowerCase().includes(q);
-        const mCity = Array.from(le.cities || []).some(c => c.toLowerCase().includes(q));
-        const mBrand = Array.from(le.brands || []).some(b => b.toLowerCase().includes(q));
-        return mName || mPartner || mInn || mKam || mCity || mBrand;
-    });
+    if (kamModalActiveTab === 'rooftops') {
+        // Render Rooftops Table
+        let filtered = currentKamRooftops.filter(rt => {
+            if (kamModalStatusFilter === 'active' && rt.deals_count === 0) return false;
+            if (kamModalStatusFilter === 'sleeping' && rt.deals_count > 0) return false;
 
-    if (filtered.length === 0) {
-        cont.innerHTML = `
-        <div class="text-center py-12 text-gray-400">
-            <div class="text-3xl mb-2">🔍</div>
-            <p class="font-bold text-sm">Юридические лица не найдены</p>
-            <p class="text-xs text-gray-400 mt-1">Попробуйте изменить поисковый запрос</p>
-        </div>`;
-        return;
-    }
+            if (!q) return true;
+            const mPartner = (rt.partner_name || '').toLowerCase().includes(q);
+            const mCity = (rt.city || '').toLowerCase().includes(q);
+            const mBrand = (rt.brand || '').toLowerCase().includes(q);
+            const mAddress = (rt.address || '').toLowerCase().includes(q);
+            return mPartner || mCity || mBrand || mAddress;
+        });
 
-    let html = `
-    <table class="min-w-full text-xs">
-        <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 border-b border-slate-200">
-            <tr>
-                <th class="py-2.5 px-3 text-left w-10">#</th>
-                <th class="py-2.5 px-3 text-left min-w-[220px]">Юридическое лицо / Название</th>
-                <th class="py-2.5 px-3 text-center w-28">ИНН</th>
-                <th class="py-2.5 px-3 text-left min-w-[180px]">Master Partner</th>
-                <th class="py-2.5 px-3 text-center w-32">КАМ</th>
-                <th class="py-2.5 px-3 text-center w-20">Сделки МП</th>
-                <th class="py-2.5 px-3 text-center w-24">ФДЦ/Онлайн</th>
-                <th class="py-2.5 px-3 text-center w-24">Всего сделок</th>
-                <th class="py-2.5 px-3 text-left min-w-[160px]">Города / Бренды</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-    `;
+        if (filtered.length === 0) {
+            cont.innerHTML = `
+            <div class="text-center py-12 text-gray-400">
+                <div class="text-3xl mb-2">🏷️</div>
+                <p class="font-bold text-sm">Крыши не найдены</p>
+                <p class="text-xs text-gray-400 mt-1">Попробуйте изменить поисковый запрос или фильтр статуса</p>
+            </div>`;
+            return;
+        }
 
-    filtered.forEach((le, idx) => {
-        const citiesStr = Array.from(le.cities || []).slice(0, 2).join(', ') + (le.cities.size > 2 ? ` (+${le.cities.size - 2})` : '');
-        const brandsStr = Array.from(le.brands || []).slice(0, 3).join(', ') + (le.brands.size > 3 ? ` (+${le.brands.size - 3})` : '');
-
-        html += `
-        <tr class="hover:bg-indigo-50/40 transition font-medium">
-            <td class="py-2 px-3 text-gray-400 font-mono">${idx + 1}</td>
-            <td class="py-2 px-3 font-bold text-gray-900">
-                <div class="truncate max-w-[280px]" title="${le.name}">${le.name}</div>
-            </td>
-            <td class="py-2 px-3 text-center font-mono font-semibold text-gray-600">
-                ${le.inn ? `<span class="px-2 py-0.5 bg-gray-100 rounded text-[11px] border border-gray-200 font-mono font-bold">${le.inn}</span>` : '<span class="text-gray-300">—</span>'}
-            </td>
-            <td class="py-2 px-3 text-gray-800">
-                <div class="flex items-center gap-1">
-                    ${le.partner_id ? `<span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">ID:${le.partner_id}</span>` : ''}
-                    <span class="font-semibold truncate max-w-[200px]" title="${le.canonical_partner}">${le.canonical_partner}</span>
-                </div>
-            </td>
-            <td class="py-2 px-3 text-center text-gray-600 font-medium">${le.kam || '—'}</td>
-            <td class="py-2 px-3 text-center font-bold text-amber-700">${fmt(le.mp_deals)}</td>
-            <td class="py-2 px-3 text-center font-bold text-sky-700">${fmt(le.fdc_online_deals)}</td>
-            <td class="py-2 px-3 text-center font-black text-blue-700 bg-blue-50/50 text-sm">${fmt(le.total_deals)}</td>
-            <td class="py-2 px-3 text-gray-500 text-[11px]">
-                <div>🏙️ ${citiesStr || '—'}</div>
-                <div class="text-[10px] text-gray-400">🏷️ ${brandsStr || '—'}</div>
-            </td>
-        </tr>
+        let html = `
+        <table class="min-w-full text-xs">
+            <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 border-b border-slate-200 shadow-sm">
+                <tr>
+                    <th class="py-2.5 px-3 text-left w-10">#</th>
+                    <th class="py-2.5 px-3 text-left min-w-[200px]">Партнер / Холдинг</th>
+                    <th class="py-2.5 px-3 text-left min-w-[140px]">Город</th>
+                    <th class="py-2.5 px-3 text-left min-w-[150px]">Бренд (Крыша)</th>
+                    <th class="py-2.5 px-3 text-center w-28">Статус крыши</th>
+                    <th class="py-2.5 px-3 text-center w-20">Сделки МП</th>
+                    <th class="py-2.5 px-3 text-center w-24">ФДЦ / Онлайн</th>
+                    <th class="py-2.5 px-3 text-center w-24">Всего сделок</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
         `;
-    });
 
-    html += `</tbody></table>`;
-    cont.innerHTML = html;
+        filtered.forEach((rt, idx) => {
+            const isActive = rt.deals_count > 0;
+            html += `
+            <tr class="hover:bg-indigo-50/40 transition font-medium ${isActive ? 'bg-white' : 'bg-gray-50/50 text-gray-400'}">
+                <td class="py-2 px-3 text-gray-400 font-mono">${idx + 1}</td>
+                <td class="py-2 px-3 font-bold text-gray-900">
+                    <div class="flex items-center gap-1.5">
+                        ${rt.partner_id ? `<span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">ID:${rt.partner_id}</span>` : ''}
+                        <span class="truncate max-w-[240px]" title="${rt.partner_name}">${rt.partner_name}</span>
+                    </div>
+                </td>
+                <td class="py-2 px-3 font-semibold text-gray-700">
+                    <div class="flex items-center gap-1">
+                        <span class="text-xs">📍</span>
+                        <span class="truncate max-w-[150px]" title="${rt.city}">${rt.city}</span>
+                    </div>
+                </td>
+                <td class="py-2 px-3">
+                    <span class="px-2 py-0.5 rounded font-bold text-[11px] bg-slate-100 text-slate-800 border border-slate-200">
+                        🏷️ ${rt.brand}
+                    </span>
+                </td>
+                <td class="py-2 px-3 text-center">
+                    ${isActive 
+                        ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Активна</span>' 
+                        : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">💤 Спит (0)</span>'}
+                </td>
+                <td class="py-2 px-3 text-center font-bold ${isActive ? 'text-amber-700' : 'text-gray-300'}">${fmt(rt.mp_deals)}</td>
+                <td class="py-2 px-3 text-center font-bold ${isActive ? 'text-sky-700' : 'text-gray-300'}">${fmt(rt.fdc_online_deals)}</td>
+                <td class="py-2 px-3 text-center font-black ${isActive ? 'text-indigo-900 bg-indigo-50/60 text-sm' : 'text-gray-300'}">${fmt(rt.deals_count)}</td>
+            </tr>
+            `;
+        });
+
+        html += `</tbody></table>`;
+        cont.innerHTML = html;
+
+    } else {
+        // Render Legal Entities Table
+        let filtered = currentKamLegalEntities.filter(le => {
+            if (kamModalStatusFilter === 'active' && le.total_deals === 0) return false;
+            if (kamModalStatusFilter === 'sleeping' && le.total_deals > 0) return false;
+
+            if (!q) return true;
+            const mName = (le.name || '').toLowerCase().includes(q);
+            const mPartner = (le.canonical_partner || '').toLowerCase().includes(q);
+            const mInn = (le.inn || '').toLowerCase().includes(q);
+            const mKam = (le.kam || '').toLowerCase().includes(q);
+            const mCity = Array.from(le.cities || []).some(c => c.toLowerCase().includes(q));
+            const mBrand = Array.from(le.brands || []).some(b => b.toLowerCase().includes(q));
+            return mName || mPartner || mInn || mKam || mCity || mBrand;
+        });
+
+        if (filtered.length === 0) {
+            cont.innerHTML = `
+            <div class="text-center py-12 text-gray-400">
+                <div class="text-3xl mb-2">🔍</div>
+                <p class="font-bold text-sm">Юридические лица не найдены</p>
+                <p class="text-xs text-gray-400 mt-1">Попробуйте изменить поисковый запрос</p>
+            </div>`;
+            return;
+        }
+
+        let html = `
+        <table class="min-w-full text-xs">
+            <thead class="bg-slate-100 text-slate-700 font-bold sticky top-0 border-b border-slate-200">
+                <tr>
+                    <th class="py-2.5 px-3 text-left w-10">#</th>
+                    <th class="py-2.5 px-3 text-left min-w-[220px]">Юридическое лицо / Название</th>
+                    <th class="py-2.5 px-3 text-center w-28">ИНН</th>
+                    <th class="py-2.5 px-3 text-left min-w-[180px]">Master Partner</th>
+                    <th class="py-2.5 px-3 text-center w-32">КАМ</th>
+                    <th class="py-2.5 px-3 text-center w-20">Сделки МП</th>
+                    <th class="py-2.5 px-3 text-center w-24">ФДЦ/Онлайн</th>
+                    <th class="py-2.5 px-3 text-center w-24">Всего сделок</th>
+                    <th class="py-2.5 px-3 text-left min-w-[160px]">Города / Бренды</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+        `;
+
+        filtered.forEach((le, idx) => {
+            const citiesStr = Array.from(le.cities || []).slice(0, 2).join(', ') + (le.cities.size > 2 ? ` (+${le.cities.size - 2})` : '');
+            const brandsStr = Array.from(le.brands || []).slice(0, 3).join(', ') + (le.brands.size > 3 ? ` (+${le.brands.size - 3})` : '');
+
+            html += `
+            <tr class="hover:bg-indigo-50/40 transition font-medium">
+                <td class="py-2 px-3 text-gray-400 font-mono">${idx + 1}</td>
+                <td class="py-2 px-3 font-bold text-gray-900">
+                    <div class="truncate max-w-[280px]" title="${le.name}">${le.name}</div>
+                </td>
+                <td class="py-2 px-3 text-center font-mono font-semibold text-gray-600">
+                    ${le.inn ? `<span class="px-2 py-0.5 bg-gray-100 rounded text-[11px] border border-gray-200 font-mono font-bold">${le.inn}</span>` : '<span class="text-gray-300">—</span>'}
+                </td>
+                <td class="py-2 px-3 text-gray-800">
+                    <div class="flex items-center gap-1">
+                        ${le.partner_id ? `<span class="px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">ID:${le.partner_id}</span>` : ''}
+                        <span class="font-semibold truncate max-w-[200px]" title="${le.canonical_partner}">${le.canonical_partner}</span>
+                    </div>
+                </td>
+                <td class="py-2 px-3 text-center text-gray-600 font-medium">${le.kam || '—'}</td>
+                <td class="py-2 px-3 text-center font-bold text-amber-700">${fmt(le.mp_deals)}</td>
+                <td class="py-2 px-3 text-center font-bold text-sky-700">${fmt(le.fdc_online_deals)}</td>
+                <td class="py-2 px-3 text-center font-black text-blue-700 bg-blue-50/50 text-sm">${fmt(le.total_deals)}</td>
+                <td class="py-2 px-3 text-gray-500">
+                    <div class="truncate max-w-[180px]" title="${citiesStr}">${citiesStr || '—'}</div>
+                    <div class="text-[10px] text-gray-400 truncate max-w-[180px]" title="${brandsStr}">${brandsStr || '—'}</div>
+                </td>
+            </tr>
+            `;
+        });
+
+        html += `</tbody></table>`;
+        cont.innerHTML = html;
+    }
 }
-
