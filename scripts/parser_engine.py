@@ -1743,7 +1743,20 @@ def run_pipeline():
     discount_analytics = calculate_discount_analytics(deals_data)
     lead_geo_dealers = calculate_lead_geo_dealers_analytics(all_leads_data, deals_data)
 
+    total_sales = sum(r['SaleQty'] for r in sys_db)
+    total_prepays = sum(r['PrepayQty'] for r in sys_db)
+    total_revenue = sum(r['Revenue'] for r in sys_db)
+    now_iso = datetime.datetime.now().strftime("%d.%m.%Y %H:%M")
+
     output_payload = {
+        "metadata": {
+            "updated_at": now_iso,
+            "total_sales": total_sales,
+            "total_revenue": total_revenue,
+            "total_prepays": total_prepays,
+            "latest_deal_file": latest_deal_file,
+            "latest_leads_file": leads_file_name if 'leads_file_name' in locals() else ""
+        },
         "sys_db": sys_db,
         "sys_db_partners": sys_db_partners,
         "funnel_metrics": funnel_metrics,
@@ -1761,14 +1774,10 @@ def run_pipeline():
     # 6. Save JSON and sync HTML assets to site/
     os.makedirs(SITE_DIR, exist_ok=True)
     with open(OUTPUT_JSON_SITE, 'w', encoding='utf-8') as f:
-        json.dump(output_payload, f, ensure_ascii=False, indent=2)
+        json.dump(output_payload, f, ensure_ascii=False, separators=(',', ':'))
 
     with open(OUTPUT_JSON_ROOT, 'w', encoding='utf-8') as f:
-        json.dump(output_payload, f, ensure_ascii=False, indent=2)
-
-    total_sales = sum(r['SaleQty'] for r in sys_db)
-    total_prepays = sum(r['PrepayQty'] for r in sys_db)
-    total_revenue = sum(r['Revenue'] for r in sys_db)
+        json.dump(output_payload, f, ensure_ascii=False, separators=(',', ':'))
 
     print("-" * 60)
     print(f"✅ ПАРСИНГ УСПЕШНО ЗАВЕРШЕН!")

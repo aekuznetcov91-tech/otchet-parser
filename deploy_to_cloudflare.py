@@ -108,6 +108,9 @@ def sync_and_push_git(commit_message=None):
                 if len(changes.splitlines()) > 10:
                     print(f"    ... i esche {len(changes.splitlines()) - 10} faylov")
                 
+                # Always rebase latest remote commits before committing to prevent push rejects
+                subprocess.run(["git", "pull", "--rebase", "origin", "main"], capture_output=True)
+                
                 subprocess.run(["git", "add", "raw_data/", "data.json", "site/", "scripts/", "js/", "css/", "docs/", "README.md", "deploy_to_cloudflare.py", "partners_registry.json", "russia_dealer_benchmarks.json", "data/", ".geminirules", ".cursorrules", ".windsurfrules", "AGENTS.md"], capture_output=True)
                 
                 msg = commit_message or "data(deploy): auto-sync data and assets with Cloudflare deployment"

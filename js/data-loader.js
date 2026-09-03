@@ -30,11 +30,35 @@ async function loadData() {
                 Object.assign(funnelRawData, data.brand_funnel);
             }
         }
+        updateDataFreshnessBadge(data.metadata);
         initDropdown();
         if (typeof initFunnelMonths === 'function') initFunnelMonths();
     } catch (error) {
         console.error("Ошибка загрузки data.json:", error);
         showToast("Ошибка загрузки data.json: " + error.message, 'error', 5000);
+    }
+}
+
+function updateDataFreshnessBadge(meta) {
+    const badge = document.getElementById('dataFreshnessBadge');
+    const txt = document.getElementById('dataFreshnessText');
+    const sub = document.getElementById('dataFreshnessSub');
+    if (!badge || !txt) return;
+
+    if (!meta || !meta.updated_at) {
+        txt.innerText = 'Данные загружены';
+        if (sub) sub.innerText = 'База сделок и воронки активна';
+        return;
+    }
+
+    const updatedAt = meta.updated_at;
+    const dealsCnt = meta.total_sales ? fmtNum(meta.total_sales) : '0';
+    const revM = meta.total_revenue ? (meta.total_revenue / 1000000).toFixed(1) + 'M ₽' : '';
+    const file = meta.latest_deal_file || '';
+
+    txt.innerText = `Актуально на ${updatedAt}`;
+    if (sub) {
+        sub.innerText = `База: ${dealsCnt} сделок • ${revM} выручки • Источник: ${file}`;
     }
 }
 

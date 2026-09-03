@@ -13,6 +13,26 @@ function getDebtorChannelBadge(b2c) {
     return `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-700 border border-gray-200">${ch}</span>`;
 }
 
+function getDebtorAgingBadge(prepayDateStr) {
+    if (!prepayDateStr || prepayDateStr === '—') return '';
+    try {
+        const parts = prepayDateStr.split('.');
+        if (parts.length === 3) {
+            const pDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+            const now = new Date();
+            const diffDays = Math.floor((now - pDate) / (1000 * 60 * 60 * 24));
+            if (diffDays > 14) {
+                return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300 shadow-xs" title="Просрочка более 14 дней">${diffDays} дн.</span>`;
+            } else if (diffDays >= 7) {
+                return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 shadow-xs" title="Просрочка от 7 до 14 дней">${diffDays} дн.</span>`;
+            } else if (diffDays >= 0) {
+                return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">${diffDays} дн.</span>`;
+            }
+        }
+    } catch(e) {}
+    return '';
+}
+
 function getFilteredDebtors(filterCfg) {
     const cfg = filterCfg || currentFilterConfig;
     return rawDebtorsList.filter(d => {
@@ -123,7 +143,7 @@ function renderDebtorsTable(filterCfg) {
                 </td>`;
             }
             html += `
-                <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}</td>
+                <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}${getDebtorAgingBadge(car.prepay_date)}</td>
                 <td>${getDebtorChannelBadge(car.b2c)}</td>
                 <td class="font-bold text-blue-900">${car.brand}</td>
                 <td class="text-slate-700 font-medium">${car.model || car.brand}</td>
