@@ -1634,7 +1634,9 @@ def run_pipeline():
                     kam_partner = "Светлана Дариенко"
                 else:
                     kam_partner = "Валерия Солдатова"
-            elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'авторитэйл']):
+            elif 'олимп' in p_lower or 'темп авто кубань' in p_lower:
+                kam_partner = "Андрей Кузнецов"
+            elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']):
                 kam_partner = "Валерия Солдатова"
 
             # Portfolio handover rule: in August 2026 and earlier, deals of Dobrolyubova's portfolio are attributed to Kuznetsov
@@ -1793,7 +1795,9 @@ def run_pipeline():
                     kam = "Светлана Дариенко"
                 else:
                     kam = "Валерия Солдатова"
-            elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'авторитэйл']):
+            elif 'олимп' in p_lower or 'темп авто кубань' in p_lower:
+                kam = "Андрей Кузнецов"
+            elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']):
                 kam = "Валерия Солдатова"
 
             if kam == "Евгения Добролюбова" and (lead_month_str <= "2026-08" or not lead_month_str):
