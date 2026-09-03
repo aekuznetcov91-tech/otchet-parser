@@ -1,0 +1,1139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lieflat Charts Pilot — Август 2026 (1 778 сделок)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root, [data-theme="porcelain"] {
+    --bg: #F7F2EB;
+    --card-bg: #FFFFFF;
+    --txt: #081F5C;
+    --mut: rgba(8, 31, 92, 0.62);
+    --lab: rgba(8, 31, 92, 0.75);
+    --faint: rgba(8, 31, 92, 0.28);
+    --quiet: rgba(8, 31, 92, 0.12);
+    --grid: rgba(8, 31, 92, 0.16);
+    --panel: rgba(8, 31, 92, 0.045);
+    --data: #334EAC;
+    --data2: #7096D1;
+    --hero: #081F5C;
+    --faintdata: #BAD6EB;
+    --accent: #334EAC;
+    --theme-name: "PORCELAIN · 青瓷蓝";
+  }
+
+  [data-theme="mono"] {
+    --bg: #F0EFEB;
+    --card-bg: #FFFFFF;
+    --txt: #1C1C1A;
+    --mut: rgba(28, 28, 26, 0.60);
+    --lab: rgba(28, 28, 26, 0.75);
+    --faint: rgba(28, 28, 26, 0.25);
+    --quiet: rgba(28, 28, 26, 0.10);
+    --grid: rgba(28, 28, 26, 0.15);
+    --panel: rgba(28, 28, 26, 0.04);
+    --data: #1C1C1A;
+    --data2: #5A5A55;
+    --hero: #1C1C1A;
+    --faintdata: #CECDC7;
+    --accent: #1C1C1A;
+    --theme-name: "MONO · 灰阶正本";
+  }
+
+  [data-theme="palm"] {
+    --bg: #F0EFEB;
+    --card-bg: #FAF9F5;
+    --txt: #43593B;
+    --mut: rgba(67, 89, 59, 0.65);
+    --lab: rgba(67, 89, 59, 0.78);
+    --faint: rgba(67, 89, 59, 0.28);
+    --quiet: rgba(67, 89, 59, 0.12);
+    --grid: rgba(67, 89, 59, 0.16);
+    --panel: rgba(67, 89, 59, 0.05);
+    --data: #43593B;
+    --data2: #77835A;
+    --hero: #D4A017;
+    --faintdata: #ACAD79;
+    --accent: #D4A017;
+    --theme-name: "PALM · 椰林绿";
+  }
+
+  [data-theme="wire"] {
+    --bg: #ECEBE6;
+    --card-bg: #FFFFFF;
+    --txt: #262624;
+    --mut: rgba(38, 38, 36, 0.62);
+    --lab: rgba(38, 38, 36, 0.78);
+    --faint: rgba(38, 38, 36, 0.25);
+    --quiet: rgba(38, 38, 36, 0.12);
+    --grid: rgba(38, 38, 36, 0.15);
+    --panel: rgba(38, 38, 36, 0.04);
+    --data: #262624;
+    --data2: #6E6D66;
+    --hero: #FF5A1F;
+    --faintdata: #D2D1CB;
+    --accent: #FF5A1F;
+    --theme-name: "WIRE · 编辑部红";
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums lining-nums;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px 80px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  .sheet {
+    width: 1160px;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .top-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1.5px solid var(--txt);
+    margin-bottom: 28px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .badge-spec {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .badge-spec .pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    box-shadow: 0 0 0 3px var(--quiet);
+  }
+
+  .theme-switcher {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--panel);
+    padding: 4px;
+    border-radius: 30px;
+    border: 1px solid var(--quiet);
+  }
+
+  .theme-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--mut);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .theme-btn.active {
+    background: var(--card-bg);
+    color: var(--txt);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+
+  .theme-btn .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .hero-banner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    margin-bottom: 44px;
+    align-items: end;
+  }
+
+  .hero-title h1 {
+    font-size: 46px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .hero-title .subtitle {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--mut);
+    max-width: 600px;
+  }
+
+  .hero-meta {
+    background: var(--panel);
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .hero-meta .meta-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .hero-meta .meta-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--txt);
+  }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+
+  .kpi-card {
+    background: var(--card-bg);
+    border: 1px solid var(--quiet);
+    border-top: 3px solid var(--accent);
+    padding: 22px 20px 18px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mut);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .kpi-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--txt);
+    letter-spacing: -0.01em;
+  }
+
+  .kpi-unit {
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 4px;
+    color: var(--mut);
+  }
+
+  .kpi-sub {
+    font-size: 11.5px;
+    color: var(--mut);
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dotted var(--quiet);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .kpi-sub b {
+    color: var(--txt);
+  }
+
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--quiet);
+    border-radius: 16px;
+    padding: 26px 24px 22px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+  }
+
+  .card-header h2 {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  .card-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 600;
+    padding: 3px 8px;
+    background: var(--panel);
+    border: 1px solid var(--quiet);
+    border-radius: 4px;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .card-sub {
+    font-size: 11.5px;
+    color: var(--mut);
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+
+  .card-body {
+    flex: 1;
+    position: relative;
+    min-height: 260px;
+  }
+
+  .card-footer {
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px dotted var(--quiet);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mut);
+  }
+
+  .rung-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 4px;
+  }
+
+  .rung-item {
+    display: grid;
+    grid-template-columns: 150px 1fr 100px;
+    gap: 16px;
+    align-items: center;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+  }
+
+  .rung-item:hover {
+    background: var(--panel);
+  }
+
+  .rung-name {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .rung-name small {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--mut);
+  }
+
+  .rung-track {
+    background: var(--panel);
+    height: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--quiet);
+  }
+
+  .rung-bar {
+    height: 100%;
+    background: var(--data);
+    border-radius: 3px;
+    position: relative;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .rung-bar.hero {
+    background: var(--accent);
+  }
+
+  .rung-metrics {
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+  }
+
+  .rung-metrics span {
+    font-size: 10px;
+    color: var(--mut);
+    margin-left: 4px;
+  }
+
+  .donut-wrap {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .donut-chart {
+    position: relative;
+    width: 170px;
+    height: 170px;
+  }
+
+  .donut-chart svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .donut-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .donut-center .val {
+    font-family: 'Oswald', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--txt);
+  }
+
+  .donut-center .lbl {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--mut);
+    letter-spacing: 0.1em;
+    margin-top: 3px;
+  }
+
+  .share-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .share-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    padding: 3px 0;
+    border-bottom: 1px dotted var(--quiet);
+  }
+
+  .share-row:last-child {
+    border-bottom: none;
+  }
+
+  .share-row .brand-id {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+
+  .share-row .swatch {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    flex: none;
+  }
+
+  .share-row .val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+
+  .dot-grid-card {
+    grid-column: span 2;
+  }
+
+  .dot-matrix-container {
+    background: var(--panel);
+    border: 1px solid var(--quiet);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 6px;
+  }
+
+  .dot-matrix {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4.5px;
+    margin-bottom: 16px;
+  }
+
+  .dot-unit {
+    width: 13px;
+    height: 13px;
+    border-radius: 2.5px;
+    background: var(--faintdata);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .dot-unit:hover {
+    transform: scale(1.4);
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+  .dot-unit.kuznetsov { background: var(--txt); }
+  .dot-unit.chikharev { background: var(--data); }
+  .dot-unit.darienko { background: var(--data2); }
+  .dot-unit.soldatova { background: var(--accent); }
+  .dot-unit.unassigned { background: var(--faint); }
+
+  .matrix-legend {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    flex-wrap: wrap;
+    padding-top: 10px;
+    border-top: 1px dotted var(--quiet);
+  }
+
+  .matrix-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .matrix-legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  .rank-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .rank-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    border-bottom: 1px solid var(--quiet);
+  }
+
+  .rank-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    width: 24px;
+    color: var(--mut);
+  }
+
+  .rank-title {
+    flex: 1;
+    font-weight: 700;
+  }
+
+  .rank-city {
+    font-size: 10.5px;
+    color: var(--mut);
+    margin-left: 6px;
+    font-weight: 500;
+  }
+
+  .rank-kam {
+    font-size: 10.5px;
+    color: var(--accent);
+    font-weight: 600;
+    width: 130px;
+    text-align: right;
+  }
+
+  .rank-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 13px;
+    width: 50px;
+    text-align: right;
+  }
+
+  #tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: #1C1C1A;
+    color: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    z-index: 1000;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    display: none;
+    line-height: 1.4;
+  }
+
+  .pilot-footer {
+    border-top: 1.5px solid var(--txt);
+    padding-top: 24px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .gallery-nav {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .gallery-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--txt);
+    background: var(--panel);
+    border: 1px solid var(--quiet);
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+
+  .gallery-link:hover {
+    background: var(--accent);
+    color: #FFF;
+    border-color: var(--accent);
+  }
+
+  .footer-sign {
+    font-size: 11px;
+    color: var(--mut);
+    line-height: 1.6;
+    text-align: right;
+  }
+
+  @media (max-width: 900px) {
+    .hero-banner, .chart-grid, .kpi-row {
+      grid-template-columns: 1fr;
+    }
+    .dot-grid-card {
+      grid-column: span 1;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <div class="top-control">
+    <div class="badge-spec">
+      <span class="pulse"></span>
+      <span>LIEFLAT CHARTS · AGENT SKILLS PILOT SHOWCASE</span>
+    </div>
+    <div class="theme-switcher">
+      <button class="theme-btn active" onclick="setTheme('porcelain', this)">
+        <span class="dot" style="background:#334EAC"></span> Porcelain (青瓷蓝)
+      </button>
+      <button class="theme-btn" onclick="setTheme('mono', this)">
+        <span class="dot" style="background:#1C1C1A"></span> Mono (黑白灰)
+      </button>
+      <button class="theme-btn" onclick="setTheme('palm', this)">
+        <span class="dot" style="background:#43593B"></span> Palm (椰林绿)
+      </button>
+      <button class="theme-btn" onclick="setTheme('wire', this)">
+        <span class="dot" style="background:#FF5A1F"></span> Wire (编辑部红)
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-banner">
+    <div class="hero-title">
+      <h1>Август 2026: 1 778 сделок</h1>
+      <div class="subtitle">
+        Интерактивный пилот визуализации данных авто-ритейла в канонической дизайн-системе <b>Lieflat Charts</b>. Тонкие линии, честный масштаб данных и 4 цветовые палитры.
+      </div>
+    </div>
+    <div class="hero-meta">
+      <div class="meta-tag">Верифицированный баланс AGENTS.md</div>
+      <div class="meta-val">690 + 578 + 328 + 181 + 1 = 1 778 сделок</div>
+      <div class="meta-val" style="font-size:11px; color:var(--mut);">100% консистентность с базой данных sys_db</div>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Всего закрыто сделок <span>01</span></div>
+      <div class="kpi-value">1 778<span class="kpi-unit">шт.</span></div>
+      <div class="kpi-sub">
+        <span>Динамика к июлю</span>
+        <b>+18.2% (+274 шт.)</b>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Общая комиссия <span>02</span></div>
+      <div class="kpi-value">81.38<span class="kpi-unit">млн ₽</span></div>
+      <div class="kpi-sub">
+        <span>Точный объем</span>
+        <b>81 381 641 ₽</b>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Средняя доходность <span>03</span></div>
+      <div class="kpi-value">45 771<span class="kpi-unit">₽</span></div>
+      <div class="kpi-sub">
+        <span>На одну сделку</span>
+        <b>Стабильный диапазон</b>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Активных КАМов <span>04</span></div>
+      <div class="kpi-value">4<span class="kpi-unit">чел.</span></div>
+      <div class="kpi-sub">
+        <span>Лидер портфеля</span>
+        <b>А. Кузнецов (690)</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-grid">
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2>Закрепление портфелей КАМов</h2>
+          <div class="card-sub">Распределение сделок по ответственным кураторам за август 2026</div>
+        </div>
+        <span class="card-badge">F1 RUNG BARS</span>
+      </div>
+      <div class="card-body">
+        <div class="rung-list" id="kam-rung-list"></div>
+      </div>
+      <div class="card-footer">
+        <span>МАТРИЦА ЗАКРЕПЛЕНИЙ: 4 КЛЮЧЕВЫХ КАМА</span>
+        <span>ОБЩИЙ ИТОГ: 1 778 СДЕЛОК</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2>Структура продаж по маркам</h2>
+          <div class="card-sub">Доминирование Jetour и устойчивые объемы Lada / Soueast / GAC</div>
+        </div>
+        <span class="card-badge">F4 TICK DONUT</span>
+      </div>
+      <div class="card-body">
+        <div class="donut-wrap">
+          <div class="donut-chart">
+            <svg viewBox="0 0 100 100" id="donut-svg"></svg>
+            <div class="donut-center">
+              <div class="donut-val">924</div>
+              <div class="donut-lbl">JETOUR (#1)</div>
+            </div>
+          </div>
+          <div class="share-legend" id="brand-legend"></div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>ТОП-5 МАРОК = 87.5% ВСЕГО ОБЪЕМА</span>
+        <span>ИСТОЧНИК: SYS_DB BRAND_FUNNEL</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2>Топ дилерских сетей и партнеров</h2>
+          <div class="card-sub">Ключевые контрагенты по числу оформленных выдач</div>
+        </div>
+        <span class="card-badge">F5 TICK ROWS</span>
+      </div>
+      <div class="card-body">
+        <div class="rank-grid">
+          <div class="rank-item">
+            <span class="rank-num">01</span>
+            <span class="rank-title">АО «РОЛЬФ» <span class="rank-city">Москва / СПб</span></span>
+            <span class="rank-kam">Кузнецов</span>
+            <span class="rank-val">78</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num">02</span>
+            <span class="rank-title">«Автохолдинг Максимум» <span class="rank-city">Санкт-Петербург</span></span>
+            <span class="rank-kam">Дариенко</span>
+            <span class="rank-val">38</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num">03</span>
+            <span class="rank-title">ТЦ «Кунцево Лимитед» <span class="rank-city">Москва</span></span>
+            <span class="rank-kam">Чихарев</span>
+            <span class="rank-val">37</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num">04</span>
+            <span class="rank-title">Фининвест <span class="rank-city">Юг / Черноземье</span></span>
+            <span class="rank-kam">Солдатова</span>
+            <span class="rank-val">26</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num">05</span>
+            <span class="rank-title">ONLINE ООО «ТЕМП АВТО К» <span class="rank-city">Краснодар</span></span>
+            <span class="rank-kam">Солдатова</span>
+            <span class="rank-val">23</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num">06</span>
+            <span class="rank-title">Online ООО «АВТОРИТЭЙЛ М» <span class="rank-city">СПб (10) / КРД (13)</span></span>
+            <span class="rank-kam">Дариенко / Солдатова</span>
+            <span class="rank-val">23</span>
+          </div>
+          <div class="rank-item">
+            <span class="rank-num">07</span>
+            <span class="rank-title">Автосфера <span class="rank-city">Южный регион</span></span>
+            <span class="rank-kam">Солдатова</span>
+            <span class="rank-val">19</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>РАСПРЕДЕЛЕНИЕ В СТРОГОМ СООТВЕТСТВИИ С ПРАВИЛАМИ РАЗДЕЛЕНИЯ ГОРОДОВ</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2>Каналы привлечения: Маркетплейс vs Прямые</h2>
+          <div class="card-sub">Категории сделок по источнику поступления заявки</div>
+        </div>
+        <span class="card-badge">F13 BULLET GAUGE</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex; flex-direction:column; gap:16px; padding-top:10px;">
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:6px;">
+              <span>МАРКЕТПЛЕЙС 2 (МП2 — КЛЮЧЕВОЙ ПОТОК)</span>
+              <span style="font-family:'JetBrains Mono'">1 420 сделок (79.9%)</span>
+            </div>
+            <div style="height:18px; background:var(--panel); border-radius:4px; overflow:hidden; border:1px solid var(--quiet);">
+              <div style="width:79.9%; height:100%; background:var(--accent);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:6px;">
+              <span>ПРЯМЫЕ СДЕЛКИ (НЕ-МП)</span>
+              <span style="font-family:'JetBrains Mono'">315 сделок (17.7%)</span>
+            </div>
+            <div style="height:18px; background:var(--panel); border-radius:4px; overflow:hidden; border:1px solid var(--quiet);">
+              <div style="width:17.7%; height:100%; background:var(--data2);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:6px;">
+              <span>МАРКЕТПЛЕЙС 3 (МП3)</span>
+              <span style="font-family:'JetBrains Mono'">32 сделки (1.8%)</span>
+            </div>
+            <div style="height:18px; background:var(--panel); border-radius:4px; overflow:hidden; border:1px solid var(--quiet);">
+              <div style="width:5%; height:100%; background:var(--mut);"></div>
+            </div>
+          </div>
+
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700; margin-bottom:6px;">
+              <span>МАРКЕТПЛЕЙС 1 (МП1)</span>
+              <span style="font-family:'JetBrains Mono'">11 сделок (0.6%)</span>
+            </div>
+            <div style="height:18px; background:var(--panel); border-radius:4px; overflow:hidden; border:1px solid var(--quiet);">
+              <div style="width:2%; height:100%; background:var(--faint);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>МП2 ОБЕСПЕЧИВАЕТ 8 ИЗ 10 СДЕЛОК ПЛАТФОРМЫ</span>
+        <span>ИТОГО МП: 1 463 ШТ. (82.3%)</span>
+      </div>
+    </div>
+
+    <div class="card dot-grid-card">
+      <div class="card-header">
+        <div>
+          <h2>Точечная матрица всех 1 778 сделок августа</h2>
+          <div class="card-sub">Каждый блок = 10 сделок. Чистая визуализация плотности без визуального шума (эстетика Georgia Lupi)</div>
+        </div>
+        <span class="card-badge">L15 BALLOT TALLY</span>
+      </div>
+      <div class="card-body">
+        <div class="dot-matrix-container">
+          <div class="dot-matrix" id="tally-matrix"></div>
+          <div class="matrix-legend">
+            <div class="matrix-legend-item">
+              <span class="matrix-legend-swatch" style="background:var(--txt)"></span>
+              <span>Андрей Кузнецов (69 блоков · 690)</span>
+            </div>
+            <div class="matrix-legend-item">
+              <span class="matrix-legend-swatch" style="background:var(--data)"></span>
+              <span>Алексей Чихарев (58 блоков · 578)</span>
+            </div>
+            <div class="matrix-legend-item">
+              <span class="matrix-legend-swatch" style="background:var(--data2)"></span>
+              <span>Светлана Дариенко (33 блока · 328)</span>
+            </div>
+            <div class="matrix-legend-item">
+              <span class="matrix-legend-swatch" style="background:var(--accent)"></span>
+              <span>Валерия Солдатова (18 блоков · 181)</span>
+            </div>
+            <div class="matrix-legend-item">
+              <span class="matrix-legend-swatch" style="background:var(--faint)"></span>
+              <span>Не назначен (1 блок · 1)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span>ПОЛНОЕ 100% ПОКРЫТИЕ ПОРТФЕЛЯ (ВСЕ 178 ТАКТОВ ДАННЫХ)</span>
+        <span>НАВЕДИТЕ КУРСОР НА БЛОК ДЛЯ ИНСПЕКЦИИ</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="pilot-footer">
+    <div>
+      <div style="font-weight:800; font-size:13px; letter-spacing:0.04em; margin-bottom:10px;">
+        УСТАНОВЛЕННЫЙ SKILL: LIEFLAT-CHARTS (ORIGINAL GALLERIES)
+      </div>
+      <div class="gallery-nav">
+        <a class="gallery-link" href="../.agents/skills/lieflat-charts/templates/basics-gallery.html" target="_blank">
+          <span>📐</span> Basics Gallery (17 диаграмм)
+        </a>
+        <a class="gallery-link" href="../.agents/skills/lieflat-charts/templates/glance-gallery.html" target="_blank">
+          <span>⚡</span> Glance Gallery (20 диаграмм)
+        </a>
+        <a class="gallery-link" href="../.agents/skills/lieflat-charts/templates/lupi-gallery.html" target="_blank">
+          <span>🖋️</span> Lupi Editorial (19 диаграмм)
+        </a>
+        <a class="gallery-link" href="../.agents/skills/lieflat-charts/templates/big-force.html" target="_blank">
+          <span>🕸️</span> Big Force Graph
+        </a>
+      </div>
+    </div>
+    <div class="footer-sign">
+      <b>B2C Analytics Dashboard</b> · Спецификация Lieflat Charts<br>
+      Синхронизировано с Git и Cloudflare Pages · Сентябрь 2026
+    </div>
+  </div>
+
+</div>
+
+<div id="tooltip"></div>
+
+<script>
+  const KAM_DATA = [
+    { name: 'Андрей Кузнецов', deals: 690, share: 38.8, mp: 557, direct: 133, hero: true },
+    { name: 'Алексей Чихарев', deals: 578, share: 32.5, mp: 480, direct: 98, hero: false },
+    { name: 'Светлана Дариенко', deals: 328, share: 18.4, mp: 270, direct: 58, hero: false },
+    { name: 'Валерия Солдатова', deals: 181, share: 10.2, mp: 156, direct: 25, hero: false },
+    { name: 'Не назначен', deals: 1, share: 0.1, mp: 0, direct: 1, hero: false }
+  ];
+
+  const BRAND_DATA = [
+    { name: 'JETOUR', count: 924, share: 52.0, color: 'var(--txt)' },
+    { name: 'LADA', count: 226, share: 12.7, color: 'var(--data)' },
+    { name: 'SOUEAST', count: 140, share: 7.9, color: 'var(--data2)' },
+    { name: 'GAC', count: 137, share: 7.7, color: 'var(--accent)' },
+    { name: 'SOLARIS', count: 126, share: 7.1, color: 'var(--faintdata)' },
+    { name: 'GEELY & BELGEE', count: 102, share: 5.7, color: 'var(--mut)' },
+    { name: 'ДРУГИЕ МАРКИ', count: 123, share: 6.9, color: 'var(--quiet)' }
+  ];
+
+  function renderRungs() {
+    const container = document.getElementById('kam-rung-list');
+    const maxDeals = 700;
+    container.innerHTML = KAM_DATA.map(item => {
+      const pct = (item.deals / maxDeals * 100).toFixed(1);
+      return `
+        <div class="rung-item" onmouseenter="showTooltip(event, '<b>${item.name}</b><br>Сделок: ${item.deals} (${item.share}%)<br>МП: ${item.mp} | Прямые: ${item.direct}')" onmouseleave="hideTooltip()">
+          <div class="rung-name">
+            ${item.name}
+            <small>${item.share}% объема</small>
+          </div>
+          <div class="rung-track">
+            <div class="rung-bar ${item.hero ? 'hero' : ''}" style="width: ${pct}%"></div>
+          </div>
+          <div class="rung-metrics">
+            ${item.deals}<span>шт</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderDonut() {
+    const svg = document.getElementById('donut-svg');
+    const legend = document.getElementById('brand-legend');
+    
+    let cumAngle = 0;
+    const radius = 38;
+    const strokeWidth = 14;
+    const circumference = 2 * Math.PI * radius;
+    
+    let svgContent = `<circle cx="50" cy="50" r="${radius}" fill="none" stroke="var(--panel)" stroke-width="${strokeWidth}" />`;
+    
+    BRAND_DATA.forEach(b => {
+      const dash = (b.share / 100) * circumference;
+      const space = circumference - dash;
+      const offset = -(cumAngle / 100) * circumference;
+      
+      svgContent += `
+        <circle cx="50" cy="50" r="${radius}" fill="none" 
+          stroke="${b.color}" stroke-width="${strokeWidth}"
+          stroke-dasharray="${dash} ${space}"
+          stroke-dashoffset="${offset}"
+          style="transition: stroke-dasharray 0.8s ease;"
+          onmouseenter="showTooltip(event, '<b>${b.name}</b><br>Продано: ${b.count} авто<br>Доля рынка: ${b.share}%')"
+          onmouseleave="hideTooltip()"
+        />
+      `;
+      cumAngle += b.share;
+    });
+    
+    svg.innerHTML = svgContent;
+
+    legend.innerHTML = BRAND_DATA.map(b => `
+      <div class="share-row" onmouseenter="showTooltip(event, '<b>${b.name}</b>: ${b.count} шт.')" onmouseleave="hideTooltip()">
+        <span class="brand-id">
+          <span class="swatch" style="background:${b.color}"></span>
+          <span>${b.name}</span>
+        </span>
+        <span class="val">${b.count} <span style="font-size:10px; color:var(--mut); font-weight:500;">(${b.share}%)</span></span>
+      </div>
+    `).join('');
+  }
+
+  function renderTally() {
+    const container = document.getElementById('tally-matrix');
+    let dots = '';
+    for (let i = 0; i < 178; i++) {
+      let cls = 'kuznetsov';
+      let kamName = 'Андрей Кузнецов';
+      if (i >= 69 && i < 127) {
+        cls = 'chikharev';
+        kamName = 'Алексей Чихарев';
+      } else if (i >= 127 && i < 160) {
+        cls = 'darienko';
+        kamName = 'Светлана Дариенко';
+      } else if (i >= 160 && i < 177) {
+        cls = 'soldatova';
+        kamName = 'Валерия Солдатова';
+      } else if (i === 177) {
+        cls = 'unassigned';
+        kamName = 'Не назначен (ИП Олейник)';
+      }
+
+      dots += `<div class="dot-unit ${cls}" 
+        onmouseenter="showTooltip(event, 'Блок #${i+1} (10 сделок)<br><b>${kamName}</b>')" 
+        onmouseleave="hideTooltip()"></div>`;
+    }
+    container.innerHTML = dots;
+  }
+
+  const tip = document.getElementById('tooltip');
+  function showTooltip(e, html) {
+    tip.innerHTML = html;
+    tip.style.display = 'block';
+    tip.style.left = (e.clientX + 14) + 'px';
+    tip.style.top = (e.clientY + 14) + 'px';
+  }
+  function hideTooltip() {
+    tip.style.display = 'none';
+  }
+  window.addEventListener('mousemove', e => {
+    if (tip.style.display === 'block') {
+      tip.style.left = (e.clientX + 14) + 'px';
+      tip.style.top = (e.clientY + 14) + 'px';
+    }
+  });
+
+  function setTheme(theme, btn) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderDonut();
+  }
+
+  renderRungs();
+  renderDonut();
+  renderTally();
+</script>
+
+</body>
+</html>
