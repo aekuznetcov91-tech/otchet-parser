@@ -1605,7 +1605,7 @@ def run_pipeline():
                 kam_partner = "Алексей Чихарев"
             elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим']):
                 kam_partner = "Андрей Кузнецов"
-            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автолидер', 'автоград']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
+            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автолидер', 'автоград', 'автопилот']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
                 kam_partner = "Светлана Дариенко"
             elif any(k in p_lower for k in ['эксперт св', 'автоимпорт центр']):
                 kam_partner = "Алексей Чихарев"
@@ -1743,7 +1743,7 @@ def run_pipeline():
                 kam = "Алексей Чихарев"
             elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим']):
                 kam = "Андрей Кузнецов"
-            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автолидер', 'автоград']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
+            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автолидер', 'автоград', 'автопилот']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
                 kam = "Светлана Дариенко"
             elif any(k in p_lower for k in ['эксперт св', 'автоимпорт центр']):
                 kam = "Алексей Чихарев"
