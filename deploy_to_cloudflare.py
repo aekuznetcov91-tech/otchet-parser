@@ -73,7 +73,7 @@ def deploy():
             text=True,
             encoding='utf-8',
             errors='replace',
-            timeout=120
+            timeout=300
         )
         combined = (res.stdout or "") + "\n" + (res.stderr or "")
         print(combined)
