@@ -682,5 +682,6 @@ function switchTab(tabId, btn) {
     if (tabId === 'tab-funnel' && typeof selectFunnelBrand === 'function') selectFunnelBrand('ALL');
     if (tabId === 'tab-lead-geo' && typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
     if (tabId === 'tab-kam' && typeof renderKamTab === 'function') renderKamTab(currentFilterConfig);
+    if (tabId === 'tab-banking' && typeof renderBankingDashboard === 'function') renderBankingDashboard();
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }

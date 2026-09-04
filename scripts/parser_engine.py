@@ -1871,6 +1871,26 @@ def run_pipeline():
         "lead_geo_dealers": lead_geo_dealers
     }
 
+    # 5.1. Optional Banking Analytics (if enriched Bitrix file with 'Банк' column exists)
+    try:
+        from scripts.banking_dc_parser import parse_banking_analytics
+        banking_analytics = parse_banking_analytics(PROJECT_ROOT)
+    except Exception as e:
+        print(f"[!] Banking analytics warning/skipped: {e}")
+        banking_analytics = None
+
+    if banking_analytics is None:
+        if os.path.exists(OUTPUT_JSON_ROOT):
+            try:
+                with open(OUTPUT_JSON_ROOT, 'r', encoding='utf-8') as f_old:
+                    old_data = json.load(f_old)
+                    banking_analytics = old_data.get('banking_analytics')
+            except Exception:
+                pass
+
+    if banking_analytics:
+        output_payload["banking_analytics"] = banking_analytics
+
     # 6. Save JSON and sync HTML assets to site/
     os.makedirs(SITE_DIR, exist_ok=True)
     with open(OUTPUT_JSON_SITE, 'w', encoding='utf-8') as f:

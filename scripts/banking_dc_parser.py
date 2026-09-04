@@ -270,21 +270,23 @@ def find_file_with_bank_column(raw_dirs):
     for d in raw_dirs:
         if not os.path.exists(d):
             continue
-        for fname in os.listdir(d):
-            if fname.startswith('~$') or not fname.endswith('.xlsx'):
-                continue
-            fpath = os.path.join(d, fname)
-            try:
-                wb = openpyxl.load_workbook(fpath, data_only=True)
-                ws = wb.active
-                row1 = next(ws.iter_rows(max_row=1, values_only=True), None)
-                wb.close()
-                if row1:
-                    cols = [str(c or '').strip().lower() for c in row1]
-                    if any('банк' == c or 'банк' in c for c in cols):
-                        candidates.append((os.path.getmtime(fpath), fpath))
-            except Exception:
-                pass
+        for root, dirs, files in os.walk(d):
+            dirs[:] = [sub for sub in dirs if not sub.startswith('.') and not sub.startswith('__')]
+            for fname in files:
+                if fname.startswith('~$') or not fname.endswith('.xlsx'):
+                    continue
+                fpath = os.path.join(root, fname)
+                try:
+                    wb = openpyxl.load_workbook(fpath, data_only=True)
+                    ws = wb.active
+                    row1 = next(ws.iter_rows(max_row=1, values_only=True), None)
+                    wb.close()
+                    if row1:
+                        cols = [str(c or '').strip().lower() for c in row1]
+                        if any('банк' == c or 'банк' in c for c in cols):
+                            candidates.append((os.path.getmtime(fpath), fpath))
+                except Exception:
+                    pass
 
     if not candidates:
         return None
@@ -388,6 +390,7 @@ def parse_banking_analytics(base_dir=None):
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
     raw_dirs = [
+        os.path.join(base_dir, 'raw_data', 'banking'),
         os.path.join(base_dir, 'raw_data'),
         os.path.join(base_dir, 'ready'),
         base_dir
