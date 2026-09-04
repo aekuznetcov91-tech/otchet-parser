@@ -7737,8 +7737,8 @@
           "inn": "6312214182",
           "address": "г. Самара, улица Антонова-Овсеенко, 46",
           "back_name": "СберАвто",
-          "email": "aizvekov@chery-vipavto.ru",
-          "responsible": "Андрей Кузнецов",
+          "email": "sales.online@chery-vipavto.ru",
+          "responsible": "Евгения Добролюбова",
           "brand": "CHERY & TENET"
         },
         {
@@ -8984,7 +8984,7 @@
           "inn": "7814721879",
           "address": "Санкт-Петербург, Boлxoннское шоссе, д.3, стр. 1 , помещение2.32С",
           "back_name": "ИАТ",
-          "email": "tdr-gac@iat.ru, tdr-gacprim@iat.ru dtsvetkova@iat.ru",
+          "email": "esolovjeva@gac-iat.ru slubashev@gac-iat.ru vkorzakov@gac-iat.ru ikuznetsov@gac-iat.ru milyushenkov@gac-iat.ru",
           "responsible": "Светлана Дариенко",
           "brand": "GAC"
         },
@@ -10369,7 +10369,7 @@
       "oem_data": [
         {
           "sheet": "CHERY&TENET",
-          "city": "ONLINE",
+          "city": "Армавир",
           "group_link": "https://max.ru/join/ofbOmOoDCweq0-KmiE1mRy5ldpmPr6GI6V7bUcC8E_o",
           "name": "Чери Центр Авто для вас",
           "legal_entity": "ООО АВТО ДЛЯ ВАС ПРЕМИУМ",
@@ -12681,7 +12681,21 @@
         "Сократ"
       ],
       "pochta_aliases": [],
-      "oem_data": []
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/UYyazrw2aZgYM4mIwE1iyLcHOGg_2faU78aEX48aSAY",
+          "name": "Моторленд",
+          "legal_entity": "ООО Сократ СПБ",
+          "inn": "3662259794",
+          "address": "Ириновский пр. 10",
+          "back_name": "Online Моторленд",
+          "email": "d.ionova@belgee-motorland78.ru hostes@belgee-motorland78.ru hostes@jetour-motorland78.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "JETOUR"
+        }
+      ]
     },
     {
       "partner_id": 1281,
@@ -14283,6 +14297,168 @@
       "pochta_aliases": [],
       "oem_data": [],
       "status": "verified"
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
     },
     {
       "partner_id": "P_OEM_621324b8",
