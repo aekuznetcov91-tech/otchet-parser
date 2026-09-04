@@ -1402,10 +1402,12 @@ def run_pipeline():
 
     def file_rank_leads(item):
         fname, rows = item
-        # Priority: data (X).xlsx with highest number > other leads
+        # Priority: Lead files containing partner transfer information take absolute precedence
+        has_partner = 1 if rows and any(get_exact_val(r, 'ПАРТНЕР', 'BI') for r in rows[:50]) else 0
         num_match = re.search(r'data \((\d+)\)', fname)
         lead_num = int(num_match.group(1)) if num_match else 0
-        return (lead_num, len(rows))
+        return (has_partner, lead_num, len(rows))
+
 
     # Merge deal candidates in ascending order of file mtime (older first, newer overwrites)
     # This preserves multi-month history (e.g. July) while updating fresh August deals.
@@ -1471,14 +1473,15 @@ def run_pipeline():
 
     for lr in all_leads_data:
         cid_l = str(get_exact_val(lr, 'CLIENTID', 'CLIENT_ID', 'IDКЛИЕНТА') or "").strip()
-        sid_l = str(get_exact_val(lr, 'СУММАID', 'СУММА_ID', 'ID') or "").strip()
+        sid_l = str(get_exact_val(lr, 'СУММАID', 'СУММА_ID', 'СУММА ID') or "").strip()
         if cid_l and sid_l and cid_l not in leads_sum_id_by_client:
             leads_sum_id_by_client[cid_l] = sid_l
 
         if cid_l:
             ev_l = str(get_exact_val(lr, 'СОБЫТИЕ', 'EVENTNAME', 'EVENT_NAME') or "").strip()
             ev_clean = clean_key(ev_l)
-            is_trans = ('ОТПРАВКАЛИДА' in ev_clean or 'ОТПРАВЛЕНДИЛЕРУ' in ev_clean or str(get_exact_val(lr, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
+            is_trans = bool(sid_l) or ('ОТПРАВКАЛИДА' in ev_clean or 'ОТПРАВЛЕНДИЛЕРУ' in ev_clean or str(get_exact_val(lr, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
+
             if is_trans:
                 d_val = str(get_exact_val(lr, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА') or "").strip()
                 p_date = parse_custom_date(d_val)
@@ -1603,7 +1606,10 @@ def run_pipeline():
                 kam_partner = "Андрей Кузнецов"
             elif 'кунцево' in p_lower:
                 kam_partner = "Алексей Чихарев"
+            elif 'борис' in p_lower or 'борис' in cname.lower():
+                kam_partner = "Алексей Чихарев"
             elif 'тд армада-авто' in p_lower:
+
                 kam_partner = "Андрей Кузнецов"
             elif 'армада-авто' in p_lower:
                 kam_partner = "Алексей Чихарев"
@@ -1721,17 +1727,15 @@ def run_pipeline():
 
     # 4. Process Leads
     if leads_data:
-        seen_clients = set()
+        seen_partner_leads = set()
         for row in leads_data:
-            event_name = str(get_exact_val(row, 'EVENTNAME', 'ИМЯСОБЫТИЯ') or "").strip()
-            if event_name and event_name != "Отправка лида":
+            sid = str(get_exact_val(row, 'СУММАID', 'СУММА_ID', 'СУММА ID') or "").strip()
+            if not sid:
                 continue
 
-            client_id = str(get_exact_val(row, 'CLIENTID', 'IDКЛИЕНТА', 'ID') or "").strip()
-            if client_id and client_id in seen_clients:
+            client_id = str(get_exact_val(row, 'CLIENTID', 'IDКЛИЕНТА') or "").strip()
+            if not client_id:
                 continue
-            if client_id:
-                seen_clients.add(client_id)
 
             partner_raw = str(get_exact_val(row, 'BI', 'ПАРТНЕР') or "").strip()
             if not partner_raw:
@@ -1757,7 +1761,7 @@ def run_pipeline():
             elif p_lower in kam_dict_bi:
                 kam = kam_dict_bi.get(p_lower, "")
 
-            d_lead_date = parse_custom_date(get_exact_val(row, 'ДАТА'))
+            d_lead_date = parse_custom_date(get_exact_val(row, 'ДАТА', 'ДАТАСОБЫТИЯ'))
             lead_month_str = f"{d_lead_date.year}-{str(d_lead_date.month).zfill(2)}" if d_lead_date else ""
             lead_serial = date_to_excel_serial(d_lead_date)
 
@@ -1765,6 +1769,8 @@ def run_pipeline():
             if 'рольф' in p_lower:
                 kam = "Андрей Кузнецов"
             elif 'кунцево' in p_lower:
+                kam = "Алексей Чихарев"
+            elif 'борис' in p_lower or 'борис' in cname.lower():
                 kam = "Алексей Чихарев"
             elif 'тд армада-авто' in p_lower:
                 kam = "Андрей Кузнецов"
@@ -1803,6 +1809,16 @@ def run_pipeline():
             if kam == "Евгения Добролюбова" and (lead_month_str <= "2026-08" or not lead_month_str):
                 kam = "Андрей Кузнецов"
 
+            # Per-partner and month deduplication
+            p_key = pid if pid is not None else cname
+            lead_dedup_key = (p_key, client_id, lead_month_str)
+            if lead_dedup_key in seen_partner_leads:
+                continue
+            seen_partner_leads.add(lead_dedup_key)
+
+            raw_brand = str(get_exact_val(row, 'БРЕНД', 'БРЕНДB2C') or "").strip()
+            final_brand = normalize_brand(raw_brand) if raw_brand else ""
+
             sys_db_partners.append({
                 "Month": lead_month_str,
                 "PartnerId": pid,
@@ -1811,8 +1827,12 @@ def run_pipeline():
                 "KAM": kam,
                 "Type": "Лид",
                 "Qty": 1,
-                "Date": lead_serial
+                "Brand": final_brand,
+                "Date": lead_serial,
+                "ClientId": client_id,
+                "LeadId": sid
             })
+
 
     # 5. Funnel Data (Clickstream & Brand Funnel) & Analytics Modules
     funnel_metrics = parse_funnel_image_or_config(RAW_DATA_DIR if os.path.exists(RAW_DATA_DIR) else PROJECT_ROOT)
