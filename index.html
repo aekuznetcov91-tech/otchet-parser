@@ -459,7 +459,25 @@
             </div>
         </div>
 
-        <!-- 1. SEQUENTIAL FUNNEL PIPELINE (Друг за другом) -->
+        <!-- Section Navigation Tabs -->
+        <div class="flex items-center gap-2 border-b border-gray-200 pb-3 overflow-x-auto">
+            <button id="b_tabBtn_funnel" onclick="switchBankingSection('funnel', this)" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-sm transition cursor-pointer">
+                📊 Сквозная воронка и сделки
+            </button>
+            <button id="b_tabBtn_rankings" onclick="switchBankingSection('rankings', this)" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
+                🏆 ТОП и Антитоп Банков
+            </button>
+            <button id="b_tabBtn_partners" onclick="switchBankingSection('partners', this)" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
+                🏢 Партнеры и 8 Макрорегионов
+            </button>
+            <button id="b_tabBtn_all" onclick="switchBankingSection('all', this)" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
+                📋 Показать всё
+            </button>
+        </div>
+
+        <!-- SECTION 1: FUNNEL & CHARTS -->
+        <div id="b_sec_funnel" class="space-y-5">
+            <!-- 1. SEQUENTIAL FUNNEL PIPELINE (Друг за другом) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <!-- STEP 1: TRANSFERS -->
             <div class="kpi-card border-l-4 border-l-sky-500 bg-white !mb-0 shadow-sm flex flex-col justify-between p-4">
@@ -590,7 +608,10 @@
                 </div>
             </div>
         </div>
+        </div>
 
+        <!-- SECTION 2: TOP SBER VS ANTI-TOP OTHER BANKS -->
+        <div id="b_sec_rankings" class="space-y-5 hidden">
         <!-- 3. TOP-10 SBER VS ANTI-TOP-10 OTHER BANKS -->
         <div class="card !p-5 bg-white rounded-2xl shadow-sm border border-gray-200 space-y-4">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
@@ -686,7 +707,10 @@
                 </div>
             </div>
         </div>
+        </div>
 
+        <!-- SECTION 3: 8 MACROREGIONS & PARTNERS REGISTRY -->
+        <div id="b_sec_partners" class="space-y-5 hidden">
         <!-- 4. MACRO-REGIONS (8 RC) MATRIX -->
         <div class="card !p-5 bg-white rounded-2xl shadow-sm border border-gray-200">
             <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
@@ -763,6 +787,7 @@
                     </tbody>
                 </table>
             </div>
+        </div>
         </div>
     </div>
 

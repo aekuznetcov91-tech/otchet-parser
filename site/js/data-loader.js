@@ -23,6 +23,10 @@ async function loadData() {
         db = data.sys_db || [];
         dbPartners = data.sys_db_partners || [];
         window.dataPayload = data;
+        window.currentData = data;
+        if (data.banking_analytics) {
+            window.bankingAnalyticsData = data.banking_analytics;
+        }
         rawDebtorsList = data.debtors || [];
         if (data.brand_funnel) {
             window.brandFunnelFullData = data.brand_funnel;

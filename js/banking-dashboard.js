@@ -24,8 +24,37 @@ let isAntiTopExpanded = false;
 let currentActiveDb = 'lead_deals'; // 'lead_deals' или 'other_deals'
 let currentDbFilter = 'all'; // 'all', 'sber', 'other_banks', 'cash'
 
+function getBankingData() {
+    return (window.dataPayload && window.dataPayload.banking_analytics)
+        || (window.currentData && window.currentData.banking_analytics)
+        || (window.bankingAnalyticsData || null);
+}
+
+function switchBankingSection(secId, btn) {
+    const secFunnel = document.getElementById('b_sec_funnel');
+    const secRankings = document.getElementById('b_sec_rankings');
+    const secPartners = document.getElementById('b_sec_partners');
+
+    document.querySelectorAll('[id^="b_tabBtn_"]').forEach(b => {
+        b.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition cursor-pointer';
+    });
+    if (btn) {
+        btn.className = 'px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-sm transition cursor-pointer';
+    }
+
+    if (secId === 'all') {
+        if (secFunnel) secFunnel.classList.remove('hidden');
+        if (secRankings) secRankings.classList.remove('hidden');
+        if (secPartners) secPartners.classList.remove('hidden');
+    } else {
+        if (secFunnel) secFunnel.classList.toggle('hidden', secId !== 'funnel');
+        if (secRankings) secRankings.classList.toggle('hidden', secId !== 'rankings');
+        if (secPartners) secPartners.classList.toggle('hidden', secId !== 'partners');
+    }
+}
+
 function renderBankingDashboard() {
-    const banking = window.currentData && window.currentData.banking_analytics;
+    const banking = getBankingData();
     if (!banking) {
         const container = document.getElementById('tab-banking');
         if (container) {
@@ -202,7 +231,7 @@ function setBankingRankMode(mode) {
         if (btnVolume) btnVolume.className = 'px-3 py-1.5 rounded-lg text-xs font-bold transition bg-indigo-600 text-white shadow-sm';
     }
 
-    const banking = window.currentData && window.currentData.banking_analytics;
+    const banking = getBankingData();
     if (banking) renderBankingRankings(banking);
 }
 
@@ -212,7 +241,7 @@ function toggleBankingExpand(type) {
     } else {
         isAntiTopExpanded = !isAntiTopExpanded;
     }
-    const banking = window.currentData && window.currentData.banking_analytics;
+    const banking = getBankingData();
     if (banking) renderBankingRankings(banking);
 }
 
@@ -380,7 +409,7 @@ function filterBankingPartners(query) {
 
 function openBankingDatabaseModal(type) {
     currentActiveDb = type;
-    const banking = window.currentData && window.currentData.banking_analytics;
+    const banking = getBankingData();
     if (!banking) return;
 
     const modal = document.getElementById('bankingDbModal');
@@ -426,7 +455,7 @@ function setBankingDbFilter(filter) {
 }
 
 function renderBankingDbRows() {
-    const banking = window.currentData && window.currentData.banking_analytics;
+    const banking = getBankingData();
     if (!banking) return;
 
     const raw = currentActiveDb === 'lead_deals' ? (banking.lead_deals_db || []) : (banking.other_deals_db || []);
