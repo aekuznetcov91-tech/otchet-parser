@@ -1,0 +1,321 @@
+/* ====================================================================
+ * Banking Analytics Dashboard (TOP-10 Sber vs Anti-Top-10 Other Banks)
+ * Scoped strictly to #tab-banking
+ * ==================================================================== */
+
+#tab-banking {
+    --sber-primary: #21A038;
+    --sber-dark: #1B7E2C;
+    --sber-bg: #E8F5E9;
+    --sber-border: #C8E6C9;
+    
+    --risk-primary: #E74C3C;
+    --risk-dark: #C0392B;
+    --risk-bg: #FDEDEC;
+    --risk-border: #FADBD8;
+    
+    --warn-orange: #E67E22;
+    --warn-bg: #FEF5E7;
+    
+    --bg-page: #F4F7FA;
+    --card-bg: #FFFFFF;
+    --text-main: #1E293B;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+
+    color: var(--text-main);
+    line-height: 1.5;
+}
+
+#tab-banking .container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Header */
+#tab-banking .dashboard-header {
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+    color: #FFFFFF;
+    padding: 30px 35px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+#tab-banking .header-title h1 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+    color: #FFFFFF;
+}
+#tab-banking .header-title p {
+    color: #94A3B8;
+    font-size: 14px;
+    margin: 0;
+}
+#tab-banking .header-stats {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+#tab-banking .stat-badge {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+}
+#tab-banking .stat-badge .num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+#tab-banking .stat-badge .lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #CBD5E1;
+    letter-spacing: 0.5px;
+}
+
+/* View Mode Controls */
+#tab-banking .controls-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    background: var(--card-bg);
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 15px;
+}
+#tab-banking .controls-bar .tab-buttons {
+    display: flex;
+    gap: 8px;
+}
+#tab-banking .controls-bar .tab-btn {
+    background: #F1F5F9;
+    border: 1px solid transparent;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: none !important;
+    transition: all 0.2s ease;
+}
+#tab-banking .controls-bar .tab-btn.active {
+    background: #1E293B !important;
+    color: #FFFFFF !important;
+    border-bottom: none !important;
+}
+#tab-banking .controls-bar .tab-btn:hover:not(.active) {
+    background: #E2E8F0;
+    color: var(--text-main);
+}
+
+/* Main Grid */
+#tab-banking .dual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+@media (max-width: 1024px) {
+    #tab-banking .dual-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Cards */
+#tab-banking .ranking-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+#tab-banking .card-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#tab-banking .ranking-card.top-sber .card-header {
+    background: linear-gradient(to right, #F0FDF4, #FFFFFF);
+    border-left: 5px solid var(--sber-primary);
+}
+#tab-banking .ranking-card.antitop-ob .card-header {
+    background: linear-gradient(to right, #FEF2F2, #FFFFFF);
+    border-left: 5px solid var(--risk-primary);
+}
+#tab-banking .card-title h2 {
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+#tab-banking .card-title p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    margin-bottom: 0;
+}
+
+#tab-banking .chart-box {
+    padding: 20px 25px;
+    height: 300px;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+}
+
+/* Table inside cards */
+#tab-banking .table-wrap {
+    padding: 15px 25px 25px 25px;
+    overflow-x: auto;
+    flex-grow: 1;
+}
+#tab-banking table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+#tab-banking th {
+    text-align: left;
+    padding: 10px 8px;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    background: transparent !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+#tab-banking th.num, #tab-banking td.num { text-align: right; }
+#tab-banking th.center, #tab-banking td.center { text-align: center; }
+#tab-banking td {
+    padding: 12px 8px;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-bottom: 1px solid #F1F5F9 !important;
+    color: var(--text-main);
+    background: transparent !important;
+}
+#tab-banking tr:hover td {
+    background: #F8FAFC !important;
+}
+
+#tab-banking .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 12px;
+}
+#tab-banking .top-sber .rank-badge { background: var(--sber-bg); color: var(--sber-dark); }
+#tab-banking .top-sber tr:nth-child(1) .rank-badge { background: #FEF08A; color: #854D0E; }
+#tab-banking .top-sber tr:nth-child(2) .rank-badge { background: #E2E8F0; color: #475569; }
+#tab-banking .top-sber tr:nth-child(3) .rank-badge { background: #FFEDD5; color: #9A3412; }
+
+#tab-banking .antitop-ob .rank-badge { background: var(--risk-bg); color: var(--risk-dark); }
+#tab-banking .antitop-ob tr:nth-child(1) .rank-badge { background: #FEE2E2; color: #991B1B; font-weight: 800; }
+
+#tab-banking .partner-cell .name { font-weight: 600; font-size: 13px; color: #0F172A; }
+#tab-banking .partner-cell .loc { font-size: 11px; color: var(--text-muted); }
+
+#tab-banking .progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: #E2E8F0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 4px;
+    display: flex;
+}
+#tab-banking .bar-sber { background: var(--sber-primary); height: 100%; }
+#tab-banking .bar-ob { background: var(--risk-primary); height: 100%; }
+#tab-banking .bar-cash { background: #94A3B8; height: 100%; }
+
+#tab-banking .badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+}
+#tab-banking .badge-sber { background: var(--sber-bg); color: var(--sber-dark); }
+#tab-banking .badge-risk { background: var(--risk-bg); color: var(--risk-dark); }
+#tab-banking .badge-muted { background: #F1F5F9; color: #64748B; }
+
+/* Insights Section */
+#tab-banking .insights-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    padding: 25px 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    margin-bottom: 25px;
+}
+#tab-banking .insights-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0F172A;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#tab-banking .insights-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+@media (max-width: 768px) {
+    #tab-banking .insights-grid {
+        grid-template-columns: 1fr;
+    }
+}
+#tab-banking .insight-box {
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+}
+#tab-banking .insight-box.green { background: #F0FDF4; border-color: #BBF7D0; }
+#tab-banking .insight-box.red { background: #FEF2F2; border-color: #FECACA; }
+#tab-banking .insight-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+#tab-banking .insight-box.green h4 { color: #166534; }
+#tab-banking .insight-box.red h4 { color: #991B1B; }
+#tab-banking .insight-box ul {
+    padding-left: 20px;
+    font-size: 13px;
+    color: #334155;
+    margin: 0;
+    list-style-type: disc;
+}
+#tab-banking .insight-box li { margin-bottom: 6px; }

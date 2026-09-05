@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Custom Dashboard Styles -->
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/banking-dashboard.css">
 </head>
 <body class="p-4 md:p-6 text-slate-800">
     <!-- Toast Notification Container -->
@@ -431,363 +432,137 @@
         </div>
     </div>
 
-    <!-- ==================== TAB: BANKING, LEADS & DC DEALS ==================== -->
-    <div id="tab-banking" class="tab-content hidden space-y-5">
-        <!-- Sub Header with Title and Info -->
-        <div class="card !p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white rounded-3xl shadow-sm border border-gray-200">
-            <div class="flex items-center gap-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-600 to-indigo-700 flex items-center justify-center shadow-md shrink-0 text-white font-black text-xl">
-                    🏦
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h2 class="text-lg font-black text-gray-900 tracking-tight">Лидогенерация, Сделки ДЦ и Автокредитование</h2>
-                        <span id="b_source_badge" class="text-[11px] font-bold bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-0.5 rounded-full">
-                            Обогащенный срез
-                        </span>
-                    </div>
-                    <p class="text-xs text-gray-500 mt-0.5">Сквозной учет конверсии лидов СберАвто, органических продаж дилеров и долей автокредитования (Сбербанк vs Другие банки vs Наличные)</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <button onclick="openBankingDatabaseModal('lead_deals')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition shadow-sm flex items-center gap-1.5 cursor-pointer">
-                    <i data-lucide="database" class="w-3.5 h-3.5"></i> База сделок по лидам
-                </button>
-                <button onclick="openBankingDatabaseModal('other_deals')" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 transition shadow-sm flex items-center gap-1.5 cursor-pointer">
-                    <i data-lucide="layers" class="w-3.5 h-3.5"></i> База других сделок ДЦ
-                </button>
-            </div>
-        </div>
+        <!-- ==================== TAB: BANKING DEALS & TOP/ANTI-TOP ==================== -->
+    <div id="tab-banking" class="tab-content hidden">
+        <div class="container">
 
-        <!-- Section Navigation Tabs -->
-        <div class="flex items-center gap-2 border-b border-gray-200 pb-3 overflow-x-auto">
-            <button id="b_tabBtn_funnel" onclick="switchBankingSection('funnel', this)" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-sm transition cursor-pointer">
-                📊 Сквозная воронка и сделки
-            </button>
-            <button id="b_tabBtn_rankings" onclick="switchBankingSection('rankings', this)" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
-                🏆 ТОП и Антитоп Банков
-            </button>
-            <button id="b_tabBtn_partners" onclick="switchBankingSection('partners', this)" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
-                🏢 Партнеры и 8 Макрорегионов
-            </button>
-            <button id="b_tabBtn_all" onclick="switchBankingSection('all', this)" class="px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
-                📋 Показать всё
-            </button>
-        </div>
-
-        <!-- SECTION 1: FUNNEL & CHARTS -->
-        <div id="b_sec_funnel" class="space-y-5">
-            <!-- 1. SEQUENTIAL FUNNEL PIPELINE (Друг за другом) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- STEP 1: TRANSFERS -->
-            <div class="kpi-card border-l-4 border-l-sky-500 bg-white !mb-0 shadow-sm flex flex-col justify-between p-4">
-                <div>
-                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-sky-50 text-sky-700 mb-2">Шаг 1 • Лиды</span>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Передано лидов в ДЦ</p>
-                    <p id="b_transfers_total" class="text-3xl font-black text-gray-900 mt-1">0</p>
+            <!-- Header -->
+            <div class="dashboard-header">
+                <div class="header-title">
+                    <h1>🏆 ТОП-10 и ⚠️ Антитоп-10 Партнеров по Банковскому проникновению</h1>
+                    <p>Сравнительный анализ проникновения Сбербанка vs Других коммерческих банков (Июнь – Август 2026)</p>
                 </div>
-                <div class="border-t border-dashed border-gray-200 pt-2.5 mt-3 space-y-1 text-xs">
-                    <div class="flex justify-between text-gray-600">
-                        <span>Новые авто:</span>
-                        <b id="b_transfers_new" class="text-gray-900 font-bold">0</b>
+                <div class="header-stats">
+                    <div class="stat-badge">
+                        <div class="num" id="b_stat_deals_total">3 937</div>
+                        <div class="lbl">Всего сделок ДЦ</div>
                     </div>
-                    <div class="flex justify-between text-gray-600">
-                        <span>С пробегом:</span>
-                        <b id="b_transfers_used" class="text-gray-900 font-bold">0</b>
+                    <div class="stat-badge">
+                        <div class="num" id="b_stat_deals_sber" style="color: #4ADE80;">792 (61.4%)</div>
+                        <div class="lbl">Сделки СБЕР (Доля в кред.)</div>
+                    </div>
+                    <div class="stat-badge">
+                        <div class="num" id="b_stat_deals_ob" style="color: #F87171;">498 (38.6%)</div>
+                        <div class="lbl">Другие банки (Доля в кред.)</div>
                     </div>
                 </div>
             </div>
 
-            <!-- STEP 2: LEAD DEALS (CLICKABLE) -->
-            <div onclick="openBankingDatabaseModal('lead_deals')" class="kpi-card border-l-4 border-l-emerald-500 bg-white !mb-0 shadow-sm flex flex-col justify-between p-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition group">
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-emerald-50 text-emerald-700">Шаг 2 • По лидам СА</span>
-                        <span id="b_lead_cr" class="text-xs font-black text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">0%</span>
-                    </div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Сделки по переданным</p>
-                    <p id="b_lead_deals_total" class="text-3xl font-black text-emerald-700 mt-1">0</p>
+            <!-- Controls -->
+            <div class="controls-bar">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" id="btnShare" onclick="switchBankingMode('share')">📊 Рейтинг по Доле в сделках (%)</button>
+                    <button class="tab-btn" id="btnVolume" onclick="switchBankingMode('volume')">📦 Рейтинг по Абсолютному объему (шт.)</button>
                 </div>
-                <div class="border-t border-dashed border-gray-200 pt-2.5 mt-3 space-y-1 text-xs">
-                    <div class="flex justify-between text-gray-600">
-                        <span>Сбербанк:</span>
-                        <b id="b_lead_deals_sber" class="text-emerald-700 font-bold">0</b>
-                    </div>
-                    <div class="flex justify-between text-gray-600">
-                        <span>Другие банки:</span>
-                        <b id="b_lead_deals_other_banks" class="text-rose-600 font-bold">0</b>
-                    </div>
-                    <div class="flex justify-between text-gray-600">
-                        <span>Наличные:</span>
-                        <b id="b_lead_deals_cash" class="text-gray-700 font-bold">0</b>
-                    </div>
-                    <div class="text-[10px] font-bold text-emerald-600 pt-1 flex items-center gap-1 group-hover:underline">
-                        <span>💡 База 331 сделки</span> ➔
-                    </div>
+                <div style="font-size: 12px; color: var(--text-muted, #64748B);">
+                    * Для рейтинга по доле включены партнеры с объемом от 10 сделок за период
                 </div>
             </div>
 
-            <!-- STEP 3: OTHER DEALS (CLICKABLE) -->
-            <div onclick="openBankingDatabaseModal('other_deals')" class="kpi-card border-l-4 border-l-amber-500 bg-white !mb-0 shadow-sm flex flex-col justify-between p-4 cursor-pointer hover:shadow-md hover:-translate-y-0.5 transition group">
-                <div>
-                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-amber-50 text-amber-700 mb-2">Шаг 3 • Прямой трафик</span>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Другие сделки ДЦ</p>
-                    <p id="b_other_deals_total" class="text-3xl font-black text-amber-600 mt-1">0</p>
-                </div>
-                <div class="border-t border-dashed border-gray-200 pt-2.5 mt-3 space-y-1 text-xs">
-                    <div class="flex justify-between text-gray-600">
-                        <span>Сбербанк:</span>
-                        <b id="b_other_deals_sber" class="text-emerald-700 font-bold">0</b>
-                    </div>
-                    <div class="flex justify-between text-gray-600">
-                        <span>Другие банки:</span>
-                        <b id="b_other_deals_other_banks" class="text-rose-600 font-bold">0</b>
-                    </div>
-                    <div class="flex justify-between text-gray-600">
-                        <span>Наличные:</span>
-                        <b id="b_other_deals_cash" class="text-gray-700 font-bold">0</b>
-                    </div>
-                    <div class="text-[10px] font-bold text-amber-600 pt-1 flex items-center gap-1 group-hover:underline">
-                        <span>💡 База 3 606 сделок</span> ➔
-                    </div>
-                </div>
-            </div>
+            <!-- Dual Rankings Grid -->
+            <div class="dual-grid">
 
-            <!-- STEP 4: TOTAL DEALS -->
-            <div class="kpi-card border-l-4 border-l-indigo-600 bg-white !mb-0 shadow-sm flex flex-col justify-between p-4">
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="inline-block px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-indigo-50 text-indigo-700">Шаг 4 • ИТОГО</span>
-                        <span class="text-[11px] font-bold text-indigo-600">Все продажи</span>
-                    </div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">ВСЕГО сделок ДЦ</p>
-                    <p id="b_deals_total" class="text-3xl font-black text-gray-900 mt-1">0</p>
-                </div>
-                <div class="border-t border-dashed border-gray-200 pt-2.5 mt-3 space-y-1 text-xs">
-                    <div class="flex justify-between text-gray-600">
-                        <span>Кредиты (Сбер / Др):</span>
-                        <b class="text-gray-900 font-bold"><span id="b_deals_sber" class="text-emerald-700">0</span> / <span id="b_deals_other_banks" class="text-rose-600">0</span></b>
-                    </div>
-                    <div class="flex justify-between text-gray-600">
-                        <span>Наличные расчеты:</span>
-                        <b id="b_deals_cash" class="text-gray-700 font-bold">0</b>
-                    </div>
-                    <div class="flex justify-between border-t border-gray-100 pt-1 font-bold text-[11px]">
-                        <span class="text-gray-500">Доля кредитов: <b id="b_deals_credit_pct" class="text-indigo-600">0%</b></span>
-                        <span class="text-gray-500">Доля Сбера: <b id="b_deals_sber_pct" class="text-emerald-700">0%</b></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 2. CHARTS ROW: PAYMENTS STRUCTURE & COMPARISON -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-            <!-- DONUT CHART -->
-            <div class="card !p-4 bg-white rounded-2xl shadow-sm border border-gray-200">
-                <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
-                    <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wide flex items-center gap-2">
-                        <i data-lucide="pie-chart" class="w-4 h-4 text-emerald-600"></i> Структура оплат всех сделок ДЦ
-                    </h3>
-                    <span class="text-[11px] text-gray-400 font-medium">Сбер vs Другие банки vs Наличные</span>
-                </div>
-                <div class="relative h-[280px] w-full">
-                    <canvas id="b_chart_payments"></canvas>
-                </div>
-            </div>
-
-            <!-- STACKED BAR CHART -->
-            <div class="card !p-4 bg-white rounded-2xl shadow-sm border border-gray-200">
-                <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
-                    <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wide flex items-center gap-2">
-                        <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i> Сравнение оплат: Лиды СА vs Сделки ДЦ
-                    </h3>
-                    <span class="text-[11px] text-gray-400 font-medium">Кредитное распределение по каналам</span>
-                </div>
-                <div class="relative h-[280px] w-full">
-                    <canvas id="b_chart_comparison"></canvas>
-                </div>
-            </div>
-        </div>
-        </div>
-
-        <!-- SECTION 2: TOP SBER VS ANTI-TOP OTHER BANKS -->
-        <div id="b_sec_rankings" class="space-y-5 hidden">
-        <!-- 3. TOP-10 SBER VS ANTI-TOP-10 OTHER BANKS -->
-        <div class="card !p-5 bg-white rounded-2xl shadow-sm border border-gray-200 space-y-4">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
-                <div>
-                    <h3 class="text-base font-black text-gray-900 tracking-tight flex items-center gap-2">
-                        <i data-lucide="award" class="w-5 h-5 text-amber-500"></i> ТОП Партнеров Сбербанка vs АНТИТОП Других Банков
-                    </h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Опорные ДЦ Сбербанка и точки риска оттока в коммерческие банки</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button id="btnRankShare" onclick="setBankingRankMode('share')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-indigo-600 text-white shadow-sm cursor-pointer">
-                        📊 По доле кредитов (%)
-                    </button>
-                    <button id="btnRankVolume" onclick="setBankingRankMode('volume')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
-                        📦 По объему (шт.)
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                <!-- LEFT: TOP SBER -->
-                <div class="rounded-xl border border-emerald-100 bg-emerald-50/10 overflow-hidden flex flex-col justify-between">
-                    <div>
-                        <div class="px-4 py-3 bg-gradient-to-r from-emerald-50 to-white border-b border-emerald-100 flex items-center justify-between">
-                            <div>
-                                <h4 class="text-xs font-black text-emerald-900 uppercase tracking-wide flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-600"></span> 🟢 Опорные партнеры Сбербанка
-                                </h4>
-                                <p id="b_topSberSub" class="text-[11px] text-gray-500 mt-0.5">ТОП-10 • Доля Сбера в кредитах ≥ 50%</p>
-                            </div>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">Лидеры Сбера</span>
+                <!-- 1. TOP 10 SBER -->
+                <div class="ranking-card top-sber">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2>🟢 ТОП-10 Партнеров по СБЕРБАНКУ</h2>
+                            <p id="topSberSubtitle">Максимальная доля и проникновение автокредитов Сбера</p>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="bg-slate-50 text-[11px] text-gray-500 font-bold border-b border-gray-200">
-                                    <tr>
-                                        <th class="py-2 px-2.5 text-center w-8">#</th>
-                                        <th class="py-2 px-2.5">Партнер / Локация</th>
-                                        <th class="py-2 px-2.5 text-right">Сделок</th>
-                                        <th class="py-2 px-2.5 text-right">Сбер</th>
-                                        <th class="py-2 px-2.5 text-right">Др</th>
-                                        <th class="py-2 px-2.5 text-right min-w-[110px]">Доля Сбера</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="b_topSberTbody">
-                                    <!-- Populated by banking-dashboard.js -->
-                                </tbody>
-                            </table>
-                        </div>
+                        <span class="badge badge-sber">Лидеры Сбера</span>
                     </div>
-                    <div class="p-2.5 bg-slate-50 border-t border-gray-100 text-center">
-                        <button id="b_btnExpandTopSber" onclick="toggleBankingExpand('topSber')" class="text-xs font-bold text-indigo-700 hover:text-indigo-900 transition cursor-pointer">
-                            ▼ Раскрыть всех партнеров
-                        </button>
+                    
+                    <div class="chart-box">
+                        <canvas id="topSberChart"></canvas>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table id="topSberTable">
+                            <thead>
+                                <tr>
+                                    <th class="center" style="width: 35px;">#</th>
+                                    <th>Партнер / Локация</th>
+                                    <th class="num">Сделок</th>
+                                    <th class="num">СБЕР</th>
+                                    <th class="num" style="width: 140px;">Доля Сбера (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topSberTbody">
+                                <!-- Populated by banking-dashboard.js -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <!-- RIGHT: ANTI-TOP OTHER BANKS -->
-                <div class="rounded-xl border border-rose-100 bg-rose-50/10 overflow-hidden flex flex-col justify-between">
-                    <div>
-                        <div class="px-4 py-3 bg-gradient-to-r from-rose-50 to-white border-b border-rose-100 flex items-center justify-between">
-                            <div>
-                                <h4 class="text-xs font-black text-rose-900 uppercase tracking-wide flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-rose-600"></span> 🔴 АНТИТОП: Другие Банки (Зона Риска)
-                                </h4>
-                                <p id="b_antiTopSub" class="text-[11px] text-gray-500 mt-0.5">АНТИТОП-10 • Доля сторонних банков > 50%</p>
-                            </div>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800">Точки оттока</span>
+                <!-- 2. ANTI-TOP 10 OTHER BANKS -->
+                <div class="ranking-card antitop-ob">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h2>🔴 АНТИТОП-10: Другие Банки (Зона Риска)</h2>
+                            <p id="antiTopSubtitle">ДЦ с наибольшей долей сторонних банков (отток от Сбера)</p>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="bg-slate-50 text-[11px] text-gray-500 font-bold border-b border-gray-200">
-                                    <tr>
-                                        <th class="py-2 px-2.5 text-center w-8">#</th>
-                                        <th class="py-2 px-2.5">Партнер / Конкуренты</th>
-                                        <th class="py-2 px-2.5 text-right">Сделок</th>
-                                        <th class="py-2 px-2.5 text-right">Др.банки</th>
-                                        <th class="py-2 px-2.5 text-right">Сбер</th>
-                                        <th class="py-2 px-2.5 text-right min-w-[110px]">Доля Др.Банков</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="b_antiTopTbody">
-                                    <!-- Populated by banking-dashboard.js -->
-                                </tbody>
-                            </table>
-                        </div>
+                        <span class="badge badge-risk">Конкурентная зона</span>
                     </div>
-                    <div class="p-2.5 bg-slate-50 border-t border-gray-100 text-center">
-                        <button id="b_btnExpandAntiTop" onclick="toggleBankingExpand('antiTop')" class="text-xs font-bold text-rose-700 hover:text-rose-900 transition cursor-pointer">
-                            ▼ Раскрыть всех партнеров
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
 
-        <!-- SECTION 3: 8 MACROREGIONS & PARTNERS REGISTRY -->
-        <div id="b_sec_partners" class="space-y-5 hidden">
-        <!-- 4. MACRO-REGIONS (8 RC) MATRIX -->
-        <div class="card !p-5 bg-white rounded-2xl shadow-sm border border-gray-200">
-            <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-3">
-                <div>
-                    <h3 class="text-sm font-black text-gray-900 tracking-tight flex items-center gap-2">
-                        <i data-lucide="map" class="w-4 h-4 text-indigo-600"></i> Сводная матрица по 8 макрорегионам (РЦ Сбера)
-                    </h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Волга, Волго-Вятка, Москва, Северо-Запад, Сибирь, Урал, Центрально-Черноземный, Юг</p>
-                </div>
-                <div class="text-[11px] text-gray-400 font-medium">
-                    Конверсия лидов (CR) и кредитная доля Сбера
-                </div>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-900 text-white text-[11px] font-bold">
-                        <tr>
-                            <th class="py-2.5 px-3">Макрорегион (РЦ)</th>
-                            <th class="py-2.5 px-3 text-right bg-sky-900/60">Передано лидов</th>
-                            <th class="py-2.5 px-3 text-right text-emerald-400">Сделок СА</th>
-                            <th class="py-2.5 px-3 text-right">CR (%)</th>
-                            <th class="py-2.5 px-3 text-right">Другие сделки</th>
-                            <th class="py-2.5 px-3 text-right bg-slate-800">ВСЕГО сделок</th>
-                            <th class="py-2.5 px-3 text-right text-emerald-400">в т.ч. Сбер</th>
-                            <th class="py-2.5 px-3 text-right text-rose-400">Др.Банки</th>
-                            <th class="py-2.5 px-3 text-right text-slate-300">Наличные</th>
-                            <th class="py-2.5 px-3 text-right">Доля кред. %</th>
-                            <th class="py-2.5 px-3 text-right text-emerald-300 bg-slate-800">Доля Сбера %</th>
-                        </tr>
-                    </thead>
-                    <tbody id="b_macroTbody">
-                        <!-- Populated by banking-dashboard.js -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    <div class="chart-box">
+                        <canvas id="antiTopChart"></canvas>
+                    </div>
 
-        <!-- 5. ALL PARTNERS DETAILED TABLE WITH REAL-TIME SEARCH -->
-        <div class="card !p-5 bg-white rounded-2xl shadow-sm border border-gray-200">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-gray-100 pb-3 mb-4">
-                <div>
-                    <h3 class="text-sm font-black text-gray-900 tracking-tight flex items-center gap-2">
-                        <i data-lucide="building-2" class="w-4 h-4 text-sky-600"></i> Детализация по дилерским центрам и партнерам
-                    </h3>
-                    <p class="text-xs text-gray-500 mt-0.5">Полный реестр ДЦ с объемами продаж, каналами привлечения и банками</p>
+                    <div class="table-wrap">
+                        <table id="antiTopTable">
+                            <thead>
+                                <tr>
+                                    <th class="center" style="width: 35px;">#</th>
+                                    <th>Партнер / Локация</th>
+                                    <th class="num">Сделок</th>
+                                    <th class="num">Др.банки</th>
+                                    <th class="num" style="width: 140px;">Доля Др.Банков (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="antiTopTbody">
+                                <!-- Populated by banking-dashboard.js -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <span id="b_partnersVisibleCount" class="text-xs text-gray-500 font-medium whitespace-nowrap"></span>
-                    <div class="relative w-full sm:w-64">
-                        <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5"></i>
-                        <input type="text" oninput="filterBankingPartners(this.value)" placeholder="Поиск по ДЦ, городу, региону..." class="w-full bg-slate-50 border border-gray-200 rounded-xl pl-8 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-sky-500 outline-none transition">
+
+            </div>
+
+            <!-- Insights Section -->
+            <div class="insights-card">
+                <h3>💡 Аналитические инсайты и фокус для управления продаж</h3>
+                <div class="insights-grid">
+                    <div class="insight-box green">
+                        <h4>🟢 Опорные партнеры Сбербанка (High Penetration)</h4>
+                        <ul>
+                            <li><b>ООО "ВОРОНЕЖ-АВТО-СИТИ" (Воронеж)</b>: абсолютный лидер по проникновению — <b>87.5%</b> всех продаж салона проходят через Сбер (14 из 16 сделок).</li>
+                            <li><b>ООО "ТЦ КУНЦЕВО ЛИМИТЕД" (Москва)</b>: 100% выданных кредитов (27 шт.) оформлены через Сбербанк.</li>
+                            <li><b>ООО "ПРОДИКС" (СПб)</b> и <b>ООО "НЕВААВТО" (СПб)</b>: более <b>92-94%</b> кредитных сделок идут в Сбербанк.</li>
+                            <li><b>ONLINE Башавтоком (Уфа)</b> и <b>ФДЦ Автопрестиж (Волгоград)</b>: обеспечивают свыше 90% кредитной доли Сбера.</li>
+                        </ul>
+                    </div>
+                    <div class="insight-box red">
+                        <h4>🔴 Ключевые точки оттока в сторонние банки (Конверсионный потенциал)</h4>
+                        <ul>
+                            <li><b>ООО "МАРКАР ГРУПП" (Москва)</b>: критическая концентрация сторонних банков — <b>81 сделка (58.3%)</b> ушла в другие банки (30 в Т-Банк, 25 в ВТБ), и лишь 16 в Сбер.</li>
+                            <li><b>ООО "МАКСИМУМ КРЕДИТ" (СПб)</b>: <b>53.3%</b> продаж салона оформлено через МС Банк Рус (12) и Уралсиб, при 3 сделках в Сбере.</li>
+                            <li><b>ООО "АВТОПРОФИЛЬ" (Нижний Новгород)</b>: <b>27 сделок</b> ушло в ОТП Банк (17) и Совкомбанк (8), против 13 в Сбер.</li>
+                            <li><b>ООО "АВТОМИР-ТРЕЙД" (Москва)</b>: <b>21 сделка</b> в сторонних банках (Совкомбанк, ВТБ) при 4 сделках в Сбере.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div class="overflow-x-auto max-h-[600px]">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-100 text-gray-600 text-[11px] font-bold sticky top-0 border-b border-gray-200">
-                        <tr>
-                            <th class="py-2 px-3 text-center w-8">#</th>
-                            <th class="py-2 px-3">Партнер / Локация</th>
-                            <th class="py-2 px-3 text-right">Всего</th>
-                            <th class="py-2 px-3 text-right text-emerald-700">Сбер</th>
-                            <th class="py-2 px-3 text-right text-rose-600">Др.банки</th>
-                            <th class="py-2 px-3 text-right">Нал</th>
-                            <th class="py-2 px-3 text-right text-sky-700">Лиды СА</th>
-                            <th class="py-2 px-3 text-right">Прямые ДЦ</th>
-                            <th class="py-2 px-3 text-right text-emerald-700">Доля Сбера %</th>
-                            <th class="py-2 px-3 text-right text-rose-600">Доля Др %</th>
-                            <th class="py-2 px-3">Банки конкуренты</th>
-                        </tr>
-                    </thead>
-                    <tbody id="b_partnersTbody">
-                        <!-- Populated by banking-dashboard.js -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+
         </div>
     </div>
 
@@ -1174,6 +949,7 @@
     <script src="js/heatmap.js?v=2808_1455"></script>
     <script src="js/lead-geo.js?v=2808_1455"></script>
     <script src="js/kam-dashboard.js?v=2808_1455"></script>
+    <script src="js/banking-dashboard.js?v=2808_1455"></script>
 
     <script>
         window.onload = () => {
@@ -1182,86 +958,7 @@
         };
     </script>
 
-    <!-- ==================== MODAL: BANKING DATABASE VIEWER ==================== -->
-    <div id="bankingDbModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 w-full max-w-6xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            <!-- Modal Header -->
-            <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-emerald-600/30 text-emerald-400 flex items-center justify-center font-bold">
-                        <i data-lucide="database" class="w-5 h-5"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h3 id="b_dbModalTitle" class="text-base font-black text-white">Реестр сделок</h3>
-                            <span id="b_dbModalBadge" class="px-2.5 py-0.5 rounded text-xs font-black"></span>
-                        </div>
-                        <p class="text-xs text-slate-400 mt-0.5">Детализированный реестр сделок с банками, VIN-номерами и заявками ФронтДЦ</p>
-                    </div>
-                </div>
-                <button onclick="closeBankingDatabaseModal()" class="text-slate-400 hover:text-white transition p-1 rounded-lg hover:bg-slate-800 cursor-pointer">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-
-            <!-- Modal Filters & Search -->
-            <div class="p-4 bg-slate-50 border-b border-gray-200 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                <div class="flex items-center gap-2 flex-wrap">
-                    <button id="b_chip_all" onclick="setBankingDbFilter('all')" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-emerald-600 text-white shadow-sm cursor-pointer">
-                        Все
-                    </button>
-                    <button id="b_chip_sber" onclick="setBankingDbFilter('sber')" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
-                        🟢 Сбербанк
-                    </button>
-                    <button id="b_chip_other_banks" onclick="setBankingDbFilter('other_banks')" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
-                        🔴 Другие банки
-                    </button>
-                    <button id="b_chip_cash" onclick="setBankingDbFilter('cash')" class="px-3 py-1 rounded-lg text-xs font-bold transition bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer">
-                        ⚪ Наличные
-                    </button>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span id="b_dbRecordCount" class="text-xs text-gray-500 font-semibold whitespace-nowrap"></span>
-                    <div class="relative w-full sm:w-72">
-                        <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5"></i>
-                        <input id="b_dbSearchInput" type="text" oninput="renderBankingDbRows()" placeholder="Поиск по CID, марке, VIN, банку..." class="w-full bg-white border border-gray-300 rounded-xl pl-8 pr-3 py-1.5 text-xs text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 outline-none transition">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Table -->
-            <div class="overflow-x-auto flex-grow p-4 max-h-[550px]">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-100 text-gray-600 text-[11px] font-bold sticky top-0 border-b border-gray-200">
-                        <tr>
-                            <th class="py-2 px-2.5 text-center w-8">#</th>
-                            <th class="py-2 px-2.5">Client ID</th>
-                            <th class="py-2 px-2.5">Партнер / ДЦ</th>
-                            <th class="py-2 px-2.5">Автомобиль</th>
-                            <th class="py-2 px-2.5">VIN</th>
-                            <th class="py-2 px-2.5">Банк</th>
-                            <th class="py-2 px-2.5 text-center">Категория</th>
-                            <th class="py-2 px-2.5">Город</th>
-                            <th class="py-2 px-2.5">Макрорегион</th>
-                            <th class="py-2 px-2.5 text-center">Дата</th>
-                            <th class="py-2 px-2.5 text-center">Заявка ФронтДЦ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="b_dbTbody">
-                        <!-- Populated by banking-dashboard.js -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="px-6 py-3 bg-slate-50 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
-                <span id="b_dbFooterInfo">Отображено записей: 0</span>
-                <button onclick="closeBankingDatabaseModal()" class="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-200 hover:bg-slate-300 text-slate-700 transition cursor-pointer">
-                    Закрыть
-                </button>
-            </div>
-        </div>
-    </div>
+    
 
 </body>
 </html>

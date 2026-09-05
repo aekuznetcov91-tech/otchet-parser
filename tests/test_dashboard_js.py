@@ -18,7 +18,8 @@ class TestDashboardJavaScript(unittest.TestCase):
             os.path.join(JS_DIR, 'charts.js'),
             os.path.join(JS_DIR, 'debtors.js'),
             os.path.join(JS_DIR, 'data-loader.js'),
-            os.path.join(JS_DIR, 'lead-geo.js')
+            os.path.join(JS_DIR, 'lead-geo.js'),
+            os.path.join(JS_DIR, 'banking-dashboard.js')
         ]
 
     def test_js_files_exist(self):

@@ -277,7 +277,7 @@ def find_file_with_bank_column(raw_dirs):
                     continue
                 fpath = os.path.join(root, fname)
                 try:
-                    wb = openpyxl.load_workbook(fpath, data_only=True)
+                    wb = openpyxl.load_workbook(fpath, read_only=True, data_only=True)
                     ws = wb.active
                     row1 = next(ws.iter_rows(max_row=1, values_only=True), None)
                     wb.close()
@@ -319,7 +319,7 @@ def load_lead_transfers(raw_dirs):
 
     if f_events and os.path.exists(f_events):
         try:
-            wb = openpyxl.load_workbook(f_events, data_only=True)
+            wb = openpyxl.load_workbook(f_events, read_only=True, data_only=True)
             ws = wb.active
             for r in ws.iter_rows(min_row=4, values_only=True):
                 if not r or len(r) < 1:
@@ -352,7 +352,7 @@ def load_lead_transfers(raw_dirs):
 
     if f_transfers and os.path.exists(f_transfers):
         try:
-            wb = openpyxl.load_workbook(f_transfers, data_only=True)
+            wb = openpyxl.load_workbook(f_transfers, read_only=True, data_only=True)
             ws = wb.active
             seen_transfers = set()
             for r in ws.iter_rows(min_row=4, values_only=True):
@@ -408,7 +408,7 @@ def parse_banking_analytics(base_dir=None):
     transfers_new = sum(1 for t in unique_transfers_list if t['condition'] == 'Новый')
     transfers_used = sum(1 for t in unique_transfers_list if t['condition'] == 'С пробегом')
 
-    wb = openpyxl.load_workbook(bank_file, data_only=True)
+    wb = openpyxl.load_workbook(bank_file, read_only=True, data_only=True)
     ws = wb.active
 
     header = [str(c or '').strip() for c in next(ws.iter_rows(max_row=1, values_only=True))]
