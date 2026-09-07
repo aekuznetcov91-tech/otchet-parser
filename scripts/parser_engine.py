@@ -1416,6 +1416,9 @@ def run_pipeline():
     merged_deals_dict = {}
     for d_fname, d_fpath, d_rows in deals_candidates:
         for r in d_rows:
+            stream = str(get_exact_val(r, 'СТРИМ') or '').strip()
+            if stream and stream != 'Импортеры':
+                continue
             did = str(get_exact_val(r, 'ID', 'IDСДЕЛКИ') or '').strip()
             tovar = str(get_exact_val(r, 'ТОВАР') or '').strip()
             vin = str(get_exact_val(r, 'VIN') or '').strip()
@@ -1492,6 +1495,10 @@ def run_pipeline():
                 all_transferred_clients.add(cid_l)
 
     for row in deals_data:
+        stream = str(get_exact_val(row, 'СТРИМ') or "").strip()
+        if stream and stream != 'Импортеры':
+            continue
+
         tovar = str(get_exact_val(row, 'ТОВАР') or "").upper()
         if any(kw in tovar for kw in aux_keywords):
             continue
