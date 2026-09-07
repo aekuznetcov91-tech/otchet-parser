@@ -253,12 +253,14 @@ function initFunnelCharts() {
     const elBar = document.getElementById('funnelBanksComparisonChart');
     if (!elDonut || !elBar) return;
 
-    if (funnelPaymentsChartInstance) {
-        funnelPaymentsChartInstance.destroy();
+    const existingDonut = (typeof Chart !== 'undefined' && Chart.getChart(elDonut)) || funnelPaymentsChartInstance;
+    if (existingDonut) {
+        try { existingDonut.destroy(); } catch(e) {}
         funnelPaymentsChartInstance = null;
     }
-    if (funnelBanksChartInstance) {
-        funnelBanksChartInstance.destroy();
+    const existingBar = (typeof Chart !== 'undefined' && Chart.getChart(elBar)) || funnelBanksChartInstance;
+    if (existingBar) {
+        try { existingBar.destroy(); } catch(e) {}
         funnelBanksChartInstance = null;
     }
 
