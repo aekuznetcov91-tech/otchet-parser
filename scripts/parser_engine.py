@@ -50,44 +50,68 @@ def normalize_brand(tovar_str):
     aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "ВНЕСЕНИЕ", "АВАНС", "ОФОРМЛЕНИЕ", "ДОГОВОР", "УСЛУГА", "КОМИССИЯ", "ДОП")
     if any(kw in t for kw in aux_keywords):
         return None
-    if "DASHING" in t or "X70 PLUS" in t or "JETOUR" in t:
-        return "JETOUR"
-    if "LADA" in t or "ЛАДА" in t:
-        return "LADA"
-    if "HAVAL" in t or "ХАВЕЙЛ" in t or "JOLION" in t or "F7" in t or "DARGO" in t or "H3" in t:
-        return "HAVAL"
-    if "SOLARIS" in t or "СОЛЯРИС" in t:
-        return "SOLARIS"
-    if "CHANGAN" in t or "ЧАНГАН" in t or "UNI-V" in t or "UNI-K" in t or "CS35" in t or "CS55" in t or "CS75" in t:
-        return "CHANGAN"
-    if "G B K" in t or "GEELY" in t or "BELGEE" in t or "KNEWSTAR" in t or "ДЖИЛИ" in t or "БЕЛДЖИ" in t or "MONJARO" in t or "COOLRAY" in t or "ATLAS" in t or "X50" in t or "X70" in t:
+
+    # Strip VIN or 17-character alphanumeric tokens before matching model acronyms
+    t_clean = re.sub(r'VIN\s*[:\s]*\s*[A-Z0-9]+', ' ', t)
+    t_clean = re.sub(r'\b[A-HJ-NPR-Z0-9]{17}\b', ' ', t_clean)
+
+    # 1. Primary check: Full Brand Names (highest priority, avoids substring collisions)
+    if "G B K" in t_clean or "GEELY" in t_clean or "BELGEE" in t_clean or "KNEWSTAR" in t_clean or "ДЖИЛИ" in t_clean or "БЕЛДЖИ" in t_clean:
         return "Geely & Belgee"
-    if "SOUEAST" in t:
-        return "SOUEAST"
-    if "GAC" in t or "GS3" in t or "GS8" in t or "M8" in t:
-        return "GAC"
-    if "TENET" in t or "CHERY" in t or "ЧЕРИ" in t or "TIGGO" in t or "ARRIZO" in t:
-        return "CHERY & TENET"
-    if "HONGQI" in t:
-        return "HONGQI"
-    if "XCITE" in t or "X-CITE" in t:
-        return "XCITE"
-    if "МОСКВИЧ" in t:
-        return "МОСКВИЧ"
-    if "OMODA" in t or "JAECOO" in t or "C5" in t or "S5" in t or "J7" in t or "J8" in t:
+    if "HAVAL" in t_clean or "ХАВЕЙЛ" in t_clean:
+        return "HAVAL"
+    if "OMODA" in t_clean or "JAECOO" in t_clean or "ОМОДА" in t_clean or "ДЖЕЙКУ" in t_clean or "ДЖАКУ" in t_clean:
         return "OMODA & JAECOO"
-    if "KIA" in t or "КИА" in t:
-        return "KIA"
-    if "HYUNDAI" in t or "ХЕНДЭ" in t or "ХЕНДАЙ" in t:
-        return "HYUNDAI"
-    if "TOYOTA" in t or "ТОЙОТА" in t:
+    if "TENET" in t_clean or "CHERY" in t_clean or "ЧЕРИ" in t_clean:
+        return "CHERY & TENET"
+    if "CHANGAN" in t_clean or "ЧАНГАН" in t_clean:
+        return "CHANGAN"
+    if "JETOUR" in t_clean or "ДЖЕТУР" in t_clean:
+        return "JETOUR"
+    if "LADA" in t_clean or "ЛАДА" in t_clean:
+        return "LADA"
+    if "GAC" in t_clean or "ГАК" in t_clean:
+        return "GAC"
+    if "TOYOTA" in t_clean or "ТОЙОТА" in t_clean:
         return "TOYOTA"
-    if "TANK" in t or "ТАНК" in t:
+    if "TANK" in t_clean or "ТАНК" in t_clean:
         return "TANK"
-    if "EXEED" in t or "ЭКСИД" in t:
+    if "EXEED" in t_clean or "ЭКСИД" in t_clean:
         return "EXEED"
-    
-    words = re.split(r'[\s,/-]+', t.strip())
+    if "SOUEAST" in t_clean or "СОУИСТ" in t_clean:
+        return "SOUEAST"
+    if "SOLARIS" in t_clean or "СОЛЯРИС" in t_clean:
+        return "SOLARIS"
+    if "HONGQI" in t_clean or "ХОНЧИ" in t_clean:
+        return "HONGQI"
+    if "XCITE" in t_clean or "X-CITE" in t_clean or "ИКСИТ" in t_clean:
+        return "XCITE"
+    if "МОСКВИЧ" in t_clean or "MOSKVICH" in t_clean:
+        return "МОСКВИЧ"
+    if "KIA" in t_clean or "КИА" in t_clean:
+        return "KIA"
+    if "HYUNDAI" in t_clean or "ХЕНДЭ" in t_clean or "ХЕНДАЙ" in t_clean:
+        return "HYUNDAI"
+    if "VOYAH" in t_clean or "ВОЯ" in t_clean:
+        return "VOYAH"
+
+    # 2. Secondary check: Distinct vehicle models using regex word boundaries
+    if re.search(r'\b(MONJARO|COOLRAY|ATLAS|PREFACE|EMGRAND|OKAVANGO|TUGELLA|TUGGELLA|CITYRAY|EX5|X50|X70)\b', t_clean):
+        return "Geely & Belgee"
+    if re.search(r'\b(JOLION|DARGO|H3|H9|M6|F7|F7X|H7)\b', t_clean):
+        return "HAVAL"
+    if re.search(r'\b(DASHING|X70\s*PLUS|T2|X90\s*PLUS)\b', t_clean):
+        return "JETOUR"
+    if re.search(r'\b(UNI-V|UNI-K|UNI-T|UNI-S|CS35|CS55|CS75|CS95|HUNTER|LAMORE|EADO|ALSVIN)\b', t_clean):
+        return "CHANGAN"
+    if re.search(r'\b(GS3|GS8|M8)\b', t_clean):
+        return "GAC"
+    if re.search(r'\b(TIGGO|ARRIZO)\b', t_clean):
+        return "CHERY & TENET"
+    if re.search(r'\b(C5|S5|J7|J8)\b', t_clean):
+        return "OMODA & JAECOO"
+
+    words = re.split(r'[\s,/-]+', t_clean.strip())
     first_word = words[0] if words and words[0] else ""
     if len(first_word) >= 2 and re.match(r'^[A-ZА-Я0-9]+$', first_word) and not any(kw in first_word for kw in aux_keywords):
         return first_word
@@ -461,6 +485,12 @@ def calculate_brand_funnel(sys_db, leads_data=None):
                 b_norm = normalize_brand(combined)
                 if b_norm in brand_canonical.values():
                     found_b = b_norm
+                elif b_norm == 'Geely & Belgee':
+                    found_b = 'BELGEE' if any(k in combined for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70')) else 'GEELY'
+                elif b_norm == 'OMODA & JAECOO':
+                    found_b = 'JAECOO' if any(k in combined for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8')) else 'OMODA'
+                elif b_norm == 'CHERY & TENET':
+                    if 'TENET' in combined: found_b = 'TENET'
             if not found_b: continue
 
             d_val = r.get('Дата события') or r.get('ДАТАСОБЫТИЯ')
@@ -498,6 +528,22 @@ def calculate_brand_funnel(sys_db, leads_data=None):
 
     by_month = {}
 
+    def is_brand_match_for_funnel(r_brand, r_model, funnel_brand):
+        if r_brand == funnel_brand:
+            return True
+        m = (r_model or '').upper()
+        if funnel_brand == 'GEELY':
+            return r_brand == 'Geely & Belgee' and not any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70'))
+        if funnel_brand == 'BELGEE':
+            return r_brand == 'Geely & Belgee' and any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70'))
+        if funnel_brand == 'OMODA':
+            return r_brand == 'OMODA & JAECOO' and not any(k in m for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8'))
+        if funnel_brand == 'JAECOO':
+            return r_brand == 'OMODA & JAECOO' and any(k in m for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8'))
+        if funnel_brand == 'TENET':
+            return r_brand == 'CHERY & TENET' and 'TENET' in m
+        return False
+
     for m in months:
         by_month[m] = {
             "month": m,
@@ -507,9 +553,9 @@ def calculate_brand_funnel(sys_db, leads_data=None):
 
         for b in all_brands:
             if m == 'all':
-                b_sales = [r for r in sys_db if r.get('SaleQty') == 1 and r.get('Brand') == b]
+                b_sales = [r for r in sys_db if r.get('SaleQty') == 1 and is_brand_match_for_funnel(r.get('Brand'), r.get('Model'), b)]
             else:
-                b_sales = [r for r in sys_db if r.get('SaleQty') == 1 and r.get('Brand') == b and r.get('SaleMonth') == m]
+                b_sales = [r for r in sys_db if r.get('SaleQty') == 1 and r.get('SaleMonth') == m and is_brand_match_for_funnel(r.get('Brand'), r.get('Model'), b)]
 
             b_mp2 = [r for r in b_sales if 'МП2' in str(r.get('B2C') or '').upper()]
             b_no_mp2 = [r for r in b_sales if 'МП2' not in str(r.get('B2C') or '').upper()]
