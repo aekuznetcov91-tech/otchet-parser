@@ -226,6 +226,11 @@ function updateAllTabs() {
     // Linear Run Rate KPI
     updateRunRate(sDb, currentFilterConfig);
 
+    // Executive Dashboard: Pace, Alerts, Margin & Partner Health Matrix
+    if (typeof renderExecutiveDashboard === 'function') {
+        renderExecutiveDashboard(sDb, pDb, db, dbPartners, currentFilterConfig);
+    }
+
     renderDashTables(sDb);
     let y, m;
     if (currentFilterConfig.mode === 'month') {

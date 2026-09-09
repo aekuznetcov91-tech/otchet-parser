@@ -1225,7 +1225,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
 
     clients_all = list(clients_by_id.values())
 
-    def build_tree_for_clients(subset_clients):
+    def build_tree_for_clients(subset_clients, include_clients=True, max_clients_per_dealer=150):
         tot_c = len(subset_clients)
         q_c = sum(1 for c in subset_clients if c['is_qual'])
         t_c = sum(1 for c in subset_clients if c['is_trans'])
@@ -1279,7 +1279,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             b = c['brand'] or 'Другие'
             d_entry['brands_count'][b] = d_entry['brands_count'].get(b, 0) + 1
             
-            if len(d_entry['clients']) < 500:
+            if include_clients and len(d_entry['clients']) < max_clients_per_dealer:
                 d_entry['clients'].append({
                     'id': c['id'],
                     'bfs_url': c['bfs_url'],
@@ -1343,17 +1343,18 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             'regions': regions_list
         }
 
-    all_tree = build_tree_for_clients(clients_all)
+    all_tree = build_tree_for_clients(clients_all, include_clients=True, max_clients_per_dealer=150)
+    all_tree_no_clients = build_tree_for_clients(clients_all, include_clients=False)
     aug_clients = [c for c in clients_all if c.get('month') == '2026-08']
     jul_clients = [c for c in clients_all if c.get('month') == '2026-07']
-    aug_tree = build_tree_for_clients(aug_clients)
-    jul_tree = build_tree_for_clients(jul_clients)
+    aug_tree = build_tree_for_clients(aug_clients, include_clients=False)
+    jul_tree = build_tree_for_clients(jul_clients, include_clients=False)
 
     return {
         'summary': all_tree['summary'],
         'regions': all_tree['regions'],
         'by_month': {
-            'all': all_tree,
+            'all': all_tree_no_clients,
             '2026-08': aug_tree,
             '2026-07': jul_tree
         }
