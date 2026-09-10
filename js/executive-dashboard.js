@@ -24,7 +24,7 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig) {
     const paceData = calculatePaceMetrics(sDb, allDb, activeMonth);
 
     // 2. Calculate Alerts Radar
-    const alertData = calculateAlertsRadar(allDb, pDb);
+    const alertData = calculateAlertsRadar(allDb, pDb, allPartners || []);
 
     // 3. Calculate Margin & ARPU by Channel
     const marginData = calculateChannelUnitEconomics(sDb);
@@ -81,6 +81,9 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig) {
         </div>
     `;
 
+    // Ensure Health Matrix modal exists in the DOM
+    ensureHealthModalExists();
+
     // Initialize Lucide icons if available
     if (typeof lucide !== 'undefined' && lucide.createIcons) {
         lucide.createIcons();
@@ -95,9 +98,10 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig) {
 function calculatePaceMetrics(sDb, allDb, activeMonth) {
     const deals = allDb || sDb || [];
     
-    // Find latest sale date across all deals
+    // Find latest sale date ONLY across actual closed sales (SaleQty > 0 or SaleMonth present)
+    const salesOnly = deals.filter(d => (d.SaleQty > 0) || (d.SaleMonth && d.SaleMonth.length > 0));
     let maxSaleDate = null;
-    deals.forEach(d => {
+    salesOnly.forEach(d => {
         const sDate = d.SaleDate || d.DealDate;
         if (sDate) {
             const dt = excelToJSDate(sDate);
@@ -110,7 +114,7 @@ function calculatePaceMetrics(sDb, allDb, activeMonth) {
     const refDate = maxSaleDate || new Date();
     const curYear = refDate.getFullYear();
     const curMonthIdx = refDate.getMonth(); // 0-based
-    const curDay = refDate.getDate(); // e.g. 9
+    const curDay = refDate.getDate(); // e.g. 10
 
     const monthNames = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
     const curMonthName = monthNames[curMonthIdx];
@@ -122,7 +126,7 @@ function calculatePaceMetrics(sDb, allDb, activeMonth) {
     const curMonthPrefix = `${curYear}-${String(curMonthIdx + 1).padStart(2, '0')}`;
     const curMonthDeals = deals.filter(d => {
         const m = (d.SaleMonth || '').replace(/'/g, '');
-        return m === curMonthPrefix;
+        return m === curMonthPrefix && (d.SaleQty > 0 || d.Revenue > 0);
     });
 
     const mtdSalesCount = curMonthDeals.length;
@@ -139,7 +143,7 @@ function calculatePaceMetrics(sDb, allDb, activeMonth) {
     const prevMonthPrefix = `${prevYear}-${String(prevMonthIdx + 1).padStart(2, '0')}`;
     const prevMonthName = monthNames[prevMonthIdx];
 
-    const prevMonthAllDeals = deals.filter(d => (d.SaleMonth || '').replace(/'/g, '') === prevMonthPrefix);
+    const prevMonthAllDeals = deals.filter(d => (d.SaleMonth || '').replace(/'/g, '') === prevMonthPrefix && (d.SaleQty > 0 || d.Revenue > 0));
     const prevMonthTotalSales = prevMonthAllDeals.length;
     const prevMonthTotalRevenue = prevMonthAllDeals.reduce((sum, d) => sum + (d.Revenue || 0), 0);
 
@@ -264,12 +268,13 @@ function renderPaceCardHTML(p) {
  * BLOCK 2: ALERTS RADAR (РАДАР КРИТИЧЕСКИХ ОТКЛОНЕНИЙ)
  * =========================================================================
  */
-function calculateAlertsRadar(allDb, pDb) {
+function calculateAlertsRadar(allDb, pDb, allPartners) {
     const deals = allDb || [];
 
-    // Find latest month and prev month
+    // Latest sale date among actual sales
+    const salesOnly = deals.filter(d => (d.SaleQty > 0) || (d.SaleMonth && d.SaleMonth.length > 0));
     let maxSaleDate = null;
-    deals.forEach(d => {
+    salesOnly.forEach(d => {
         const sDate = d.SaleDate || d.DealDate;
         if (sDate) {
             const dt = excelToJSDate(sDate);
@@ -288,8 +293,8 @@ function calculateAlertsRadar(allDb, pDb) {
     const prevMonthPrefix = `${prevYear}-${String(prevMonthIdx + 1).padStart(2, '0')}`;
 
     // 1. BRAND CRITICAL DROPS (Aug MTD vs Sept MTD)
-    const curMonthDeals = deals.filter(d => (d.SaleMonth || '').replace(/'/g, '') === curMonthPrefix);
-    const prevMonthMtdDeals = deals.filter(d => {
+    const curMonthDeals = salesOnly.filter(d => (d.SaleMonth || '').replace(/'/g, '') === curMonthPrefix);
+    const prevMonthMtdDeals = salesOnly.filter(d => {
         if ((d.SaleMonth || '').replace(/'/g, '') !== prevMonthPrefix) return false;
         const sDate = d.SaleDate || d.DealDate;
         if (!sDate) return false;
@@ -299,78 +304,88 @@ function calculateAlertsRadar(allDb, pDb) {
 
     const brandCur = {}, brandPrev = {};
     curMonthDeals.forEach(d => {
-        const b = d.Brand || 'Другие';
+        let b = (d.Brand || 'Другие').trim();
+        if (b === 'SOUEAS') b = 'SOUEAST';
         brandCur[b] = (brandCur[b] || 0) + 1;
     });
     prevMonthMtdDeals.forEach(d => {
-        const b = d.Brand || 'Другие';
+        let b = (d.Brand || 'Другие').trim();
+        if (b === 'SOUEAS') b = 'SOUEAST';
         brandPrev[b] = (brandPrev[b] || 0) + 1;
     });
 
     const brandAlerts = [];
     Object.keys(brandPrev).forEach(b => {
         const prevCnt = brandPrev[b];
-        if (prevCnt >= 3) {
-            const curCnt = brandCur[b] || 0;
-            const diff = curCnt - prevCnt;
-            const pct = Math.round((diff / prevCnt) * 100);
-            if (pct <= -15) {
-                brandAlerts.push({
-                    brand: b,
-                    prevCnt,
-                    curCnt,
-                    diff,
-                    pct,
-                    severity: curCnt === 0 ? 'critical' : 'warning'
-                });
-            }
+        const curCnt = brandCur[b] || 0;
+        const diff = curCnt - prevCnt;
+        const pct = prevCnt > 0 ? Math.round((diff / prevCnt) * 100) : 0;
+        
+        // Alert if drop is 10% or more, or if lost >= 5 cars
+        if (pct <= -10 || (prevCnt >= 5 && diff < 0)) {
+            brandAlerts.push({
+                brand: b,
+                prevCnt,
+                curCnt,
+                diff,
+                pct,
+                severity: pct <= -50 || curCnt === 0 ? 'critical' : 'warning'
+            });
         }
     });
     brandAlerts.sort((a, b) => a.pct - b.pct);
 
     // 2. DEALERS CHURN RISK (Active in prev month >= 3 deals, but 0 in cur month)
-    const prevMonthAllDeals = deals.filter(d => (d.SaleMonth || '').replace(/'/g, '') === prevMonthPrefix);
-    const dealerPrevFull = {}, dealerCurFull = {};
+    // Using allPartners (sys_db_partners) for accurate master partner grouping and KAM lookup
+    const augDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === prevMonthPrefix);
+    const sepDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === curMonthPrefix);
 
-    prevMonthAllDeals.forEach(d => {
-        const p = d.LegalPartner || d.Partner || 'Неизвестный партнер';
-        dealerPrevFull[p] = (dealerPrevFull[p] || 0) + 1;
+    const dealerPrevMap = {}, dealerCurMap = {};
+    augDeals.forEach(r => {
+        const p = r.Partner || 'Неизвестный партнер';
+        if (!dealerPrevMap[p]) {
+            dealerPrevMap[p] = { partner: p, prevDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || '' };
+        }
+        dealerPrevMap[p].prevDeals += (r.Qty || 1);
+        if (r.KAM && dealerPrevMap[p].kam === '—') dealerPrevMap[p].kam = r.KAM;
     });
-    curMonthDeals.forEach(d => {
-        const p = d.LegalPartner || d.Partner || 'Неизвестный партнер';
-        dealerCurFull[p] = (dealerCurFull[p] || 0) + 1;
+
+    sepDeals.forEach(r => {
+        const p = r.Partner || 'Неизвестный партнер';
+        dealerCurMap[p] = (dealerCurMap[p] || 0) + (r.Qty || 1);
     });
 
     const dealerAlerts = [];
-    Object.keys(dealerPrevFull).forEach(p => {
-        const prevDeals = dealerPrevFull[p];
-        const curDeals = dealerCurFull[p] || 0;
-        if (prevDeals >= 3 && curDeals === 0) {
+    Object.keys(dealerPrevMap).forEach(p => {
+        const info = dealerPrevMap[p];
+        const curDeals = dealerCurMap[p] || 0;
+        if (info.prevDeals >= 3 && curDeals === 0) {
             dealerAlerts.push({
                 partner: p,
-                prevDeals,
+                prevDeals: info.prevDeals,
                 curDeals: 0,
-                status: '0 сделок в сентябре'
+                kam: info.kam,
+                rawPartner: info.rawPartner,
+                severity: info.prevDeals >= 10 ? 'critical' : 'warning'
             });
         }
     });
     dealerAlerts.sort((a, b) => b.prevDeals - a.prevDeals);
 
-    // 3. STUCK PREPAYMENTS (> 14 days without sale)
-    const prepays = pDb || deals.filter(d => d.Status === 'Внесение аванса' || d.Status === 'Аванс');
+    // 3. STUCK PREPAYMENTS (> 7 days without sale)
     const stuckPrepays = [];
-    prepays.forEach(p => {
-        const sDate = p.SaleDate || p.DealDate;
-        if (p.PrepayDate && (!sDate || p.Status !== 'Сделка закрыта')) {
-            const dt = excelToJSDate(p.PrepayDate);
+    const partnerPrepays = (allPartners || []).filter(r => r.Type === 'Предоплата' && r.Month === curMonthPrefix);
+    partnerPrepays.forEach(p => {
+        if (p.Date) {
+            const dt = excelToJSDate(p.Date);
             if (dt) {
                 const diffDays = Math.round((refDate - dt) / (1000 * 60 * 60 * 24));
-                if (diffDays > 14) {
+                if (diffDays >= 7) {
                     stuckPrepays.push({
-                        partner: p.LegalPartner || p.Partner || 'Неизвестный партнер',
-                        brand: p.Brand || '—',
+                        partner: p.Partner || 'Неизвестный партнер',
+                        rawPartner: p.RawPartner || '',
+                        kam: p.KAM || '—',
                         days: diffDays,
-                        price: p.Price || 0,
                         dateStr: dt.toLocaleDateString('ru-RU')
                     });
                 }
@@ -383,7 +398,8 @@ function calculateAlertsRadar(allDb, pDb) {
         brandAlerts,
         dealerAlerts,
         stuckPrepays,
-        totalCriticalCount: brandAlerts.length + dealerAlerts.length + (stuckPrepays.length > 0 ? 1 : 0)
+        totalCriticalCount: brandAlerts.filter(b => b.severity === 'critical').length + 
+                            dealerAlerts.filter(d => d.severity === 'critical').length
     };
 }
 
@@ -410,8 +426,6 @@ function switchAlertTab(tabName) {
 }
 
 function renderAlertsRadarCardHTML(a) {
-    const hasCrit = a.totalCriticalCount > 0;
-
     return `
         <div class="card !p-5 bg-white rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-between">
             <div>
@@ -440,57 +454,59 @@ function renderAlertsRadarCardHTML(a) {
                     </div>
                 </div>
 
-                <!-- TAB 1: BRANDS DROP -->
-                <div id="alertContentBrands" class="space-y-2 mb-4">
+                <!-- TAB 1: BRANDS DROP (Fully scrollable to see ALL items) -->
+                <div id="alertContentBrands" class="space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${a.brandAlerts.length === 0 ? `
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
                             🟢 Критических просадок по маркам не зафиксировано
                         </div>
-                    ` : a.brandAlerts.slice(0, 4).map(b => `
-                        <div class="flex items-center justify-between p-2.5 rounded-2xl ${b.severity === 'critical' ? 'bg-rose-50 border border-rose-100' : 'bg-amber-50 border border-amber-100'}">
+                    ` : a.brandAlerts.map(b => `
+                        <div class="flex items-center justify-between p-2.5 rounded-2xl ${b.severity === 'critical' ? 'bg-rose-50/80 border border-rose-100' : 'bg-amber-50/80 border border-amber-100'}">
                             <div class="flex items-center gap-2.5">
                                 <span class="text-xs font-black ${b.severity === 'critical' ? 'text-rose-700' : 'text-amber-800'}">${b.brand}</span>
                                 <span class="text-[11px] text-slate-500">Факт: <b>${b.curCnt}</b> шт. (было ${b.prevCnt} в авг. MTD)</span>
                             </div>
-                            <span class="text-xs px-2 py-0.5 rounded-full font-black ${b.severity === 'critical' ? 'bg-rose-200 text-rose-800' : 'bg-amber-200 text-amber-800'}">
+                            <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${b.severity === 'critical' ? 'bg-rose-200 text-rose-800' : 'bg-amber-200 text-amber-800'}">
                                 ${b.pct}%
                             </span>
                         </div>
                     `).join('')}
                 </div>
 
-                <!-- TAB 2: DEALERS CHURN RISK -->
-                <div id="alertContentDealers" class="hidden space-y-2 mb-4">
+                <!-- TAB 2: DEALERS CHURN RISK (Shows all 26 churned partners with scroll) -->
+                <div id="alertContentDealers" class="hidden space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${a.dealerAlerts.length === 0 ? `
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
                             🟢 Все ключевые партнеры проявляют активность
                         </div>
-                    ` : a.dealerAlerts.slice(0, 4).map(d => `
-                        <div class="flex items-center justify-between p-2.5 rounded-2xl bg-slate-50 border border-slate-200/70">
+                    ` : a.dealerAlerts.map(d => `
+                        <div class="flex items-center justify-between p-2.5 rounded-2xl ${d.severity === 'critical' ? 'bg-rose-50/80 border border-rose-200/80' : 'bg-slate-50 border border-slate-200/70'}">
                             <div class="min-w-0 pr-2">
                                 <div class="text-xs font-black text-slate-800 truncate">${d.partner}</div>
-                                <div class="text-[11px] text-slate-500 mt-0.5">В августе: <b>${d.prevDeals} сделок</b></div>
+                                <div class="text-[11px] text-slate-500 mt-0.5">
+                                    Было в авг: <b>${d.prevDeals} шт.</b> • КАМ: <span class="font-medium text-slate-700">${d.kam}</span>
+                                </div>
                             </div>
-                            <span class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-700 border border-rose-200 whitespace-nowrap">
-                                0 в сентябре ⚠️
+                            <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${d.severity === 'critical' ? 'bg-rose-600 text-white' : 'bg-rose-100 text-rose-700 border border-rose-200'} whitespace-nowrap">
+                                0 сделок ⚠️
                             </span>
                         </div>
                     `).join('')}
                 </div>
 
-                <!-- TAB 3: STUCK PREPAYMENTS -->
-                <div id="alertContentPrepays" class="hidden space-y-2 mb-4">
+                <!-- TAB 3: STUCK PREPAYMENTS (Shows stuck prepayments with scroll) -->
+                <div id="alertContentPrepays" class="hidden space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${a.stuckPrepays.length === 0 ? `
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
-                            🟢 Зависших авансов (>14 дней) не обнаружено
+                            🟢 Зависших авансов (>7 дней) не обнаружено
                         </div>
-                    ` : a.stuckPrepays.slice(0, 4).map(p => `
+                    ` : a.stuckPrepays.map(p => `
                         <div class="flex items-center justify-between p-2.5 rounded-2xl bg-amber-50/70 border border-amber-200/70">
                             <div class="min-w-0 pr-2">
-                                <div class="text-xs font-black text-slate-800 truncate">${p.partner} • ${p.brand}</div>
-                                <div class="text-[11px] text-slate-500 mt-0.5">Аванс от ${p.dateStr} (${p.days} дней назад)</div>
+                                <div class="text-xs font-black text-slate-800 truncate">${p.partner}</div>
+                                <div class="text-[11px] text-slate-500 mt-0.5">Аванс от ${p.dateStr} • КАМ: <b>${p.kam}</b></div>
                             </div>
-                            <span class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-amber-200 text-amber-900 whitespace-nowrap">
+                            <span class="text-xs px-2.5 py-0.5 rounded-full font-black bg-amber-200 text-amber-900 whitespace-nowrap">
                                 ${p.days} дн. завис
                             </span>
                         </div>
@@ -502,9 +518,9 @@ function renderAlertsRadarCardHTML(a) {
             <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                 <span class="flex items-center gap-1.5">
                     <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>
-                    Всего сигналов риска: <b>${a.totalCriticalCount}</b>
+                    Критических сигналов: <b>${a.totalCriticalCount}</b> (из ${a.brandAlerts.length + a.dealerAlerts.length + a.stuckPrepays.length} рисков)
                 </span>
-                <span class="text-slate-400">Требуется реакция КАМ-менеджеров</span>
+                <span class="text-slate-400">Скрольте список для просмотра всех</span>
             </div>
         </div>
     `;
@@ -521,32 +537,36 @@ function calculateChannelUnitEconomics(sDb) {
     const totalRev = deals.reduce((s, d) => s + (d.Revenue || 0), 0);
 
     const channels = {
-        'Опт МП2': { name: 'Опт МП2', deals: 0, revenue: 0, totalPrice: 0 },
-        'Розница': { name: 'Розница (B2C)', deals: 0, revenue: 0, totalPrice: 0 },
-        'Online': { name: 'Online продажи', deals: 0, revenue: 0, totalPrice: 0 },
-        'Прочие': { name: 'Прочие каналы', deals: 0, revenue: 0, totalPrice: 0 }
+        'opt': { key: 'opt', name: 'Опт МП2', deals: 0, revenue: 0, totalPrice: 0, color: 'bg-blue-500' },
+        'fdc': { key: 'fdc', name: 'ФДЦ (ФДЦ / ГП)', deals: 0, revenue: 0, totalPrice: 0, color: 'bg-purple-500' },
+        'retail': { key: 'retail', name: 'Розница (B2C / Лиды)', deals: 0, revenue: 0, totalPrice: 0, color: 'bg-emerald-500' },
+        'online': { key: 'online', name: 'Online продажи', deals: 0, revenue: 0, totalPrice: 0, color: 'bg-cyan-500' },
+        'other': { key: 'other', name: 'Прочие (МП1 / МП3)', deals: 0, revenue: 0, totalPrice: 0, color: 'bg-slate-400' }
     };
 
     deals.forEach(d => {
-        const type = (d.DealType || '').toLowerCase();
-        const pName = (d.Partner || d.LegalPartner || '').toLowerCase();
+        const rawB2C = (d.B2C || '').toString().trim().toLowerCase();
         const rev = d.Revenue || 0;
         const pr = d.Price || 0;
 
-        let ch = 'Прочие';
-        if (type.includes('мп2') || type.includes('маркетплейс 2') || type.includes('b2b')) {
-            ch = 'Опт МП2';
-        } else if (type.includes('онлайн') || type.includes('online') || pName.includes('online')) {
-            ch = 'Online';
-        } else if (type.includes('розниц') || type.includes('b2c') || type.includes('договор')) {
-            ch = 'Розница';
+        let key = 'other';
+        if (rawB2C.includes('мп2') || rawB2C === 'мп 2') {
+            key = 'opt';
+        } else if (rawB2C.includes('фдц') || rawB2C.includes('гп')) {
+            key = 'fdc';
+        } else if (rawB2C.includes('лид') || rawB2C.includes('b2c') || rawB2C.includes('розниц')) {
+            key = 'retail';
+        } else if (rawB2C.includes('online') || rawB2C.includes('онлайн')) {
+            key = 'online';
+        } else if (rawB2C.includes('мп1') || rawB2C.includes('мп3')) {
+            key = 'other';
         } else {
-            ch = 'Опт МП2'; // Majority of non-retail in this dataset is wholesale MP2
+            key = 'opt';
         }
 
-        channels[ch].deals += 1;
-        channels[ch].revenue += rev;
-        channels[ch].totalPrice += pr;
+        channels[key].deals += 1;
+        channels[key].revenue += rev;
+        channels[key].totalPrice += pr;
     });
 
     const rows = Object.values(channels).map(c => {
@@ -586,7 +606,7 @@ function renderMarginCardHTML(m) {
                         </div>
                         <div>
                             <h3 class="font-black text-slate-800 text-base">Доходность и юнит-экономика (ARPU)</h3>
-                            <p class="text-xs text-slate-400">Сравнение комиссионных доходов и чека по каналам</p>
+                            <p class="text-xs text-slate-400">Сравнение комиссионных доходов и чека по 5 каналам продаж</p>
                         </div>
                     </div>
                     <span class="text-xs px-2.5 py-1 rounded-full font-black bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -599,7 +619,7 @@ function renderMarginCardHTML(m) {
                     <table class="min-w-full text-xs">
                         <thead>
                             <tr class="border-b border-slate-100 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
-                                <th class="text-left py-2">Канал</th>
+                                <th class="text-left py-2">Канал продаж</th>
                                 <th class="text-right py-2">Сделки (% шт)</th>
                                 <th class="text-right py-2">Выручка (% денег)</th>
                                 <th class="text-right py-2">ARPU (доход/шт)</th>
@@ -610,7 +630,7 @@ function renderMarginCardHTML(m) {
                             ${m.rows.map(r => `
                                 <tr class="hover:bg-slate-50 transition">
                                     <td class="py-2.5 text-slate-800 font-black flex items-center gap-1.5">
-                                        <span class="w-2 h-2 rounded-full ${r.name.includes('Опт') ? 'bg-blue-500' : r.name.includes('Розница') ? 'bg-emerald-500' : 'bg-indigo-500'}"></span>
+                                        <span class="w-2 h-2 rounded-full ${r.color}"></span>
                                         ${r.name}
                                     </td>
                                     <td class="py-2.5 text-right text-slate-700">
@@ -619,7 +639,7 @@ function renderMarginCardHTML(m) {
                                     <td class="py-2.5 text-right text-slate-800">
                                         <b>${fmtRub(r.revenue)}</b> <span class="text-slate-400 text-[11px]">(${r.shareRev}%)</span>
                                     </td>
-                                    <td class="py-2.5 text-right font-black text-emerald-700">
+                                    <td class="py-2.5 text-right font-black ${r.arpu >= m.overallArpu ? 'text-emerald-700' : 'text-slate-700'}">
                                         ${fmtNum(r.arpu)} ₽
                                     </td>
                                     <td class="py-2.5 text-right font-bold text-slate-600">
@@ -636,7 +656,7 @@ function renderMarginCardHTML(m) {
             <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                 <span class="flex items-center gap-1.5">
                     <i data-lucide="trending-up" class="w-3.5 h-3.5 text-emerald-600"></i>
-                    Розница дает максимальный ARPU, а Опт МП2 обеспечивает базовый объем
+                    <b>Online</b> дает макс. ARPU (48.3к ₽), а <b>Опт МП2</b> обеспечивает 77.5% объема
                 </span>
                 <span class="font-bold text-indigo-600">Комиссия без НДС</span>
             </div>
@@ -653,38 +673,65 @@ function calculatePartnerHealthScore(sDb, allPartners) {
     const deals = sDb || [];
     const partnersMap = {};
 
-    deals.forEach(d => {
-        const p = d.LegalPartner || d.Partner || 'Неизвестный партнер';
-        if (!partnersMap[p]) {
-            partnersMap[p] = {
-                partner: p,
-                deals: 0,
-                revenue: 0,
-                totalPrice: 0,
-                leads: 0,
-                transfers: 0
-            };
-        }
-        partnersMap[p].deals += 1;
-        partnersMap[p].revenue += (d.Revenue || 0);
-        partnersMap[p].totalPrice += (d.Price || 0);
-    });
-
-    const list = Object.values(partnersMap);
-    if (list.length === 0) {
-        return {
-            stars: [],
-            growth: [],
-            niche: [],
-            risk: [],
-            totalPartners: 0
-        };
+    // Build DealId -> Partner info lookup from allPartners
+    const pLookup = new Map();
+    if (allPartners && allPartners.length > 0) {
+        allPartners.forEach(p => {
+            if (p.DealId && (p.Type === 'Сделка' || p.Type === 'Предоплата' || !pLookup.has(String(p.DealId)))) {
+                pLookup.set(String(p.DealId), p);
+            }
+        });
     }
 
-    // Compute medians
-    const sortedDeals = list.map(p => p.deals).sort((a, b) => a - b);
-    const medianDeals = sortedDeals[Math.floor(sortedDeals.length / 2)] || 1;
-    const avgArpu = list.reduce((s, p) => s + (p.revenue / (p.deals || 1)), 0) / list.length;
+    deals.forEach(d => {
+        const pInfo = d.DealId ? pLookup.get(String(d.DealId)) : null;
+        const pName = (pInfo && pInfo.Partner) ? pInfo.Partner : (d.LegalPartner || d.Partner || 'Неизвестный партнер');
+        const kam = (pInfo && pInfo.KAM) ? pInfo.KAM : (d.KAM || '—');
+        const rawPartner = (pInfo && pInfo.RawPartner) ? pInfo.RawPartner : '';
+
+        if (!partnersMap[pName]) {
+            partnersMap[pName] = {
+                partner: pName,
+                kam: kam,
+                rawPartners: new Set(),
+                deals: 0,
+                revenue: 0,
+                totalPrice: 0
+            };
+        }
+        if (kam && kam !== '—' && (!partnersMap[pName].kam || partnersMap[pName].kam === '—')) {
+            partnersMap[pName].kam = kam;
+        }
+        if (rawPartner) {
+            partnersMap[pName].rawPartners.add(rawPartner);
+        }
+        partnersMap[pName].deals += 1;
+        partnersMap[pName].revenue += (d.Revenue || 0);
+        partnersMap[pName].totalPrice += (d.Price || 0);
+    });
+
+    const list = Object.values(partnersMap).map(p => {
+        const arpu = p.deals > 0 ? Math.round(p.revenue / p.deals) : 0;
+        const avgCheck = p.deals > 0 ? Math.round(p.totalPrice / p.deals) : 0;
+        const takeRate = p.totalPrice > 0 ? ((p.revenue / p.totalPrice) * 100).toFixed(2) : '0.00';
+        return {
+            ...p,
+            rawPartnersList: Array.from(p.rawPartners),
+            arpu,
+            avgCheck,
+            takeRate
+        };
+    });
+
+    if (list.length === 0) {
+        window._partnerHealthCache = { allList: [], stars: [], growth: [], niche: [], risk: [], overallArpu: 0 };
+        return { stars: [], growth: [], niche: [], risk: [], totalPartners: 0, overallArpu: 0, allList: [] };
+    }
+
+    // Benchmark ARPU & Volume
+    const totalRev = list.reduce((s, p) => s + p.revenue, 0);
+    const totalDeals = list.reduce((s, p) => s + p.deals, 0);
+    const overallArpu = totalDeals > 0 ? Math.round(totalRev / totalDeals) : 40000;
 
     const stars = [];
     const growth = [];
@@ -692,17 +739,28 @@ function calculatePartnerHealthScore(sDb, allPartners) {
     const risk = [];
 
     list.forEach(p => {
-        const arpu = p.deals > 0 ? (p.revenue / p.deals) : 0;
-        const isHighVolume = p.deals >= Math.max(3, medianDeals);
-        const isHighYield = arpu >= avgArpu;
+        const isHighVolume = p.deals >= 3;
+        const isHighYield = p.arpu >= overallArpu;
 
         if (isHighVolume && isHighYield) {
+            p.quadrant = 'stars';
+            p.quadrantName = 'Локомотив';
+            p.action = 'Удерживать приоритет, развивать совместные промо';
             stars.push(p);
         } else if (isHighVolume && !isHighYield) {
+            p.quadrant = 'growth';
+            p.quadrantName = 'Точка роста';
+            p.action = 'Повысить маржинальность: допуслуги, пересмотр условий';
             growth.push(p);
         } else if (!isHighVolume && isHighYield) {
+            p.quadrant = 'niche';
+            p.quadrantName = 'Нишевый';
+            p.action = 'Масштабировать объем продаж без потери чека';
             niche.push(p);
         } else {
+            p.quadrant = 'risk';
+            p.quadrantName = 'Зона риска';
+            p.action = 'Ревизия условий сотрудничества и активности КАМ';
             risk.push(p);
         }
     });
@@ -712,20 +770,37 @@ function calculatePartnerHealthScore(sDb, allPartners) {
     niche.sort((a, b) => b.revenue - a.revenue);
     risk.sort((a, b) => b.deals - a.deals);
 
+    // Save in global cache for modal view
+    window._partnerHealthCache = {
+        allList: list.sort((a, b) => b.revenue - a.revenue),
+        stars,
+        growth,
+        niche,
+        risk,
+        overallArpu
+    };
+
     return {
         stars,
         growth,
         niche,
         risk,
-        totalPartners: list.length
+        totalPartners: list.length,
+        overallArpu,
+        allList: list
     };
 }
 
 function renderHealthScoreCardHTML(h) {
+    const starTop = h.stars.slice(0, 3).map(p => `${p.partner} (${p.deals})`).join(', ') || '—';
+    const growthTop = h.growth.slice(0, 3).map(p => `${p.partner} (${p.deals})`).join(', ') || '—';
+    const nicheTop = h.niche.slice(0, 3).map(p => `${p.partner} (${p.deals})`).join(', ') || '—';
+    const riskTop = h.risk.slice(0, 3).map(p => `${p.partner} (${p.deals})`).join(', ') || '—';
+
     return `
         <div class="card !p-5 bg-white rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-between">
             <div>
-                <!-- Title -->
+                <!-- Title & Badge -->
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2.5">
                         <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-lg">
@@ -736,71 +811,338 @@ function renderHealthScoreCardHTML(h) {
                             <p class="text-xs text-slate-400">Сегментация ${h.totalPartners} активных ДЦ по объему и доходности</p>
                         </div>
                     </div>
-                    <span class="text-xs px-2.5 py-1 rounded-full font-black bg-purple-50 text-purple-700 border border-purple-200">
-                        4 квадранта КАМ
-                    </span>
+                    <button onclick="openHealthDetailsModal('all')" class="text-xs px-3 py-1 rounded-full font-black bg-purple-100 hover:bg-purple-200 text-purple-800 transition flex items-center gap-1 shadow-sm">
+                        <span>Все ${h.totalPartners} ДЦ ➔</span>
+                    </button>
                 </div>
 
-                <!-- 4 Quadrants Grid -->
-                <div class="grid grid-cols-2 gap-3 mb-4">
+                <!-- 4 Quadrants Grid (Clickable) -->
+                <div class="grid grid-cols-2 gap-3 mb-3">
                     <!-- Quadrant 1: Stars -->
-                    <div class="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/80">
+                    <div onclick="openHealthDetailsModal('stars')" class="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/80 hover:border-emerald-400 cursor-pointer transition-all hover:shadow-md transform hover:-translate-y-0.5">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-black text-emerald-800 flex items-center gap-1">🌟 Локомотивы</span>
                             <span class="text-xs font-black px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900">${h.stars.length} ДЦ</span>
                         </div>
                         <div class="text-[11px] text-emerald-700 mt-1">Высокий объем + высокий ARPU</div>
-                        <div class="text-xs text-slate-600 font-bold mt-2 truncate">
-                            Топ: ${h.stars[0] ? h.stars[0].partner : '—'}
+                        <div class="text-xs text-slate-600 font-bold mt-2 truncate" title="${starTop}">
+                            Топ: ${starTop}
                         </div>
                     </div>
 
                     <!-- Quadrant 2: Growth Potential -->
-                    <div class="p-3.5 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/80">
+                    <div onclick="openHealthDetailsModal('growth')" class="p-3.5 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200/80 hover:border-blue-400 cursor-pointer transition-all hover:shadow-md transform hover:-translate-y-0.5">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-black text-blue-800 flex items-center gap-1">🚀 Точки роста</span>
                             <span class="text-xs font-black px-2 py-0.5 rounded-full bg-blue-200 text-blue-900">${h.growth.length} ДЦ</span>
                         </div>
                         <div class="text-[11px] text-blue-700 mt-1">Высокий объем, резерв по ARPU</div>
-                        <div class="text-xs text-slate-600 font-bold mt-2 truncate">
-                            Топ: ${h.growth[0] ? h.growth[0].partner : '—'}
+                        <div class="text-xs text-slate-600 font-bold mt-2 truncate" title="${growthTop}">
+                            Топ: ${growthTop}
                         </div>
                     </div>
 
                     <!-- Quadrant 3: Specialized / Niche -->
-                    <div class="p-3.5 rounded-2xl bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-purple-200/80">
+                    <div onclick="openHealthDetailsModal('niche')" class="p-3.5 rounded-2xl bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-purple-200/80 hover:border-purple-400 cursor-pointer transition-all hover:shadow-md transform hover:-translate-y-0.5">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-black text-purple-800 flex items-center gap-1">💼 Нишевые</span>
                             <span class="text-xs font-black px-2 py-0.5 rounded-full bg-purple-200 text-purple-900">${h.niche.length} ДЦ</span>
                         </div>
                         <div class="text-[11px] text-purple-700 mt-1">Штучные сделки с высоким чеком</div>
-                        <div class="text-xs text-slate-600 font-bold mt-2 truncate">
-                            Топ: ${h.niche[0] ? h.niche[0].partner : '—'}
+                        <div class="text-xs text-slate-600 font-bold mt-2 truncate" title="${nicheTop}">
+                            Топ: ${nicheTop}
                         </div>
                     </div>
 
                     <!-- Quadrant 4: At Risk -->
-                    <div class="p-3.5 rounded-2xl bg-gradient-to-br from-amber-50 to-rose-50 border border-amber-200/80">
+                    <div onclick="openHealthDetailsModal('risk')" class="p-3.5 rounded-2xl bg-gradient-to-br from-amber-50 to-rose-50 border border-amber-200/80 hover:border-rose-300 cursor-pointer transition-all hover:shadow-md transform hover:-translate-y-0.5">
                         <div class="flex items-center justify-between">
                             <span class="text-xs font-black text-amber-800 flex items-center gap-1">⚠️ Зона риска</span>
                             <span class="text-xs font-black px-2 py-0.5 rounded-full bg-amber-200 text-amber-900">${h.risk.length} ДЦ</span>
                         </div>
                         <div class="text-[11px] text-amber-700 mt-1">Мало сделок и низкая маржинальность</div>
-                        <div class="text-xs text-slate-600 font-bold mt-2 truncate">
-                            ${h.risk.length} ДЦ требуют ревизии условий
+                        <div class="text-xs text-slate-600 font-bold mt-2 truncate" title="${riskTop}">
+                            Топ: ${riskTop}
                         </div>
                     </div>
                 </div>
+
+                <!-- Interactive CTA Button -->
+                <button onclick="openHealthDetailsModal('all')" class="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
+                    <i data-lucide="table" class="w-3.5 h-3.5"></i>
+                    <span>Открыть реестр всех 90 партнеров с фильтром по КАМ ➔</span>
+                </button>
             </div>
 
             <!-- Footer -->
             <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                 <span class="flex items-center gap-1.5">
                     <i data-lucide="users" class="w-3.5 h-3.5 text-purple-600"></i>
-                    Фокус внимания КАМ: <b>«Точки роста»</b> для допродажи услуг
+                    Фокус внимания КАМ: <b>«Точки роста»</b> (допродажи) и <b>«Зона риска»</b>
                 </span>
-                <span class="text-slate-400">Автоматическая матрица</span>
+                <span class="text-slate-400">Порог: ≥3 сделок • ARPU ${fmtNum(h.overallArpu)} ₽</span>
             </div>
         </div>
     `;
+}
+
+/**
+ * =========================================================================
+ * MODAL WINDOW: PARTNER HEALTH SCORE DETAILS & AUDIT
+ * =========================================================================
+ */
+function ensureHealthModalExists() {
+    if (document.getElementById('modalPartnerHealth')) return;
+
+    const modalHTML = `
+        <div id="modalPartnerHealth" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-3 sm:p-4 animate-fade-in" onclick="handleHealthModalBackdrop(event)">
+            <div class="bg-white w-full max-w-5xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200" onclick="event.stopPropagation()">
+                <!-- Header -->
+                <div class="p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between border-b border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-2xl bg-purple-500/20 border border-purple-400/30 flex items-center justify-center text-purple-300 font-black text-lg">
+                            📊
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-black text-white flex items-center gap-2">
+                                Аудит эффективности партнерской сети (Partner Health Score)
+                            </h3>
+                            <p id="modalHealthSubtitle" class="text-xs text-slate-300 mt-0.5">
+                                Детальный реестр 90 дилеров: объемы, выручка, ARPU и рекомендации для КАМ
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="closeHealthDetailsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg transition font-bold">
+                        &times;
+                    </button>
+                </div>
+
+                <!-- Toolbar & Filters -->
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <!-- Quadrant Tabs -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0" id="healthModalTabs">
+                        <button onclick="switchHealthModalTab('all')" id="healthTabBtn_all" class="px-3 py-1.5 text-xs font-bold rounded-xl transition bg-slate-900 text-white shadow-sm">
+                            Все (<span id="healthTabCount_all">0</span>)
+                        </button>
+                        <button onclick="switchHealthModalTab('stars')" id="healthTabBtn_stars" class="px-3 py-1.5 text-xs font-bold rounded-xl transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                            🌟 Локомотивы (<span id="healthTabCount_stars">0</span>)
+                        </button>
+                        <button onclick="switchHealthModalTab('growth')" id="healthTabBtn_growth" class="px-3 py-1.5 text-xs font-bold rounded-xl transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                            🚀 Точки роста (<span id="healthTabCount_growth">0</span>)
+                        </button>
+                        <button onclick="switchHealthModalTab('niche')" id="healthTabBtn_niche" class="px-3 py-1.5 text-xs font-bold rounded-xl transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                            💼 Нишевые (<span id="healthTabCount_niche">0</span>)
+                        </button>
+                        <button onclick="switchHealthModalTab('risk')" id="healthTabBtn_risk" class="px-3 py-1.5 text-xs font-bold rounded-xl transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+                            ⚠️ Зона риска (<span id="healthTabCount_risk">0</span>)
+                        </button>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="relative w-full sm:w-72">
+                        <input id="healthModalSearch" type="text" oninput="filterHealthModalTable()" placeholder="Поиск по партнеру, юрлицу или КАМу..." class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-purple-500 outline-none">
+                        <span class="absolute left-2.5 top-2 text-slate-400 text-xs">🔍</span>
+                    </div>
+                </div>
+
+                <!-- Table Content -->
+                <div class="flex-1 overflow-y-auto max-h-[60vh] p-4">
+                    <table class="min-w-full text-xs" id="tablePartnerHealthModal">
+                        <thead class="sticky top-0 bg-white shadow-sm z-10">
+                            <tr class="border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[11px]">
+                                <th class="text-left py-2.5 px-3">Партнер (ДЦ)</th>
+                                <th class="text-left py-2.5 px-3">Квадрант</th>
+                                <th class="text-left py-2.5 px-3">Закрепленный КАМ</th>
+                                <th class="text-right py-2.5 px-3">Сделки (шт)</th>
+                                <th class="text-right py-2.5 px-3">Выручка (₽)</th>
+                                <th class="text-right py-2.5 px-3">ARPU (₽/шт)</th>
+                                <th class="text-right py-2.5 px-3">Take-rate</th>
+                                <th class="text-left py-2.5 px-3">Рекомендация КАМ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalHealthTableBody" class="divide-y divide-slate-100 font-medium text-slate-700">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Footer Summary -->
+                <div class="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-600 font-medium">
+                    <div class="flex items-center gap-3">
+                        <span>Показано: <b id="healthModalShowingCount" class="text-slate-900">0</b> ДЦ</span>
+                        <span>•</span>
+                        <span>Сделок: <b id="healthModalTotalDeals" class="text-slate-900">0</b> шт.</span>
+                        <span>•</span>
+                        <span>Выручка: <b id="healthModalTotalRev" class="text-slate-900">0 ₽</b></span>
+                        <span>•</span>
+                        <span>Средний ARPU: <b id="healthModalAvgArpu" class="text-purple-700">0 ₽</b></span>
+                    </div>
+                    <button onclick="closeHealthDetailsModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold transition">
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+    // Escape listener
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeHealthDetailsModal();
+        }
+    });
+}
+
+function handleHealthModalBackdrop(event) {
+    if (event.target.id === 'modalPartnerHealth') {
+        closeHealthDetailsModal();
+    }
+}
+
+function openHealthDetailsModal(quadrantKey = 'all') {
+    ensureHealthModalExists();
+    activeHealthQuadrant = quadrantKey;
+
+    const modal = document.getElementById('modalPartnerHealth');
+    if (!modal) return;
+
+    // Reset search
+    const searchInput = document.getElementById('healthModalSearch');
+    if (searchInput) searchInput.value = '';
+
+    // Update tab counts
+    const cache = window._partnerHealthCache || { allList: [], stars: [], growth: [], niche: [], risk: [] };
+    const setTabCount = (id, count) => {
+        const el = document.getElementById(`healthTabCount_${id}`);
+        if (el) el.textContent = count;
+    };
+    setTabCount('all', cache.allList.length);
+    setTabCount('stars', cache.stars.length);
+    setTabCount('growth', cache.growth.length);
+    setTabCount('niche', cache.niche.length);
+    setTabCount('risk', cache.risk.length);
+
+    switchHealthModalTab(quadrantKey);
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeHealthDetailsModal() {
+    const modal = document.getElementById('modalPartnerHealth');
+    if (modal) {
+        modal.classList.add('hidden');
+    }
+    document.body.style.overflow = '';
+}
+
+function switchHealthModalTab(tabKey) {
+    activeHealthQuadrant = tabKey;
+
+    const tabs = ['all', 'stars', 'growth', 'niche', 'risk'];
+    tabs.forEach(t => {
+        const btn = document.getElementById(`healthTabBtn_${t}`);
+        if (btn) {
+            if (t === tabKey) {
+                btn.className = 'px-3 py-1.5 text-xs font-bold rounded-xl transition bg-slate-900 text-white shadow-sm';
+            } else {
+                btn.className = 'px-3 py-1.5 text-xs font-bold rounded-xl transition bg-slate-100 text-slate-700 hover:bg-slate-200';
+            }
+        }
+    });
+
+    filterHealthModalTable();
+}
+
+function filterHealthModalTable() {
+    const cache = window._partnerHealthCache || { allList: [], stars: [], growth: [], niche: [], risk: [] };
+    let list = [];
+
+    if (activeHealthQuadrant === 'stars') list = cache.stars;
+    else if (activeHealthQuadrant === 'growth') list = cache.growth;
+    else if (activeHealthQuadrant === 'niche') list = cache.niche;
+    else if (activeHealthQuadrant === 'risk') list = cache.risk;
+    else list = cache.allList;
+
+    const searchInput = document.getElementById('healthModalSearch');
+    const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+    if (query) {
+        list = list.filter(p => {
+            const nameMatch = p.partner.toLowerCase().includes(query);
+            const rawMatch = (p.rawPartnersList || []).some(r => r.toLowerCase().includes(query));
+            const kamMatch = (p.kam || '').toLowerCase().includes(query);
+            return nameMatch || rawMatch || kamMatch;
+        });
+    }
+
+    const tbody = document.getElementById('modalHealthTableBody');
+    if (!tbody) return;
+
+    if (list.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" class="text-center py-8 text-slate-400 font-bold">
+                    🔍 По вашему запросу партнеры не найдены
+                </td>
+            </tr>
+        `;
+    } else {
+        const quadrantBadges = {
+            stars: '<span class="px-2 py-0.5 rounded-full text-[11px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">🌟 Локомотив</span>',
+            growth: '<span class="px-2 py-0.5 rounded-full text-[11px] font-black bg-blue-100 text-blue-800 border border-blue-200">🚀 Точка роста</span>',
+            niche: '<span class="px-2 py-0.5 rounded-full text-[11px] font-black bg-purple-100 text-purple-800 border border-purple-200">💼 Нишевый</span>',
+            risk: '<span class="px-2 py-0.5 rounded-full text-[11px] font-black bg-rose-100 text-rose-800 border border-rose-200">⚠️ Зона риска</span>'
+        };
+
+        tbody.innerHTML = list.map(p => `
+            <tr class="hover:bg-slate-50 transition">
+                <td class="py-2.5 px-3 text-slate-800 font-black">
+                    <div class="truncate max-w-xs font-bold text-slate-900">${p.partner}</div>
+                    ${p.rawPartnersList && p.rawPartnersList.length > 0 ? `
+                        <div class="text-[10px] text-slate-400 truncate max-w-xs font-normal">
+                            ${p.rawPartnersList.join(' • ')}
+                        </div>
+                    ` : ''}
+                </td>
+                <td class="py-2.5 px-3 whitespace-nowrap">
+                    ${quadrantBadges[p.quadrant] || '<span class="text-slate-400">—</span>'}
+                </td>
+                <td class="py-2.5 px-3 text-slate-700 whitespace-nowrap">
+                    <span class="font-bold">${p.kam || '—'}</span>
+                </td>
+                <td class="py-2.5 px-3 text-right font-black text-slate-800">
+                    ${fmtNum(p.deals)}
+                </td>
+                <td class="py-2.5 px-3 text-right font-bold text-slate-800">
+                    ${fmtRub(p.revenue)}
+                </td>
+                <td class="py-2.5 px-3 text-right font-black ${p.arpu >= (cache.overallArpu || 0) ? 'text-emerald-700' : 'text-slate-700'}">
+                    ${fmtNum(p.arpu)} ₽
+                </td>
+                <td class="py-2.5 px-3 text-right font-bold text-slate-600">
+                    ${p.takeRate}%
+                </td>
+                <td class="py-2.5 px-3 text-slate-600 text-[11px]">
+                    ${p.action}
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // Update footer stats
+    const totalDeals = list.reduce((s, p) => s + p.deals, 0);
+    const totalRev = list.reduce((s, p) => s + p.revenue, 0);
+    const avgArpu = totalDeals > 0 ? Math.round(totalRev / totalDeals) : 0;
+
+    const setFooterVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+    };
+    setFooterVal('healthModalShowingCount', list.length);
+    setFooterVal('healthModalTotalDeals', fmtNum(totalDeals));
+    setFooterVal('healthModalTotalRev', fmtRub(totalRev));
+    setFooterVal('healthModalAvgArpu', `${fmtNum(avgArpu)} ₽`);
 }
