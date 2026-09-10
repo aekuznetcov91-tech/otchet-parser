@@ -746,11 +746,6 @@ function calculatePartnerHealthScore(sDb, allPartners) {
                 kam: kam,
                 rawPartners: new Set(),
                 deals: 0,
-                dealsOpt: 0,
-                dealsFdc: 0,
-                dealsRetail: 0,
-                dealsOnline: 0,
-                dealsOther: 0,
                 revenue: 0,
                 totalPrice: 0
             };
@@ -762,14 +757,6 @@ function calculatePartnerHealthScore(sDb, allPartners) {
             partnersMap[pName].rawPartners.add(rawPartner);
         }
         partnersMap[pName].deals += 1;
-
-        const ch = typeof getDealChannelKey === 'function' ? getDealChannelKey(d.B2C) : 'opt';
-        if (ch === 'opt') partnersMap[pName].dealsOpt += 1;
-        else if (ch === 'fdc') partnersMap[pName].dealsFdc += 1;
-        else if (ch === 'retail') partnersMap[pName].dealsRetail += 1;
-        else if (ch === 'online') partnersMap[pName].dealsOnline += 1;
-        else partnersMap[pName].dealsOther += 1;
-
         partnersMap[pName].revenue += (d.Revenue || 0);
         partnersMap[pName].totalPrice += (d.Price || 0);
     });
@@ -1194,15 +1181,8 @@ function filterHealthModalTable() {
                 <td class="py-2.5 px-3 text-slate-700 whitespace-nowrap">
                     <span class="font-bold">${p.kam || '—'}</span>
                 </td>
-                <td class="py-2.5 px-3 text-right">
-                    <div class="font-black text-slate-900">${fmtNum(p.deals)}</div>
-                    <div class="text-[10px] text-slate-500 mt-0.5 whitespace-nowrap flex justify-end gap-1 font-semibold">
-                        ${p.dealsOpt > 0 ? `<span class="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200" title="Опт МП2">Опт: ${p.dealsOpt}</span>` : ''}
-                        ${p.dealsFdc > 0 ? `<span class="px-1.5 py-0.2 rounded bg-purple-50 text-purple-700 border border-purple-200" title="ФДЦ">ФДЦ: ${p.dealsFdc}</span>` : ''}
-                        ${p.dealsRetail > 0 ? `<span class="px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200" title="Розница (B2C)">B2C: ${p.dealsRetail}</span>` : ''}
-                        ${p.dealsOnline > 0 ? `<span class="px-1.5 py-0.2 rounded bg-cyan-50 text-cyan-700 border border-cyan-200" title="Online">Onl: ${p.dealsOnline}</span>` : ''}
-                        ${p.dealsOther > 0 ? `<span class="px-1.5 py-0.2 rounded bg-slate-50 text-slate-600 border border-slate-200" title="Прочие">Пр: ${p.dealsOther}</span>` : ''}
-                    </div>
+                <td class="py-2.5 px-3 text-right font-black text-slate-800">
+                    ${fmtNum(p.deals)}
                 </td>
                 <td class="py-2.5 px-3 text-right font-bold text-slate-800">
                     ${fmtRub(p.revenue)}
@@ -1271,12 +1251,7 @@ function exportPartnerHealthToExcel() {
         'Юридические лица': (p.rawPartnersList || []).join('; '),
         'Квадрант': p.quadrantName,
         'Закрепленный КАМ': p.kam || '—',
-        'Сделки всего (шт)': p.deals,
-        'Опт МП2 (шт)': p.dealsOpt || 0,
-        'ФДЦ (шт)': p.dealsFdc || 0,
-        'Розница B2C (шт)': p.dealsRetail || 0,
-        'Online (шт)': p.dealsOnline || 0,
-        'Прочие (шт)': p.dealsOther || 0,
+        'Сделки (шт)': p.deals,
         'Выручка (руб)': p.revenue,
         'ARPU (руб/шт)': p.arpu,
         'Take-rate (%)': p.takeRate + '%',

@@ -7,121 +7,19 @@
  * @param {Array} sDb - Filtered sales database
  */
 function renderDashTables(sDb) {
-    const safeStr = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-    function getChannelKey(b2c) {
-        const raw = (b2c || '').toString().trim().toLowerCase();
-        if (raw.includes('мп2') || raw === 'мп 2') return 'opt';
-        if (raw.includes('фдц') || raw.includes('гп')) return 'fdc';
-        if (raw.includes('лид') || raw.includes('b2c') || raw.includes('розниц')) return 'retail';
-        if (raw.includes('online') || raw.includes('онлайн')) return 'online';
-        if (raw.includes('мп1') || raw.includes('мп3')) return 'other';
-        return 'opt';
-    }
-
-    const brandMap = {};
-    const totChannels = { opt: 0, fdc: 0, retail: 0, online: 0, other: 0, total: 0 };
-    const b2cMap = {};
-
-    sDb.forEach(r => {
-        let b = (r.Brand || 'Другие').trim();
-        if (b === 'SOUEAS') b = 'SOUEAST';
-        const ch = getChannelKey(r.B2C);
-
-        if (!brandMap[b]) {
-            brandMap[b] = { brand: b, total: 0, opt: 0, fdc: 0, retail: 0, online: 0, other: 0 };
-        }
-        brandMap[b].total++;
-        brandMap[b][ch]++;
-        totChannels.total++;
-        totChannels[ch]++;
-
-        const b2cLabel = r.B2C || '(пусто)';
-        b2cMap[b2cLabel] = (b2cMap[b2cLabel] || 0) + 1;
-    });
-
-    const sortedBrands = Object.values(brandMap).sort((a, b) => b.total - a.total);
-
-    let brHtml = `
-        <div class="overflow-x-auto max-h-[300px] overflow-y-auto">
-            <table class="min-w-full text-xs" style="font-size: 11px;">
-                <thead class="sticky top-0 bg-white z-10 shadow-sm">
-                    <tr class="border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-                        <th class="text-left py-2 px-2">Марка авто</th>
-                        <th class="text-right py-2 px-2 font-black text-slate-800">Всего</th>
-                        <th class="text-right py-2 px-1.5 text-blue-700 bg-blue-50/50" title="Опт МП2">Опт</th>
-                        <th class="text-right py-2 px-1.5 text-purple-700 bg-purple-50/50" title="Фронт-ДЦ / Гарантия платежа">ФДЦ</th>
-                        <th class="text-right py-2 px-1.5 text-emerald-700 bg-emerald-50/50" title="Розница (B2C / Лиды)">B2C</th>
-                        <th class="text-right py-2 px-1.5 text-cyan-700 bg-cyan-50/50" title="Online продажи">Online</th>
-                        <th class="text-right py-2 px-1.5 text-slate-500 bg-slate-50/50" title="Прочие (МП1/3)">Проч.</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    ${sortedBrands.map(x => `
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="font-bold py-1 px-2 text-slate-800 whitespace-nowrap">${safeStr(x.brand)}</td>
-                            <td class="text-right py-1 px-2 font-black text-slate-900">${fmtNum(x.total)}</td>
-                            <td class="text-right py-1 px-1.5 ${x.opt > 0 ? 'font-bold text-blue-700' : 'text-slate-300'}">${x.opt > 0 ? fmtNum(x.opt) : '·'}</td>
-                            <td class="text-right py-1 px-1.5 ${x.fdc > 0 ? 'font-bold text-purple-700' : 'text-slate-300'}">${x.fdc > 0 ? fmtNum(x.fdc) : '·'}</td>
-                            <td class="text-right py-1 px-1.5 ${x.retail > 0 ? 'font-bold text-emerald-700' : 'text-slate-300'}">${x.retail > 0 ? fmtNum(x.retail) : '·'}</td>
-                            <td class="text-right py-1 px-1.5 ${x.online > 0 ? 'font-bold text-cyan-700' : 'text-slate-300'}">${x.online > 0 ? fmtNum(x.online) : '·'}</td>
-                            <td class="text-right py-1 px-1.5 ${x.other > 0 ? 'font-bold text-slate-600' : 'text-slate-300'}">${x.other > 0 ? fmtNum(x.other) : '·'}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-                <tfoot class="sticky bottom-0 bg-slate-100 font-bold border-t-2 border-slate-300 text-[11px]">
-                    <tr>
-                        <td class="py-1.5 px-2 text-slate-900 font-black">Общий итог</td>
-                        <td class="text-right py-1.5 px-2 font-black text-slate-900">${fmtNum(totChannels.total)}</td>
-                        <td class="text-right py-1.5 px-1.5 font-black text-blue-800">${fmtNum(totChannels.opt)}</td>
-                        <td class="text-right py-1.5 px-1.5 font-black text-purple-800">${fmtNum(totChannels.fdc)}</td>
-                        <td class="text-right py-1.5 px-1.5 font-black text-emerald-800">${fmtNum(totChannels.retail)}</td>
-                        <td class="text-right py-1.5 px-1.5 font-black text-cyan-800">${fmtNum(totChannels.online)}</td>
-                        <td class="text-right py-1.5 px-1.5 font-black text-slate-700">${fmtNum(totChannels.other)}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    `;
-
+    let br = {}, b2c = {};
+    sDb.forEach(r => { br[r.Brand] = (br[r.Brand]||0)+1; b2c[r.B2C||"(пусто)"] = (b2c[r.B2C||"(пусто)"]||0)+1; });
+    const makeHtml = (dict, t1, t2) => {
+        let sorted = Object.entries(dict).sort((a,b)=>b[1]-a[1]);
+        let tot = sorted.reduce((s,x)=>s+x[1],0);
+        let h = `<table><thead><tr><th>${t1}</th><th>${t2}</th></tr></thead><tbody>`;
+        sorted.forEach(x => h+=`<tr><td class="font-bold">${x[0]}</td><td>${fmtNum(x[1])}</td></tr>`);
+        return h + `<tr><td class="table-subtotal">Общий итог</td><td class="table-subtotal">${fmtNum(tot)}</td></tr></tbody></table>`;
+    };
     const elDashBrands = document.getElementById('tableDashBrands');
-    if (elDashBrands) elDashBrands.innerHTML = brHtml;
-
-    // B2C table with share percentages
-    let sortedB2C = Object.entries(b2cMap).sort((a, b) => b[1] - a[1]);
-    let totB2C = sortedB2C.reduce((s, x) => s + x[1], 0);
-    let b2cHtml = `
-        <div class="overflow-x-auto max-h-[300px] overflow-y-auto">
-            <table class="min-w-full text-xs" style="font-size: 11px;">
-                <thead class="sticky top-0 bg-white z-10 shadow-sm">
-                    <tr class="border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-                        <th class="text-left py-2 px-2">Тип сделки B2C</th>
-                        <th class="text-right py-2 px-2 font-black text-slate-800">Количество</th>
-                        <th class="text-right py-2 px-2 text-slate-500">Доля (%)</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100">
-                    ${sortedB2C.map(x => `
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="font-bold py-1 px-2 text-slate-800">${safeStr(x[0])}</td>
-                            <td class="text-right py-1 px-2 font-black text-slate-900">${fmtNum(x[1])}</td>
-                            <td class="text-right py-1 px-2 text-slate-600 font-medium">${totB2C > 0 ? fmtPct(x[1] / totB2C) : '0%'}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-                <tfoot class="sticky bottom-0 bg-slate-100 font-bold border-t-2 border-slate-300 text-[11px]">
-                    <tr>
-                        <td class="py-1.5 px-2 text-slate-900 font-black">Общий итог</td>
-                        <td class="text-right py-1.5 px-2 font-black text-slate-900">${fmtNum(totB2C)}</td>
-                        <td class="text-right py-1.5 px-2 font-black text-slate-900">100%</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    `;
-
+    if (elDashBrands) elDashBrands.innerHTML = makeHtml(br, "Марка авто", "Количество");
     const elDashB2C = document.getElementById('tableDashB2C');
-    if (elDashB2C) elDashB2C.innerHTML = b2cHtml;
+    if (elDashB2C) elDashB2C.innerHTML = makeHtml(b2c, "Тип сделки B2C", "Количество");
 }
 
 /**

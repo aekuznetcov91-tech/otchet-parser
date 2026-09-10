@@ -188,34 +188,3 @@ function getDebtorChannelBadge(b2c) {
     if (ch.includes('лида') || ch.includes('Лид')) return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200 shadow-xs">${ch}</span>`;
     return `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-700 border border-gray-200">${ch}</span>`;
 }
-
-/**
- * Standard channel key classifier for B2C/deal channel.
- * @param {string} b2c
- * @returns {'opt'|'fdc'|'retail'|'online'|'other'}
- */
-function getDealChannelKey(b2c) {
-    const raw = (b2c || '').toString().trim().toLowerCase();
-    if (raw.includes('мп2') || raw === 'мп 2') return 'opt';
-    if (raw.includes('фдц') || raw.includes('гп')) return 'fdc';
-    if (raw.includes('лид') || raw.includes('b2c') || raw.includes('розниц')) return 'retail';
-    if (raw.includes('online') || raw.includes('онлайн')) return 'online';
-    if (raw.includes('мп1') || raw.includes('мп3')) return 'other';
-    return 'opt';
-}
-
-/**
- * Renders colored badge for deal channel.
- * @param {string} b2c
- * @returns {string}
- */
-function getChannelBadgeHTML(b2c) {
-    const ch = getDealChannelKey(b2c);
-    const escapeSafe = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    if (ch === 'opt') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">Опт МП2</span>';
-    if (ch === 'fdc') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">ФДЦ</span>';
-    if (ch === 'retail') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Розница</span>';
-    if (ch === 'online') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-100 text-cyan-800 border border-cyan-200">Online</span>';
-    return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">${escapeSafe(b2c || 'Прочие')}</span>`;
-}
-
