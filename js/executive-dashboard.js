@@ -372,7 +372,9 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
             });
         }
     });
-    brandAlerts.sort((a, b) => a.pct - b.pct);
+
+    // Sort by absolute volume drop in units (pieces: largest drop first, e.g. -137 шт., -12 шт.)
+    brandAlerts.sort((a, b) => a.diff - b.diff);
 
     // 2. DEALERS CHURN RISK
     const prevPartnersDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === prevMonthPrefix);
@@ -515,8 +517,8 @@ function renderAlertsRadarCardHTML(a) {
                                 <span class="text-xs font-black ${b.severity === 'critical' ? 'text-rose-700' : 'text-amber-800'}">${b.brand}</span>
                                 <span class="text-[11px] text-slate-500">Факт: <b>${b.curCnt}</b> шт. (было ${b.prevCnt} в ${a.prevMonthName})</span>
                             </div>
-                            <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${b.severity === 'critical' ? 'bg-rose-200 text-rose-800' : 'bg-amber-200 text-amber-800'}">
-                                ${b.pct}%
+                            <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${b.severity === 'critical' ? 'bg-rose-200 text-rose-800' : 'bg-amber-200 text-amber-800'} whitespace-nowrap">
+                                ${b.diff} шт. <span class="text-[10px] font-bold opacity-75">(${b.pct}%)</span>
                             </span>
                         </div>
                     `).join('')}
