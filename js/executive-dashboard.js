@@ -1,11 +1,11 @@
 /**
  * executive-dashboard.js
  * =======================
- * Управленческая панель (Executive Analytics):
- * 1. Темп месяца (Pace / Run-Rate Tracker)
- * 2. Радар критических отклонений (Alerts Radar)
- * 3. Доходность и юнит-экономика каналов (Margin & ARPU)
- * 4. Матрица эффективности дилерской сети (Partner Health Score)
+ * Управленческая аналитическая панель (Executive Analytics):
+ * 1. Темп месяца (Pace / Run-Rate Tracker) — с динамической адаптацией к выбранному фильтру
+ * 2. Радар критических отклонений (Alerts Radar) — просадки брендов, отвал ДЦ и зависшие авансы
+ * 3. Доходность и юнит-экономика каналов (Margin & ARPU) — честная классификация по d.B2C
+ * 4. Матрица эффективности дилерской сети (Partner Health Score) — 4 квадранта, фильтры по КАМ, детальный модал и экспорт в Excel
  */
 
 let activeAlertTab = 'brands'; // 'brands' | 'dealers' | 'prepays'
@@ -18,13 +18,11 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig) {
     const container = document.getElementById('executiveDashboardContainer');
     if (!container) return;
 
-    const activeMonth = (filterConfig && filterConfig.month) || 'all';
-
-    // 1. Calculate Pace / Run-rate metrics
-    const paceData = calculatePaceMetrics(sDb, allDb, activeMonth);
+    // 1. Calculate Pace / Run-rate metrics with dynamic filter support
+    const paceData = calculatePaceMetrics(sDb, allDb, filterConfig);
 
     // 2. Calculate Alerts Radar
-    const alertData = calculateAlertsRadar(allDb, pDb, allPartners || []);
+    const alertData = calculateAlertsRadar(allDb, pDb, allPartners || [], filterConfig);
 
     // 3. Calculate Margin & ARPU by Channel
     const marginData = calculateChannelUnitEconomics(sDb);
@@ -58,7 +56,7 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig) {
                 </div>
                 <div class="flex items-center gap-3">
                     <div class="text-right hidden sm:block">
-                        <div class="text-xs text-slate-400">Срез актуальности</div>
+                        <div class="text-xs text-slate-400">Срез аналитики</div>
                         <div class="text-sm font-bold text-slate-200">${paceData.asOfDateStr}</div>
                     </div>
                 </div>
@@ -95,69 +93,74 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig) {
  * BLOCK 1: PACE & RUN-RATE TRACKER
  * =========================================================================
  */
-function calculatePaceMetrics(sDb, allDb, activeMonth) {
-    const deals = allDb || sDb || [];
-    
-    // Find latest sale date ONLY across actual closed sales (SaleQty > 0 or SaleMonth present)
+function calculatePaceMetrics(sDb, allDb, filterConfig) {
+    const deals = allDb || [];
     const salesOnly = deals.filter(d => (d.SaleQty > 0) || (d.SaleMonth && d.SaleMonth.length > 0));
-    let maxSaleDate = null;
+
+    // Find the latest sale date in dataset
+    let globalMaxSaleDate = null;
     salesOnly.forEach(d => {
         const sDate = d.SaleDate || d.DealDate;
         if (sDate) {
             const dt = excelToJSDate(sDate);
-            if (dt && (!maxSaleDate || dt > maxSaleDate)) {
-                maxSaleDate = dt;
+            if (dt && (!globalMaxSaleDate || dt > globalMaxSaleDate)) {
+                globalMaxSaleDate = dt;
             }
         }
     });
 
-    const refDate = maxSaleDate || new Date();
-    const curYear = refDate.getFullYear();
-    const curMonthIdx = refDate.getMonth(); // 0-based
-    const curDay = refDate.getDate(); // e.g. 10
+    const latestYear = globalMaxSaleDate ? globalMaxSaleDate.getFullYear() : 2026;
+    const latestMonthIdx = globalMaxSaleDate ? globalMaxSaleDate.getMonth() : 8;
+    const latestDay = globalMaxSaleDate ? globalMaxSaleDate.getDate() : 10;
+
+    let targetYear = latestYear;
+    let targetMonthIdx = latestMonthIdx;
+
+    if (filterConfig && filterConfig.mode === 'month' && filterConfig.month) {
+        const parts = filterConfig.month.split('-');
+        targetYear = parseInt(parts[0]);
+        targetMonthIdx = parseInt(parts[1]) - 1;
+    }
 
     const monthNames = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
-    const curMonthName = monthNames[curMonthIdx];
-    const totalDaysInMonth = new Date(curYear, curMonthIdx + 1, 0).getDate(); // 30 for Sept
-    const daysElapsed = Math.min(curDay, totalDaysInMonth);
+    const curMonthName = monthNames[targetMonthIdx];
+    const totalDaysInMonth = new Date(targetYear, targetMonthIdx + 1, 0).getDate();
+    const isLatestActiveMonth = (targetYear === latestYear && targetMonthIdx === latestMonthIdx);
+
+    const daysElapsed = isLatestActiveMonth ? Math.min(latestDay, totalDaysInMonth) : totalDaysInMonth;
+    const isClosedMonth = !isLatestActiveMonth;
     const monthProgressPct = Math.round((daysElapsed / totalDaysInMonth) * 100);
 
-    // Current month deals MTD
-    const curMonthPrefix = `${curYear}-${String(curMonthIdx + 1).padStart(2, '0')}`;
-    const curMonthDeals = deals.filter(d => {
-        const m = (d.SaleMonth || '').replace(/'/g, '');
-        return m === curMonthPrefix && (d.SaleQty > 0 || d.Revenue > 0);
-    });
-
+    const curMonthPrefix = `${targetYear}-${String(targetMonthIdx + 1).padStart(2, '0')}`;
+    const curMonthDeals = salesOnly.filter(d => (d.SaleMonth || '').replace(/'/g, '') === curMonthPrefix);
     const mtdSalesCount = curMonthDeals.length;
     const mtdRevenue = curMonthDeals.reduce((sum, d) => sum + (d.Revenue || 0), 0);
 
-    // Daily run rate
     const dailyRate = daysElapsed > 0 ? (mtdSalesCount / daysElapsed) : 0;
-    const projectedSales = Math.round(dailyRate * totalDaysInMonth);
-    const projectedRevenue = daysElapsed > 0 ? Math.round((mtdRevenue / daysElapsed) * totalDaysInMonth) : 0;
+    const projectedSales = isClosedMonth ? mtdSalesCount : Math.round(dailyRate * totalDaysInMonth);
+    const projectedRevenue = isClosedMonth ? mtdRevenue : (daysElapsed > 0 ? Math.round((mtdRevenue / daysElapsed) * totalDaysInMonth) : 0);
 
-    // Previous month comparison (MTD same days)
-    const prevMonthIdx = curMonthIdx === 0 ? 11 : curMonthIdx - 1;
-    const prevYear = curMonthIdx === 0 ? curYear - 1 : curYear;
+    // Benchmark comparison (previous month)
+    const prevMonthIdx = targetMonthIdx === 0 ? 11 : targetMonthIdx - 1;
+    const prevYear = targetMonthIdx === 0 ? targetYear - 1 : targetYear;
     const prevMonthPrefix = `${prevYear}-${String(prevMonthIdx + 1).padStart(2, '0')}`;
     const prevMonthName = monthNames[prevMonthIdx];
 
-    const prevMonthAllDeals = deals.filter(d => (d.SaleMonth || '').replace(/'/g, '') === prevMonthPrefix && (d.SaleQty > 0 || d.Revenue > 0));
+    const prevMonthAllDeals = salesOnly.filter(d => (d.SaleMonth || '').replace(/'/g, '') === prevMonthPrefix);
     const prevMonthTotalSales = prevMonthAllDeals.length;
     const prevMonthTotalRevenue = prevMonthAllDeals.reduce((sum, d) => sum + (d.Revenue || 0), 0);
 
-    // Prev month MTD (same day cutoff)
-    const prevMonthMtdDeals = prevMonthAllDeals.filter(d => {
+    const prevMtdDeals = prevMonthAllDeals.filter(d => {
+        if (isClosedMonth) return true;
         const sDate = d.SaleDate || d.DealDate;
         if (!sDate) return false;
         const dt = excelToJSDate(sDate);
         return dt && dt.getDate() <= daysElapsed;
     });
-    const prevMtdSalesCount = prevMonthMtdDeals.length;
-    const prevMtdRevenue = prevMonthMtdDeals.reduce((sum, d) => sum + (d.Revenue || 0), 0);
 
-    // Pace delta vs Prev MTD
+    const prevMtdSalesCount = prevMtdDeals.length;
+    const prevMtdRevenue = prevMtdDeals.reduce((sum, d) => sum + (d.Revenue || 0), 0);
+
     const paceSalesDiff = mtdSalesCount - prevMtdSalesCount;
     const paceSalesPct = prevMtdSalesCount > 0 ? Math.round((paceSalesDiff / prevMtdSalesCount) * 100) : 0;
     const paceRevDiff = mtdRevenue - prevMtdRevenue;
@@ -167,10 +170,12 @@ function calculatePaceMetrics(sDb, allDb, activeMonth) {
         curMonthName,
         curMonthPrefix,
         prevMonthName,
-        curDay,
-        totalDaysInMonth,
+        targetYear,
         daysElapsed,
+        totalDaysInMonth,
         monthProgressPct,
+        isClosedMonth,
+        isLatestActiveMonth,
         mtdSalesCount,
         mtdRevenue,
         dailyRate: dailyRate.toFixed(1),
@@ -184,7 +189,7 @@ function calculatePaceMetrics(sDb, allDb, activeMonth) {
         paceSalesPct,
         paceRevDiff,
         paceRevPct,
-        asOfDateStr: `${daysElapsed} ${curMonthName.toLowerCase()} ${curYear}`
+        asOfDateStr: isClosedMonth ? `Итоги за ${curMonthName} ${targetYear}` : `${daysElapsed} ${curMonthName.toLowerCase()} ${targetYear}`
     };
 }
 
@@ -193,6 +198,11 @@ function renderPaceCardHTML(p) {
     const deltaColor = isAhead ? 'text-emerald-600' : 'text-rose-600';
     const deltaBg = isAhead ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200';
     const deltaIcon = isAhead ? '▲ +' : '▼ ';
+
+    const benchmarkLabel = p.isClosedMonth ? `к ${p.prevMonthName}` : `к MTD ${p.prevMonthName}`;
+    const cardSubtitle = p.isClosedMonth 
+        ? `Итоги закрытия за ${p.curMonthName} и сравнение с ${p.prevMonthName}`
+        : `Прогноз закрытия ${p.curMonthName} на базе суточного темпа`;
 
     return `
         <div class="card !p-5 bg-white rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-between">
@@ -205,19 +215,21 @@ function renderPaceCardHTML(p) {
                         </div>
                         <div>
                             <h3 class="font-black text-slate-800 text-base">Темп месяца (Pace / Run-Rate)</h3>
-                            <p class="text-xs text-slate-400">Прогноз закрытия ${p.curMonthName} на базе суточного темпа</p>
+                            <p class="text-xs text-slate-400">${cardSubtitle}</p>
                         </div>
                     </div>
                     <span class="text-xs px-2.5 py-1 rounded-full font-black border ${deltaBg} ${deltaColor}">
-                        ${deltaIcon}${Math.abs(p.paceSalesPct)}% к MTD ${p.prevMonthName}
+                        ${deltaIcon}${Math.abs(p.paceSalesPct)}% ${benchmarkLabel}
                     </span>
                 </div>
 
                 <!-- Calendar Progress Bar -->
                 <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 mb-4">
                     <div class="flex justify-between items-center text-xs mb-1.5 font-bold">
-                        <span class="text-slate-600">День ${p.daysElapsed} из ${p.totalDaysInMonth} (${p.curMonthName})</span>
-                        <span class="text-indigo-600">${p.monthProgressPct}% месяца позади</span>
+                        <span class="text-slate-600">
+                            ${p.isClosedMonth ? `Месяц завершен (${p.totalDaysInMonth} дней)` : `День ${p.daysElapsed} из ${p.totalDaysInMonth} (${p.curMonthName})`}
+                        </span>
+                        <span class="text-indigo-600">${p.monthProgressPct}% ${p.isClosedMonth ? 'итог' : 'месяца позади'}</span>
                     </div>
                     <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
                         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: ${p.monthProgressPct}%"></div>
@@ -227,24 +239,32 @@ function renderPaceCardHTML(p) {
                 <!-- 4 KPI Metrics Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
                     <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
-                        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Факт MTD</div>
+                        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                            ${p.isClosedMonth ? 'Факт месяца' : 'Факт MTD'}
+                        </div>
                         <div class="text-2xl font-black text-slate-800 mt-1">${fmtNum(p.mtdSalesCount)}</div>
                         <div class="text-[10px] text-slate-500 mt-0.5">${fmtRub(p.mtdRevenue)}</div>
                     </div>
                     <div class="bg-blue-50/60 p-3 rounded-2xl border border-blue-100 text-center">
-                        <div class="text-[11px] font-bold text-blue-600 uppercase tracking-wider">Темп / день</div>
+                        <div class="text-[11px] font-bold text-blue-600 uppercase tracking-wider">
+                            ${p.isClosedMonth ? 'Среднесут.' : 'Темп / день'}
+                        </div>
                         <div class="text-2xl font-black text-blue-700 mt-1">${p.dailyRate}</div>
                         <div class="text-[10px] text-blue-500 mt-0.5">сделок/сут.</div>
                     </div>
                     <div class="bg-indigo-50/60 p-3 rounded-2xl border border-indigo-100 text-center">
-                        <div class="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">Прогноз Run-Rate</div>
+                        <div class="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">
+                            ${p.isClosedMonth ? 'Итог факта' : 'Прогноз Run-Rate'}
+                        </div>
                         <div class="text-2xl font-black text-indigo-700 mt-1">${fmtNum(p.projectedSales)}</div>
                         <div class="text-[10px] text-indigo-500 mt-0.5">${fmtRub(p.projectedRevenue)}</div>
                     </div>
                     <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
-                        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Бенчмарк MTD</div>
+                        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                            ${p.isClosedMonth ? 'Прошлый месяц' : 'Бенчмарк MTD'}
+                        </div>
                         <div class="text-2xl font-black text-slate-700 mt-1">${fmtNum(p.prevMtdSalesCount)}</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">MTD ${p.prevMonthName}</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">${p.prevMonthName}</div>
                     </div>
                 </div>
             </div>
@@ -256,7 +276,7 @@ function renderPaceCardHTML(p) {
                     Весь ${p.prevMonthName}: <b>${fmtNum(p.prevMonthTotalSales)} сделок</b> (${fmtRub(p.prevMonthTotalRevenue)})
                 </span>
                 <span class="font-bold ${p.projectedSales >= p.prevMonthTotalSales ? 'text-emerald-600' : 'text-amber-600'}">
-                    ${p.projectedSales >= p.prevMonthTotalSales ? '🎯 Идем выше прошлого месяца' : '⚠️ Отстаем от итога прошлого месяца'}
+                    ${p.projectedSales >= p.prevMonthTotalSales ? '🎯 Выше прошлого месяца' : '⚠️ Отстаем от прошлого месяца'}
                 </span>
             </div>
         </div>
@@ -268,38 +288,58 @@ function renderPaceCardHTML(p) {
  * BLOCK 2: ALERTS RADAR (РАДАР КРИТИЧЕСКИХ ОТКЛОНЕНИЙ)
  * =========================================================================
  */
-function calculateAlertsRadar(allDb, pDb, allPartners) {
+function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
     const deals = allDb || [];
-
-    // Latest sale date among actual sales
     const salesOnly = deals.filter(d => (d.SaleQty > 0) || (d.SaleMonth && d.SaleMonth.length > 0));
-    let maxSaleDate = null;
+
+    // Global max sale date
+    let globalMaxSaleDate = null;
     salesOnly.forEach(d => {
         const sDate = d.SaleDate || d.DealDate;
         if (sDate) {
             const dt = excelToJSDate(sDate);
-            if (dt && (!maxSaleDate || dt > maxSaleDate)) maxSaleDate = dt;
+            if (dt && (!globalMaxSaleDate || dt > globalMaxSaleDate)) globalMaxSaleDate = dt;
         }
     });
 
-    const refDate = maxSaleDate || new Date();
-    const curYear = refDate.getFullYear();
-    const curMonthIdx = refDate.getMonth();
-    const curDay = refDate.getDate();
+    const latestYear = globalMaxSaleDate ? globalMaxSaleDate.getFullYear() : 2026;
+    const latestMonthIdx = globalMaxSaleDate ? globalMaxSaleDate.getMonth() : 8;
+    const latestDay = globalMaxSaleDate ? globalMaxSaleDate.getDate() : 10;
 
-    const curMonthPrefix = `${curYear}-${String(curMonthIdx + 1).padStart(2, '0')}`;
-    const prevMonthIdx = curMonthIdx === 0 ? 11 : curMonthIdx - 1;
-    const prevYear = curMonthIdx === 0 ? curYear - 1 : curYear;
+    let targetYear = latestYear;
+    let targetMonthIdx = latestMonthIdx;
+
+    if (filterConfig && filterConfig.mode === 'month' && filterConfig.month) {
+        const parts = filterConfig.month.split('-');
+        targetYear = parseInt(parts[0]);
+        targetMonthIdx = parseInt(parts[1]) - 1;
+    }
+
+    const monthNames = ["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+    const curMonthName = monthNames[targetMonthIdx];
+    const isLatestActiveMonth = (targetYear === latestYear && targetMonthIdx === latestMonthIdx);
+
+    const prevMonthIdx = targetMonthIdx === 0 ? 11 : targetMonthIdx - 1;
+    const prevYear = targetMonthIdx === 0 ? targetYear - 1 : targetYear;
     const prevMonthPrefix = `${prevYear}-${String(prevMonthIdx + 1).padStart(2, '0')}`;
+    const prevMonthName = monthNames[prevMonthIdx];
+    const curMonthPrefix = `${targetYear}-${String(targetMonthIdx + 1).padStart(2, '0')}`;
 
-    // 1. BRAND CRITICAL DROPS (Aug MTD vs Sept MTD)
+    const periodLabel = isLatestActiveMonth 
+        ? `${curMonthName} (MTD ${latestDay} дн.) vs ${prevMonthName}`
+        : `${curMonthName} vs ${prevMonthName}`;
+
+    // 1. BRAND CRITICAL DROPS
     const curMonthDeals = salesOnly.filter(d => (d.SaleMonth || '').replace(/'/g, '') === curMonthPrefix);
-    const prevMonthMtdDeals = salesOnly.filter(d => {
+    const prevMonthDeals = salesOnly.filter(d => {
         if ((d.SaleMonth || '').replace(/'/g, '') !== prevMonthPrefix) return false;
-        const sDate = d.SaleDate || d.DealDate;
-        if (!sDate) return false;
-        const dt = excelToJSDate(sDate);
-        return dt && dt.getDate() <= curDay;
+        if (isLatestActiveMonth) {
+            const sDate = d.SaleDate || d.DealDate;
+            if (!sDate) return false;
+            const dt = excelToJSDate(sDate);
+            return dt && dt.getDate() <= latestDay;
+        }
+        return true;
     });
 
     const brandCur = {}, brandPrev = {};
@@ -308,7 +348,7 @@ function calculateAlertsRadar(allDb, pDb, allPartners) {
         if (b === 'SOUEAS') b = 'SOUEAST';
         brandCur[b] = (brandCur[b] || 0) + 1;
     });
-    prevMonthMtdDeals.forEach(d => {
+    prevMonthDeals.forEach(d => {
         let b = (d.Brand || 'Другие').trim();
         if (b === 'SOUEAS') b = 'SOUEAST';
         brandPrev[b] = (brandPrev[b] || 0) + 1;
@@ -321,7 +361,6 @@ function calculateAlertsRadar(allDb, pDb, allPartners) {
         const diff = curCnt - prevCnt;
         const pct = prevCnt > 0 ? Math.round((diff / prevCnt) * 100) : 0;
         
-        // Alert if drop is 10% or more, or if lost >= 5 cars
         if (pct <= -10 || (prevCnt >= 5 && diff < 0)) {
             brandAlerts.push({
                 brand: b,
@@ -335,13 +374,12 @@ function calculateAlertsRadar(allDb, pDb, allPartners) {
     });
     brandAlerts.sort((a, b) => a.pct - b.pct);
 
-    // 2. DEALERS CHURN RISK (Active in prev month >= 3 deals, but 0 in cur month)
-    // Using allPartners (sys_db_partners) for accurate master partner grouping and KAM lookup
-    const augDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === prevMonthPrefix);
-    const sepDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === curMonthPrefix);
+    // 2. DEALERS CHURN RISK
+    const prevPartnersDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === prevMonthPrefix);
+    const curPartnersDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === curMonthPrefix);
 
     const dealerPrevMap = {}, dealerCurMap = {};
-    augDeals.forEach(r => {
+    prevPartnersDeals.forEach(r => {
         const p = r.Partner || 'Неизвестный партнер';
         if (!dealerPrevMap[p]) {
             dealerPrevMap[p] = { partner: p, prevDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || '' };
@@ -350,7 +388,7 @@ function calculateAlertsRadar(allDb, pDb, allPartners) {
         if (r.KAM && dealerPrevMap[p].kam === '—') dealerPrevMap[p].kam = r.KAM;
     });
 
-    sepDeals.forEach(r => {
+    curPartnersDeals.forEach(r => {
         const p = r.Partner || 'Неизвестный партнер';
         dealerCurMap[p] = (dealerCurMap[p] || 0) + (r.Qty || 1);
     });
@@ -374,6 +412,7 @@ function calculateAlertsRadar(allDb, pDb, allPartners) {
 
     // 3. STUCK PREPAYMENTS (> 7 days without sale)
     const stuckPrepays = [];
+    const refDate = globalMaxSaleDate || new Date();
     const partnerPrepays = (allPartners || []).filter(r => r.Type === 'Предоплата' && r.Month === curMonthPrefix);
     partnerPrepays.forEach(p => {
         if (p.Date) {
@@ -395,6 +434,9 @@ function calculateAlertsRadar(allDb, pDb, allPartners) {
     stuckPrepays.sort((a, b) => b.days - a.days);
 
     return {
+        periodLabel,
+        curMonthName,
+        prevMonthName,
         brandAlerts,
         dealerAlerts,
         stuckPrepays,
@@ -426,6 +468,13 @@ function switchAlertTab(tabName) {
 }
 
 function renderAlertsRadarCardHTML(a) {
+    const isBrands = activeAlertTab === 'brands';
+    const isDealers = activeAlertTab === 'dealers';
+    const isPrepays = activeAlertTab === 'prepays';
+
+    const activeBtnClass = 'bg-slate-900 text-white shadow-sm';
+    const inactiveBtnClass = 'bg-slate-100 text-slate-600 hover:bg-slate-200';
+
     return `
         <div class="card !p-5 bg-white rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-between">
             <div>
@@ -437,25 +486,25 @@ function renderAlertsRadarCardHTML(a) {
                         </div>
                         <div>
                             <h3 class="font-black text-slate-800 text-base">Радар отклонений (Alerts Radar)</h3>
-                            <p class="text-xs text-slate-400">Автоматический мониторинг сигналов риска</p>
+                            <p class="text-xs text-slate-400">Сравнение: ${a.periodLabel}</p>
                         </div>
                     </div>
                     <!-- Pill Buttons -->
                     <div class="flex items-center gap-1.5 p-1 bg-slate-50 rounded-2xl border border-slate-100">
-                        <button id="alertTabBtnBrands" onclick="switchAlertTab('brands')" class="px-3 py-1 text-xs font-bold rounded-xl transition bg-slate-900 text-white shadow-sm">
+                        <button id="alertTabBtnBrands" onclick="switchAlertTab('brands')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isBrands ? activeBtnClass : inactiveBtnClass}">
                             Бренды (${a.brandAlerts.length})
                         </button>
-                        <button id="alertTabBtnDealers" onclick="switchAlertTab('dealers')" class="px-3 py-1 text-xs font-bold rounded-xl transition bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <button id="alertTabBtnDealers" onclick="switchAlertTab('dealers')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isDealers ? activeBtnClass : inactiveBtnClass}">
                             Отвал ДЦ (${a.dealerAlerts.length})
                         </button>
-                        <button id="alertTabBtnPrepays" onclick="switchAlertTab('prepays')" class="px-3 py-1 text-xs font-bold rounded-xl transition bg-slate-100 text-slate-600 hover:bg-slate-200">
+                        <button id="alertTabBtnPrepays" onclick="switchAlertTab('prepays')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isPrepays ? activeBtnClass : inactiveBtnClass}">
                             Авансы (${a.stuckPrepays.length})
                         </button>
                     </div>
                 </div>
 
                 <!-- TAB 1: BRANDS DROP (Fully scrollable to see ALL items) -->
-                <div id="alertContentBrands" class="space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                <div id="alertContentBrands" class="${isBrands ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${a.brandAlerts.length === 0 ? `
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
                             🟢 Критических просадок по маркам не зафиксировано
@@ -464,7 +513,7 @@ function renderAlertsRadarCardHTML(a) {
                         <div class="flex items-center justify-between p-2.5 rounded-2xl ${b.severity === 'critical' ? 'bg-rose-50/80 border border-rose-100' : 'bg-amber-50/80 border border-amber-100'}">
                             <div class="flex items-center gap-2.5">
                                 <span class="text-xs font-black ${b.severity === 'critical' ? 'text-rose-700' : 'text-amber-800'}">${b.brand}</span>
-                                <span class="text-[11px] text-slate-500">Факт: <b>${b.curCnt}</b> шт. (было ${b.prevCnt} в авг. MTD)</span>
+                                <span class="text-[11px] text-slate-500">Факт: <b>${b.curCnt}</b> шт. (было ${b.prevCnt} в ${a.prevMonthName})</span>
                             </div>
                             <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${b.severity === 'critical' ? 'bg-rose-200 text-rose-800' : 'bg-amber-200 text-amber-800'}">
                                 ${b.pct}%
@@ -473,8 +522,8 @@ function renderAlertsRadarCardHTML(a) {
                     `).join('')}
                 </div>
 
-                <!-- TAB 2: DEALERS CHURN RISK (Shows all 26 churned partners with scroll) -->
-                <div id="alertContentDealers" class="hidden space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                <!-- TAB 2: DEALERS CHURN RISK (Shows all churned partners with scroll) -->
+                <div id="alertContentDealers" class="${isDealers ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${a.dealerAlerts.length === 0 ? `
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
                             🟢 Все ключевые партнеры проявляют активность
@@ -484,7 +533,7 @@ function renderAlertsRadarCardHTML(a) {
                             <div class="min-w-0 pr-2">
                                 <div class="text-xs font-black text-slate-800 truncate">${d.partner}</div>
                                 <div class="text-[11px] text-slate-500 mt-0.5">
-                                    Было в авг: <b>${d.prevDeals} шт.</b> • КАМ: <span class="font-medium text-slate-700">${d.kam}</span>
+                                    Было в ${a.prevMonthName}: <b>${d.prevDeals} шт.</b> • КАМ: <span class="font-medium text-slate-700">${d.kam}</span>
                                 </div>
                             </div>
                             <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${d.severity === 'critical' ? 'bg-rose-600 text-white' : 'bg-rose-100 text-rose-700 border border-rose-200'} whitespace-nowrap">
@@ -495,7 +544,7 @@ function renderAlertsRadarCardHTML(a) {
                 </div>
 
                 <!-- TAB 3: STUCK PREPAYMENTS (Shows stuck prepayments with scroll) -->
-                <div id="alertContentPrepays" class="hidden space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                <div id="alertContentPrepays" class="${isPrepays ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${a.stuckPrepays.length === 0 ? `
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
                             🟢 Зависших авансов (>7 дней) не обнаружено
@@ -520,7 +569,7 @@ function renderAlertsRadarCardHTML(a) {
                     <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>
                     Критических сигналов: <b>${a.totalCriticalCount}</b> (из ${a.brandAlerts.length + a.dealerAlerts.length + a.stuckPrepays.length} рисков)
                 </span>
-                <span class="text-slate-400">Скрольте список для просмотра всех</span>
+                <span class="text-slate-400">Прокрутите список для просмотра всех</span>
             </div>
         </div>
     `;
@@ -724,14 +773,18 @@ function calculatePartnerHealthScore(sDb, allPartners) {
     });
 
     if (list.length === 0) {
-        window._partnerHealthCache = { allList: [], stars: [], growth: [], niche: [], risk: [], overallArpu: 0 };
-        return { stars: [], growth: [], niche: [], risk: [], totalPartners: 0, overallArpu: 0, allList: [] };
+        window._partnerHealthCache = { allList: [], stars: [], growth: [], niche: [], risk: [], overallArpu: 0, volThreshold: 3 };
+        return { stars: [], growth: [], niche: [], risk: [], totalPartners: 0, overallArpu: 0, volThreshold: 3, allList: [] };
     }
 
-    // Benchmark ARPU & Volume
+    // Benchmark ARPU & Dynamic Volume Threshold (Median volume, min 3)
     const totalRev = list.reduce((s, p) => s + p.revenue, 0);
     const totalDeals = list.reduce((s, p) => s + p.deals, 0);
     const overallArpu = totalDeals > 0 ? Math.round(totalRev / totalDeals) : 40000;
+
+    const sortedDeals = list.map(p => p.deals).sort((a, b) => a - b);
+    const medianDeals = sortedDeals[Math.floor(sortedDeals.length / 2)] || 2;
+    const volThreshold = Math.max(3, medianDeals);
 
     const stars = [];
     const growth = [];
@@ -739,7 +792,7 @@ function calculatePartnerHealthScore(sDb, allPartners) {
     const risk = [];
 
     list.forEach(p => {
-        const isHighVolume = p.deals >= 3;
+        const isHighVolume = p.deals >= volThreshold;
         const isHighYield = p.arpu >= overallArpu;
 
         if (isHighVolume && isHighYield) {
@@ -777,7 +830,8 @@ function calculatePartnerHealthScore(sDb, allPartners) {
         growth,
         niche,
         risk,
-        overallArpu
+        overallArpu,
+        volThreshold
     };
 
     return {
@@ -787,6 +841,7 @@ function calculatePartnerHealthScore(sDb, allPartners) {
         risk,
         totalPartners: list.length,
         overallArpu,
+        volThreshold,
         allList: list
     };
 }
@@ -870,7 +925,7 @@ function renderHealthScoreCardHTML(h) {
                 <!-- Interactive CTA Button -->
                 <button onclick="openHealthDetailsModal('all')" class="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-sm">
                     <i data-lucide="table" class="w-3.5 h-3.5"></i>
-                    <span>Открыть реестр всех 90 партнеров с фильтром по КАМ ➔</span>
+                    <span>Открыть реестр всех ${h.totalPartners} партнеров с фильтром по КАМ ➔</span>
                 </button>
             </div>
 
@@ -880,7 +935,7 @@ function renderHealthScoreCardHTML(h) {
                     <i data-lucide="users" class="w-3.5 h-3.5 text-purple-600"></i>
                     Фокус внимания КАМ: <b>«Точки роста»</b> (допродажи) и <b>«Зона риска»</b>
                 </span>
-                <span class="text-slate-400">Порог: ≥3 сделок • ARPU ${fmtNum(h.overallArpu)} ₽</span>
+                <span class="text-slate-400">Порог: ≥${h.volThreshold} сд. • ARPU ${fmtNum(h.overallArpu)} ₽</span>
             </div>
         </div>
     `;
@@ -888,7 +943,7 @@ function renderHealthScoreCardHTML(h) {
 
 /**
  * =========================================================================
- * MODAL WINDOW: PARTNER HEALTH SCORE DETAILS & AUDIT
+ * MODAL WINDOW: PARTNER HEALTH SCORE DETAILS, FILTERS & EXCEL EXPORT
  * =========================================================================
  */
 function ensureHealthModalExists() {
@@ -908,7 +963,7 @@ function ensureHealthModalExists() {
                                 Аудит эффективности партнерской сети (Partner Health Score)
                             </h3>
                             <p id="modalHealthSubtitle" class="text-xs text-slate-300 mt-0.5">
-                                Детальный реестр 90 дилеров: объемы, выручка, ARPU и рекомендации для КАМ
+                                Детальный реестр активных дилеров: объемы, выручка, ARPU и рекомендации для КАМ
                             </p>
                         </div>
                     </div>
@@ -938,10 +993,15 @@ function ensureHealthModalExists() {
                         </button>
                     </div>
 
-                    <!-- Search Input -->
-                    <div class="relative w-full sm:w-72">
-                        <input id="healthModalSearch" type="text" oninput="filterHealthModalTable()" placeholder="Поиск по партнеру, юрлицу или КАМу..." class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-purple-500 outline-none">
-                        <span class="absolute left-2.5 top-2 text-slate-400 text-xs">🔍</span>
+                    <!-- Search Input & Excel Export -->
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <div class="relative w-full sm:w-64">
+                            <input id="healthModalSearch" type="text" oninput="filterHealthModalTable()" placeholder="Поиск по партнеру или КАМу..." class="w-full bg-white border border-slate-300 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-purple-500 outline-none">
+                            <span class="absolute left-2.5 top-2 text-slate-400 text-xs">🔍</span>
+                        </div>
+                        <button onclick="exportPartnerHealthToExcel()" title="Скачать таблицу в Excel (.xlsx)" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 shadow-sm">
+                            <span>📥 Excel</span>
+                        </button>
                     </div>
                 </div>
 
@@ -987,7 +1047,7 @@ function ensureHealthModalExists() {
 
     document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-    // Escape listener
+    // Escape key listener
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeHealthDetailsModal();
@@ -1023,6 +1083,12 @@ function openHealthDetailsModal(quadrantKey = 'all') {
     setTabCount('growth', cache.growth.length);
     setTabCount('niche', cache.niche.length);
     setTabCount('risk', cache.risk.length);
+
+    // Update subtitle
+    const subTitle = document.getElementById('modalHealthSubtitle');
+    if (subTitle) {
+        subTitle.textContent = `Детальный реестр ${cache.allList.length} дилеров: объемы, выручка, ARPU и рекомендации для КАМ`;
+    }
 
     switchHealthModalTab(quadrantKey);
 
@@ -1145,4 +1211,55 @@ function filterHealthModalTable() {
     setFooterVal('healthModalTotalDeals', fmtNum(totalDeals));
     setFooterVal('healthModalTotalRev', fmtRub(totalRev));
     setFooterVal('healthModalAvgArpu', `${fmtNum(avgArpu)} ₽`);
+}
+
+function exportPartnerHealthToExcel() {
+    if (typeof XLSX === 'undefined') {
+        alert('Библиотека XLSX не загружена на странице');
+        return;
+    }
+    const cache = window._partnerHealthCache || { allList: [] };
+    let list = [];
+
+    if (activeHealthQuadrant === 'stars') list = cache.stars;
+    else if (activeHealthQuadrant === 'growth') list = cache.growth;
+    else if (activeHealthQuadrant === 'niche') list = cache.niche;
+    else if (activeHealthQuadrant === 'risk') list = cache.risk;
+    else list = cache.allList;
+
+    const searchInput = document.getElementById('healthModalSearch');
+    const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+
+    if (query) {
+        list = list.filter(p => {
+            const nameMatch = p.partner.toLowerCase().includes(query);
+            const rawMatch = (p.rawPartnersList || []).some(r => r.toLowerCase().includes(query));
+            const kamMatch = (p.kam || '').toLowerCase().includes(query);
+            return nameMatch || rawMatch || kamMatch;
+        });
+    }
+
+    if (list.length === 0) {
+        alert('Нет данных для выгрузки');
+        return;
+    }
+
+    const rows = list.map(p => ({
+        'Партнер (ДЦ)': p.partner,
+        'Юридические лица': (p.rawPartnersList || []).join('; '),
+        'Квадрант': p.quadrantName,
+        'Закрепленный КАМ': p.kam || '—',
+        'Сделки (шт)': p.deals,
+        'Выручка (руб)': p.revenue,
+        'ARPU (руб/шт)': p.arpu,
+        'Take-rate (%)': p.takeRate + '%',
+        'Рекомендация для КАМ': p.action
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Partner Health Audit');
+
+    const fileName = `Partner_Health_Score_${activeHealthQuadrant}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+    XLSX.writeFile(wb, fileName);
 }
