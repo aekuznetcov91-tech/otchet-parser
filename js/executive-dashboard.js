@@ -98,8 +98,9 @@ function calculatePaceMetrics(sDb, allDb, activeMonth) {
     // Find latest sale date across all deals
     let maxSaleDate = null;
     deals.forEach(d => {
-        if (d.SaleDate) {
-            const dt = excelToJSDate(d.SaleDate);
+        const sDate = d.SaleDate || d.DealDate;
+        if (sDate) {
+            const dt = excelToJSDate(sDate);
             if (dt && (!maxSaleDate || dt > maxSaleDate)) {
                 maxSaleDate = dt;
             }
@@ -144,8 +145,9 @@ function calculatePaceMetrics(sDb, allDb, activeMonth) {
 
     // Prev month MTD (same day cutoff)
     const prevMonthMtdDeals = prevMonthAllDeals.filter(d => {
-        if (!d.SaleDate) return false;
-        const dt = excelToJSDate(d.SaleDate);
+        const sDate = d.SaleDate || d.DealDate;
+        if (!sDate) return false;
+        const dt = excelToJSDate(sDate);
         return dt && dt.getDate() <= daysElapsed;
     });
     const prevMtdSalesCount = prevMonthMtdDeals.length;
@@ -268,8 +270,9 @@ function calculateAlertsRadar(allDb, pDb) {
     // Find latest month and prev month
     let maxSaleDate = null;
     deals.forEach(d => {
-        if (d.SaleDate) {
-            const dt = excelToJSDate(d.SaleDate);
+        const sDate = d.SaleDate || d.DealDate;
+        if (sDate) {
+            const dt = excelToJSDate(sDate);
             if (dt && (!maxSaleDate || dt > maxSaleDate)) maxSaleDate = dt;
         }
     });
@@ -288,8 +291,9 @@ function calculateAlertsRadar(allDb, pDb) {
     const curMonthDeals = deals.filter(d => (d.SaleMonth || '').replace(/'/g, '') === curMonthPrefix);
     const prevMonthMtdDeals = deals.filter(d => {
         if ((d.SaleMonth || '').replace(/'/g, '') !== prevMonthPrefix) return false;
-        if (!d.SaleDate) return false;
-        const dt = excelToJSDate(d.SaleDate);
+        const sDate = d.SaleDate || d.DealDate;
+        if (!sDate) return false;
+        const dt = excelToJSDate(sDate);
         return dt && dt.getDate() <= curDay;
     });
 
@@ -356,7 +360,8 @@ function calculateAlertsRadar(allDb, pDb) {
     const prepays = pDb || deals.filter(d => d.Status === 'Внесение аванса' || d.Status === 'Аванс');
     const stuckPrepays = [];
     prepays.forEach(p => {
-        if (p.PrepayDate && (!p.SaleDate || p.Status !== 'Сделка закрыта')) {
+        const sDate = p.SaleDate || p.DealDate;
+        if (p.PrepayDate && (!sDate || p.Status !== 'Сделка закрыта')) {
             const dt = excelToJSDate(p.PrepayDate);
             if (dt) {
                 const diffDays = Math.round((refDate - dt) / (1000 * 60 * 60 * 24));
