@@ -9,7 +9,27 @@
  */
 
 let activeAlertTab = 'brands'; // 'brands' | 'dealers' | 'prepays'
+let activeAlertChannel = 'all'; // 'all' | 'opt' | 'fdc' | 'retail' | 'online' | 'other'
 let activeHealthQuadrant = 'all'; // 'all' | 'stars' | 'growth' | 'niche' | 'risk'
+
+const ALERT_CHANNELS = [
+    { key: 'all', label: 'Все каналы' },
+    { key: 'opt', label: 'Опт МП2' },
+    { key: 'fdc', label: 'ФДЦ' },
+    { key: 'retail', label: 'Розница B2C' },
+    { key: 'online', label: 'Online' },
+    { key: 'other', label: 'Прочие' }
+];
+
+function getAlertDealChannelKey(b2c) {
+    const raw = (b2c || '').toString().trim().toLowerCase();
+    if (raw.includes('мп2') || raw === 'мп 2') return 'opt';
+    if (raw.includes('фдц') || raw.includes('гп')) return 'fdc';
+    if (raw.includes('лид') || raw.includes('b2c') || raw.includes('розниц')) return 'retail';
+    if (raw.includes('online') || raw.includes('онлайн')) return 'online';
+    if (raw.includes('мп1') || raw.includes('мп3')) return 'other';
+    return 'opt';
+}
 
 /**
  * Main render function called from data-loader.js updateAllTabs()
@@ -329,7 +349,39 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         ? `${curMonthName} (MTD ${latestDay} дн.) vs ${prevMonthName}`
         : `${curMonthName} vs ${prevMonthName}`;
 
-    // 1. BRAND CRITICAL DROPS
+    // Common Stuck Prepayments
+    const refDate = globalMaxSaleDate || new Date();
+    const partnerPrepays = (allPartners || []).filter(r => r.Type === 'Предоплата' && r.Month === curMonthPrefix);
+    const allStuckPrepays = [];
+    partnerPrepays.forEach(p => {
+        if (p.Date) {
+            const dt = excelToJSDate(p.Date);
+            if (dt) {
+                const diffDays = Math.round((refDate - dt) / (1000 * 60 * 60 * 24));
+                if (diffDays >= 7) {
+                    allStuckPrepays.push({
+                        partner: p.Partner || 'Неизвестный партнер',
+                        rawPartner: p.RawPartner || '',
+                        kam: p.KAM || '—',
+                        days: diffDays,
+                        dateStr: dt.toLocaleDateString('ru-RU')
+                    });
+                }
+            }
+        }
+    });
+    allStuckPrepays.sort((a, b) => b.days - a.days);
+
+    // Partner channel distribution lookup
+    const partnerChannels = {};
+    (allPartners || []).filter(r => r.Type === 'Сделка').forEach(r => {
+        const p = r.Partner;
+        const ch = getAlertDealChannelKey(r.B2C);
+        if (!partnerChannels[p]) partnerChannels[p] = {};
+        partnerChannels[p][ch] = (partnerChannels[p][ch] || 0) + (r.Qty || 1);
+    });
+
+    // Deals for cur and prev period
     const curMonthDeals = salesOnly.filter(d => (d.SaleMonth || '').replace(/'/g, '') === curMonthPrefix);
     const prevMonthDeals = salesOnly.filter(d => {
         if ((d.SaleMonth || '').replace(/'/g, '') !== prevMonthPrefix) return false;
@@ -342,109 +394,192 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         return true;
     });
 
-    const brandCur = {}, brandPrev = {};
-    curMonthDeals.forEach(d => {
-        let b = (d.Brand || 'Другие').trim();
-        if (b === 'SOUEAS') b = 'SOUEAST';
-        brandCur[b] = (brandCur[b] || 0) + 1;
-    });
-    prevMonthDeals.forEach(d => {
-        let b = (d.Brand || 'Другие').trim();
-        if (b === 'SOUEAS') b = 'SOUEAST';
-        brandPrev[b] = (brandPrev[b] || 0) + 1;
-    });
-
-    const brandAlerts = [];
-    Object.keys(brandPrev).forEach(b => {
-        const prevCnt = brandPrev[b];
-        const curCnt = brandCur[b] || 0;
-        const diff = curCnt - prevCnt;
-        const pct = prevCnt > 0 ? Math.round((diff / prevCnt) * 100) : 0;
-        
-        if (pct <= -10 || (prevCnt >= 5 && diff < 0)) {
-            brandAlerts.push({
-                brand: b,
-                prevCnt,
-                curCnt,
-                diff,
-                pct,
-                severity: pct <= -50 || curCnt === 0 ? 'critical' : 'warning'
-            });
-        }
-    });
-
-    // Sort by absolute volume drop in units (pieces: largest drop first, e.g. -137 шт., -12 шт.)
-    brandAlerts.sort((a, b) => a.diff - b.diff);
-
-    // 2. DEALERS CHURN RISK
     const prevPartnersDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === prevMonthPrefix);
     const curPartnersDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === curMonthPrefix);
 
-    const dealerPrevMap = {}, dealerCurMap = {};
-    prevPartnersDeals.forEach(r => {
-        const p = r.Partner || 'Неизвестный партнер';
-        if (!dealerPrevMap[p]) {
-            dealerPrevMap[p] = { partner: p, prevDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || '' };
-        }
-        dealerPrevMap[p].prevDeals += (r.Qty || 1);
-        if (r.KAM && dealerPrevMap[p].kam === '—') dealerPrevMap[p].kam = r.KAM;
-    });
+    const channelsData = {};
 
-    curPartnersDeals.forEach(r => {
-        const p = r.Partner || 'Неизвестный партнер';
-        dealerCurMap[p] = (dealerCurMap[p] || 0) + (r.Qty || 1);
-    });
+    ALERT_CHANNELS.forEach(ch => {
+        // 1. BRAND DROPS
+        const cCur = ch.key === 'all' ? curMonthDeals : curMonthDeals.filter(d => getAlertDealChannelKey(d.B2C) === ch.key);
+        const cPrev = ch.key === 'all' ? prevMonthDeals : prevMonthDeals.filter(d => getAlertDealChannelKey(d.B2C) === ch.key);
 
-    const dealerAlerts = [];
-    Object.keys(dealerPrevMap).forEach(p => {
-        const info = dealerPrevMap[p];
-        const curDeals = dealerCurMap[p] || 0;
-        if (info.prevDeals >= 3 && curDeals === 0) {
-            dealerAlerts.push({
-                partner: p,
-                prevDeals: info.prevDeals,
-                curDeals: 0,
-                kam: info.kam,
-                rawPartner: info.rawPartner,
-                severity: info.prevDeals >= 10 ? 'critical' : 'warning'
+        const bCur = {}, bPrev = {};
+        cCur.forEach(d => {
+            let b = (d.Brand || 'Другие').trim();
+            if (b === 'SOUEAS') b = 'SOUEAST';
+            bCur[b] = (bCur[b] || 0) + 1;
+        });
+        cPrev.forEach(d => {
+            let b = (d.Brand || 'Другие').trim();
+            if (b === 'SOUEAS') b = 'SOUEAST';
+            bPrev[b] = (bPrev[b] || 0) + 1;
+        });
+
+        const brandAlerts = [];
+        Object.keys(bPrev).forEach(b => {
+            const prevCnt = bPrev[b];
+            const curCnt = bCur[b] || 0;
+            const diff = curCnt - prevCnt;
+            const pct = prevCnt > 0 ? Math.round((diff / prevCnt) * 100) : 0;
+            
+            if (diff < 0) {
+                brandAlerts.push({
+                    brand: b,
+                    prevCnt,
+                    curCnt,
+                    diff,
+                    pct,
+                    severity: Math.abs(diff) >= 15 || pct <= -50 || curCnt === 0 ? 'critical' : 'warning'
+                });
+            }
+        });
+        // Sort by absolute volume drop in units (largest drop first, e.g. -137 шт., -14 шт.)
+        brandAlerts.sort((a, b) => a.diff - b.diff);
+
+        // 2. DEALER CHURN RISK
+        const pPrev = ch.key === 'all' ? prevPartnersDeals : prevPartnersDeals.filter(r => getAlertDealChannelKey(r.B2C) === ch.key);
+        const pCur = ch.key === 'all' ? curPartnersDeals : curPartnersDeals.filter(r => getAlertDealChannelKey(r.B2C) === ch.key);
+
+        const dPrevMap = {}, dCurMap = {};
+        pPrev.forEach(r => {
+            const p = r.Partner || 'Неизвестный партнер';
+            if (!dPrevMap[p]) {
+                dPrevMap[p] = { partner: p, prevDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || '' };
+            }
+            dPrevMap[p].prevDeals += (r.Qty || 1);
+            if (r.KAM && dPrevMap[p].kam === '—') dPrevMap[p].kam = r.KAM;
+        });
+
+        pCur.forEach(r => {
+            const p = r.Partner || 'Неизвестный партнер';
+            dCurMap[p] = (dCurMap[p] || 0) + (r.Qty || 1);
+        });
+
+        const thresh = (ch.key === 'all' || ch.key === 'opt') ? 3 : 1;
+        const dealerAlerts = [];
+        Object.keys(dPrevMap).forEach(p => {
+            const info = dPrevMap[p];
+            const curCnt = dCurMap[p] || 0;
+            if (info.prevDeals >= thresh && curCnt === 0) {
+                dealerAlerts.push({
+                    partner: p,
+                    prevDeals: info.prevDeals,
+                    curDeals: 0,
+                    kam: info.kam,
+                    rawPartner: info.rawPartner,
+                    severity: info.prevDeals >= 10 ? 'critical' : 'warning'
+                });
+            }
+        });
+        dealerAlerts.sort((a, b) => b.prevDeals - a.prevDeals);
+
+        // 3. STUCK PREPAYMENTS for this channel
+        let channelStuckPrepays = allStuckPrepays;
+        if (ch.key !== 'all') {
+            channelStuckPrepays = allStuckPrepays.filter(p => {
+                const raw = ((p.rawPartner || '') + ' ' + (p.partner || '')).toLowerCase();
+                if (ch.key === 'online' && (raw.includes('online') || raw.includes('онлайн'))) return true;
+                if (ch.key === 'fdc' && (raw.includes('фдц') || raw.includes('гп'))) return true;
+                if (partnerChannels[p.partner] && partnerChannels[p.partner][ch.key]) return true;
+                return false;
             });
         }
-    });
-    dealerAlerts.sort((a, b) => b.prevDeals - a.prevDeals);
 
-    // 3. STUCK PREPAYMENTS (> 7 days without sale)
-    const stuckPrepays = [];
-    const refDate = globalMaxSaleDate || new Date();
-    const partnerPrepays = (allPartners || []).filter(r => r.Type === 'Предоплата' && r.Month === curMonthPrefix);
-    partnerPrepays.forEach(p => {
-        if (p.Date) {
-            const dt = excelToJSDate(p.Date);
-            if (dt) {
-                const diffDays = Math.round((refDate - dt) / (1000 * 60 * 60 * 24));
-                if (diffDays >= 7) {
-                    stuckPrepays.push({
-                        partner: p.Partner || 'Неизвестный партнер',
-                        rawPartner: p.RawPartner || '',
-                        kam: p.KAM || '—',
-                        days: diffDays,
-                        dateStr: dt.toLocaleDateString('ru-RU')
-                    });
-                }
-            }
-        }
+        channelsData[ch.key] = {
+            brandAlerts,
+            dealerAlerts,
+            stuckPrepays: channelStuckPrepays,
+            totalCriticalCount: brandAlerts.filter(b => b.severity === 'critical').length + 
+                                dealerAlerts.filter(d => d.severity === 'critical').length
+        };
     });
-    stuckPrepays.sort((a, b) => b.days - a.days);
+
+    window._alertsRadarChannels = channelsData;
+    window._alertsRadarMeta = {
+        periodLabel,
+        curMonthName,
+        prevMonthName
+    };
+
+    const currentChannel = channelsData[activeAlertChannel] || channelsData['all'];
 
     return {
         periodLabel,
         curMonthName,
         prevMonthName,
-        brandAlerts,
-        dealerAlerts,
-        stuckPrepays,
-        totalCriticalCount: brandAlerts.filter(b => b.severity === 'critical').length + 
-                            dealerAlerts.filter(d => d.severity === 'critical').length
+        activeChannel: activeAlertChannel,
+        channelsData,
+        brandAlerts: currentChannel.brandAlerts,
+        dealerAlerts: currentChannel.dealerAlerts,
+        stuckPrepays: currentChannel.stuckPrepays,
+        totalCriticalCount: currentChannel.totalCriticalCount
     };
+}
+
+function renderBrandAlertItemsHTML(brandAlerts, prevMonthName) {
+    if (!brandAlerts || brandAlerts.length === 0) {
+        return `
+            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
+                🟢 Критических просадок по маркам в выбранном канале не зафиксировано
+            </div>
+        `;
+    }
+    return brandAlerts.map(b => `
+        <div class="flex items-center justify-between p-2.5 rounded-2xl ${b.severity === 'critical' ? 'bg-rose-50/80 border border-rose-100' : 'bg-amber-50/80 border border-amber-100'}">
+            <div class="flex items-center gap-2.5">
+                <span class="text-xs font-black ${b.severity === 'critical' ? 'text-rose-700' : 'text-amber-800'}">${b.brand}</span>
+                <span class="text-[11px] text-slate-500">Факт: <b>${b.curCnt}</b> шт. (было ${b.prevCnt} в ${prevMonthName})</span>
+            </div>
+            <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${b.severity === 'critical' ? 'bg-rose-200 text-rose-800' : 'bg-amber-200 text-amber-800'} whitespace-nowrap">
+                ${b.diff} шт. <span class="text-[10px] font-bold opacity-75">(${b.pct}%)</span>
+            </span>
+        </div>
+    `).join('');
+}
+
+function renderDealerAlertItemsHTML(dealerAlerts, prevMonthName) {
+    if (!dealerAlerts || dealerAlerts.length === 0) {
+        return `
+            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
+                🟢 Все ключевые партнеры проявляют активность в этом канале
+            </div>
+        `;
+    }
+    return dealerAlerts.map(d => `
+        <div class="flex items-center justify-between p-2.5 rounded-2xl ${d.severity === 'critical' ? 'bg-rose-50/80 border border-rose-200/80' : 'bg-slate-50 border border-slate-200/70'}">
+            <div class="min-w-0 pr-2">
+                <div class="text-xs font-black text-slate-800 truncate">${d.partner}</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">
+                    Было в ${prevMonthName}: <b>${d.prevDeals} шт.</b> • КАМ: <span class="font-medium text-slate-700">${d.kam}</span>
+                </div>
+            </div>
+            <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${d.severity === 'critical' ? 'bg-rose-600 text-white' : 'bg-rose-100 text-rose-700 border border-rose-200'} whitespace-nowrap">
+                0 сделок ⚠️
+            </span>
+        </div>
+    `).join('');
+}
+
+function renderPrepayAlertItemsHTML(stuckPrepays) {
+    if (!stuckPrepays || stuckPrepays.length === 0) {
+        return `
+            <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
+                🟢 Зависших авансов (>7 дней) не обнаружено
+            </div>
+        `;
+    }
+    return stuckPrepays.map(p => `
+        <div class="flex items-center justify-between p-2.5 rounded-2xl bg-amber-50/70 border border-amber-200/70">
+            <div class="min-w-0 pr-2">
+                <div class="text-xs font-black text-slate-800 truncate">${p.partner}</div>
+                <div class="text-[11px] text-slate-500 mt-0.5">Аванс от ${p.dateStr} • КАМ: <b>${p.kam}</b></div>
+            </div>
+            <span class="text-xs px-2.5 py-0.5 rounded-full font-black bg-amber-200 text-amber-900 whitespace-nowrap">
+                ${p.days} дн. завис
+            </span>
+        </div>
+    `).join('');
 }
 
 function switchAlertTab(tabName) {
@@ -469,6 +604,58 @@ function switchAlertTab(tabName) {
     if (pBtn) pBtn.className = `px-3 py-1 text-xs font-bold rounded-xl transition ${tabName === 'prepays' ? activeClass : inactiveClass}`;
 }
 
+function switchAlertChannel(channelKey) {
+    activeAlertChannel = channelKey;
+    const channelsData = window._alertsRadarChannels || {};
+    const meta = window._alertsRadarMeta || { prevMonthName: 'прошлом месяце' };
+    const curData = channelsData[channelKey] || channelsData['all'] || { brandAlerts: [], dealerAlerts: [], stuckPrepays: [], totalCriticalCount: 0 };
+
+    // 1. Update channel selector buttons
+    ALERT_CHANNELS.forEach(ch => {
+        const btn = document.getElementById(`alertChanBtn_${ch.key}`);
+        if (btn) {
+            if (ch.key === channelKey) {
+                btn.className = 'px-2.5 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap bg-slate-900 text-white shadow-sm';
+            } else {
+                btn.className = 'px-2.5 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap bg-white/70 text-slate-600 hover:bg-white hover:text-slate-900';
+            }
+        }
+    });
+
+    // 2. Update tab buttons text with counts
+    const bBtn = document.getElementById('alertTabBtnBrands');
+    const dBtn = document.getElementById('alertTabBtnDealers');
+    const pBtn = document.getElementById('alertTabBtnPrepays');
+    if (bBtn) bBtn.textContent = `Бренды (${curData.brandAlerts.length})`;
+    if (dBtn) dBtn.textContent = `Отвал ДЦ (${curData.dealerAlerts.length})`;
+    if (pBtn) pBtn.textContent = `Авансы (${curData.stuckPrepays.length})`;
+
+    // 3. Update tab contents
+    const brandContent = document.getElementById('alertContentBrands');
+    const dealerContent = document.getElementById('alertContentDealers');
+    const prepayContent = document.getElementById('alertContentPrepays');
+    if (brandContent) brandContent.innerHTML = renderBrandAlertItemsHTML(curData.brandAlerts, meta.prevMonthName);
+    if (dealerContent) dealerContent.innerHTML = renderDealerAlertItemsHTML(curData.dealerAlerts, meta.prevMonthName);
+    if (prepayContent) prepayContent.innerHTML = renderPrepayAlertItemsHTML(curData.stuckPrepays);
+
+    // 4. Update footer
+    const footerInfo = document.getElementById('alertFooterInfo');
+    if (footerInfo) {
+        const totalRisks = curData.brandAlerts.length + curData.dealerAlerts.length + curData.stuckPrepays.length;
+        footerInfo.innerHTML = `
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>
+            Критических сигналов: <b>${curData.totalCriticalCount}</b> (из ${totalRisks} рисков)
+        `;
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        }
+    }
+}
+
+// Attach functions to window for global access
+window.switchAlertTab = switchAlertTab;
+window.switchAlertChannel = switchAlertChannel;
+
 function renderAlertsRadarCardHTML(a) {
     const isBrands = activeAlertTab === 'brands';
     const isDealers = activeAlertTab === 'dealers';
@@ -476,6 +663,12 @@ function renderAlertsRadarCardHTML(a) {
 
     const activeBtnClass = 'bg-slate-900 text-white shadow-sm';
     const inactiveBtnClass = 'bg-slate-100 text-slate-600 hover:bg-slate-200';
+
+    const currentChannel = (a.channelsData && a.channelsData[activeAlertChannel]) ? a.channelsData[activeAlertChannel] : a;
+    const bAlerts = currentChannel.brandAlerts || [];
+    const dAlerts = currentChannel.dealerAlerts || [];
+    const sPrepays = currentChannel.stuckPrepays || [];
+    const totalCrit = currentChannel.totalCriticalCount || 0;
 
     return `
         <div class="card !p-5 bg-white rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-between">
@@ -491,85 +684,55 @@ function renderAlertsRadarCardHTML(a) {
                             <p class="text-xs text-slate-400">Сравнение: ${a.periodLabel}</p>
                         </div>
                     </div>
-                    <!-- Pill Buttons -->
+                    <!-- Pill Buttons for Tabs -->
                     <div class="flex items-center gap-1.5 p-1 bg-slate-50 rounded-2xl border border-slate-100">
                         <button id="alertTabBtnBrands" onclick="switchAlertTab('brands')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isBrands ? activeBtnClass : inactiveBtnClass}">
-                            Бренды (${a.brandAlerts.length})
+                            Бренды (${bAlerts.length})
                         </button>
                         <button id="alertTabBtnDealers" onclick="switchAlertTab('dealers')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isDealers ? activeBtnClass : inactiveBtnClass}">
-                            Отвал ДЦ (${a.dealerAlerts.length})
+                            Отвал ДЦ (${dAlerts.length})
                         </button>
                         <button id="alertTabBtnPrepays" onclick="switchAlertTab('prepays')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isPrepays ? activeBtnClass : inactiveBtnClass}">
-                            Авансы (${a.stuckPrepays.length})
+                            Авансы (${sPrepays.length})
                         </button>
                     </div>
                 </div>
 
+                <!-- Channel Filter Buttons -->
+                <div class="flex items-center gap-1.5 p-1 bg-slate-100/90 rounded-2xl mb-3 overflow-x-auto" id="alertChannelFilterRow">
+                    ${ALERT_CHANNELS.map(ch => {
+                        const isActive = ch.key === activeAlertChannel;
+                        return `
+                            <button onclick="switchAlertChannel('${ch.key}')" 
+                                    id="alertChanBtn_${ch.key}"
+                                    class="px-2.5 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap ${isActive ? 'bg-slate-900 text-white shadow-sm' : 'bg-white/70 text-slate-600 hover:bg-white hover:text-slate-900'}">
+                                ${ch.label}
+                            </button>
+                        `;
+                    }).join('')}
+                </div>
+
                 <!-- TAB 1: BRANDS DROP (Fully scrollable to see ALL items) -->
                 <div id="alertContentBrands" class="${isBrands ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
-                    ${a.brandAlerts.length === 0 ? `
-                        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
-                            🟢 Критических просадок по маркам не зафиксировано
-                        </div>
-                    ` : a.brandAlerts.map(b => `
-                        <div class="flex items-center justify-between p-2.5 rounded-2xl ${b.severity === 'critical' ? 'bg-rose-50/80 border border-rose-100' : 'bg-amber-50/80 border border-amber-100'}">
-                            <div class="flex items-center gap-2.5">
-                                <span class="text-xs font-black ${b.severity === 'critical' ? 'text-rose-700' : 'text-amber-800'}">${b.brand}</span>
-                                <span class="text-[11px] text-slate-500">Факт: <b>${b.curCnt}</b> шт. (было ${b.prevCnt} в ${a.prevMonthName})</span>
-                            </div>
-                            <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${b.severity === 'critical' ? 'bg-rose-200 text-rose-800' : 'bg-amber-200 text-amber-800'} whitespace-nowrap">
-                                ${b.diff} шт. <span class="text-[10px] font-bold opacity-75">(${b.pct}%)</span>
-                            </span>
-                        </div>
-                    `).join('')}
+                    ${renderBrandAlertItemsHTML(bAlerts, a.prevMonthName)}
                 </div>
 
                 <!-- TAB 2: DEALERS CHURN RISK (Shows all churned partners with scroll) -->
                 <div id="alertContentDealers" class="${isDealers ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
-                    ${a.dealerAlerts.length === 0 ? `
-                        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
-                            🟢 Все ключевые партнеры проявляют активность
-                        </div>
-                    ` : a.dealerAlerts.map(d => `
-                        <div class="flex items-center justify-between p-2.5 rounded-2xl ${d.severity === 'critical' ? 'bg-rose-50/80 border border-rose-200/80' : 'bg-slate-50 border border-slate-200/70'}">
-                            <div class="min-w-0 pr-2">
-                                <div class="text-xs font-black text-slate-800 truncate">${d.partner}</div>
-                                <div class="text-[11px] text-slate-500 mt-0.5">
-                                    Было в ${a.prevMonthName}: <b>${d.prevDeals} шт.</b> • КАМ: <span class="font-medium text-slate-700">${d.kam}</span>
-                                </div>
-                            </div>
-                            <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${d.severity === 'critical' ? 'bg-rose-600 text-white' : 'bg-rose-100 text-rose-700 border border-rose-200'} whitespace-nowrap">
-                                0 сделок ⚠️
-                            </span>
-                        </div>
-                    `).join('')}
+                    ${renderDealerAlertItemsHTML(dAlerts, a.prevMonthName)}
                 </div>
 
                 <!-- TAB 3: STUCK PREPAYMENTS (Shows stuck prepayments with scroll) -->
                 <div id="alertContentPrepays" class="${isPrepays ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
-                    ${a.stuckPrepays.length === 0 ? `
-                        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-center text-emerald-800 text-xs font-bold">
-                            🟢 Зависших авансов (>7 дней) не обнаружено
-                        </div>
-                    ` : a.stuckPrepays.map(p => `
-                        <div class="flex items-center justify-between p-2.5 rounded-2xl bg-amber-50/70 border border-amber-200/70">
-                            <div class="min-w-0 pr-2">
-                                <div class="text-xs font-black text-slate-800 truncate">${p.partner}</div>
-                                <div class="text-[11px] text-slate-500 mt-0.5">Аванс от ${p.dateStr} • КАМ: <b>${p.kam}</b></div>
-                            </div>
-                            <span class="text-xs px-2.5 py-0.5 rounded-full font-black bg-amber-200 text-amber-900 whitespace-nowrap">
-                                ${p.days} дн. завис
-                            </span>
-                        </div>
-                    `).join('')}
+                    ${renderPrepayAlertItemsHTML(sPrepays)}
                 </div>
             </div>
 
             <!-- Footer -->
             <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-                <span class="flex items-center gap-1.5">
+                <span class="flex items-center gap-1.5" id="alertFooterInfo">
                     <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>
-                    Критических сигналов: <b>${a.totalCriticalCount}</b> (из ${a.brandAlerts.length + a.dealerAlerts.length + a.stuckPrepays.length} рисков)
+                    Критических сигналов: <b>${totalCrit}</b> (из ${bAlerts.length + dAlerts.length + sPrepays.length} рисков)
                 </span>
                 <span class="text-slate-400">Прокрутите список для просмотра всех</span>
             </div>
