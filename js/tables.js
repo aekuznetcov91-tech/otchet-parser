@@ -304,6 +304,26 @@ function togglePartnerDeals(key) {
  * Exports partner deals to formatted Excel (.xlsx) file using SheetJS.
  * @param {string} key
  */
+
+function getDealChannelKey(b2c) {
+    const raw = (b2c || '').toString().trim().toLowerCase();
+    if (raw.includes('мп2') || raw === 'мп 2') return 'opt';
+    if (raw.includes('фдц') || raw.includes('гп')) return 'fdc';
+    if (raw.includes('лид') || raw.includes('b2c') || raw.includes('розниц')) return 'retail';
+    if (raw.includes('online') || raw.includes('онлайн')) return 'online';
+    if (raw.includes('мп1') || raw.includes('мп3')) return 'other';
+    return 'opt';
+}
+
+function getChannelBadgeHTML(b2c) {
+    const ch = getDealChannelKey(b2c);
+    if (ch === 'opt') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">Опт МП2</span>';
+    if (ch === 'fdc') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 border border-purple-200">ФДЦ</span>';
+    if (ch === 'retail') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Розница</span>';
+    if (ch === 'online') return '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-100 text-cyan-800 border border-cyan-200">Online</span>';
+    return `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">${escapeHtml(b2c || 'Прочие')}</span>`;
+}
+
 function exportPartnerDealsToExcel(key) {
     const item = window._partnerDealsCache ? window._partnerDealsCache[key] : null;
     if (!item || !item.deals || item.deals.length === 0) {
@@ -315,7 +335,7 @@ function exportPartnerDealsToExcel(key) {
     const rows = item.deals;
 
     const wsData = [
-        ['№', 'Юр. лицо (CRM)', 'ID (Сумма id)', 'Client_ID', 'ВИН', 'Марка', 'Модель', 'АВ (КВ. Авто NEW, руб)']
+        ['№', 'Юр. лицо (CRM)', 'Канал продаж', 'ID (Сумма id)', 'Client_ID', 'ВИН', 'Марка', 'Модель', 'АВ (КВ. Авто NEW, руб)']
     ];
 
     let totalAB = 0;
@@ -325,6 +345,7 @@ function exportPartnerDealsToExcel(key) {
         wsData.push([
             idx + 1,
             d.rawPartner ? String(d.rawPartner) : '—',
+            d.b2c ? String(d.b2c) : 'Опт МП2',
             d.leadId ? String(d.leadId) : (d.dealId ? String(d.dealId) : '—'),
             d.clientId ? String(d.clientId) : '—',
             d.vin ? String(d.vin) : '—',
@@ -334,7 +355,7 @@ function exportPartnerDealsToExcel(key) {
         ]);
     });
 
-    wsData.push(['', '', '', '', '', 'ИТОГО:', `${rows.length} шт.`, totalAB]);
+    wsData.push(['', '', '', '', '', '', 'ИТОГО:', `${rows.length} шт.`, totalAB]);
 
     const ws = XLSX.utils.aoa_to_sheet(wsData);
 
@@ -398,6 +419,11 @@ function renderPartnersTable(filterCfg) {
                 leadDirectDeals: 0,
                 mpDeals: 0,
                 deals: 0,
+                dealsOpt: 0,
+                dealsFdc: 0,
+                dealsRetail: 0,
+                dealsOnline: 0,
+                dealsOther: 0,
                 kam: r.KAM || "",
                 dealsList: [],
                 rawBitrix: new Set(),
@@ -409,12 +435,20 @@ function renderPartnersTable(filterCfg) {
             pStats[key].leads += (r.Qty || 1);
             if (r.RawPartner) pStats[key].rawBi.add(r.RawPartner);
         } else if (r.Type === 'Сделка') {
-            pStats[key].deals += (r.Qty || 1);
+            const qty = (r.Qty || 1);
+            pStats[key].deals += qty;
+            const ch = getDealChannelKey(r.B2C);
+            if (ch === 'opt') pStats[key].dealsOpt += qty;
+            else if (ch === 'fdc') pStats[key].dealsFdc += qty;
+            else if (ch === 'retail') pStats[key].dealsRetail += qty;
+            else if (ch === 'online') pStats[key].dealsOnline += qty;
+            else pStats[key].dealsOther += qty;
+
             if (r.IsLeadSaleNoPrepay === 1) {
-                pStats[key].leadDirectDeals += (r.Qty || 1);
+                pStats[key].leadDirectDeals += qty;
             }
             if (r.IsMpSale === 1) {
-                pStats[key].mpDeals += (r.Qty || 1);
+                pStats[key].mpDeals += qty;
             }
             if (r.RawPartner) pStats[key].rawBitrix.add(r.RawPartner);
 
@@ -448,9 +482,12 @@ function renderPartnersTable(filterCfg) {
                 <th>Закрепленный КАМ</th>
                 <th>Лиды (BI)</th>
                 <th>Предоплаты</th>
-                <th>Сделки с лидов</th>
-                <th>Сделки с МП</th>
-                <th>Сделки Тотал</th>
+                <th class="text-blue-800 font-black">Всего сделок</th>
+                <th class="text-blue-700 bg-blue-50/50" title="Опт МП2">Опт МП2</th>
+                <th class="text-purple-700 bg-purple-50/50" title="Фронт-ДЦ / Гарантия платежа">ФДЦ</th>
+                <th class="text-emerald-700 bg-emerald-50/50" title="Розница (B2C / Лиды)">Розница</th>
+                <th class="text-cyan-700 bg-cyan-50/50" title="Online продажи">Online</th>
+                <th class="text-slate-500 bg-slate-50/50" title="Прочие (МП1/3)">Прочие</th>
                 <th>Конверсия (Сделка/Лид)</th>
                 <th style="text-align: right;">Управление</th>
             </tr>
@@ -458,9 +495,12 @@ function renderPartnersTable(filterCfg) {
         <tbody>`;
     
     let tL = 0, tP = 0, tLD = 0, tMP = 0, tD = 0;
+    let tOpt = 0, tFdc = 0, tRetail = 0, tOnline = 0, tOther = 0;
 
     sorted.forEach(data => {
         tL += data.leads; tP += data.prepays; tLD += data.leadDirectDeals; tMP += data.mpDeals; tD += data.deals;
+        tOpt += data.dealsOpt; tFdc += data.dealsFdc; tRetail += data.dealsRetail; tOnline += data.dealsOnline; tOther += data.dealsOther;
+
         let cr = data.leads > 0 ? fmtPct(data.deals / data.leads) : (data.deals > 0 ? "— (нет лидов)" : "0%");
         let idBadge = data.id ? 
             `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-xs">ID: ${data.id}</span>` : 
@@ -498,9 +538,12 @@ function renderPartnersTable(filterCfg) {
             <td class="font-medium text-gray-600">${data.kam || "—"}</td>
             <td class="font-semibold text-gray-700">${fmtNum(data.leads)}</td>
             <td class="font-semibold text-amber-700">${fmtNum(data.prepays)}</td>
-            <td class="font-semibold text-purple-700">${fmtNum(data.leadDirectDeals)}</td>
-            <td class="font-semibold text-indigo-700">${fmtNum(data.mpDeals)}</td>
-            <td class="font-black text-blue-700">${fmtNum(data.deals)}</td>
+            <td class="font-black text-blue-800 bg-blue-50/20">${fmtNum(data.deals)}</td>
+            <td class="text-right ${data.dealsOpt > 0 ? 'font-bold text-blue-700' : 'text-slate-300'}">${data.dealsOpt > 0 ? fmtNum(data.dealsOpt) : '·'}</td>
+            <td class="text-right ${data.dealsFdc > 0 ? 'font-bold text-purple-700' : 'text-slate-300'}">${data.dealsFdc > 0 ? fmtNum(data.dealsFdc) : '·'}</td>
+            <td class="text-right ${data.dealsRetail > 0 ? 'font-bold text-emerald-700' : 'text-slate-300'}">${data.dealsRetail > 0 ? fmtNum(data.dealsRetail) : '·'}</td>
+            <td class="text-right ${data.dealsOnline > 0 ? 'font-bold text-cyan-700' : 'text-slate-300'}">${data.dealsOnline > 0 ? fmtNum(data.dealsOnline) : '·'}</td>
+            <td class="text-right ${data.dealsOther > 0 ? 'font-bold text-slate-600' : 'text-slate-300'}">${data.dealsOther > 0 ? fmtNum(data.dealsOther) : '·'}</td>
             <td class="${crColor}">${cr}</td>
             <td style="text-align: right;">
                 <a href="partner_matcher.html?partner_id=${encodeURIComponent(data.id || '')}&search=${encodeURIComponent(data.name || '')}" target="_blank" class="px-2.5 py-1 bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 rounded-lg text-xs font-bold transition inline-flex items-center gap-1 shadow-sm" title="Редактировать партнера в Реестре">
@@ -535,6 +578,7 @@ function renderPartnersTable(filterCfg) {
                 dealRowsHtml += `<tr class="hover:bg-blue-50/40 transition">
                     <td class="py-1.5 px-2.5 text-center text-slate-400 font-mono text-xs">${idx + 1}</td>
                     <td class="py-1.5 px-2.5">${rawPartnerHtml}</td>
+                    <td class="py-1.5 px-2.5">${getChannelBadgeHTML(dl.b2c)}</td>
                     <td class="py-1.5 px-2.5">${leadIdHtml}</td>
                     <td class="py-1.5 px-2.5">${clientHtml}</td>
                     <td class="py-1.5 px-2.5">${vinHtml}</td>
@@ -545,7 +589,7 @@ function renderPartnersTable(filterCfg) {
             });
 
             html += `<tr id="pdeals_row_${k}" class="partner-deals-row hidden bg-slate-50/90">
-                <td colspan="10" class="!p-0 border-b-2 border-blue-300">
+                <td colspan="13" class="!p-0 border-b-2 border-blue-300">
                     <div class="p-3 sm:p-4 bg-gradient-to-br from-slate-50 via-blue-50/20 to-indigo-50/20 border-t border-blue-200 rounded-b-xl shadow-inner">
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-2.5 pb-2 border-b border-blue-100">
                             <div class="flex items-center gap-2 flex-wrap">
@@ -573,6 +617,7 @@ function renderPartnersTable(filterCfg) {
                                     <tr>
                                         <th class="py-2 px-2.5 w-10 text-center !bg-slate-800">№</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">Юр. лицо (CRM)</th>
+                                        <th class="py-2 px-2.5 !bg-slate-800">Канал продаж</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">ID (Сумма id)</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">Client_ID</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">ВИН</th>
@@ -586,7 +631,7 @@ function renderPartnersTable(filterCfg) {
                                 </tbody>
                                 <tfoot class="bg-slate-100 font-black border-t-2 border-slate-300 text-slate-800 sticky bottom-0 z-10">
                                     <tr>
-                                        <td colspan="7" class="py-2 px-2.5 text-right font-bold text-slate-700">ИТОГО (${dCount} шт.):</td>
+                                        <td colspan="8" class="py-2 px-2.5 text-right font-bold text-slate-700">ИТОГО (${dCount} шт.):</td>
                                         <td class="py-2 px-2.5 text-right text-emerald-700 font-black text-sm">${fmtRub(totalAB)}</td>
                                     </tr>
                                 </tfoot>
@@ -609,15 +654,18 @@ function renderPartnersTable(filterCfg) {
     });
 
     let tCr = tL > 0 ? fmtPct(tD / tL) : "0%";
-    html += `<tr class="table-total">
+    html += `<tr class="table-total font-black">
         <td>ИТОГО</td>
         <td>—</td>
         <td>—</td>
         <td>${fmtNum(tL)}</td>
         <td>${fmtNum(tP)}</td>
-        <td>${fmtNum(tLD)}</td>
-        <td>${fmtNum(tMP)}</td>
-        <td>${fmtNum(tD)}</td>
+        <td class="text-blue-800">${fmtNum(tD)}</td>
+        <td class="text-blue-800">${fmtNum(tOpt)}</td>
+        <td class="text-purple-800">${fmtNum(tFdc)}</td>
+        <td class="text-emerald-800">${fmtNum(tRetail)}</td>
+        <td class="text-cyan-800">${fmtNum(tOnline)}</td>
+        <td class="text-slate-700">${fmtNum(tOther)}</td>
         <td>${tCr}</td>
         <td></td>
     </tr></tbody></table>`;
