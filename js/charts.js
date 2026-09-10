@@ -65,16 +65,8 @@ function getB2CSplit(salesDb) {
 function updatePieChart(canvasId, chartInst, dataEntries, titleText) {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
-
-    // Safely destroy existing chart instance if canvas is already bound
-    const existing = (typeof Chart !== 'undefined' && Chart.getChart(canvas)) || window[canvasId + 'Inst'] || canvas._chartInstance;
-    if (existing) {
-        try { existing.destroy(); } catch (e) { console.warn('Error destroying chart on canvas ' + canvasId, e); }
-    }
-
-    if (!dataEntries || dataEntries.length === 0) {
-        dataEntries = [["(нет данных)", 0]];
-    }
+    const ctx = canvas.getContext('2d');
+    if (window[canvasId + 'Inst']) window[canvasId + 'Inst'].destroy();
 
     const labels = dataEntries.map(e => e[0]);
     const dataValues = dataEntries.map(e => e[1]);
@@ -85,8 +77,7 @@ function updatePieChart(canvasId, chartInst, dataEntries, titleText) {
         colors.push('#' + Math.floor(Math.random()*16777215).toString(16));
     }
 
-    const ctx = canvas.getContext('2d');
-    const newChart = new Chart(ctx, {
+    window[canvasId + 'Inst'] = new Chart(ctx, {
         type: 'pie',
         data: {
             labels: labels,
@@ -127,9 +118,6 @@ function updatePieChart(canvasId, chartInst, dataEntries, titleText) {
             }
         }
     });
-
-    window[canvasId + 'Inst'] = newChart;
-    canvas._chartInstance = newChart;
 
     // Render Custom Legend on the Right
     const legendContainerId = canvasId === 'pieBrands' ? 'legendPieBrands' : 'legendPieB2C';
@@ -185,21 +173,17 @@ function updateLineChart(canvasId, chartInst, groupName, salesDb, prepayDb, year
     const wH = maxVal > 0 ? maxVal * 1.2 : 10;
     const sW = dataWeekends.map(w => w === 1 ? wH : 0);
 
-    // Safely destroy existing chart instance if canvas is already bound
-    const existing = (typeof Chart !== 'undefined' && Chart.getChart(canvas)) || canvas._chartInstance || window[canvasId + 'Inst'];
-    if (existing) {
-        try { existing.destroy(); } catch (e) { console.warn('Error destroying chart on canvas ' + canvasId, e); }
-    }
+    let ctx = canvas.getContext('2d');
+    if (canvas._chartInstance) canvas._chartInstance.destroy();
 
-    const ctx = canvas.getContext('2d');
-    const newChart = new Chart(ctx, {
+    canvas._chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [
                 { label: 'Выходные', data: sW, type: 'bar', backgroundColor: 'rgba(200, 200, 200, 0.25)', barPercentage: 1.0, categoryPercentage: 1.0, order: 3, datalabels: { display: false } },
-                { label: 'Сделки', data: dataSales, borderColor: '#2563eb', backgroundColor: '#2563eb', tension: 0.1, fill: false, order: 1, datalabels: { align: 'top', font: { weight: 'bold', size: 10 }, formatter: (v) => v > 0 ? v : '' } },
-                { label: 'Предоплаты', data: dataPrepays, borderColor: '#f97316', backgroundColor: '#f97316', tension: 0.1, fill: false, order: 2, datalabels: { align: 'bottom', font: { weight: 'bold', size: 10 }, formatter: (v) => v > 0 ? v : '' } }
+                { label: 'Сделки', data: dataSales, borderColor: '#2563eb', backgroundColor: '#2563eb', tension: 0.1, fill: false, order: 1, datalabels: { align: 'top', font: { weight: 'bold', size: 10 } } },
+                { label: 'Предоплаты', data: dataPrepays, borderColor: '#f97316', backgroundColor: '#f97316', tension: 0.1, fill: false, order: 2, datalabels: { align: 'bottom', font: { weight: 'bold', size: 10 } } }
             ]
         },
         options: {
@@ -209,7 +193,4 @@ function updateLineChart(canvasId, chartInst, groupName, salesDb, prepayDb, year
             scales: { y: { beginAtZero: true, max: wH } }
         }
     });
-
-    canvas._chartInstance = newChart;
-    window[canvasId + 'Inst'] = newChart;
 }
