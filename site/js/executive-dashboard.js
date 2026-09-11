@@ -9,26 +9,19 @@
  */
 
 let activeAlertTab = 'brands'; // 'brands' | 'dealers' | 'prepays'
-let activeAlertChannel = 'all'; // 'all' | 'opt' | 'fdc' | 'retail' | 'online' | 'other'
+let activeAlertChannel = 'all'; // 'all' | 'opt' | 'retail'
 let activeHealthQuadrant = 'all'; // 'all' | 'stars' | 'growth' | 'niche' | 'risk'
 
 const ALERT_CHANNELS = [
     { key: 'all', label: 'Все каналы' },
     { key: 'opt', label: 'Опт МП2' },
-    { key: 'fdc', label: 'ФДЦ' },
-    { key: 'retail', label: 'Розница B2C' },
-    { key: 'online', label: 'Online' },
-    { key: 'other', label: 'Прочие' }
+    { key: 'retail', label: 'Розница (ФДЦ, B2C, Online, Прочие)' }
 ];
 
 function getAlertDealChannelKey(b2c) {
     const raw = (b2c || '').toString().trim().toLowerCase();
     if (raw.includes('мп2') || raw === 'мп 2') return 'opt';
-    if (raw.includes('фдц') || raw.includes('гп')) return 'fdc';
-    if (raw.includes('лид') || raw.includes('b2c') || raw.includes('розниц')) return 'retail';
-    if (raw.includes('online') || raw.includes('онлайн')) return 'online';
-    if (raw.includes('мп1') || raw.includes('мп3')) return 'other';
-    return 'opt';
+    return 'retail';
 }
 
 /**
@@ -456,7 +449,7 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
             dCurMap[p] = (dCurMap[p] || 0) + (r.Qty || 1);
         });
 
-        const thresh = (ch.key === 'all' || ch.key === 'opt') ? 3 : 1;
+        const thresh = (ch.key === 'all' || ch.key === 'opt') ? 3 : 2;
         const dealerAlerts = [];
         Object.keys(dPrevMap).forEach(p => {
             const info = dPrevMap[p];
@@ -479,9 +472,16 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         if (ch.key !== 'all') {
             channelStuckPrepays = allStuckPrepays.filter(p => {
                 const raw = ((p.rawPartner || '') + ' ' + (p.partner || '')).toLowerCase();
-                if (ch.key === 'online' && (raw.includes('online') || raw.includes('онлайн'))) return true;
-                if (ch.key === 'fdc' && (raw.includes('фдц') || raw.includes('гп'))) return true;
-                if (partnerChannels[p.partner] && partnerChannels[p.partner][ch.key]) return true;
+                if (ch.key === 'opt') {
+                    if (raw.includes('мп2') || raw.includes('мп 2')) return true;
+                    if (partnerChannels[p.partner] && partnerChannels[p.partner]['opt']) return true;
+                    return false;
+                }
+                if (ch.key === 'retail') {
+                    if (raw.includes('online') || raw.includes('онлайн') || raw.includes('фдц') || raw.includes('гп') || raw.includes('b2c') || raw.includes('лид')) return true;
+                    if (partnerChannels[p.partner] && partnerChannels[p.partner]['retail']) return true;
+                    return false;
+                }
                 return false;
             });
         }
