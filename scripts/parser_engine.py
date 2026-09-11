@@ -1347,14 +1347,17 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
     all_tree_no_clients = build_tree_for_clients(clients_all, include_clients=False)
     aug_clients = [c for c in clients_all if c.get('month') == '2026-08']
     jul_clients = [c for c in clients_all if c.get('month') == '2026-07']
+    sep_clients = [c for c in clients_all if c.get('month') == '2026-09']
     aug_tree = build_tree_for_clients(aug_clients, include_clients=False)
     jul_tree = build_tree_for_clients(jul_clients, include_clients=False)
+    sep_tree = build_tree_for_clients(sep_clients, include_clients=False)
 
     return {
         'summary': all_tree['summary'],
         'regions': all_tree['regions'],
         'by_month': {
             'all': all_tree_no_clients,
+            '2026-09': sep_tree,
             '2026-08': aug_tree,
             '2026-07': jul_tree
         }
@@ -1402,6 +1405,16 @@ def run_pipeline():
                 continue
             if fname.lower().endswith(('.xlsx', '.xlsm', '.csv', '.xls')):
                 fpath = os.path.join(sdir, fname)
+
+                # Performance optimization: skip superseded historical daily dumps
+                data_match = re.search(r'data \((\d+)\)\.xlsx', fname, re.IGNORECASE)
+                if data_match and int(data_match.group(1)) < 39:
+                    continue
+
+                # For intermediate daily DEAL_*.xls: only keep the July anchor (DEAL_20260904) and latest (DEAL_20260911)
+                if fname.startswith('DEAL_') and not (fname.startswith('DEAL_20260904') or fname.startswith('DEAL_20260911')):
+                    continue
+
                 try:
                     with open(fpath, 'rb') as fp:
                         fhash = hashlib.md5(fp.read(1024 * 1024)).hexdigest()
@@ -1422,7 +1435,6 @@ def run_pipeline():
                         deals_candidates.append((fname, fpath, rows))
                     elif dtype == "leads":
                         leads_candidates.append((fname, rows))
-                        all_leads_data.extend(rows)
                     elif dtype == "directory":
                         directory_candidates.append((fname, rows))
 
@@ -1437,24 +1449,93 @@ def run_pipeline():
 
     # Filter strictly to dedicated data (*).xlsx leads files if any exist
     data_leads = [c for c in leads_candidates if c[0].startswith('data (')]
-    if data_leads:
-        all_leads_data = []
-        for _, rows in data_leads:
-            all_leads_data.extend(rows)
+    
+    # Classify lead files into Partner Transfers (has 'ПАРТНЕР' / 'СУММА ID') and General CRM Leads
+    partner_lead_files = []
+    crm_lead_files = []
+
+    for fname, rows in data_leads:
+        has_partner = 1 if rows and any(get_exact_val(r, 'ПАРТНЕР', 'BI') for r in rows[:50]) else 0
+        num_match = re.search(r'data \((\d+)\)', fname)
+        lead_num = int(num_match.group(1)) if num_match else 0
+        if has_partner:
+            partner_lead_files.append((lead_num, fname, rows))
+        else:
+            crm_lead_files.append((lead_num, fname, rows))
+
+    partner_lead_files.sort(key=lambda x: x[0], reverse=True) # newest lead_num first
+    crm_lead_files.sort(key=lambda x: x[0], reverse=True)     # newest lead_num first
+
+    # 1. Build Merged Partner Transfers Dataset (leads_data)
+    # If the newest file only covers the current month (e.g. September), backfill August & earlier from the previous file
+    if partner_lead_files:
+        latest_partner_num, latest_partner_name, latest_partner_rows = partner_lead_files[0]
+        # Check months in the newest partner file
+        p_months = set()
+        for r in latest_partner_rows[:200]:
+            p_dt = parse_custom_date(get_exact_val(r, 'ДАТА', 'ДАТАСОБЫТИЯ'))
+            if p_dt:
+                p_months.add(p_dt.strftime('%Y-%m'))
+        
+        # If latest partner file is only current month (e.g. '2026-09') and lacks previous months, merge with historical files
+        if len(p_months) == 1 and '2026-09' in p_months and len(partner_lead_files) > 1:
+            print(f"[*] Файл партнерских лидов {latest_partner_name} содержит только 2026-09. Дополняем историей (август и ранее)...")
+            historical_rows = []
+            for _, prev_name, prev_rows in partner_lead_files[1:]:
+                for r in prev_rows:
+                    dt = parse_custom_date(get_exact_val(r, 'ДАТА', 'ДАТАСОБЫТИЯ'))
+                    m_str = dt.strftime('%Y-%m') if dt else '2026-08'
+                    if m_str != '2026-09':
+                        historical_rows.append(r)
+                if historical_rows:
+                    print(f"[*] Добавлено {len(historical_rows)} исторических записей из {prev_name}")
+                    break
+            leads_data = historical_rows + latest_partner_rows
+            leads_file_name = f"{latest_partner_name} + {prev_name} (merged multi-month)"
+        else:
+            leads_data = latest_partner_rows
+            leads_file_name = latest_partner_name
+        print(f"[*] Сформирован датасет партнерских лидов: {len(leads_data)} записей ({leads_file_name})")
+    else:
+        leads_data = []
+        leads_file_name = "None"
+
+    # 2. Build Merged General CRM Leads Dataset
+    if crm_lead_files:
+        latest_crm_num, latest_crm_name, latest_crm_rows = crm_lead_files[0]
+        c_months = set()
+        for r in latest_crm_rows[:200]:
+            c_dt = parse_custom_date(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА'))
+            if c_dt:
+                c_months.add(c_dt.strftime('%Y-%m'))
+        
+        if len(c_months) == 1 and '2026-09' in c_months and len(crm_lead_files) > 1:
+            print(f"[*] Файл общих лидов CRM {latest_crm_name} содержит только 2026-09. Дополняем историей (август и ранее)...")
+            historical_crm_rows = []
+            for _, prev_crm_name, prev_crm_rows in crm_lead_files[1:]:
+                for r in prev_crm_rows:
+                    dt = parse_custom_date(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА'))
+                    m_str = dt.strftime('%Y-%m') if dt else '2026-08'
+                    if m_str != '2026-09':
+                        historical_crm_rows.append(r)
+                if historical_crm_rows:
+                    print(f"[*] Добавлено {len(historical_crm_rows)} исторических записей CRM из {prev_crm_name}")
+                    break
+            crm_leads_data = historical_crm_rows + latest_crm_rows
+        else:
+            crm_leads_data = latest_crm_rows
+        print(f"[*] Сформирован датасет CRM лидов: {len(crm_leads_data)} записей")
+    else:
+        crm_leads_data = []
+
+    # Combined all_leads_data for cross-analytics
+    all_leads_data = crm_leads_data + leads_data
+    print(f"[*] Общий массив всех лидов: {len(all_leads_data)} записей")
 
     def file_rank_deals(item):
         fname, fpath, rows = item
         mtime = os.path.getmtime(fpath) if os.path.exists(fpath) else 0
         return mtime
-
-    def file_rank_leads(item):
-        fname, rows = item
-        # Priority: Lead files containing partner transfer information take absolute precedence
-        has_partner = 1 if rows and any(get_exact_val(r, 'ПАРТНЕР', 'BI') for r in rows[:50]) else 0
-        num_match = re.search(r'data \((\d+)\)', fname)
-        lead_num = int(num_match.group(1)) if num_match else 0
-        return (has_partner, lead_num, len(rows))
-
 
     # Merge deal candidates in ascending order of file mtime (older first, newer overwrites)
     # This preserves multi-month history (e.g. July) while updating fresh August deals.
@@ -1475,13 +1556,6 @@ def run_pipeline():
     deals_data = list(merged_deals_dict.values())
     latest_deal_file = deals_candidates[-1][0]
     print(f"[*] Сформирован объединенный массив сделок: {len(deals_data)} записей (свежий файл: {latest_deal_file})")
-
-    if leads_candidates:
-        leads_candidates.sort(key=file_rank_leads, reverse=True)
-        leads_file_name, leads_data = leads_candidates[0]
-        print(f"[*] Выбран основной файл лидов: {leads_file_name} ({len(leads_data)} строк)")
-    else:
-        leads_data = []
 
     directory_data = directory_candidates[0][1] if directory_candidates else []
 
