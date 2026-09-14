@@ -689,6 +689,12 @@
           "email": "a.kosyakin@jetour-globus.ru, s.tursin@jetour-globus.ru, d.ivanov@jetour-globus.ru, n.tolmachev@jetour-globus.ru",
           "responsible": "Валерия Солдатова",
           "brand": "Soueast"
+        },
+        {
+          "sheet": "GAC",
+          "city": "392014, Тамбов, ул. Киквидзе, д. 83",
+          "name": "Глобус Автосфера",
+          "brand": "GAC"
         }
       ],
       "status": "verified"
@@ -1420,7 +1426,7 @@
           "inn": "5410065297",
           "address": "г. Новосибирск, Станционная ул., 98/3",
           "back_name": "СберАвто",
-          "email": "mavetisyan@lunaavto.ru",
+          "email": "mavetisyan@lunaavto.ru dnegodov@tenet-lunaauto.ru",
           "responsible": "Светлана Дариенко",
           "brand": "CHERY & TENET"
         }
@@ -2654,6 +2660,12 @@
       "pochta_aliases": [],
       "oem_data": [
         {
+          "sheet": "LADA",
+          "city": "Бухарестская, дом № 22,корпус 3 литер Б, помещение 5",
+          "name": "ГК Форсаж",
+          "brand": "LADA"
+        },
+        {
           "sheet": "JETOUR",
           "city": "Санкт-Петербург",
           "group_link": "",
@@ -2665,6 +2677,19 @@
           "email": "reception@jetour-forsage.ru reception-h1nis@forsage.group Makarenko.viktoriya@forsage.group goldina.sofya@forsage.group",
           "responsible": "Светлана Дариенко",
           "brand": "JETOUR"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/PiNE1dN_tiEAzcv8NHptXook-l6n_v55Mbpeeiz2q0k",
+          "name": "Форсаж",
+          "legal_entity": "ООО Автопилот",
+          "inn": "7810684545",
+          "address": "Санкт-Петербург, Улица, Камчатская, 9, Лит. А, помещ. 1-Н, пом 41, 2 я точка Выборгское ш. 27.",
+          "back_name": "ГК Форсаж",
+          "email": "reception@gac-forsage.ru  Shabalovskaya.Irina@forsage.group goldina.sofya@forsage.group",
+          "responsible": "Светлана Дариенко",
+          "brand": "SOLARIS"
         },
         {
           "sheet": "GAC",
@@ -3102,7 +3127,7 @@
           "name": "Радар-авто",
           "legal_entity": "ООО Радар-Центр",
           "inn": "3700016869",
-          "address": "г.Иваново ул. Фрунзе д 96",
+          "address": "г. Иваново ул. Фрунзе д 96",
           "back_name": "ONLINE Радар-Авто",
           "email": "Fnb@radar-avto.ru",
           "responsible": "Алексей Чихарев",
@@ -3203,6 +3228,45 @@
       "pochta_aliases": [],
       "oem_data": [
         {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/s6S9nQe-KFK8oMdvO0XljPr9yZMmIauuSf4NSNK6T1I",
+          "name": "ГК АВТОМИР",
+          "legal_entity": "ООО АМ Капитал",
+          "inn": "7708607959",
+          "address": "г. Химки, Ленинградское ш., вл.18",
+          "back_name": "",
+          "email": "promo@avtomir.ru",
+          "responsible": "",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/rz4MCMH_OkMdolDVwXzJ4RU5rbaogrq9kpTjX--rcz8",
+          "name": "ГК АВТОМИР",
+          "legal_entity": "ООО АМ Капитал",
+          "inn": "7708607959",
+          "address": "г. Москва, Ярославское ш., д.7;",
+          "back_name": "",
+          "email": "promo@avtomir.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/2ACTcWGuF70RiK0fzg0uOXr5Omf6nzLo5fHbMSGYH7g",
+          "name": "ГК АВТОМИР",
+          "legal_entity": "ООО АМ Капитал",
+          "inn": "7708607959",
+          "address": "г. Москва, Иркутская ул., д.5/6, стр.1",
+          "back_name": "",
+          "email": "promo@avtomir.ru",
+          "responsible": "",
+          "brand": "Geely & Belgee"
+        },
+        {
           "sheet": "LADA",
           "city": "Брянск",
           "group_link": "https://max.ru/join/OQXHYubySAAHNraOCrP5eDfNumY2X-qkZkGXNvjP6C8",
@@ -3242,6 +3306,19 @@
           "legal_entity": "ООО АМ Капитал",
           "inn": "7708607959",
           "address": "г.Москва, ул. Ставропольская, д. 41, стр. 1.",
+          "back_name": "ГК Автомир",
+          "email": "promo@avtomir.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/ezXXb_tJ6nGxi2_otUcoqq3IY5NaGcTvdwaRsRusSO8",
+          "name": "Автомир",
+          "legal_entity": "ООО АМ Капитал",
+          "inn": "7708607959",
+          "address": "г.Москва, Иркутская ул., 5/6 стр.1",
           "back_name": "ГК Автомир",
           "email": "promo@avtomir.ru",
           "responsible": "Андрей Кузнецов",
@@ -3369,6 +3446,123 @@
       ],
       "pochta_aliases": [],
       "oem_data": [
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "МКАД 18 км.",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "Новорижское ш. 9 км от МКАД",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "МКАД 47 км",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "ул. Маршала Прошлякова, д. 13",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "Цветочный проезд, 6",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "МКАД 92 км, Внешняя сторона, между Ярославским и Осташковским шоссе",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "Москва ул. 1-я Магистральная улица, 13, стр. 1",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "г. Санкт-Петербург, ул. Исполкомская, 15А",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/_cg8k72FR7z1GPxsDea8t6N_-9nyy4uEJV7jyNBAfbU",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "address": "г. Санкт-Петербург,ул. Орбели, 35",
+          "back_name": "ГК Major/Мэйджор",
+          "email": "maillead@ma.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
         {
           "sheet": "JETOUR",
           "city": "Москва",
@@ -3751,7 +3945,7 @@
           "address": "г. Иркутск, Трактовая, 22 а",
           "back_name": "СберАвто",
           "email": "baturina@agatauto.ru v_usoltsev@agatauto.ru",
-          "responsible": "Андрей Кузнецов",
+          "responsible": "Евгения Добролюбова",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -3765,6 +3959,18 @@
           "back_name": "",
           "email": "arsen.avanesyan@agat-lada.ru",
           "responsible": "",
+          "brand": "LADA"
+        },
+        {
+          "sheet": "LADA",
+          "city": "Волгоград просп. имени В.И. Ленина, 118Б,",
+          "name": "ГК АГАТ",
+          "brand": "LADA"
+        },
+        {
+          "sheet": "LADA",
+          "city": "Волгоград обл, ш. Авиаторов, 2Б,",
+          "name": "ГК АГАТ",
           "brand": "LADA"
         },
         {
@@ -4200,7 +4406,7 @@
           "address": "г. Екатеринбург, пер. Базовый, д. 38 (подписание на доков на Металлургов, 65)",
           "back_name": "ONLINE ТСАЦ Июль",
           "email": "v.maht@julyauto.ru\n n.kudrin@tenet-july.ru",
-          "responsible": "Андрей Кузнецов",
+          "responsible": "Евгения Добролюбова",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -4327,7 +4533,7 @@
           "address": "г.Челябинск  ул. Братьев Кашириных, 137",
           "back_name": "Планета Авто",
           "email": "skosarev@planeta-avto.ru",
-          "responsible": "",
+          "responsible": "Евгения Добролюбова",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -4842,7 +5048,7 @@
           "name": "Чери центр БорисХоф",
           "legal_entity": "ООО БОРИСХОФ ХОЛДИНГ",
           "inn": "7714700709",
-          "address": "Внуково г. Москва, 24 км Киевского шоссе, стр. 8",
+          "address": "г. Москва, 24 км Киевского шоссе, стр. 8 Внуково",
           "back_name": "СберАвто",
           "email": "robot@borishof.ru oleg.gorin@borishof.ru online_partners@borishof.ru \n irina.galaktionova@oting-borishof.ru robot_sherpa_1@borishof.ru",
           "responsible": "Алексей Чихарев",
@@ -4928,7 +5134,7 @@
           "name": "Нижегородец",
           "legal_entity": "ООО Нижегородец Восток",
           "inn": "5257164835",
-          "address": "ул. 9 Мая, 17А, Арзамас",
+          "address": "г. Арзамас, ул. 9 Мая, 17А",
           "back_name": "Тенет Нижегородец",
           "email": "Selekhov.Y.A@nnmotors.ru",
           "responsible": "Евгения Добролюбова",
@@ -6398,7 +6604,7 @@
           "legal_entity": "ООО М-АВТО",
           "inn": "7106511456",
           "address": "г. Тула ул. Оборонная 116",
-          "back_name": "Нет",
+          "back_name": "",
           "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
           "responsible": "Алексей Чихарев",
           "brand": "CHERY & TENET"
@@ -6785,7 +6991,7 @@
           "address": "Москва, Алтуфьевское ш., 31к1,",
           "back_name": "",
           "email": "pvzbandut@rolf.ru",
-          "responsible": "Кузнецов Андрей",
+          "responsible": "Андрей Кузнецов",
           "brand": "Geely & Belgee"
         },
         {
@@ -7389,7 +7595,7 @@
           "name": "АвтоСпецЦентр",
           "legal_entity": "ООО КАР АЦ",
           "inn": "7726461389",
-          "address": "Москва, Каширское шоссе, д. 39, корп. 1",
+          "address": "г. Москва, Каширское шоссе, д. 39, корп. 1",
           "back_name": "АВТОДОМ ONLINE",
           "email": "передача строго по кнопки в Бек, на адрес необходимой локации",
           "responsible": "Алексей Чихарев",
@@ -7565,7 +7771,7 @@
           "city": "Саратов",
           "group_link": "https://max.ru/join/ClNbU5WMZV5T-OIxzHFDltS-WIf7iA7FWSJf7GnDYuw",
           "name": "Чанган Центр АВТОФОРУМ ВОСТОК",
-          "legal_entity": "АВТОФОРУМ-ВОСТОК",
+          "legal_entity": "ООО АВТОФОРУМ-ВОСТОК",
           "inn": "6453163950",
           "address": "Саратов, Усть-Курдюмская улица, 33",
           "back_name": "Автофорум",
@@ -7602,21 +7808,7 @@
         "ЭрСи Автотрейд"
       ],
       "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/yuTubzRHD2TBCEXQJwXHkOSmsUxhiHukYGibl5sjOW8",
-          "name": "ЭРСИ АВТОТРЕЙД",
-          "legal_entity": "ООО ЭРСИ АВТОТРЕЙД",
-          "inn": "7726470070",
-          "address": "г. Москва, Варшавское шоссе, 125Ж, стр.2",
-          "back_name": "ЭрСи Автотрейд",
-          "email": "Denis.kozhanov@my-silver.ru, uvarova.op@my-silver.ru, info@rc-autotrade.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "JETOUR"
-        }
-      ],
+      "oem_data": [],
       "status": "verified"
     },
     {
@@ -7746,7 +7938,7 @@
           "address": "г. Самара, Южное шоссе, д. 12. Стр. 3",
           "back_name": "СберАвто",
           "email": "iabubakirov@omoda-vipavto.ru",
-          "responsible": "Андрей Кузнецов",
+          "responsible": "Евгения Добролюбова",
           "brand": "OMODA & JAECOO"
         }
       ],
@@ -8284,7 +8476,7 @@
           "name": "Максимум",
           "legal_entity": "ООО Максимум Кредит",
           "inn": "7804540104",
-          "address": "ул. Руставели, 53, корп. 1, Санкт-Петербург",
+          "address": "г. Санкт-Петербург, ул. Руставели, 53, корп. 1",
           "back_name": "Максимум",
           "email": "kirill.rutto@haval-maximum.ru\nnikita.smolik@tenet-maximum.ru",
           "responsible": "Светлана Дариенко",
@@ -10089,7 +10281,7 @@
           "name": "СОНГ",
           "legal_entity": "ООО СОНГ МОТОРС",
           "inn": "7720967250",
-          "address": "Москва, 1ый Дорожный пр-д 4, стр 1",
+          "address": "г. Москва, 1ый Дорожный пр-д 4, стр 1",
           "back_name": "СОНГ",
           "email": "d.volinshikov@songmotors.ru   sales@songmotors.ru",
           "responsible": "Алексей Чихарев",
@@ -10135,7 +10327,7 @@
           "name": "Фаворит",
           "legal_entity": "ООО Фаворит Моторс Ф",
           "inn": "7703752046",
-          "address": "Г. Москва Большая Семёновская 42, стр 4",
+          "address": "г. Москва Большая Семёновская 42, стр 4",
           "back_name": "Фаворит Моторс",
           "email": "timokhin.k@favorit-motors.ru Saramok.a@favorit-motors.ru",
           "responsible": "Алексей Чихарев",
@@ -10195,7 +10387,7 @@
           "name": "АвтоЮг",
           "legal_entity": "ООО Ставрополь Автоюг",
           "inn": "2635233876",
-          "address": "Ставрополь, ул. Западный обход, д. 70",
+          "address": "г. Ставрополь, ул. Западный обход, д. 70",
           "back_name": "",
           "email": "k.kitaev@tenet-autoug.ru",
           "responsible": "Валерия Солдатова",
@@ -10360,6 +10552,19 @@
           "back_name": "Нет",
           "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
           "responsible": "Валерия Солдатова",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Псков",
+          "group_link": "https://max.ru/join/6JtNvKQLgJw-GCm79lebzoibiiRPZAvaLWjISr32xRw",
+          "name": "Автосалон № 1",
+          "legal_entity": "ООО Автосалон 1",
+          "inn": "6000005056",
+          "address": "г. Псков,  Труда ул, 26 д., офис 3",
+          "back_name": "нет",
+          "email": "aipetrov@chery-autosalon1.ru",
+          "responsible": "Светлана Дариенко",
           "brand": "CHERY & TENET"
         },
         {
@@ -11494,6 +11699,19 @@
           "email": "sfilippov@toyota-tver.com",
           "responsible": "Алексей Чихарев",
           "brand": "JETOUR"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Тверь",
+          "group_link": "https://max.ru/join/aBpJm2HcDWDZrV6hurYktW4mbMvuZwRTZihihb2JSXk",
+          "name": "Важная персона Тверь",
+          "legal_entity": "ООО Важная персона – Авто М",
+          "inn": "6950108660",
+          "address": "г.ТверьМосковское шоссе 23, Московское шоссе 23",
+          "back_name": "",
+          "email": "mtumanov@vipauto-tenetplus.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "SOLARIS"
         }
       ],
       "status": "verified"
@@ -11587,7 +11805,7 @@
           "inn": "7730653453",
           "address": "Москва, Береговой проезд 4/6 с 3",
           "back_name": "Независимость",
-          "email": "minasyan.edw@mail.ru  mnpogonov@nezaauto.ru efeizullaev@nezaauto.ru",
+          "email": "minasyan.edw@mail.ru  mnpogonov@nezaauto.ru efeizullaev@nezaauto.ru eminasyan@nezaauto.ru",
           "responsible": "Алексей Чихарев",
           "brand": "Soueast"
         },
@@ -11600,7 +11818,7 @@
           "inn": "7730653453",
           "address": "Москва, Перерва 19 с 3",
           "back_name": "Независимость",
-          "email": "minasyan.edw@mail.ru  mnpogonov@nezaauto.ru efeizullaev@nezaauto.ru",
+          "email": "minasyan.edw@mail.ru  mnpogonov@nezaauto.ru efeizullaev@nezaauto.ru eminasyan@nezaauto.ru",
           "responsible": "Алексей Чихарев",
           "brand": "Soueast"
         },
@@ -11639,7 +11857,7 @@
           "inn": "7730653453",
           "address": "Москва, Береговой проезд 4/6 с 3",
           "back_name": "Независимость",
-          "email": "minasyan.edw@mail.ru  mnpogonov@nezaauto.ru efeizullaev@nezaauto.ru",
+          "email": "minasyan.edw@mail.ru  mnpogonov@nezaauto.ru efeizullaev@nezaauto.ru eminasyan@nezaauto.ru",
           "responsible": "Алексей Чихарев",
           "brand": "GAC"
         },
@@ -11652,7 +11870,7 @@
           "inn": "7730653453",
           "address": "Москва, Перерва 19 с 3",
           "back_name": "Независимость",
-          "email": "minasyan.edw@mail.ru  mnpogonov@nezaauto.ru efeizullaev@nezaauto.ru",
+          "email": "minasyan.edw@mail.ru  mnpogonov@nezaauto.ru efeizullaev@nezaauto.ru eminasyan@nezaauto.ru",
           "responsible": "Алексей Чихарев",
           "brand": "GAC"
         }
@@ -11714,7 +11932,7 @@
           "inn": "1686051255",
           "address": "г. Ульяновск, ул. Урицкого, д.37а",
           "back_name": "Апельсин КАЗАНЬ Online",
-          "email": "Info@cartar.ru",
+          "email": "n.nashatirkin@cartat.ru   reception.ulyanovsk@cartat.ru",
           "responsible": "Алексей Чихарев",
           "brand": "CHERY & TENET"
         },
@@ -11742,7 +11960,7 @@
           "city": "Уфа",
           "group_link": "https://max.ru/join/2DH7bwb88r8_n5IlCXZ-EJ9rnlIquIflfy8De4O0fWw",
           "name": "Апельсин КАЗАНЬ Online",
-          "legal_entity": "ООО \"АВТОСЕТЬ УРАЛ\"",
+          "legal_entity": "ООО АВТОСЕТЬ УРАЛ",
           "inn": "1683008149",
           "address": "Башкортостан Респ, г.Уфа, ул. Маршала Жукова , д.17",
           "back_name": "Апельсин КАЗАНЬ Online",
@@ -12663,7 +12881,21 @@
         "Сократ"
       ],
       "pochta_aliases": [],
-      "oem_data": []
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/UYyazrw2aZgYM4mIwE1iyLcHOGg_2faU78aEX48aSAY",
+          "name": "Моторленд",
+          "legal_entity": "ООО Сократ СПБ",
+          "inn": "3662259794",
+          "address": "Ириновский пр. 10",
+          "back_name": "Online Моторленд",
+          "email": "d.ionova@belgee-motorland78.ru hostes@belgee-motorland78.ru hostes@jetour-motorland78.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "JETOUR"
+        }
+      ]
     },
     {
       "partner_id": 1281,
@@ -20267,6 +20499,266 @@
       "bitrix_aliases": [],
       "bi_aliases": [],
       "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_26e30c33",
+      "canonical_name": "Пелетон",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/-EAzdLFFffHEMk6tQcOw0l7NgMp6XdpKdR6mIxmxBNE",
+          "name": "Пелетон",
+          "legal_entity": "ООО Пелетон",
+          "inn": "7751294798",
+          "address": "Москва 33 км МКАД строение 6 владение 6",
+          "back_name": "Пелетон",
+          "email": "Sales33online@peleton.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/-EAzdLFFffHEMk6tQcOw0l7NgMp6XdpKdR6mIxmxBNE",
+          "name": "Пелетон",
+          "legal_entity": "ООО Пелетон",
+          "inn": "7751294798",
+          "address": "Москва 33 км МКАД строение 6 владение 6",
+          "back_name": "Пелетон",
+          "email": "Sales33online@peleton.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "OMODA & JAECOO"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/-EAzdLFFffHEMk6tQcOw0l7NgMp6XdpKdR6mIxmxBNE",
+          "name": "Пелетон",
+          "legal_entity": "ООО Пелетон",
+          "inn": "7751294798",
+          "address": "Москва 33 км МКАД строение 6 владение 6",
+          "back_name": "Пелетон",
+          "email": "Sales33online@peleton.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/-EAzdLFFffHEMk6tQcOw0l7NgMp6XdpKdR6mIxmxBNE",
+          "name": "Перетон",
+          "legal_entity": "ООО Пелетон",
+          "inn": "7751294798",
+          "address": "Москва 33 км МКАД строение 6 владение 6",
+          "back_name": "Пелетон",
+          "email": "Sales33online@peleton.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "Soueast"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/-EAzdLFFffHEMk6tQcOw0l7NgMp6XdpKdR6mIxmxBNE",
+          "name": "Перетон",
+          "legal_entity": "ООО Пелетон",
+          "inn": "7751294798",
+          "address": "Москва 44 км МКАД владение 1 строение 2",
+          "back_name": "Пелетон",
+          "email": "Sales33online@peleton.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "SOLARIS"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_d8df2547",
+      "canonical_name": "Автомобильный Центр Псков",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Псков",
+          "group_link": "",
+          "name": "Автомобильный Центр Псков",
+          "legal_entity": "",
+          "inn": "",
+          "address": "",
+          "back_name": "",
+          "email": "",
+          "responsible": "Светлана Дариенко",
+          "brand": "CHERY & TENET"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
       "oem_data": [
         {
           "sheet": "Geely&Belgee",
@@ -20305,38 +20797,6 @@
           "city": "г. Тимашевск ул. Науменко, 2А",
           "name": "",
           "brand": "Geely & Belgee"
-        }
-      ]
-    },
-    {
-      "partner_id": "P_OEM_621324b8",
-      "canonical_name": "OEM Партнер",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "LADA",
-          "city": "",
-          "name": "",
-          "brand": "LADA"
-        }
-      ]
-    },
-    {
-      "partner_id": "P_OEM_621324b8",
-      "canonical_name": "OEM Партнер",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "LADA",
-          "city": "",
-          "name": "",
-          "brand": "LADA"
         }
       ]
     },
@@ -20513,6 +20973,114 @@
           "city": "Октябрьский пр., 373",
           "name": "",
           "brand": "LADA"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_11328265",
+      "canonical_name": "Автофирма Светлана Ярославль",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "LADA",
+          "city": "Ярославль, Московский проспект 110, 150023 Ярославль, Московский проспект 110",
+          "name": "Автофирма Светлана Ярославль",
+          "brand": "LADA"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_2fb25c81",
+      "canonical_name": "БЦР",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHANGAN",
+          "city": "Нижний Новгород",
+          "group_link": "https://max.ru/join/_fIMiVXy2pb4ymuEPal3CQHBU6T9pmqacCEHhmmK7Us",
+          "name": "БЦР",
+          "legal_entity": "ООО Автосервис-Центр-С",
+          "inn": "5610251967",
+          "address": "г.Нижний Новгород, ул.Новикова-Прибоя, д.2",
+          "back_name": "",
+          "email": "a.perov@bcrmotors.ru al.vlasov@bcrpremium.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "CHANGAN"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_8b5da652",
+      "canonical_name": "Никко",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Оренбург",
+          "group_link": "https://max.ru/join/7iLHQHKAvFH-RB939rIKhsuSAEA4X6PNA9U1-Rhuyn0",
+          "name": "Никко",
+          "legal_entity": "ООО \"Гермес-Авто\"",
+          "inn": "5638061236",
+          "address": "Оренбург, Загородное шоссе, 13/4с1",
+          "back_name": "",
+          "email": "rop@nika-jetour.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "JETOUR"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_8dfa757a",
+      "canonical_name": "Аллер-Авто",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Пенза",
+          "group_link": "https://max.ru/join/EtMqaphO_YirfTMFZIh65SI0T3IXHg7YKwMWsKJWtZY",
+          "name": "Аллер-Авто",
+          "legal_entity": "ООО «Аллер-Авто»",
+          "inn": "5835074668",
+          "address": "ул. Проспект Победы, 121",
+          "back_name": "Аллер-Авто",
+          "email": "alexandra.shitova@aller-avto.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "JETOUR"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "SOLARIS",
+          "city": "Котлас",
+          "group_link": "",
+          "name": "",
+          "legal_entity": "",
+          "inn": "",
+          "address": "",
+          "back_name": "",
+          "email": "",
+          "responsible": "",
+          "brand": "SOLARIS"
         }
       ]
     },

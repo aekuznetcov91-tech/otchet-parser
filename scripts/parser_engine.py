@@ -1397,6 +1397,10 @@ def run_pipeline():
     all_leads_data = []
     seen_file_hashes = set()
 
+    # Automatically identify latest Bitrix DEAL file
+    all_deal_files = [f for sdir in search_dirs if os.path.exists(sdir) for f in os.listdir(sdir) if f.startswith('DEAL_') and f.lower().endswith('.xls')]
+    latest_deal_file = max(all_deal_files) if all_deal_files else ''
+
     for sdir in search_dirs:
         if not os.path.exists(sdir):
             continue
@@ -1411,8 +1415,8 @@ def run_pipeline():
                 if data_match and int(data_match.group(1)) < 39:
                     continue
 
-                # For intermediate daily DEAL_*.xls: only keep the July anchor (DEAL_20260904) and latest (DEAL_20260911)
-                if fname.startswith('DEAL_') and not (fname.startswith('DEAL_20260904') or fname.startswith('DEAL_20260911')):
+                # For intermediate daily DEAL_*.xls: only keep the July anchor (DEAL_20260904) and latest DEAL file
+                if fname.startswith('DEAL_') and not (fname.startswith('DEAL_20260904') or fname == latest_deal_file):
                     continue
 
                 try:
