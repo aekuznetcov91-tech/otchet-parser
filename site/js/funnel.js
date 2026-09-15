@@ -5,7 +5,7 @@
 let currentFunnelMonth = null; // Auto-detect, no hardcode
 let currentFunnelBrand = 'ALL';
 let funnelRawData = {};
-const fBrandColors = ['#21A038', '#00B074', '#0097A7', '#2E5BFF', '#7928CA', '#FF9900', '#EC4899', '#8B5CF6', '#14B8A6', '#F59E0B', '#6366F1', '#3B82F6', '#64748B'];
+const fBrandColors = ['#21A038', '#00B074', '#0097A7', '#2E5BFF', '#7928CA', '#FF9900', '#EC4899', '#8B5CF6', '#14B8A6', '#F59E0B', '#6366F1', '#3B82F6', '#64748B', '#06B6D4'];
 
 // Auto-generate month buttons from data.json
 function initFunnelMonths() {

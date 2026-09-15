@@ -511,5 +511,271 @@
     "offer_show": 2591,
     "offer_click": 1597,
     "offer_success": 1563
+  },
+  {
+    "offer_success": 422,
+    "car_card_click": 745,
+    "steps": [
+      206620,
+      10072,
+      745,
+      726,
+      432,
+      422
+    ],
+    "month": "2026-09",
+    "brand": "BELGEE",
+    "fileName": "Белджи сент.png",
+    "offer_show": 726,
+    "page_view": 206620,
+    "car_card_show": 10072,
+    "offer_click": 432
+  },
+  {
+    "fileName": "Гак сент.png",
+    "car_card_click": 1354,
+    "car_card_show": 18491,
+    "page_view": 206486,
+    "brand": "GAC",
+    "steps": [
+      206486,
+      18491,
+      1354,
+      1297,
+      764,
+      743
+    ],
+    "offer_show": 1297,
+    "offer_click": 764,
+    "offer_success": 743,
+    "month": "2026-09"
+  },
+  {
+    "offer_show": 832,
+    "offer_success": 529,
+    "car_card_show": 8301,
+    "fileName": "Джейку сент.png",
+    "brand": "JAECOO",
+    "steps": [
+      206732,
+      8301,
+      853,
+      832,
+      547,
+      529
+    ],
+    "offer_click": 547,
+    "page_view": 206732,
+    "month": "2026-09",
+    "car_card_click": 853
+  },
+  {
+    "offer_success": 1713,
+    "offer_click": 1739,
+    "page_view": 206426,
+    "brand": "JELAND",
+    "steps": [
+      206426,
+      20385,
+      3057,
+      3001,
+      1739,
+      1713
+    ],
+    "month": "2026-09",
+    "fileName": "Джейленд сент.png",
+    "car_card_show": 20385,
+    "offer_show": 3001,
+    "car_card_click": 3057
+  },
+  {
+    "fileName": "Джетур сент.png",
+    "page_view": 206380,
+    "offer_success": 1297,
+    "brand": "JETOUR",
+    "steps": [
+      206380,
+      19253,
+      2159,
+      2109,
+      1323,
+      1297
+    ],
+    "month": "2026-09",
+    "offer_show": 2109,
+    "offer_click": 1323,
+    "car_card_show": 19253,
+    "car_card_click": 2159
+  },
+  {
+    "offer_show": 439,
+    "offer_click": 243,
+    "page_view": 206435,
+    "steps": [
+      206435,
+      7778,
+      457,
+      439,
+      243,
+      239
+    ],
+    "brand": "GEELY",
+    "fileName": "Джили сент.png",
+    "offer_success": 239,
+    "month": "2026-09",
+    "car_card_show": 7778,
+    "car_card_click": 457
+  },
+  {
+    "steps": [
+      206780,
+      30067,
+      3101,
+      3019,
+      1869,
+      1822
+    ],
+    "car_card_show": 30067,
+    "car_card_click": 3101,
+    "month": "2026-09",
+    "offer_click": 1869,
+    "offer_success": 1822,
+    "page_view": 206780,
+    "fileName": "Лада сент.png",
+    "offer_show": 3019,
+    "brand": "LADA"
+  },
+  {
+    "car_card_show": 6637,
+    "offer_click": 188,
+    "steps": [
+      206455,
+      6637,
+      319,
+      310,
+      188,
+      180
+    ],
+    "brand": "МОСКВИЧ",
+    "offer_show": 310,
+    "offer_success": 180,
+    "fileName": "Москвич сент.png",
+    "page_view": 206455,
+    "month": "2026-09",
+    "car_card_click": 319
+  },
+  {
+    "offer_success": 394,
+    "offer_click": 404,
+    "offer_show": 646,
+    "brand": "OMODA",
+    "page_view": 206745,
+    "car_card_show": 6186,
+    "month": "2026-09",
+    "fileName": "Омода сент.png",
+    "steps": [
+      206745,
+      6186,
+      668,
+      646,
+      404,
+      394
+    ],
+    "car_card_click": 668
+  },
+  {
+    "page_view": 206479,
+    "offer_show": 849,
+    "offer_click": 466,
+    "car_card_show": 11536,
+    "steps": [
+      206479,
+      11536,
+      869,
+      849,
+      466,
+      446
+    ],
+    "offer_success": 446,
+    "month": "2026-09",
+    "brand": "SOLARIS",
+    "fileName": "Солярис сент.png",
+    "car_card_click": 869
+  },
+  {
+    "offer_click": 1028,
+    "steps": [
+      206464,
+      15855,
+      1682,
+      1637,
+      1028,
+      990
+    ],
+    "page_view": 206464,
+    "car_card_show": 15855,
+    "brand": "SOUEAST",
+    "month": "2026-09",
+    "fileName": "Суист сент.png",
+    "offer_show": 1637,
+    "offer_success": 990,
+    "car_card_click": 1682
+  },
+  {
+    "offer_show": 5189,
+    "car_card_click": 5307,
+    "fileName": "Тенет сент.png",
+    "offer_click": 3040,
+    "page_view": 206388,
+    "steps": [
+      206388,
+      36437,
+      5307,
+      5189,
+      3040,
+      2959
+    ],
+    "car_card_show": 36437,
+    "brand": "TENET",
+    "month": "2026-09",
+    "offer_success": 2959
+  },
+  {
+    "page_view": 206604,
+    "offer_success": 1329,
+    "month": "2026-09",
+    "offer_click": 1360,
+    "car_card_click": 2272,
+    "brand": "HAVAL",
+    "steps": [
+      206604,
+      23448,
+      2272,
+      2203,
+      1360,
+      1329
+    ],
+    "car_card_show": 23448,
+    "offer_show": 2203,
+    "fileName": "Хавал сент.png"
+  },
+  {
+    "car_card_click": 2029,
+    "steps": [
+      206305,
+      20468,
+      2029,
+      1970,
+      1269,
+      1239
+    ],
+    "offer_show": 1970,
+    "brand": "CHANGAN",
+    "car_card_show": 20468,
+    "offer_click": 1269,
+    "page_view": 206305,
+    "fileName": "Чанган сент.png",
+    "month": "2026-09",
+    "offer_success": 1239
   }
 ]

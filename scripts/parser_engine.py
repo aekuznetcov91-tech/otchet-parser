@@ -451,8 +451,8 @@ def calculate_brand_funnel(sys_db, leads_data=None):
             except Exception:
                 pass
 
-    all_brands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS', 'SOUEAST', 'BELGEE', 'GEELY', 'HAVAL', 'JAECOO', 'OMODA', 'МОСКВИЧ']
-    months = ['2026-08', '2026-07', 'all']
+    all_brands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS', 'SOUEAST', 'BELGEE', 'GEELY', 'HAVAL', 'JAECOO', 'OMODA', 'МОСКВИЧ', 'JELAND']
+    months = ['2026-09', '2026-08', '2026-07', 'all']
 
     # Pre-aggregate dynamic CRM lead stats from leads_data if available
     crm_lead_stats = defaultdict(lambda: defaultdict(lambda: {
@@ -463,7 +463,8 @@ def calculate_brand_funnel(sys_db, leads_data=None):
     brand_canonical = {
         'JETOUR': 'JETOUR', 'LADA': 'LADA', 'ВАЗ': 'LADA', 'TENET': 'TENET', 'CHANGAN': 'CHANGAN',
         'GAC': 'GAC', 'SOLARIS': 'SOLARIS', 'SOUEAST': 'SOUEAST', 'BELGEE': 'BELGEE',
-        'GEELY': 'GEELY', 'HAVAL': 'HAVAL', 'JAECOO': 'JAECOO', 'OMODA': 'OMODA', 'МОСКВИЧ': 'МОСКВИЧ'
+        'GEELY': 'GEELY', 'HAVAL': 'HAVAL', 'JAECOO': 'JAECOO', 'OMODA': 'OMODA', 'МОСКВИЧ': 'МОСКВИЧ',
+        'JELAND': 'JELAND', 'ДЖЕЙЛЕНД': 'JELAND'
     }
 
     if leads_data:
@@ -488,20 +489,21 @@ def calculate_brand_funnel(sys_db, leads_data=None):
                 elif b_norm == 'Geely & Belgee':
                     found_b = 'BELGEE' if any(k in combined for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70')) else 'GEELY'
                 elif b_norm == 'OMODA & JAECOO':
-                    found_b = 'JAECOO' if any(k in combined for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8')) else 'OMODA'
+                    if any(k in combined for k in ('JELAND', 'ДЖЕЙЛЕНД')):
+                        found_b = 'JELAND'
+                    elif any(k in combined for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8')):
+                        found_b = 'JAECOO'
+                    else:
+                        found_b = 'OMODA'
                 elif b_norm == 'CHERY & TENET':
                     if 'TENET' in combined: found_b = 'TENET'
             if not found_b: continue
 
-            d_val = r.get('Дата события') or r.get('ДАТАСОБЫТИЯ')
-            d_ev = None
-            if d_val:
-                try:
-                    d_ev = datetime.date(1899, 12, 30) + datetime.timedelta(days=int(float(d_val)))
-                except Exception: pass
+            d_val = r.get('Дата события') or r.get('ДАТАСОБЫТИЯ') or r.get('Дата') or r.get('ДАТА')
+            d_ev = parse_custom_date(d_val)
             
             if not d_ev:
-                m_key = '2026-08'
+                m_key = '2026-09'
             else:
                 m_key = f"{d_ev.year:04d}-{d_ev.month:02d}"
 
@@ -532,14 +534,17 @@ def calculate_brand_funnel(sys_db, leads_data=None):
         if r_brand == funnel_brand:
             return True
         m = (r_model or '').upper()
+        b_up = (r_brand or '').upper()
+        if funnel_brand == 'JELAND':
+            return 'JELAND' in b_up or 'JELAND' in m or 'ДЖЕЙЛЕНД' in m
         if funnel_brand == 'GEELY':
             return r_brand == 'Geely & Belgee' and not any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70'))
         if funnel_brand == 'BELGEE':
             return r_brand == 'Geely & Belgee' and any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70'))
         if funnel_brand == 'OMODA':
-            return r_brand == 'OMODA & JAECOO' and not any(k in m for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8'))
+            return r_brand == 'OMODA & JAECOO' and not any(k in m for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8', 'JELAND', 'ДЖЕЙЛЕНД'))
         if funnel_brand == 'JAECOO':
-            return r_brand == 'OMODA & JAECOO' and any(k in m for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8'))
+            return r_brand == 'OMODA & JAECOO' and any(k in m for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8')) and not any(k in m for k in ('JELAND', 'ДЖЕЙЛЕНД'))
         if funnel_brand == 'TENET':
             return r_brand == 'CHERY & TENET' and 'TENET' in m
         return False
@@ -547,7 +552,7 @@ def calculate_brand_funnel(sys_db, leads_data=None):
     for m in months:
         by_month[m] = {
             "month": m,
-            "month_label": "Август 2026" if m == "2026-08" else ("Июль 2026" if m == "2026-07" else "Все периоды (Тотал)"),
+            "month_label": "Сентябрь 2026" if m == "2026-09" else ("Август 2026" if m == "2026-08" else ("Июль 2026" if m == "2026-07" else "Все периоды (Тотал)")),
             "brands": {}
         }
 
@@ -570,15 +575,16 @@ def calculate_brand_funnel(sys_db, leads_data=None):
 
             # Vitrina PostHog metrics
             if m == 'all':
+                v_sep = vitrina_map.get(('2026-09', b), {})
                 v_aug = vitrina_map.get(('2026-08', b), {})
                 v_jul = vitrina_map.get(('2026-07', b), {})
                 v_stat = {
-                    'page_view': v_aug.get('page_view', 0) + v_jul.get('page_view', 0),
-                    'car_card_show': v_aug.get('car_card_show', 0) + v_jul.get('car_card_show', 0),
-                    'car_card_click': v_aug.get('car_card_click', 0) + v_jul.get('car_card_click', 0),
-                    'offer_show': v_aug.get('offer_show', 0) + v_jul.get('offer_show', 0),
-                    'offer_click': v_aug.get('offer_click', 0) + v_jul.get('offer_click', 0),
-                    'offer_success': v_aug.get('offer_success', 0) + v_jul.get('offer_success', 0)
+                    'page_view': v_sep.get('page_view', 0) + v_aug.get('page_view', 0) + v_jul.get('page_view', 0),
+                    'car_card_show': v_sep.get('car_card_show', 0) + v_aug.get('car_card_show', 0) + v_jul.get('car_card_show', 0),
+                    'car_card_click': v_sep.get('car_card_click', 0) + v_aug.get('car_card_click', 0) + v_jul.get('car_card_click', 0),
+                    'offer_show': v_sep.get('offer_show', 0) + v_aug.get('offer_show', 0) + v_jul.get('offer_show', 0),
+                    'offer_click': v_sep.get('offer_click', 0) + v_aug.get('offer_click', 0) + v_jul.get('offer_click', 0),
+                    'offer_success': v_sep.get('offer_success', 0) + v_aug.get('offer_success', 0) + v_jul.get('offer_success', 0)
                 }
             else:
                 v_stat = vitrina_map.get((m, b), {
@@ -626,7 +632,7 @@ def calculate_brand_funnel(sys_db, leads_data=None):
                 elif b == 'SOUEAST': leads_count = int(310 * mult)
                 elif b == 'HAVAL': leads_count = int(450 * mult)
                 elif b in ['BELGEE', 'GEELY']: leads_count = int(280 * mult)
-                elif b in ['JAECOO', 'OMODA']: leads_count = int(210 * mult)
+                elif b in ['JAECOO', 'OMODA', 'JELAND']: leads_count = int(210 * mult)
                 elif b == 'МОСКВИЧ': leads_count = int(110 * mult)
 
                 qual_count = int(round(leads_count * 0.421))
@@ -668,16 +674,16 @@ def calculate_brand_funnel(sys_db, leads_data=None):
                 "arpu_no_mp2": round(tot_rev_no_mp2 / len(b_no_mp2), 2) if len(b_no_mp2) > 0 else 0,
                 "arpu_total": round(tot_rev_all / len(b_sales), 2) if len(b_sales) > 0 else 0,
                 "src_breakdown": src_breakdown,
-                "latest_lead_date": "02.09.2026"
+                "latest_lead_date": "15.09.2026"
             }
 
     brand_funnel = {
-        "OVERALL_LATEST_DATE": "02.09.2026 в 12:00",
+        "OVERALL_LATEST_DATE": "15.09.2026 в 12:00",
         "months": months,
         "by_month": by_month
     }
     for b in all_brands:
-        brand_funnel[b] = by_month["2026-08"]["brands"][b]
+        brand_funnel[b] = by_month["2026-09"]["brands"][b] if "2026-09" in by_month else by_month["2026-08"]["brands"][b]
 
     return brand_funnel
 
