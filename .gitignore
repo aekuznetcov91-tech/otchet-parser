@@ -4,4 +4,4 @@ __pycache__/
 *.pyc
 scratch/
 .wrangler/
-
+raw_data/archive/

@@ -12881,21 +12881,7 @@
         "Сократ"
       ],
       "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/UYyazrw2aZgYM4mIwE1iyLcHOGg_2faU78aEX48aSAY",
-          "name": "Моторленд",
-          "legal_entity": "ООО Сократ СПБ",
-          "inn": "3662259794",
-          "address": "Ириновский пр. 10",
-          "back_name": "Online Моторленд",
-          "email": "d.ionova@belgee-motorland78.ru hostes@belgee-motorland78.ru hostes@jetour-motorland78.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "JETOUR"
-        }
-      ]
+      "oem_data": []
     },
     {
       "partner_id": 1281,
@@ -20759,6 +20745,244 @@
       "bitrix_aliases": [],
       "bi_aliases": [],
       "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_11328265",
+      "canonical_name": "Автофирма Светлана Ярославль",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "LADA",
+          "city": "Ярославль, Московский проспект 110, 150023 Ярославль, Московский проспект 110",
+          "name": "Автофирма Светлана Ярославль",
+          "brand": "LADA"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_2fb25c81",
+      "canonical_name": "БЦР",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHANGAN",
+          "city": "Нижний Новгород",
+          "group_link": "https://max.ru/join/_fIMiVXy2pb4ymuEPal3CQHBU6T9pmqacCEHhmmK7Us",
+          "name": "БЦР",
+          "legal_entity": "ООО Автосервис-Центр-С",
+          "inn": "5610251967",
+          "address": "г.Нижний Новгород, ул.Новикова-Прибоя, д.2",
+          "back_name": "",
+          "email": "a.perov@bcrmotors.ru al.vlasov@bcrpremium.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "CHANGAN"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_8b5da652",
+      "canonical_name": "Никко",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Оренбург",
+          "group_link": "https://max.ru/join/7iLHQHKAvFH-RB939rIKhsuSAEA4X6PNA9U1-Rhuyn0",
+          "name": "Никко",
+          "legal_entity": "ООО \"Гермес-Авто\"",
+          "inn": "5638061236",
+          "address": "Оренбург, Загородное шоссе, 13/4с1",
+          "back_name": "",
+          "email": "rop@nika-jetour.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "JETOUR"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_8dfa757a",
+      "canonical_name": "Аллер-Авто",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Пенза",
+          "group_link": "https://max.ru/join/EtMqaphO_YirfTMFZIh65SI0T3IXHg7YKwMWsKJWtZY",
+          "name": "Аллер-Авто",
+          "legal_entity": "ООО «Аллер-Авто»",
+          "inn": "5835074668",
+          "address": "ул. Проспект Победы, 121",
+          "back_name": "Аллер-Авто",
+          "email": "alexandra.shitova@aller-avto.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "JETOUR"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
       "oem_data": [
         {
           "sheet": "Geely&Belgee",
@@ -20973,91 +21197,6 @@
           "city": "Октябрьский пр., 373",
           "name": "",
           "brand": "LADA"
-        }
-      ]
-    },
-    {
-      "partner_id": "P_OEM_11328265",
-      "canonical_name": "Автофирма Светлана Ярославль",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "LADA",
-          "city": "Ярославль, Московский проспект 110, 150023 Ярославль, Московский проспект 110",
-          "name": "Автофирма Светлана Ярославль",
-          "brand": "LADA"
-        }
-      ]
-    },
-    {
-      "partner_id": "P_OEM_2fb25c81",
-      "canonical_name": "БЦР",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "CHANGAN",
-          "city": "Нижний Новгород",
-          "group_link": "https://max.ru/join/_fIMiVXy2pb4ymuEPal3CQHBU6T9pmqacCEHhmmK7Us",
-          "name": "БЦР",
-          "legal_entity": "ООО Автосервис-Центр-С",
-          "inn": "5610251967",
-          "address": "г.Нижний Новгород, ул.Новикова-Прибоя, д.2",
-          "back_name": "",
-          "email": "a.perov@bcrmotors.ru al.vlasov@bcrpremium.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "CHANGAN"
-        }
-      ]
-    },
-    {
-      "partner_id": "P_OEM_8b5da652",
-      "canonical_name": "Никко",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Оренбург",
-          "group_link": "https://max.ru/join/7iLHQHKAvFH-RB939rIKhsuSAEA4X6PNA9U1-Rhuyn0",
-          "name": "Никко",
-          "legal_entity": "ООО \"Гермес-Авто\"",
-          "inn": "5638061236",
-          "address": "Оренбург, Загородное шоссе, 13/4с1",
-          "back_name": "",
-          "email": "rop@nika-jetour.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "JETOUR"
-        }
-      ]
-    },
-    {
-      "partner_id": "P_OEM_8dfa757a",
-      "canonical_name": "Аллер-Авто",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Пенза",
-          "group_link": "https://max.ru/join/EtMqaphO_YirfTMFZIh65SI0T3IXHg7YKwMWsKJWtZY",
-          "name": "Аллер-Авто",
-          "legal_entity": "ООО «Аллер-Авто»",
-          "inn": "5835074668",
-          "address": "ул. Проспект Победы, 121",
-          "back_name": "Аллер-Авто",
-          "email": "alexandra.shitova@aller-avto.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "JETOUR"
         }
       ]
     },

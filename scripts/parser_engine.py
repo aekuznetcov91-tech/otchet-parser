@@ -1415,8 +1415,8 @@ def run_pipeline():
                 if data_match and int(data_match.group(1)) < 39:
                     continue
 
-                # For intermediate daily DEAL_*.xls: only keep the July anchor (DEAL_20260904) and latest DEAL file
-                if fname.startswith('DEAL_') and not (fname.startswith('DEAL_20260904') or fname == latest_deal_file):
+                # For intermediate daily DEAL_*.xls: keep July anchor (DEAL_20260904), August anchor (DEAL_20260914) and latest DEAL file
+                if fname.startswith('DEAL_') and not (fname.startswith('DEAL_20260904') or fname.startswith('DEAL_20260914') or fname == latest_deal_file):
                     continue
 
                 try:
@@ -1538,8 +1538,11 @@ def run_pipeline():
 
     def file_rank_deals(item):
         fname, fpath, rows = item
+        m = re.search(r'DEAL_(\d{8})', fname)
+        if m:
+            return (0, m.group(1))
         mtime = os.path.getmtime(fpath) if os.path.exists(fpath) else 0
-        return mtime
+        return (1, str(mtime))
 
     # Merge deal candidates in ascending order of file mtime (older first, newer overwrites)
     # This preserves multi-month history (e.g. July) while updating fresh August deals.
@@ -2030,6 +2033,11 @@ def run_pipeline():
 
     with open(OUTPUT_JSON_ROOT, 'w', encoding='utf-8') as f:
         json.dump(output_payload, f, ensure_ascii=False, separators=(',', ':'))
+
+    parent_root_json = os.path.join(os.path.dirname(PROJECT_ROOT), 'data.json')
+    if os.path.exists(parent_root_json):
+        with open(parent_root_json, 'w', encoding='utf-8') as f:
+            json.dump(output_payload, f, ensure_ascii=False, separators=(',', ':'))
 
     print("-" * 60)
     print(f"✅ ПАРСИНГ УСПЕШНО ЗАВЕРШЕН!")
