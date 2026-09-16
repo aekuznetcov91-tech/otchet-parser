@@ -64,10 +64,10 @@ function normalizeBrandName(b) {
     if (ub.includes('LADA') || ub.includes('ЛАДА')) return 'LADA';
     if (ub.includes('HAVAL') || ub.includes('ХАВЕЙЛ')) return 'HAVAL';
     if (ub.includes('CHANGAN') || ub.includes('ЧАНГАН')) return 'CHANGAN';
-    if (ub.includes('GEELY') || ub.includes('BELGEE') || ub.includes('G B K') || ub.includes('ДЖИЛИ')) return 'Geely & Belgee';
-    if (ub.includes('CHERY') || ub.includes('TENET') || ub.includes('ЧЕРИ')) return 'CHERY & TENET';
-    if (ub.includes('SOLARIS') || ub.includes('СОЛЯРИС')) return 'SOLARIS';
-    if (ub.includes('SOUEAST')) return 'SOUEAST';
+    if (ub.includes('GEELY') || ub.includes('BELGEE') || ub.includes('G B K') || ub.includes('ДЖИЛИ') || ub.includes('ВЕELGEE')) return 'Geely & Belgee';
+    if (ub.includes('CHERY') || ub.includes('TENET') || ub.includes('ТENET') || ub.includes('ТЕНЕТ') || ub.includes('ЧЕРИ')) return 'CHERY & TENET';
+    if (ub.includes('SOLARIS') || ub.includes('SОLARIS') || ub.includes('СОЛЯРИС')) return 'SOLARIS';
+    if (ub.includes('SOUEAST') || ub.includes('SOUEAS') || ub.includes('СОУИСТ')) return 'SOUEAST';
     if (ub.includes('GAC')) return 'GAC';
     if (ub.includes('МОСКВИЧ')) return 'МОСКВИЧ';
     if (ub.includes('OMODA') || ub.includes('JAECOO')) return 'OMODA & JAECOO';

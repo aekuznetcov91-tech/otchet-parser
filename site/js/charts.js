@@ -6,9 +6,24 @@
  * Renders brand split table and B2C split table into #tableDashBrands and #tableDashB2C
  * @param {Array} sDb - Filtered sales database
  */
+function normalizeBrandJS(b) {
+    if (!b) return b;
+    let s = String(b).trim();
+    let sUpper = s.toUpperCase();
+    if (sUpper === 'TENET' || sUpper === 'ТENET' || sUpper === 'ТЕНЕТ' || sUpper === 'CHERY' || sUpper === 'ЧЕРИ') return 'CHERY & TENET';
+    if (sUpper === 'SОLARIS' || sUpper === 'SOLARIS' || sUpper === 'СОЛЯРИС') return 'SOLARIS';
+    if (sUpper === 'ВЕELGEE' || sUpper === 'BELGEE') return 'Geely & Belgee';
+    if (sUpper === 'SOUEAS') return 'SOUEAST';
+    return s;
+}
+
 function renderDashTables(sDb) {
     let br = {}, b2c = {};
-    sDb.forEach(r => { br[r.Brand] = (br[r.Brand]||0)+1; b2c[r.B2C||"(пусто)"] = (b2c[r.B2C||"(пусто)"]||0)+1; });
+    sDb.forEach(r => { 
+        let normB = normalizeBrandJS(r.Brand);
+        br[normB] = (br[normB]||0)+1; 
+        b2c[r.B2C||"(пусто)"] = (b2c[r.B2C||"(пусто)"]||0)+1; 
+    });
     const makeHtml = (dict, t1, t2) => {
         let sorted = Object.entries(dict).sort((a,b)=>b[1]-a[1]);
         let tot = sorted.reduce((s,x)=>s+x[1],0);
@@ -31,7 +46,7 @@ function getTopBrands(salesDb) {
     const aux = ["ВНЕСЕНИЕ", "АВАНС", "КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП", "СЕРВИС", "ФИНАНС", "ДОГОВОР", "ОФОРМЛЕН", "КОМИСС", "УСЛУГ", "НЕИЗВЕСТН", "ДРУГИЕ", "NULL", "UNDEFINED"];
     let counts = {};
     salesDb.forEach(r => {
-        let b = r.Brand;
+        let b = normalizeBrandJS(r.Brand);
         if (!b || b === 'null' || b === 'undefined' || b === 'Другие' || aux.some(k => String(b).toUpperCase().includes(k))) return;
         counts[b] = (counts[b] || 0) + 1;
     });

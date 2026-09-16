@@ -55,64 +55,73 @@ def normalize_brand(tovar_str):
     t_clean = re.sub(r'VIN\s*[:\s]*\s*[A-Z0-9]+', ' ', t)
     t_clean = re.sub(r'\b[A-HJ-NPR-Z0-9]{17}\b', ' ', t_clean)
 
+    # Normalize visually identical Cyrillic homoglyphs to Latin (e.g. Cyrillic 'Т' in 'ТENET', 'О' in 'SОLARIS')
+    cyr_to_lat = str.maketrans('АВЕКМНОРСТХ', 'ABEKMHOPCTX')
+    t_latin = t_clean.translate(cyr_to_lat)
+
     # 1. Primary check: Full Brand Names (highest priority, avoids substring collisions)
-    if "G B K" in t_clean or "GEELY" in t_clean or "BELGEE" in t_clean or "KNEWSTAR" in t_clean or "ДЖИЛИ" in t_clean or "БЕЛДЖИ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["G B K", "GEELY", "BELGEE", "BEELGEE", "KNEWSTAR", "ДЖИЛИ", "БЕЛДЖИ"]):
         return "Geely & Belgee"
-    if "HAVAL" in t_clean or "ХАВЕЙЛ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["HAVAL", "ХАВЕЙЛ"]):
         return "HAVAL"
-    if "OMODA" in t_clean or "JAECOO" in t_clean or "ОМОДА" in t_clean or "ДЖЕЙКУ" in t_clean or "ДЖАКУ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["OMODA", "JAECOO", "ОМОДА", "ДЖЕЙКУ", "ДЖАКУ"]):
         return "OMODA & JAECOO"
-    if "TENET" in t_clean or "CHERY" in t_clean or "ЧЕРИ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["TENET", "ТЕНЕТ", "CHERY", "ЧЕРИ"]):
         return "CHERY & TENET"
-    if "CHANGAN" in t_clean or "ЧАНГАН" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["CHANGAN", "ЧАНГАН"]):
         return "CHANGAN"
-    if "JETOUR" in t_clean or "ДЖЕТУР" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["JETOUR", "ДЖЕТУР"]):
         return "JETOUR"
-    if "LADA" in t_clean or "ЛАДА" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["LADA", "ЛАДА"]):
         return "LADA"
-    if "GAC" in t_clean or "ГАК" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["GAC", "ГАК"]):
         return "GAC"
-    if "TOYOTA" in t_clean or "ТОЙОТА" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["TOYOTA", "ТОЙОТА"]):
         return "TOYOTA"
-    if "TANK" in t_clean or "ТАНК" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["TANK", "ТАНК"]):
         return "TANK"
-    if "EXEED" in t_clean or "ЭКСИД" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["EXEED", "ЭКСИД"]):
         return "EXEED"
-    if "SOUEAST" in t_clean or "СОУИСТ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["SOUEAST", "SOUEAS", "СОУИСТ"]):
         return "SOUEAST"
-    if "SOLARIS" in t_clean or "СОЛЯРИС" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["SOLARIS", "СОЛЯРИС"]):
         return "SOLARIS"
-    if "HONGQI" in t_clean or "ХОНЧИ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["HONGQI", "ХОНЧИ"]):
         return "HONGQI"
-    if "XCITE" in t_clean or "X-CITE" in t_clean or "ИКСИТ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["XCITE", "X-CITE", "ИКСИТ"]):
         return "XCITE"
-    if "МОСКВИЧ" in t_clean or "MOSKVICH" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["МОСКВИЧ", "MOSKVICH"]):
         return "МОСКВИЧ"
-    if "KIA" in t_clean or "КИА" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["KIA", "КИА"]):
         return "KIA"
-    if "HYUNDAI" in t_clean or "ХЕНДЭ" in t_clean or "ХЕНДАЙ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["HYUNDAI", "ХЕНДЭ", "ХЕНДАЙ"]):
         return "HYUNDAI"
-    if "VOYAH" in t_clean or "ВОЯ" in t_clean:
+    if any(k in t_clean or k in t_latin for k in ["VOYAH", "ВОЯ"]):
         return "VOYAH"
 
     # 2. Secondary check: Distinct vehicle models using regex word boundaries
-    if re.search(r'\b(MONJARO|COOLRAY|ATLAS|PREFACE|EMGRAND|OKAVANGO|TUGELLA|TUGGELLA|CITYRAY|EX5|X50|X70)\b', t_clean):
+    if re.search(r'\b(MONJARO|COOLRAY|ATLAS|PREFACE|EMGRAND|OKAVANGO|TUGELLA|TUGGELLA|CITYRAY|EX5|X50|X70)\b', t_latin):
         return "Geely & Belgee"
-    if re.search(r'\b(JOLION|DARGO|H3|H9|M6|F7|F7X|H7)\b', t_clean):
+    if re.search(r'\b(JOLION|DARGO|H3|H9|M6|F7|F7X|H7)\b', t_latin):
         return "HAVAL"
-    if re.search(r'\b(DASHING|X70\s*PLUS|T2|X90\s*PLUS)\b', t_clean):
+    if re.search(r'\b(DASHING|X70\s*PLUS|T2|X90\s*PLUS)\b', t_latin):
         return "JETOUR"
-    if re.search(r'\b(UNI-V|UNI-K|UNI-T|UNI-S|CS35|CS55|CS75|CS95|HUNTER|LAMORE|EADO|ALSVIN)\b', t_clean):
+    if re.search(r'\b(UNI-V|UNI-K|UNI-T|UNI-S|CS35|CS55|CS75|CS95|HUNTER|LAMORE|EADO|ALSVIN)\b', t_latin):
         return "CHANGAN"
-    if re.search(r'\b(GS3|GS8|M8)\b', t_clean):
+    if re.search(r'\b(GS3|GS8|M8)\b', t_latin):
         return "GAC"
-    if re.search(r'\b(TIGGO|ARRIZO)\b', t_clean):
+    if re.search(r'\b(TIGGO|ARRIZO|T4L|T4|T7|T8)\b', t_latin):
         return "CHERY & TENET"
-    if re.search(r'\b(C5|S5|J7|J8)\b', t_clean):
+    if re.search(r'\b(C5|S5|J7|J8)\b', t_latin):
         return "OMODA & JAECOO"
 
     words = re.split(r'[\s,/-]+', t_clean.strip())
     first_word = words[0] if words and words[0] else ""
+    first_word_lat = first_word.translate(cyr_to_lat)
+    if first_word_lat in ("TENET", "CHERY"):
+        return "CHERY & TENET"
+    if first_word_lat in ("SOLARIS",):
+        return "SOLARIS"
     if len(first_word) >= 2 and re.match(r'^[A-ZА-Я0-9]+$', first_word) and not any(kw in first_word for kw in aux_keywords):
         return first_word
     return None
