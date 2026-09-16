@@ -1418,7 +1418,7 @@ def run_pipeline():
 
                 # Performance optimization: skip superseded historical daily dumps
                 data_match = re.search(r'data \((\d+)\)\.xlsx', fname, re.IGNORECASE)
-                if data_match and int(data_match.group(1)) < 39:
+                if data_match and int(data_match.group(1)) < 38:
                     continue
 
                 # For intermediate daily DEAL_*.xls: keep July anchor (DEAL_20260904), August anchor (DEAL_20260914) and latest DEAL file
@@ -1477,7 +1477,7 @@ def run_pipeline():
     crm_lead_files.sort(key=lambda x: x[0], reverse=True)     # newest lead_num first
 
     # 1. Build Merged Partner Transfers Dataset (leads_data)
-    # If the newest file only covers the current month (e.g. September), backfill August & earlier from the previous file
+    # If the newest file only covers the current month (e.g. September), backfill August & earlier from historical files
     if partner_lead_files:
         latest_partner_num, latest_partner_name, latest_partner_rows = partner_lead_files[0]
         # Check months in the newest partner file
@@ -1491,17 +1491,20 @@ def run_pipeline():
         if len(p_months) == 1 and '2026-09' in p_months and len(partner_lead_files) > 1:
             print(f"[*] Файл партнерских лидов {latest_partner_name} содержит только 2026-09. Дополняем историей (август и ранее)...")
             historical_rows = []
+            added_sources = []
             for _, prev_name, prev_rows in partner_lead_files[1:]:
+                added_from_file = 0
                 for r in prev_rows:
                     dt = parse_custom_date(get_exact_val(r, 'ДАТА', 'ДАТАСОБЫТИЯ'))
                     m_str = dt.strftime('%Y-%m') if dt else '2026-08'
                     if m_str != '2026-09':
                         historical_rows.append(r)
-                if historical_rows:
-                    print(f"[*] Добавлено {len(historical_rows)} исторических записей из {prev_name}")
-                    break
+                        added_from_file += 1
+                if added_from_file > 0:
+                    added_sources.append(prev_name)
+                    print(f"[*] Добавлено {added_from_file} исторических записей из {prev_name}")
             leads_data = historical_rows + latest_partner_rows
-            leads_file_name = f"{latest_partner_name} + {prev_name} (merged multi-month)"
+            leads_file_name = f"{latest_partner_name} + {' + '.join(added_sources)} (merged multi-month)"
         else:
             leads_data = latest_partner_rows
             leads_file_name = latest_partner_name

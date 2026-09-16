@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Journey — Интерактивная карта воронки и редактор заметок</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        #mermaidContainer { display: flex; justify-content: center; width: 100%; padding-bottom: 40px; }
+        #mermaidContainer svg { min-width: 680px; max-width: 850px; width: 100%; height: auto; box-shadow: 0 4px 25px -4px rgba(0,0,0,0.08); background: #ffffff; border-radius: 20px; padding: 28px; border: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 flex flex-col h-screen overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white px-6 py-3.5 flex items-center justify-between shadow-md z-10 shrink-0">
+        <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-[#107C41] flex items-center justify-center text-white font-black shadow">
+                <i data-lucide="git-fork" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-black tracking-wide flex items-center gap-2">
+                    Customer Journey СберАвто
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Интерактивная схема</span>
+                </h1>
+                <p class="text-xs text-slate-400">Движение клиента от витрины PostHog до ДКП и расчет выручки</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+            <button id="toggleSidebarHeaderBtn" onclick="toggleSidebar()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="panel-left-close" id="toggleIcon" class="w-4 h-4 text-emerald-400"></i>
+                <span id="toggleText">Свернуть панель</span>
+            </button>
+            <button onclick="openMermaidLive()" class="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/40 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                <i data-lucide="external-link" class="w-4 h-4"></i> Открыть в Mermaid.live
+            </button>
+            <button onclick="copyCommentsForAI()" class="px-4 py-1.5 bg-gradient-to-r from-emerald-600 to-[#107C41] hover:from-emerald-500 hover:to-emerald-600 text-white rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md hover:shadow-lg">
+                <i data-lucide="copy" class="w-4 h-4"></i> Скопировать комментарии для ИИ
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace (Split View) -->
+    <main class="flex-1 flex overflow-hidden relative">
+
+        <!-- Left Panel: Comments and Notes -->
+        <aside id="sidebarPanel" class="w-[480px] bg-white border-r border-slate-200 flex flex-col shrink-0 shadow-lg z-10 transition-all duration-300 ease-in-out relative">
+            
+            <!-- Tabs & Collapse Header -->
+            <div class="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 pt-3">
+                <div class="flex gap-2">
+                    <button id="tabCommentsBtn" onclick="switchTab('comments')" class="px-3.5 py-2 border-b-2 border-emerald-600 font-black text-xs text-emerald-800 flex items-center gap-1.5">
+                        <i data-lucide="message-square-plus" class="w-4 h-4"></i> Комментарии
+                    </button>
+                    <button id="tabCodeBtn" onclick="switchTab('code')" class="px-3.5 py-2 border-b-2 border-transparent font-semibold text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1.5">
+                        <i data-lucide="code" class="w-4 h-4"></i> Код Mermaid
+                    </button>
+                </div>
+                <button onclick="toggleSidebar()" class="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200 rounded-lg transition" title="Свернуть панель">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar" id="tabCommentsContent">
+                <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-2xl text-xs text-emerald-900">
+                    💡 <b>Как использовать:</b> впишите ваши комментарии, замечания или недостающие шаги в поля ниже. Затем нажмите кнопку <b>«Скопировать комментарии для ИИ»</b> вверху и вставьте результат в чат.
+                </div>
+
+                <!-- Stage 1 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-black text-slate-800 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span> 1. Онлайн-витрина (PostHog 6 шагов)
+                        </h3>
+                        <span class="text-[10px] bg-sky-100 text-sky-800 font-bold px-2 py-0.5 rounded-md">СБОЛ / Web</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">page_view → car_card_show → car_card_click → <b>Экран преимуществ</b> (offer_show) → Повторный клик (offer_click) → Экран успеха (offer_success). В CRM создается «Новый лид».</p>
+                    <textarea id="comment_stage1" class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition bg-white resize-y" rows="2" placeholder="Дополнительные комментарии по Этапу 1..."></textarea>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-black text-slate-800 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> 2. CRM Backoffice — 1-я линия и квалификация
+                        </h3>
+                        <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-md">Контакт-центр (L1)</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">«Новый лид» → Звонок сотрудника 1-й линии (КЦ) → Квалификация потребности (Целевой == 1) → Передача менеджеру продаж (2-я линия). Нецелевые — в архив.</p>
+                    <textarea id="comment_stage2" class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition bg-white resize-y" rows="2" placeholder="Дополнительные комментарии по Этапу 2..."></textarea>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-black text-slate-800 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 3. Менеджер 2-й линии и сценарии продаж
+                        </h3>
+                        <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md">Менеджер продаж (L2)</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">1) Передача лида в ДЦ; 2) Кредит ФДЦ (калькулятор → оффер → заявка → одобрение/отказ. Из отказа: тупик или передача в ДЦ. Из одобрения: предоплата, передача в ДЦ или отказ); 3) Предоплата без кредита.</p>
+                    <textarea id="comment_stage3" class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition bg-white resize-y" rows="2" placeholder="Дополнительные комментарии по Этапу 3..."></textarea>
+                </div>
+
+                <!-- Stage 4 -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-black text-slate-800 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-600"></span> 4. Сделка, фиксация в Bitrix24 и выручка
+                        </h3>
+                        <span class="text-[10px] bg-green-100 text-green-800 font-bold px-2 py-0.5 rounded-md">Финал / Учет</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Получение подтверждения по сделке от дилера (по лидам, кредитам ФДЦ, предоплатам) → Закрытие в Bitrix24 по соответствующим каналам → Очистка комиссии от НДС (/ 1.22), искл. Опт МП2.</p>
+                    <textarea id="comment_stage4" class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition bg-white resize-y" rows="2" placeholder="Дополнительные комментарии по Этапу 4..."></textarea>
+                </div>
+
+                <!-- General Notes -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
+                    <h3 class="text-xs font-black text-slate-800 flex items-center gap-2">
+                        <i data-lucide="help-circle" class="w-4 h-4 text-indigo-600"></i> Общие заметки и вопросы к процессу
+                    </h3>
+                    <textarea id="comment_general" class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition bg-white resize-y" rows="3" placeholder="Любые общие пожелания или изменения..."></textarea>
+                </div>
+            </div>
+
+            <!-- Code Editor Tab -->
+            <div class="flex-1 flex flex-col p-4 hidden" id="tabCodeContent">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-xs font-bold text-slate-600">Mermaid Source Code</span>
+                    <button onclick="updateDiagramFromCode()" class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition flex items-center gap-1">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Обновить схему
+                    </button>
+                </div>
+                <textarea id="mermaidSource" class="flex-1 w-full text-xs font-mono p-3 bg-slate-900 text-slate-100 rounded-xl border border-slate-700 focus:outline-none custom-scrollbar resize-none"></textarea>
+            </div>
+        </aside>
+
+        <!-- Right Panel: Interactive Canvas -->
+        <section class="flex-1 bg-slate-50 relative flex flex-col overflow-hidden">
+            
+            <!-- Floating Expand Button on canvas when collapsed -->
+            <button id="floatingOpenBtn" onclick="toggleSidebar()" class="hidden absolute top-4 left-4 z-20 px-3.5 py-2 bg-white/95 backdrop-blur border border-slate-200 rounded-2xl shadow-md text-xs font-bold text-slate-700 hover:text-emerald-700 hover:border-emerald-300 flex items-center gap-2 transition" title="Развернуть комментарии">
+                <i data-lucide="message-square" class="w-4 h-4 text-emerald-600"></i>
+                <span>Открыть комментарии</span>
+            </button>
+
+            <!-- Canvas Controls -->
+            <div class="absolute top-4 right-4 z-10 flex items-center gap-2 bg-white/90 backdrop-blur p-1.5 rounded-2xl border border-slate-200 shadow-md">
+                <button onclick="zoomIn()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm transition" title="Приблизить">+</button>
+                <button onclick="zoomOut()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm transition" title="Отдалить">-</button>
+                <button onclick="resetZoom()" class="px-2.5 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-semibold transition" title="Сбросить">100%</button>
+                <div class="w-px h-5 bg-slate-200"></div>
+                <button onclick="downloadSvg()" class="px-3 h-8 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center gap-1.5 text-xs font-bold transition" title="Скачать SVG">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> SVG
+                </button>
+            </div>
+
+            <!-- Diagram Viewer with Pan & Zoom -->
+            <div id="canvasWrapper" class="flex-1 overflow-auto p-8 flex items-start justify-center cursor-grab active:cursor-grabbing custom-scrollbar">
+                <div id="mermaidContainer" class="transition-transform duration-100 origin-top"></div>
+            </div>
+
+            <!-- Status bar -->
+            <div class="px-6 py-2.5 bg-white border-t border-slate-200 flex justify-between items-center text-xs text-slate-500 shrink-0">
+                <div class="flex items-center gap-4">
+                    <span>Статус: <b class="text-emerald-700">Схема синхронизирована</b></span>
+                    <span>•</span>
+                    <span>Всего этапов: <b>4</b></span>
+                    <span>•</span>
+                    <span>Ветвлений: <b>3 канала продаж</b></span>
+                </div>
+                <div class="text-slate-400">Перетаскивайте схему для навигации</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-24 opacity-0 transition-all duration-300 z-50 text-xs font-medium border border-slate-700">
+        <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+        <span id="toastMsg">Успешно</span>
+    </div>
+
+    <script>
+        const initialDiagram = `flowchart TD
+    subgraph S1["ЭТАП 1: ОНЛАЙН-ВИТРИНА (PostHog Август 2026)"]
+        A["1. Просмотр листинга (page_view)<br>259 301 просмотров каталога"] --> B["2. Показ карточек брендов (car_card_show)<br>311 249 показов (14 брендов)"]
+        B -->|CTR 10.1%| C["3. Клик Оставить заявку (car_card_click)<br>31 507 кликов"]
+        C --> D["4. Экран преимуществ (offer_show)<br>30 671 показов модального окна"]
+        D -->|CR 60.7%| E["5. Повторный клик Оставить заявку (offer_click)<br>18 606 подтверждений"]
+        E -->|CR 97.5%| F["6. Экран успеха (offer_success)<br>18 135 успешных заявок онлайн"]
+    end
+
+    subgraph S2["ЭТАП 2: CRM BACKOFFICE — ПЕРВАЯ ЛИНИЯ И КВАЛИФИКАЦИЯ"]
+        F --> G["Создание нового Лида в CRM<br>10 385 лидов за август (статус Новый лид)"]
+        G --> H["Звонок 1-й линии (Контакт-центр)<br>Проверка потребности в авто"]
+        H --> I{"Квалификация 1-й линией"}
+        I -->|"Нецелевой (57.9%)"| J["Архив / Нецелевой<br>6 013 лидов (спам/отказ)"]
+        I -->|"Целевой = 1 (42.1%)"| K["Квалифицированный лид<br>4 372 лида передано на 2-ю линию"]
+    end
+
+    subgraph S3["ЭТАП 3: МЕНЕДЖЕР 2-Й ЛИНИИ И РАЗВИЛКА КАНАЛОВ (ТОЛЬКО РОЗНИЦА)"]
+        K --> L{"Интервью менеджера 2-й линии"}
+        
+        %% Ветка 1
+        L -->|Сценарий 1: Напрямую в салон| M["ВЕТКА 1: Передача лида в ДЦ<br>906 передач партнерам (без кредита/предоплаты)"]
+        M --> N["Клиенты в дилерских центрах<br>(Major, Авторитэйл, БЦР и др.)"]
+        
+        %% Ветка 2
+        L -->|Сценарий 2: Кредит Сбера| O["ВЕТКА 2: Кредитный трек ФДЦ"]
+        O --> P["Расчет в калькуляторе (calc_total)<br>4 986 расчетов менеджерами"]
+        P -.->|Опционально| Q["Отправка оффера клиенту<br>3 689 офферов"]
+        P --> R["Подача заявки на кредит в ФДЦ<br>1 123 заявки в Сбербанк"]
+        Q --> R
+        R --> S{"Скоринг ФДЦ"}
+        
+        %% Развилка из Отказа ФДЦ
+        S -->|"Отказ банка (~49%)"| S_NO["Отказ ФДЦ: тупик<br>клиент отказался"]
+        S -->|"Отказ банка: вариант 2"| M_REDIRECT["Передача лида в ДЦ<br>(Сделка по передаче лида)"]
+        M_REDIRECT --> N
+        
+        %% Развилка из Одобрения ФДЦ
+        S -->|"Одобрено: 568 заявок (50.6%)"| T["Одобренная кредитная заявка"]
+        T -->|Вариант 1| U["Внесение предоплаты (бронь авто)"]
+        T -->|Вариант 2| T_DC["Передача лида в ДЦ<br>(Сделка по передаче лида)"]
+        T_DC --> N
+        T -->|Вариант 3| T_DROP["Отказ / Тупик"]
+        
+        %% Ветка 3
+        L -->|Сценарий 3: Без кредита| V["ВЕТКА 3: Предоплата без кредита<br>Прямая бронь / аванс 5 000 ₽"]
+    end
+
+    subgraph S4["ЭТАП 4: СДЕЛКА И ВЫРУЧКА В АВГУСТЕ (РОЗНИЦА, БЕЗ МП1/МП2/МП3)"]
+        N --> W["Подтверждение по сделке от дилера:<br>104 сделки по переданным лидам<br>Выручка: 3 633 851.58 ₽"]
+        U --> X["Подтверждение по сделке от дилера:<br>143 сделки по кредитам ФДЦ<br>Выручка: 5 890 627.59 ₽"]
+        V --> Y["Подтверждение по сделке от дилера:<br>96 прямых сделок по предоплате<br>Выручка: 4 014 488.14 ₽"]
+        
+        W --> Z["Фиксация и закрытие в Bitrix24<br>ИТОГО РОЗНИЦА (без МП1/МП2/МП3):<br>343 сделки | Выручка: 13 538 967.31 ₽"]
+        X --> Z
+        Y --> Z
+        
+        Z --> AA["Статус сделки: Успешно"]
+        AA --> AB["Очищенная выручка СберАвто (комиссия / 1.22)<br>Исключены оптовые каналы МП2 (1331 шт), МП3 (41 шт), МП1 (11 шт)"]
+    end
+
+    classDef vitrina fill:#e0f2fe,stroke:#0284c7,stroke-width:2px;
+    classDef crm fill:#fef3c7,stroke:#d97706,stroke-width:2px;
+    classDef branch fill:#ecfdf5,stroke:#059669,stroke-width:2px;
+    classDef deal fill:#f0fdf4,stroke:#16a34a,stroke-width:3px;
+    classDef drop fill:#fee2e2,stroke:#dc2626,stroke-width:1px;
+
+    class A,B,C,D,E,F vitrina;
+    class G,H,I,K crm;
+    class M,N,O,P,Q,R,S,T,U,V,M_REDIRECT,T_DC branch;
+    class W,X,Y,Z,AA,AB deal;
+    class J,S_NO,T_DROP drop;`;
+
+        let currentScale = 1.0;
+        const container = document.getElementById('mermaidContainer');
+
+        mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+
+        async function renderDiagram(code) {
+            try {
+                document.querySelectorAll('[id^="dmermaidGraph_"]').forEach(el => el.remove());
+                const graphId = 'mermaidGraph_' + Math.floor(Math.random() * 1000000);
+                const { svg } = await mermaid.render(graphId, code);
+                container.innerHTML = svg;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            } catch (err) {
+                console.error("Mermaid render error:", err);
+                document.querySelectorAll('[id^="dmermaidGraph_"]').forEach(el => el.remove());
+                container.innerHTML = `<div class="p-6 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-xs">
+                    <b>Ошибка рендера схемы:</b><br>${err.message || err}
+                </div>`;
+            }
+        }
+
+        function zoomIn() {
+            currentScale += 0.15;
+            applyZoom();
+        }
+
+        function zoomOut() {
+            if (currentScale > 0.3) {
+                currentScale -= 0.15;
+                applyZoom();
+            }
+        }
+
+        function resetZoom() {
+            currentScale = 1.0;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            container.style.transform = `scale(${currentScale})`;
+        }
+
+        function switchTab(tab) {
+            const commentsTab = document.getElementById('tabCommentsContent');
+            const codeTab = document.getElementById('tabCodeContent');
+            const commentsBtn = document.getElementById('tabCommentsBtn');
+            const codeBtn = document.getElementById('tabCodeBtn');
+
+            if (tab === 'comments') {
+                commentsTab.classList.remove('hidden');
+                codeTab.classList.add('hidden');
+                commentsBtn.className = 'px-4 py-2 border-b-2 border-emerald-600 font-black text-xs text-emerald-800 flex items-center gap-1.5';
+                codeBtn.className = 'px-4 py-2 border-b-2 border-transparent font-semibold text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1.5';
+            } else {
+                commentsTab.classList.add('hidden');
+                codeTab.classList.remove('hidden');
+                codeBtn.className = 'px-4 py-2 border-b-2 border-emerald-600 font-black text-xs text-emerald-800 flex items-center gap-1.5';
+                commentsBtn.className = 'px-4 py-2 border-b-2 border-transparent font-semibold text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1.5';
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        let sidebarCollapsed = false;
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarPanel');
+            const toggleText = document.getElementById('toggleText');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const floatingBtn = document.getElementById('floatingOpenBtn');
+            
+            sidebarCollapsed = !sidebarCollapsed;
+            if (sidebarCollapsed) {
+                sidebar.classList.add('!-ml-[480px]');
+                if (floatingBtn) floatingBtn.classList.remove('hidden');
+                if (toggleText) toggleText.innerText = 'Развернуть панель';
+                if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'panel-left-open');
+            } else {
+                sidebar.classList.remove('!-ml-[480px]');
+                if (floatingBtn) floatingBtn.classList.add('hidden');
+                if (toggleText) toggleText.innerText = 'Свернуть панель';
+                if (toggleIcon) toggleIcon.setAttribute('data-lucide', 'panel-left-close');
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function updateDiagramFromCode() {
+            const code = document.getElementById('mermaidSource').value;
+            renderDiagram(code);
+            showToast('Схема успешно обновлена из кода!');
+        }
+
+        function copyCommentsForAI() {
+            const s1 = document.getElementById('comment_stage1').value.trim();
+            const s2 = document.getElementById('comment_stage2').value.trim();
+            const s3 = document.getElementById('comment_stage3').value.trim();
+            const s4 = document.getElementById('comment_stage4').value.trim();
+            const gen = document.getElementById('comment_general').value.trim();
+
+            let out = '### Комментарии и правки к схеме движения клиента (Customer Journey):\n\n';
+            if (s1) out += `* **Этап 1 (Витрина PostHog):** ${s1}\n`;
+            if (s2) out += `* **Этап 2 (CRM & Квалификация):** ${s2}\n`;
+            if (s3) out += `* **Этап 3 (Развилка каналов продаж):** ${s3}\n`;
+            if (s4) out += `* **Этап 4 (Сделка и Выручка):** ${s4}\n`;
+            if (gen) out += `* **Общие замечания/вопросы:** ${gen}\n`;
+
+            if (!s1 && !s2 && !s3 && !s4 && !gen) {
+                out += '*(Комментарии пока не заполнены — схема согласована без изменений)*';
+            }
+
+            navigator.clipboard.writeText(out).then(() => {
+                showToast('Комментарии скопированы в буфер обмена!');
+            });
+        }
+
+        function openMermaidLive() {
+            window.open('https://mermaid.live/edit#pako:eNrlWntv27YW_yoHLgo4gOKIpKiHtzvAebVZlyZ10neGQJaoJqsTB46z7qLu_eyTSco6FCVbTm__GBYgjiOTh-f8zvvQXzvJJBWdPnSy8eRLchVPZ3C-f3EL-c_9w-jTNL67gjPy8aJz8eB6NJWvdPFKXPmaAemDfCfkq1xBRmhFpJ5vyz9qa1iSoW75RG92oXs6uZ89n3yCkgyTqxlbvHrqlchXCtSl_tZF53fF9eJnkPNLemp3JlcpGqLcxxL0hKo1cgOTvLMQH1E-YWnJBssZvYs_ics_r8WXrZ9H018oj4C5RNHZ4ODyCaNqc6wOQMe7iDmBmcglh-3tX2A3F5piofUyRIoFNnV8hmIqkO-5Wqk2EMQnRzh4BufdJJ5e5r_p5f3VRCHCCAHqRQiROq5MKsTb4FBT8bsLJOZ750Mgbo88ncNeDgrToMRV9WrpiLB0jU0uRJpKADGskMvQ0lhZJwIiGV8nnzUSwF0Df4MTLJMh0p5U7n4uh6fkUE6oz3IRu6ltdxwdkSDXicpPDblz9CdZJqZIgS74AdlEf1Uj1_pC9uslSJvYlgVYJ6RLIy8h2VdaHoLv9oJcyQc5OLzG8qll2m5J01PwR40a-VG2oQAuDYOEuRy-jbCH9YL0pc73EbTYORTzkYHXQYFXFPR4jtdhjpffyphwpNXMKSZ4EQC1uTwkibi_L-QhjK_eHlb14PHV6AkcjQSSd4R4jvTzQnZxm17cVnMZXZXLaB_2hsewO9h7cXJ4eLR3kB9IXR2QlG0RjtIW2k0zQKkP57MQfxyiWIS3433UQzRidISP6RkqPpRR4lkhG0E4BZYTYkvRuKdVt6nxS4LdQ9MD7fQ5alL3LrCQW3m0kiewpsHyqboU3633Qu15ei2UmBsBwHB0gyszeTyTGD7XGJLAAiM1TJFsN9HF-IaKdxJX6RjRRPkflRQ9v-rURZkg3au-qKmJEDEGOGsoOniZabF4ZuEDWG9uTWjFKD6XKB591SjGiDvXqq88KwW6CAK1JmuJNC8i37eSmSMZ-TQrKYIIYzxC77G6I-jyoBc9za1kDr8WZoGrJpxeKezA445ZaNUHl7B1ftO1oqlCNNmpatdMz6aZY0xoOxz-AwS6Hs0rKonFi4-bKtdQqG22OCyla3x2gZYHLKBNaBkWzy1btwOhwCHQBe2FYqW1eWJ1lmGrsgzTHVNS5hOdKtR7Ff59nG00VyRamWSK7KL-6BzlltEMt1-ahk4vUM01RS-GlqoGT5uhFkmUn9ME0RCYA4E4wClRSeia5vlCxo_fivgRWhETq5SW5WShsMQqibDefYtEAe3aQG4ElvLd06dQQqspGz4IpFz8m_K9ZYq2Yz3uyopibtlioxW4zNeVEi7wBY7ZOmTYHWQ6h-PClykyN2qYRnF6C4_yjKy-ol4o7Zz6C4-OzAp4zSFQDYFGF5vaOlb4KMvV2Y5bDXHNeSHO1DsN7RUO0lm1KNXZdmQa-bE08pdmHB1ZyQxn_5GRhXHiHFXl1fqOkQi6Hm8sLRDDfKGP7nH8x2TqWAOYmm4K90ApqsNHejcpfZ1q_YdICM_tmdhs4lr0u12L9lHoa7YAQGU1se1rDifr_ajlUQ1ZsKZsU-2Q7ha0MxlQnkgzOy1yEdYyqY56tIw1AyijaY_LIKOfZw12wRdjkHFyOZvM4vGWSttRqNzcW8NK00Bhg7COdoUGKKew3dOWQpDT4hLFqPcbBxdzeFUoHZdemcUFtetxUVZInleTkxqGErbnMjmkAT-M2hCuGzCdSiMZFqJk9ZMbM7KvHHIU7p1asqzxL61r06BlWwmEsg1OXuOuxCoBYwORVwqR8sFQPjj7anTXcX0kLCbEtb65qoLA7smC6pBJm4FhRCFKYaSx-kc7KuwsOTjDbVIjIWgET8-C_ufpZuns8uXJx1bkTI76UO3qdULVHWLR_67zDFjdD1luTbQ5YSP4v2DSh2qXY5iKazBNF9AdXw4P9o-GB3vnpkP-mLKri-zZs1rBugnCBlUani_V8FSpiJZyq9LoBzuKUbQ1XTQU84fNXKcVadEH7oftZp5d7vZ85VjnHzc-CZc-Wftqt2bb6tBrjujPl9UYaWf8ZA6vjRLKKONJw5ybw_fU5LgfMBJkigf6NdXv1vfJSnNFXu7v_bscfCFx1bU3Ro5J5IYnp-uzi5rG0cZc8uieg313z1HMfx7biM7hzfpug_Xt--_WvlHYxGM5rBtU4ymFGViaHXDHvh7ABkGAg-u68pJmtObex1s1kfP6qGLU8zfeNCULkYXQUZmRqLQyGtg7KOqjtcoY2kEQR1yP11pNznCHrfkN8GgxIzv4P2r8x0z_fCmd821jG_DIm0huBxdvdTjiRvXWYtyRl1nq7slrQz58XLSrmU4njZFPfbx0AnQNpV2BoQC6LBXzLi5vG0JOejysmvTi57XU0Lt_sIY89lgNtYo6SCt2D7mJJjiEkQs-DXo8qtPEG6mJ9_9cTUQ-rBwi4zv5RhaMO3nbnzbOOXxTNXmwuJr3wrAnb-gtNZXv3kqFfShSgHXtiCfklctHbJKBdWXrIk6prUoKu9ez6fVf1FvKFlq3J2zjG5PGQXa7uC9NgLV1xjlsohPCgOebIj_oMVKnlHdKFeWD99UH5bsP8qPBwPhaw5ovAKyTR2f6Ft9MqVxsDwaKm12z9gyQtURtuq9WQK4cYNUN5LVJ4K8ZJNYXGYlh2TtAepRumZZp3B2M9FVn9VuBKb6RwDNU2vDlC24Ple3h6sgw4cUXARnTOtVhfssxljDoeisXkJxGZUFdkZiM4_v7fZHBnwtnvY0hux6P-0-Em9FMOPez6eSz6D9xaeglgf53-8t1Orvq07u_fqrQSKY3en8mMrbc0H-SRkHg-mv3j6bxbXJVsJBkacZLFnjk-9FaEqmIxwUPbk7AWxIgfsy82CTAaghMJ3dLIQQVtBQioT6tCEEkAUQCBs6us-fsOwfOYYEpPgKeOc-dI-fFAivj-bHz0jlxTp1XztA5c86d184bpxwMObKFVPgY294675z3zgdnMHAGu1J64-NfncU80lGNo5Ttp44DnRsxvYmv004fvnZmV-JGfgs6FVn8MJ51vuUL4ofZ5Oy_t0n-fDZ9EPmTh7s0non96zjvKW70429_A5tlSHQ', '_blank');
+        }
+
+        function downloadSvg() {
+            const svgEl = container.querySelector('svg');
+            if (!svgEl) return;
+            const svgData = new XMLSerializer().serializeToString(svgEl);
+            const blob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Customer_Journey_SberAuto.svg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast('SVG файл успешно скачан!');
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            t.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                t.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize
+        document.getElementById('mermaidSource').value = initialDiagram;
+        renderDiagram(initialDiagram);
+        lucide.createIcons();
+    </script>
+</body>
+</html>
