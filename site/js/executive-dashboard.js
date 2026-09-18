@@ -8,7 +8,7 @@
  * 4. Матрица эффективности дилерской сети (Partner Health Score) — 4 квадранта, фильтры по КАМ, детальный модал и экспорт в Excel
  */
 
-let activeAlertTab = 'brands'; // 'brands' | 'dealers' | 'prepays'
+let activeAlertTab = 'growth_brands'; // 'growth_brands' | 'brands' | 'growth_dealers' | 'dealers' | 'prepays'
 let activeAlertChannel = 'all'; // 'all' | 'opt' | 'retail'
 let activeHealthQuadrant = 'all'; // 'all' | 'stars' | 'growth' | 'niche' | 'risk'
 
@@ -387,13 +387,20 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         return true;
     });
 
-    const prevPartnersDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === prevMonthPrefix);
+    const prevPartnersDeals = (allPartners || []).filter(r => {
+        if (r.Type !== 'Сделка' || r.Month !== prevMonthPrefix) return false;
+        if (isLatestActiveMonth && r.Date) {
+            const dt = excelToJSDate(r.Date);
+            return dt && dt.getDate() <= latestDay;
+        }
+        return true;
+    });
     const curPartnersDeals = (allPartners || []).filter(r => r.Type === 'Сделка' && r.Month === curMonthPrefix);
 
     const channelsData = {};
 
     ALERT_CHANNELS.forEach(ch => {
-        // 1. BRAND DROPS
+        // 1. BRAND DYNAMICS (GROWTH & DROPS)
         const cCur = ch.key === 'all' ? curMonthDeals : curMonthDeals.filter(d => getAlertDealChannelKey(d.B2C) === ch.key);
         const cPrev = ch.key === 'all' ? prevMonthDeals : prevMonthDeals.filter(d => getAlertDealChannelKey(d.B2C) === ch.key);
 
@@ -409,13 +416,16 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
             bPrev[b] = (bPrev[b] || 0) + 1;
         });
 
+        const allBrandKeys = new Set([...Object.keys(bCur), ...Object.keys(bPrev)]);
         const brandAlerts = [];
-        Object.keys(bPrev).forEach(b => {
-            const prevCnt = bPrev[b];
+        const brandGrowth = [];
+
+        allBrandKeys.forEach(b => {
+            const prevCnt = bPrev[b] || 0;
             const curCnt = bCur[b] || 0;
             const diff = curCnt - prevCnt;
-            const pct = prevCnt > 0 ? Math.round((diff / prevCnt) * 100) : 0;
-            
+            const pct = prevCnt > 0 ? Math.round((diff / prevCnt) * 100) : (curCnt > 0 ? 100 : 0);
+
             if (diff < 0) {
                 brandAlerts.push({
                     brand: b,
@@ -425,12 +435,22 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
                     pct,
                     severity: Math.abs(diff) >= 15 || pct <= -50 || curCnt === 0 ? 'critical' : 'warning'
                 });
+            } else if (diff > 0) {
+                brandGrowth.push({
+                    brand: b,
+                    prevCnt,
+                    curCnt,
+                    diff,
+                    pct,
+                    isNew: prevCnt === 0,
+                    significance: diff >= 10 || pct >= 50 ? 'leader' : 'normal'
+                });
             }
         });
-        // Sort by absolute volume drop in units (largest drop first, e.g. -137 шт., -14 шт.)
-        brandAlerts.sort((a, b) => a.diff - b.diff);
+        brandAlerts.sort((a, b) => a.diff - b.diff); // largest drops first (-172, -19...)
+        brandGrowth.sort((a, b) => b.diff - a.diff); // largest growth first (+44, +21...)
 
-        // 2. DEALER CHURN RISK
+        // 2. DEALER DYNAMICS (CHURN RISK & GROWTH)
         const pPrev = ch.key === 'all' ? prevPartnersDeals : prevPartnersDeals.filter(r => getAlertDealChannelKey(r.B2C) === ch.key);
         const pCur = ch.key === 'all' ? curPartnersDeals : curPartnersDeals.filter(r => getAlertDealChannelKey(r.B2C) === ch.key);
 
@@ -446,26 +466,57 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
 
         pCur.forEach(r => {
             const p = r.Partner || 'Неизвестный партнер';
-            dCurMap[p] = (dCurMap[p] || 0) + (r.Qty || 1);
+            if (!dCurMap[p]) {
+                dCurMap[p] = { partner: p, curDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || '' };
+            }
+            dCurMap[p].curDeals += (r.Qty || 1);
+            if (r.KAM && dCurMap[p].kam === '—') dCurMap[p].kam = r.KAM;
         });
 
+        const allDealerKeys = new Set([...Object.keys(dCurMap), ...Object.keys(dPrevMap)]);
         const thresh = (ch.key === 'all' || ch.key === 'opt') ? 3 : 2;
         const dealerAlerts = [];
-        Object.keys(dPrevMap).forEach(p => {
-            const info = dPrevMap[p];
-            const curCnt = dCurMap[p] || 0;
-            if (info.prevDeals >= thresh && curCnt === 0) {
+        const dealerGrowth = [];
+
+        allDealerKeys.forEach(p => {
+            const prevInfo = dPrevMap[p];
+            const curInfo = dCurMap[p];
+            const prevDeals = prevInfo ? prevInfo.prevDeals : 0;
+            const curDeals = curInfo ? curInfo.curDeals : 0;
+            const kam = (curInfo && curInfo.kam !== '—') ? curInfo.kam : (prevInfo ? prevInfo.kam : '—');
+            const rawPartner = (curInfo && curInfo.rawPartner) ? curInfo.rawPartner : (prevInfo ? prevInfo.rawPartner : '');
+            const diff = curDeals - prevDeals;
+
+            // Churn alert: had deals >= thresh before, now 0
+            if (prevDeals >= thresh && curDeals === 0) {
                 dealerAlerts.push({
                     partner: p,
-                    prevDeals: info.prevDeals,
+                    prevDeals,
                     curDeals: 0,
-                    kam: info.kam,
-                    rawPartner: info.rawPartner,
-                    severity: info.prevDeals >= 10 ? 'critical' : 'warning'
+                    kam,
+                    rawPartner,
+                    severity: prevDeals >= 10 ? 'critical' : 'warning'
+                });
+            }
+
+            // Dealer growth / activation
+            if (diff > 0) {
+                const pct = prevDeals > 0 ? Math.round((diff / prevDeals) * 100) : 100;
+                dealerGrowth.push({
+                    partner: p,
+                    prevDeals,
+                    curDeals,
+                    diff,
+                    pct,
+                    kam,
+                    rawPartner,
+                    isNew: (prevDeals === 0),
+                    significance: diff >= 5 || pct >= 100 ? 'leader' : 'normal'
                 });
             }
         });
         dealerAlerts.sort((a, b) => b.prevDeals - a.prevDeals);
+        dealerGrowth.sort((a, b) => b.diff - a.diff);
 
         // 3. STUCK PREPAYMENTS for this channel
         let channelStuckPrepays = allStuckPrepays;
@@ -487,11 +538,14 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         }
 
         channelsData[ch.key] = {
+            brandGrowth,
             brandAlerts,
+            dealerGrowth,
             dealerAlerts,
             stuckPrepays: channelStuckPrepays,
             totalCriticalCount: brandAlerts.filter(b => b.severity === 'critical').length + 
-                                dealerAlerts.filter(d => d.severity === 'critical').length
+                                dealerAlerts.filter(d => d.severity === 'critical').length,
+            totalGrowthCount: brandGrowth.length + dealerGrowth.length
         };
     });
 
@@ -510,11 +564,71 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         prevMonthName,
         activeChannel: activeAlertChannel,
         channelsData,
+        brandGrowth: currentChannel.brandGrowth,
         brandAlerts: currentChannel.brandAlerts,
+        dealerGrowth: currentChannel.dealerGrowth,
         dealerAlerts: currentChannel.dealerAlerts,
         stuckPrepays: currentChannel.stuckPrepays,
-        totalCriticalCount: currentChannel.totalCriticalCount
+        totalCriticalCount: currentChannel.totalCriticalCount,
+        totalGrowthCount: currentChannel.totalGrowthCount
     };
+}
+
+function renderBrandGrowthItemsHTML(brandGrowth, prevMonthName) {
+    if (!brandGrowth || brandGrowth.length === 0) {
+        return `
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-center text-slate-600 text-xs font-bold">
+                В выбранном канале прироста марок относительно ${prevMonthName} не зафиксировано
+            </div>
+        `;
+    }
+    return brandGrowth.map(b => `
+        <div class="flex items-center justify-between p-2.5 rounded-2xl ${b.significance === 'leader' ? 'bg-emerald-50/90 border border-emerald-200' : 'bg-teal-50/60 border border-teal-100'}">
+            <div class="flex items-center gap-2.5">
+                <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs shrink-0">
+                    🚀
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-slate-900">${b.brand}</span>
+                        ${b.isNew ? '<span class="text-[10px] px-1.5 py-0.2 bg-emerald-200 text-emerald-900 font-bold rounded">NEW</span>' : ''}
+                    </div>
+                    <div class="text-[11px] text-slate-500">
+                        Факт: <b>${b.curCnt}</b> шт. (было ${b.prevCnt} в ${prevMonthName})
+                    </div>
+                </div>
+            </div>
+            <span class="text-xs px-2.5 py-0.5 rounded-full font-black bg-emerald-200 text-emerald-900 whitespace-nowrap flex items-center gap-1">
+                +${b.diff} шт. <span class="text-[10px] font-bold opacity-80">(+${b.pct}%)</span>
+            </span>
+        </div>
+    `).join('');
+}
+
+function renderDealerGrowthItemsHTML(dealerGrowth, prevMonthName) {
+    if (!dealerGrowth || dealerGrowth.length === 0) {
+        return `
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 text-center text-slate-600 text-xs font-bold">
+                В выбранном канале прироста дилеров относительно ${prevMonthName} не зафиксировано
+            </div>
+        `;
+    }
+    return dealerGrowth.map(d => `
+        <div class="flex items-center justify-between p-2.5 rounded-2xl ${d.significance === 'leader' ? 'bg-emerald-50/90 border border-emerald-200' : 'bg-slate-50 border border-slate-200/70'}">
+            <div class="min-w-0 pr-2">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xs font-black text-slate-900 truncate">${d.partner}</span>
+                    ${d.isNew ? '<span class="text-[10px] px-1.5 py-0.2 bg-indigo-100 text-indigo-800 font-bold rounded shrink-0">Активация</span>' : ''}
+                </div>
+                <div class="text-[11px] text-slate-500 mt-0.5">
+                    Сделок: <b>${d.curDeals} шт.</b> (было ${d.prevDeals} в ${prevMonthName}) • КАМ: <span class="font-medium text-slate-700">${d.kam}</span>
+                </div>
+            </div>
+            <span class="text-xs px-2.5 py-0.5 rounded-full font-black bg-emerald-200 text-emerald-900 whitespace-nowrap">
+                +${d.diff} шт. <span class="text-[10px] font-bold opacity-80">(+${d.pct}%)</span>
+            </span>
+        </div>
+    `).join('');
 }
 
 function renderBrandAlertItemsHTML(brandAlerts, prevMonthName) {
@@ -582,33 +696,83 @@ function renderPrepayAlertItemsHTML(stuckPrepays) {
     `).join('');
 }
 
+function updateAlertFooter(tabName) {
+    const footerInfo = document.getElementById('alertFooterInfo');
+    if (!footerInfo) return;
+
+    const channelsData = window._alertsRadarChannels || {};
+    const curData = channelsData[activeAlertChannel] || channelsData['all'] || {
+        brandGrowth: [], brandAlerts: [], dealerGrowth: [], dealerAlerts: [], stuckPrepays: []
+    };
+
+    if (tabName === 'growth_brands') {
+        const topBrand = (curData.brandGrowth && curData.brandGrowth[0]) ? `${curData.brandGrowth[0].brand} (+${curData.brandGrowth[0].diff} шт.)` : '—';
+        footerInfo.innerHTML = `
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            Брендов с приростом: <b>${(curData.brandGrowth || []).length}</b> • Лидер: <b>${topBrand}</b>
+        `;
+    } else if (tabName === 'growth_dealers') {
+        const topDealer = (curData.dealerGrowth && curData.dealerGrowth[0]) ? `${curData.dealerGrowth[0].partner} (+${curData.dealerGrowth[0].diff} шт.)` : '—';
+        footerInfo.innerHTML = `
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+            Выросших ДЦ: <b>${(curData.dealerGrowth || []).length}</b> • Лидер: <b>${topDealer}</b>
+        `;
+    } else if (tabName === 'brands') {
+        const topDrop = (curData.brandAlerts && curData.brandAlerts[0]) ? `${curData.brandAlerts[0].brand} (${curData.brandAlerts[0].diff} шт.)` : '—';
+        footerInfo.innerHTML = `
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>
+            Просадок по маркам: <b>${(curData.brandAlerts || []).length}</b> • Наибольшая: <b>${topDrop}</b>
+        `;
+    } else if (tabName === 'dealers') {
+        const critDealers = (curData.dealerAlerts || []).filter(d => d.severity === 'critical').length;
+        footerInfo.innerHTML = `
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>
+            Партнеров с риском отвала: <b>${(curData.dealerAlerts || []).length}</b> (Критических: <b>${critDealers}</b>)
+        `;
+    } else if (tabName === 'prepays') {
+        footerInfo.innerHTML = `
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i>
+            Зависших авансов (>7 дней): <b>${(curData.stuckPrepays || []).length}</b> шт.
+        `;
+    }
+
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+    }
+}
+
 function switchAlertTab(tabName) {
     activeAlertTab = tabName;
-    const brandContent = document.getElementById('alertContentBrands');
-    const dealerContent = document.getElementById('alertContentDealers');
-    const prepayContent = document.getElementById('alertContentPrepays');
+    const tabList = [
+        { key: 'growth_brands', contentId: 'alertContent_growth_brands', btnId: 'alertTabBtn_growth_brands', activeClass: 'bg-emerald-700 text-white shadow-sm' },
+        { key: 'brands', contentId: 'alertContent_brands', btnId: 'alertTabBtn_brands', activeClass: 'bg-rose-700 text-white shadow-sm' },
+        { key: 'growth_dealers', contentId: 'alertContent_growth_dealers', btnId: 'alertTabBtn_growth_dealers', activeClass: 'bg-emerald-700 text-white shadow-sm' },
+        { key: 'dealers', contentId: 'alertContent_dealers', btnId: 'alertTabBtn_dealers', activeClass: 'bg-rose-700 text-white shadow-sm' },
+        { key: 'prepays', contentId: 'alertContent_prepays', btnId: 'alertTabBtn_prepays', activeClass: 'bg-amber-600 text-white shadow-sm' }
+    ];
 
-    const bBtn = document.getElementById('alertTabBtnBrands');
-    const dBtn = document.getElementById('alertTabBtnDealers');
-    const pBtn = document.getElementById('alertTabBtnPrepays');
+    const inactiveClass = 'bg-white/90 text-slate-600 hover:bg-white hover:text-slate-900 border border-slate-200/70';
 
-    if (brandContent) brandContent.classList.toggle('hidden', tabName !== 'brands');
-    if (dealerContent) dealerContent.classList.toggle('hidden', tabName !== 'dealers');
-    if (prepayContent) prepayContent.classList.toggle('hidden', tabName !== 'prepays');
+    tabList.forEach(item => {
+        const content = document.getElementById(item.contentId);
+        const btn = document.getElementById(item.btnId);
+        const isActive = (item.key === tabName);
+        if (content) content.classList.toggle('hidden', !isActive);
+        if (btn) {
+            btn.className = `px-2.5 sm:px-3 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap ${isActive ? item.activeClass : inactiveClass}`;
+        }
+    });
 
-    const activeClass = 'bg-slate-900 text-white shadow-sm';
-    const inactiveClass = 'bg-slate-100 text-slate-600 hover:bg-slate-200';
-
-    if (bBtn) bBtn.className = `px-3 py-1 text-xs font-bold rounded-xl transition ${tabName === 'brands' ? activeClass : inactiveClass}`;
-    if (dBtn) dBtn.className = `px-3 py-1 text-xs font-bold rounded-xl transition ${tabName === 'dealers' ? activeClass : inactiveClass}`;
-    if (pBtn) pBtn.className = `px-3 py-1 text-xs font-bold rounded-xl transition ${tabName === 'prepays' ? activeClass : inactiveClass}`;
+    updateAlertFooter(tabName);
 }
 
 function switchAlertChannel(channelKey) {
     activeAlertChannel = channelKey;
     const channelsData = window._alertsRadarChannels || {};
     const meta = window._alertsRadarMeta || { prevMonthName: 'прошлом месяце' };
-    const curData = channelsData[channelKey] || channelsData['all'] || { brandAlerts: [], dealerAlerts: [], stuckPrepays: [], totalCriticalCount: 0 };
+    const curData = channelsData[channelKey] || channelsData['all'] || {
+        brandGrowth: [], brandAlerts: [], dealerGrowth: [], dealerAlerts: [], stuckPrepays: [], totalCriticalCount: 0
+    };
 
     // 1. Update channel selector buttons
     ALERT_CHANNELS.forEach(ch => {
@@ -623,83 +787,130 @@ function switchAlertChannel(channelKey) {
     });
 
     // 2. Update tab buttons text with counts
-    const bBtn = document.getElementById('alertTabBtnBrands');
-    const dBtn = document.getElementById('alertTabBtnDealers');
-    const pBtn = document.getElementById('alertTabBtnPrepays');
-    if (bBtn) bBtn.textContent = `Бренды (${curData.brandAlerts.length})`;
-    if (dBtn) dBtn.textContent = `Отвал ДЦ (${curData.dealerAlerts.length})`;
-    if (pBtn) pBtn.textContent = `Авансы (${curData.stuckPrepays.length})`;
+    const bgBtn = document.getElementById('alertTabBtn_growth_brands');
+    const bBtn = document.getElementById('alertTabBtn_brands');
+    const dgBtn = document.getElementById('alertTabBtn_growth_dealers');
+    const dBtn = document.getElementById('alertTabBtn_dealers');
+    const pBtn = document.getElementById('alertTabBtn_prepays');
+
+    if (bgBtn) bgBtn.textContent = `🚀 Рост марок (${(curData.brandGrowth || []).length})`;
+    if (bBtn) bBtn.textContent = `🔻 Просадки (${(curData.brandAlerts || []).length})`;
+    if (dgBtn) dgBtn.textContent = `🌟 Рост ДЦ (${(curData.dealerGrowth || []).length})`;
+    if (dBtn) dBtn.textContent = `⚠️ Отвал ДЦ (${(curData.dealerAlerts || []).length})`;
+    if (pBtn) pBtn.textContent = `⏳ Авансы (${(curData.stuckPrepays || []).length})`;
 
     // 3. Update tab contents
-    const brandContent = document.getElementById('alertContentBrands');
-    const dealerContent = document.getElementById('alertContentDealers');
-    const prepayContent = document.getElementById('alertContentPrepays');
-    if (brandContent) brandContent.innerHTML = renderBrandAlertItemsHTML(curData.brandAlerts, meta.prevMonthName);
-    if (dealerContent) dealerContent.innerHTML = renderDealerAlertItemsHTML(curData.dealerAlerts, meta.prevMonthName);
-    if (prepayContent) prepayContent.innerHTML = renderPrepayAlertItemsHTML(curData.stuckPrepays);
+    const bgContent = document.getElementById('alertContent_growth_brands');
+    const bContent = document.getElementById('alertContent_brands');
+    const dgContent = document.getElementById('alertContent_growth_dealers');
+    const dContent = document.getElementById('alertContent_dealers');
+    const pContent = document.getElementById('alertContent_prepays');
 
-    // 4. Update footer
-    const footerInfo = document.getElementById('alertFooterInfo');
-    if (footerInfo) {
-        const totalRisks = curData.brandAlerts.length + curData.dealerAlerts.length + curData.stuckPrepays.length;
-        footerInfo.innerHTML = `
-            <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>
-            Критических сигналов: <b>${curData.totalCriticalCount}</b> (из ${totalRisks} рисков)
-        `;
-        if (typeof lucide !== 'undefined' && lucide.createIcons) {
-            lucide.createIcons();
-        }
+    if (bgContent) bgContent.innerHTML = renderBrandGrowthItemsHTML(curData.brandGrowth || [], meta.prevMonthName);
+    if (bContent) bContent.innerHTML = renderBrandAlertItemsHTML(curData.brandAlerts || [], meta.prevMonthName);
+    if (dgContent) dgContent.innerHTML = renderDealerGrowthItemsHTML(curData.dealerGrowth || [], meta.prevMonthName);
+    if (dContent) dContent.innerHTML = renderDealerAlertItemsHTML(curData.dealerAlerts || [], meta.prevMonthName);
+    if (pContent) pContent.innerHTML = renderPrepayAlertItemsHTML(curData.stuckPrepays || []);
+
+    // 4. Update header quick badges
+    const badgePlus = document.getElementById('alertHeaderBadgePlus');
+    const badgeMinus = document.getElementById('alertHeaderBadgeMinus');
+    if (badgePlus) {
+        badgePlus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span>${(curData.brandGrowth || []).length} в плюсе`;
     }
+    if (badgeMinus) {
+        badgeMinus.innerHTML = `<span class="w-2 h-2 rounded-full bg-rose-500"></span>${(curData.brandAlerts || []).length} просадок`;
+    }
+
+    // 5. Update footer
+    updateAlertFooter(activeAlertTab);
 }
 
 // Attach functions to window for global access
 window.switchAlertTab = switchAlertTab;
 window.switchAlertChannel = switchAlertChannel;
+window.updateAlertFooter = updateAlertFooter;
 
 function renderAlertsRadarCardHTML(a) {
-    const isBrands = activeAlertTab === 'brands';
-    const isDealers = activeAlertTab === 'dealers';
-    const isPrepays = activeAlertTab === 'prepays';
-
-    const activeBtnClass = 'bg-slate-900 text-white shadow-sm';
-    const inactiveBtnClass = 'bg-slate-100 text-slate-600 hover:bg-slate-200';
-
     const currentChannel = (a.channelsData && a.channelsData[activeAlertChannel]) ? a.channelsData[activeAlertChannel] : a;
+    const bGrowth = currentChannel.brandGrowth || [];
     const bAlerts = currentChannel.brandAlerts || [];
+    const dGrowth = currentChannel.dealerGrowth || [];
     const dAlerts = currentChannel.dealerAlerts || [];
     const sPrepays = currentChannel.stuckPrepays || [];
-    const totalCrit = currentChannel.totalCriticalCount || 0;
+
+    const activeGrowthBrandsClass = 'bg-emerald-700 text-white shadow-sm';
+    const activeBrandsClass = 'bg-rose-700 text-white shadow-sm';
+    const activeGrowthDealersClass = 'bg-emerald-700 text-white shadow-sm';
+    const activeDealersClass = 'bg-rose-700 text-white shadow-sm';
+    const activePrepaysClass = 'bg-amber-600 text-white shadow-sm';
+    const inactiveClass = 'bg-white/90 text-slate-600 hover:bg-white hover:text-slate-900 border border-slate-200/70';
+
+    let initialFooterHTML = '';
+    if (activeAlertTab === 'growth_brands') {
+        const topB = bGrowth[0] ? `${bGrowth[0].brand} (+${bGrowth[0].diff} шт.)` : '—';
+        initialFooterHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>Брендов с приростом: <b>${bGrowth.length}</b> • Лидер: <b>${topB}</b>`;
+    } else if (activeAlertTab === 'growth_dealers') {
+        const topD = dGrowth[0] ? `${dGrowth[0].partner} (+${dGrowth[0].diff} шт.)` : '—';
+        initialFooterHTML = `<span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>Выросших ДЦ: <b>${dGrowth.length}</b> • Лидер: <b>${topD}</b>`;
+    } else if (activeAlertTab === 'brands') {
+        const topDrop = bAlerts[0] ? `${bAlerts[0].brand} (${bAlerts[0].diff} шт.)` : '—';
+        initialFooterHTML = `<i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>Просадок по маркам: <b>${bAlerts.length}</b> • Наибольшая: <b>${topDrop}</b>`;
+    } else if (activeAlertTab === 'dealers') {
+        const critD = dAlerts.filter(d => d.severity === 'critical').length;
+        initialFooterHTML = `<i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>Партнеров с риском отвала: <b>${dAlerts.length}</b> (Критических: <b>${critD}</b>)`;
+    } else {
+        initialFooterHTML = `<i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500"></i>Зависших авансов (>7 дней): <b>${sPrepays.length}</b> шт.`;
+    }
 
     return `
         <div class="card !p-5 bg-white rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-between">
             <div>
-                <!-- Title & Tabs -->
+                <!-- Title & Summary Badges -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-lg">
-                            🚨
+                        <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-lg">
+                            📡
                         </div>
                         <div>
-                            <h3 class="font-black text-slate-800 text-base">Радар отклонений (Alerts Radar)</h3>
+                            <h3 class="font-black text-slate-800 text-base">Радар динамики & отклонений</h3>
                             <p class="text-xs text-slate-400">Сравнение: ${a.periodLabel}</p>
                         </div>
                     </div>
-                    <!-- Pill Buttons for Tabs -->
-                    <div class="flex items-center gap-1.5 p-1 bg-slate-50 rounded-2xl border border-slate-100">
-                        <button id="alertTabBtnBrands" onclick="switchAlertTab('brands')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isBrands ? activeBtnClass : inactiveBtnClass}">
-                            Бренды (${bAlerts.length})
-                        </button>
-                        <button id="alertTabBtnDealers" onclick="switchAlertTab('dealers')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isDealers ? activeBtnClass : inactiveBtnClass}">
-                            Отвал ДЦ (${dAlerts.length})
-                        </button>
-                        <button id="alertTabBtnPrepays" onclick="switchAlertTab('prepays')" class="px-3 py-1 text-xs font-bold rounded-xl transition ${isPrepays ? activeBtnClass : inactiveBtnClass}">
-                            Авансы (${sPrepays.length})
-                        </button>
+                    <!-- Quick Badges: Growth vs Drops -->
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span id="alertHeaderBadgePlus" class="text-[11px] px-2.5 py-1 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            ${bGrowth.length} в плюсе
+                        </span>
+                        <span id="alertHeaderBadgeMinus" class="text-[11px] px-2.5 py-1 rounded-xl bg-rose-50 text-rose-800 border border-rose-200 font-bold flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                            ${bAlerts.length} просадок
+                        </span>
                     </div>
                 </div>
 
+                <!-- Tabs Row: 5 direct filters (Рост марок, Просадки, Рост ДЦ, Отвал ДЦ, Авансы) -->
+                <div class="flex items-center gap-1.5 p-1 bg-slate-100/90 rounded-2xl mb-2.5 overflow-x-auto no-scrollbar">
+                    <button id="alertTabBtn_growth_brands" onclick="switchAlertTab('growth_brands')" class="px-2.5 sm:px-3 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap ${activeAlertTab === 'growth_brands' ? activeGrowthBrandsClass : inactiveClass}">
+                        🚀 Рост марок (${bGrowth.length})
+                    </button>
+                    <button id="alertTabBtn_brands" onclick="switchAlertTab('brands')" class="px-2.5 sm:px-3 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap ${activeAlertTab === 'brands' ? activeBrandsClass : inactiveClass}">
+                        🔻 Просадки (${bAlerts.length})
+                    </button>
+                    <button id="alertTabBtn_growth_dealers" onclick="switchAlertTab('growth_dealers')" class="px-2.5 sm:px-3 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap ${activeAlertTab === 'growth_dealers' ? activeGrowthDealersClass : inactiveClass}">
+                        🌟 Рост ДЦ (${dGrowth.length})
+                    </button>
+                    <button id="alertTabBtn_dealers" onclick="switchAlertTab('dealers')" class="px-2.5 sm:px-3 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap ${activeAlertTab === 'dealers' ? activeDealersClass : inactiveClass}">
+                        ⚠️ Отвал ДЦ (${dAlerts.length})
+                    </button>
+                    <button id="alertTabBtn_prepays" onclick="switchAlertTab('prepays')" class="px-2.5 sm:px-3 py-1 text-xs font-bold rounded-xl transition whitespace-nowrap ${activeAlertTab === 'prepays' ? activePrepaysClass : inactiveClass}">
+                        ⏳ Авансы (${sPrepays.length})
+                    </button>
+                </div>
+
                 <!-- Channel Filter Buttons -->
-                <div class="flex items-center gap-1.5 p-1 bg-slate-100/90 rounded-2xl mb-3 overflow-x-auto" id="alertChannelFilterRow">
+                <div class="flex items-center gap-1.5 p-1 bg-slate-50 border border-slate-100 rounded-2xl mb-3 overflow-x-auto no-scrollbar" id="alertChannelFilterRow">
                     ${ALERT_CHANNELS.map(ch => {
                         const isActive = ch.key === activeAlertChannel;
                         return `
@@ -712,18 +923,28 @@ function renderAlertsRadarCardHTML(a) {
                     }).join('')}
                 </div>
 
-                <!-- TAB 1: BRANDS DROP (Fully scrollable to see ALL items) -->
-                <div id="alertContentBrands" class="${isBrands ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                <!-- TAB 1: BRAND GROWTH (Positive Dynamics) -->
+                <div id="alertContent_growth_brands" class="${activeAlertTab === 'growth_brands' ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                    ${renderBrandGrowthItemsHTML(bGrowth, a.prevMonthName)}
+                </div>
+
+                <!-- TAB 2: BRAND DROPS (Alerts) -->
+                <div id="alertContent_brands" class="${activeAlertTab === 'brands' ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${renderBrandAlertItemsHTML(bAlerts, a.prevMonthName)}
                 </div>
 
-                <!-- TAB 2: DEALERS CHURN RISK (Shows all churned partners with scroll) -->
-                <div id="alertContentDealers" class="${isDealers ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                <!-- TAB 3: DEALER GROWTH (Positive Dynamics) -->
+                <div id="alertContent_growth_dealers" class="${activeAlertTab === 'growth_dealers' ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                    ${renderDealerGrowthItemsHTML(dGrowth, a.prevMonthName)}
+                </div>
+
+                <!-- TAB 4: DEALERS CHURN RISK -->
+                <div id="alertContent_dealers" class="${activeAlertTab === 'dealers' ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${renderDealerAlertItemsHTML(dAlerts, a.prevMonthName)}
                 </div>
 
-                <!-- TAB 3: STUCK PREPAYMENTS (Shows stuck prepayments with scroll) -->
-                <div id="alertContentPrepays" class="${isPrepays ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                <!-- TAB 5: STUCK PREPAYMENTS -->
+                <div id="alertContent_prepays" class="${activeAlertTab === 'prepays' ? '' : 'hidden'} space-y-2 mb-4 max-h-72 overflow-y-auto pr-1">
                     ${renderPrepayAlertItemsHTML(sPrepays)}
                 </div>
             </div>
@@ -731,8 +952,7 @@ function renderAlertsRadarCardHTML(a) {
             <!-- Footer -->
             <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                 <span class="flex items-center gap-1.5" id="alertFooterInfo">
-                    <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-rose-500"></i>
-                    Критических сигналов: <b>${totalCrit}</b> (из ${bAlerts.length + dAlerts.length + sPrepays.length} рисков)
+                    ${initialFooterHTML}
                 </span>
                 <span class="text-slate-400">Прокрутите список для просмотра всех</span>
             </div>
