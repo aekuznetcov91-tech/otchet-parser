@@ -5,3 +5,9 @@ __pycache__/
 scratch/
 .wrangler/
 raw_data/archive/
+
+.DS_Store
+*.bak
+.backups/
+.agents/
+reports/*.xlsx

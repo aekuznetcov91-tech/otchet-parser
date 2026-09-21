@@ -70,7 +70,7 @@ def normalize_brand(tovar_str):
         return "CHERY & TENET"
     if any(k in t_clean or k in t_latin for k in ["CHANGAN", "ЧАНГАН"]):
         return "CHANGAN"
-    if any(k in t_clean or k in t_latin for k in ["JETOUR", "ДЖЕТУР"]):
+    if any(k in t_clean or k in t_latin for k in ["JETOUR", "JETOR", "ДЖЕТУР"]):
         return "JETOUR"
     if any(k in t_clean or k in t_latin for k in ["LADA", "ЛАДА"]):
         return "LADA"
@@ -100,12 +100,12 @@ def normalize_brand(tovar_str):
         return "VOYAH"
 
     # 2. Secondary check: Distinct vehicle models using regex word boundaries
-    if re.search(r'\b(MONJARO|COOLRAY|ATLAS|PREFACE|EMGRAND|OKAVANGO|TUGELLA|TUGGELLA|CITYRAY|EX5|X50|X70)\b', t_latin):
-        return "Geely & Belgee"
+    if re.search(r'\b(DASHING|X70\s*PLUS|T2|T1|X90\s*PLUS)\b', t_latin):
+        return "JETOUR"
     if re.search(r'\b(JOLION|DARGO|H3|H9|M6|F7|F7X|H7)\b', t_latin):
         return "HAVAL"
-    if re.search(r'\b(DASHING|X70\s*PLUS|T2|X90\s*PLUS)\b', t_latin):
-        return "JETOUR"
+    if re.search(r'\b(MONJARO|COOLRAY|ATLAS|PREFACE|EMGRAND|OKAVANGO|TUGELLA|TUGGELLA|CITYRAY|EX5|X50|X70)\b', t_latin):
+        return "Geely & Belgee"
     if re.search(r'\b(UNI-V|UNI-K|UNI-T|UNI-S|CS35|CS55|CS75|CS95|HUNTER|LAMORE|EADO|ALSVIN)\b', t_latin):
         return "CHANGAN"
     if re.search(r'\b(GS3|GS8|M8)\b', t_latin):
@@ -1754,10 +1754,25 @@ def run_pipeline():
             elif kam_dict_bitrix.get(p_lower):
                 kam_partner = kam_dict_bitrix.get(p_lower)
 
+            # Substring / Holding fallback if not matched or erroneously mapped:
+            if 'рольф' in p_lower:
+                pid, cname, kam_partner = (1084, 'РОЛЬФ', 'Андрей Кузнецов')
+            elif not pid or pid == 1116:
+                if any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'платинум']):
+                    pid, cname, kam_partner = (1049, 'ГК АГАТ', 'Андрей Кузнецов')
+                elif 'кунцево' in p_lower:
+                    pid, cname, kam_partner = (1091, 'ТЦ Кунцево', 'Алексей Чихарев')
+                elif 'прагматика' in p_lower:
+                    pid, cname, kam_partner = (1022, 'Прагматика', 'Светлана Дариенко')
+                elif 'вагнер' in p_lower and 'авторитэйл' not in p_lower:
+                    pid, cname, kam_partner = (1015, 'Вагнер Авто (СПб)', 'Светлана Дариенко')
+                elif 'авторитэйл м' in p_lower or 'авторитэйл' in p_lower:
+                    pid, cname, kam_partner = (1285, 'ГК Авторитэйл М', 'Валерия Солдатова')
+
             # Explicit KAM reallocations:
             if 'рольф' in p_lower:
                 kam_partner = "Андрей Кузнецов"
-            elif 'кунцево' in p_lower:
+            elif 'кунцево' in p_lower and 'рольф' not in p_lower:
                 kam_partner = "Алексей Чихарев"
             elif 'борис' in p_lower or 'борис' in cname.lower():
                 kam_partner = "Алексей Чихарев"
@@ -1914,6 +1929,21 @@ def run_pipeline():
             elif p_lower in kam_dict_bi:
                 kam = kam_dict_bi.get(p_lower, "")
 
+            # Substring / Holding fallback if not matched or erroneously mapped:
+            if 'рольф' in p_lower:
+                pid, cname, kam = (1084, 'РОЛЬФ', 'Андрей Кузнецов')
+            elif not pid or pid == 1116:
+                if any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'платинум']):
+                    pid, cname, kam = (1049, 'ГК АГАТ', 'Андрей Кузнецов')
+                elif 'кунцево' in p_lower:
+                    pid, cname, kam = (1091, 'ТЦ Кунцево', 'Алексей Чихарев')
+                elif 'прагматика' in p_lower:
+                    pid, cname, kam = (1022, 'Прагматика', 'Светлана Дариенко')
+                elif 'вагнер' in p_lower and 'авторитэйл' not in p_lower:
+                    pid, cname, kam = (1015, 'Вагнер Авто (СПб)', 'Светлана Дариенко')
+                elif 'авторитэйл м' in p_lower or 'авторитэйл' in p_lower:
+                    pid, cname, kam = (1285, 'ГК Авторитэйл М', 'Валерия Солдатова')
+
             d_lead_date = parse_custom_date(get_exact_val(row, 'ДАТА', 'ДАТАСОБЫТИЯ'))
             lead_month_str = f"{d_lead_date.year}-{str(d_lead_date.month).zfill(2)}" if d_lead_date else ""
             lead_serial = date_to_excel_serial(d_lead_date)
@@ -1921,7 +1951,7 @@ def run_pipeline():
             # Explicit KAM reallocations:
             if 'рольф' in p_lower:
                 kam = "Андрей Кузнецов"
-            elif 'кунцево' in p_lower:
+            elif 'кунцево' in p_lower and 'рольф' not in p_lower:
                 kam = "Алексей Чихарев"
             elif 'борис' in p_lower or 'борис' in cname.lower():
                 kam = "Алексей Чихарев"
