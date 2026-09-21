@@ -92,3 +92,48 @@
 4. **Валерия Солдатова:** **181 сделка**.
 5. **Не назначен:** **1 сделка**.
 $$\mathbf{690 + 578 + 328 + 181 + 1 = 1 778\text{ сделок}}$$
+
+---
+
+## 🔐 ДОСТУП К ПРОЕКТУ ДЛЯ РУКОВОДИТЕЛЯ И КОЛЛЕГ (DEPLOY KEY / SSH)
+
+Репозиторий находится в статусе **Private** (`beckelaguas723-gif/otchet-parser`).
+Доступ для руководителя и коллег организован напрямую по SSH через **Deploy Key** с правом записи (Write Access), без необходимости привязки к их личным GitHub-аккаунтам.
+
+### Схема организации доступа:
+1. **Репозиторий:** `https://github.com/beckelaguas723-gif/otchet-parser` (Private).
+2. **Deploy Key:** в GitHub Settings ➔ Deploy keys настроен SSH-ключ с правом записи (`Allow write access`, ID: `163948165`).
+3. **Клонирование:** руководитель / коллега клонирует репозиторий напрямую по SSH:
+   ```bash
+   git clone git@github.com:beckelaguas723-gif/otchet-parser.git
+   ```
+4. **Внесение правок и пуш:** они коммитят и пушат изменения напрямую в `main`:
+   ```bash
+   git add .
+   git commit -m "feat: updates from supervisor"
+   git push origin main
+   ```
+
+### Готовая инструкция (промпт для передачи руководителю / коллеге):
+Когда пользователь (Боря) спрашивает «как у нас устроен доступ к проекту у руководителя» или просит выдать инструкцию:
+Выдать следующий готовый текст:
+```markdown
+Инструкция по подключению к закрытому репозиторию дашборда:
+
+1. Склонируйте репозиторий по SSH:
+   git clone git@github.com:beckelaguas723-gif/otchet-parser.git
+
+2. Если у вас используется отдельный SSH-ключ (Deploy Key), укажите его в файле ~/.ssh/config:
+   Host github.com
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/id_ed25519_otchet
+     IdentitiesOnly yes
+
+3. Вносите правки и отправляйте напрямую в репозиторий:
+   git add .
+   git commit -m "описание правок"
+   git push origin main
+
+Все отправленные вами изменения сразу попадают в проект.
+```
