@@ -30,6 +30,23 @@ BRAND_MAP = {
     'VOYAH': 'Voyah'
 }
 
+def normalize_kam(val):
+    if not val:
+        return ''
+    s = str(val).strip()
+    s_low = s.lower()
+    if 'кузнецов' in s_low:
+        return 'Андрей Кузнецов'
+    if 'чихарев' in s_low or 'чихарёв' in s_low:
+        return 'Алексей Чихарев'
+    if 'дариенко' in s_low:
+        return 'Светлана Дариенко'
+    if 'солдатова' in s_low:
+        return 'Валерия Солдатова'
+    if 'добролюбова' in s_low:
+        return 'Евгения Добролюбова'
+    return s
+
 def find_latest_oem_file():
     """Find the most recent OEM Excel file in raw_data or project root."""
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
@@ -104,7 +121,7 @@ def extract_dealers_from_oem(fpath):
                         elif 'почт' in h or 'email' in h:
                             entry['email'] = val
                         elif 'ответствен' in h or 'куратор' in h or 'координатор' in h:
-                            entry['responsible'] = val
+                            entry['responsible'] = normalize_kam(val)
                 
                 s_up = sname.upper()
                 brand = sname
