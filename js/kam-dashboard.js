@@ -56,10 +56,10 @@ function normalizeKamName(name) {
  * Normalizes brand name to match OEM standards.
  */
 function normalizeBrandName(b) {
-    if (!b) return null;
+    if (!b) return 'Другие';
     let ub = String(b).toUpperCase().trim();
     const aux = ["ВНЕСЕНИЕ", "АВАНС", "КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП", "СЕРВИС", "ФИНАНС", "ДОГОВОР", "ОФОРМЛЕН", "КОМИСС", "УСЛУГ", "НЕИЗВЕСТН", "ДРУГИЕ", "NULL", "UNDEFINED"];
-    if (aux.some(k => ub.includes(k))) return null;
+    if (aux.some(k => ub.includes(k))) return 'Другие';
     if (ub.includes('JETOUR')) return 'JETOUR';
     if (ub.includes('LADA') || ub.includes('ЛАДА')) return 'LADA';
     if (ub.includes('HAVAL') || ub.includes('ХАВЕЙЛ')) return 'HAVAL';
@@ -81,7 +81,8 @@ function normalizeBrandName(b) {
     if (ub.includes('TOYOTA') || ub.includes('ТОЙОТА')) return 'TOYOTA';
     if (ub.includes('TANK') || ub.includes('ТАНК')) return 'TANK';
     if (ub.includes('EXEED') || ub.includes('ЭКСИД')) return 'EXEED';
-    return b.trim();
+    let res = String(b).trim();
+    return res ? res : 'Другие';
 }
 
 /**
@@ -618,7 +619,7 @@ function getKamAggregatedData(filterCfg) {
 
         if (oemData.length > 0) {
             oemData.forEach(o => {
-                const city = (o.city || 'Город не указан').trim();
+                const city = String(o.city || 'Город не указан').trim();
                 const brand = normalizeBrandName(o.brand || 'Другие');
                 const rkey = `${pid}__${city.toLowerCase()}__${brand.toLowerCase()}`;
                 if (!rooftopsMap[rkey]) {
@@ -650,13 +651,14 @@ function getKamAggregatedData(filterCfg) {
         const pname = r.Partner || r.RawPartner || 'Неизвестный партнер';
         const rawBrand = r.Brand || 'Другие';
         const brand = normalizeBrandName(rawBrand);
-        const city = (r.City || 'Город не указан').trim();
+        const city = String(r.City || 'Город не указан').trim();
 
         let rkey = `${pid}__${city.toLowerCase()}__${brand.toLowerCase()}`;
         if (!rooftopsMap[rkey]) {
             let foundKey = null;
             for (let k in rooftopsMap) {
-                if (rooftopsMap[k].partner_id === pid && rooftopsMap[k].brand.toLowerCase() === brand.toLowerCase()) {
+                const rtBrand = String(rooftopsMap[k].brand || 'Другие').toLowerCase();
+                if (rooftopsMap[k].partner_id === pid && rtBrand === brand.toLowerCase()) {
                     foundKey = k;
                     break;
                 }
