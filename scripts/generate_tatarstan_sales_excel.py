@@ -15,7 +15,9 @@ from parser_engine import read_tabular_file, get_exact_val, parse_custom_date, n
 d = json.load(open('otchet-parser/site/data.json'))
 aug_sales_db = [r for r in d['sys_db'] if r.get('SaleQty') == 1 and r.get('SaleMonth') == '2026-08']
 
-deal_file = 'otchet-parser/raw_data/DEAL_20260908_c0a660f8_6a9fb97a7cbb0.xls'
+deal_file = 'raw_data/DEAL_20260904_c9102cd3_6a9a5fa93d07b.xls'
+if not os.path.exists(deal_file):
+    deal_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'raw_data', 'DEAL_20260904_c9102cd3_6a9a5fa93d07b.xls')
 datasets = read_tabular_file(deal_file)
 deals_by_id = {str(get_exact_val(r, 'ID', 'IDСДЕЛКИ') or '').strip(): r for r in datasets[0][1]}
 

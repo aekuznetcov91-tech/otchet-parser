@@ -40,7 +40,9 @@ def main():
     gac_aug_pdb = [r for r in pdb if r.get('Type') == 'Сделка' and r.get('Brand') == 'GAC' and r.get('Month') == '2026-08']
     
     # Read raw deals for enriched fields (City, Company, etc.)
-    deals_file = os.path.join(PROJECT_ROOT, 'raw_data', 'DEAL_20260908_c0a660f8_6a9fb97a7cbb0.xls')
+    deals_file = os.path.join(PROJECT_ROOT, 'raw_data', 'DEAL_20260904_c9102cd3_6a9a5fa93d07b.xls')
+    if not os.path.exists(deals_file):
+        deals_file = os.path.join(PROJECT_ROOT, 'raw_data', 'DEAL_20260918_d9bd51b9_6aacd9139ab68.xls')
     raw_deals = {}
     if os.path.exists(deals_file):
         for sname, rows in read_tabular_file(deals_file):

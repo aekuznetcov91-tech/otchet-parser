@@ -82,7 +82,7 @@ for sname, rows in reestr_datasets:
 print(f"Loaded {len(all_deals)} sales from reestr_work.")
 
 # 2. Deals from latest Bitrix export (covers fresh September deals)
-latest_bitrix_fpath = 'raw_data/DEAL_20260917_49024c28_6aab926388945.xls'
+latest_bitrix_fpath = 'raw_data/DEAL_20260918_d9bd51b9_6aacd9139ab68.xls'
 bitrix_datasets = read_tabular_file(latest_bitrix_fpath)
 bitrix_added = 0
 

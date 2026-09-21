@@ -58,7 +58,7 @@ def identify_gk(company):
     return 'ДРУГИЕ'
 
 reestr = read_tabular_file('raw_data/reestr_work_июнь _авг_filled(итог)_v2.xlsx')[0][1]
-bitrix = read_tabular_file('raw_data/DEAL_20260917_49024c28_6aab926388945.xls')[0][1]
+bitrix = read_tabular_file('raw_data/DEAL_20260918_d9bd51b9_6aacd9139ab68.xls')[0][1]
 
 aux_keywords = ('КРЕДИТ', 'КАСКО', 'ОСАГО', 'ГАП', 'СТРАХОВ', 'СЕРТИФИКАТ', 'ВНЕСЕНИЕ АВАНСА', 'ВНЕСЕНИЕ', 'АВАНС', 'ОФОРМЛЕНИЕ', 'ДОГОВОР', 'УСЛУГА', 'КОМИССИЯ', 'ДОП')
 

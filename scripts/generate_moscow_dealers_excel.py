@@ -6,7 +6,10 @@ import pandas as pd
 import os
 import shutil
 
-src_path = 'otchet-parser/raw_data/OEM СберАвто финал (13).xlsx'
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+src_path = os.path.join(PROJECT_ROOT, 'raw_data', 'OEM СберАвто финал (14).xlsx')
+if not os.path.exists(src_path):
+    src_path = 'raw_data/OEM СберАвто финал (14).xlsx'
 wb_src = openpyxl.load_workbook(src_path, data_only=True)
 
 # 1. Извлечение брендов Рольф Импорт из объединенных ячеек

@@ -79,7 +79,7 @@ for sname, rows in reestr_datasets:
         })
 
 # 2. Deals from latest Bitrix export
-latest_bitrix_fpath = 'raw_data/DEAL_20260917_49024c28_6aab926388945.xls'
+latest_bitrix_fpath = 'raw_data/DEAL_20260918_d9bd51b9_6aacd9139ab68.xls'
 bitrix_datasets = read_tabular_file(latest_bitrix_fpath)
 for sname, rows in bitrix_datasets:
     for r in rows:
@@ -154,8 +154,7 @@ for d in all_deals:
 print(f"Total clients with deals: {len(deals_by_client)}")
 
 print("\n=== 2. Loading Partner Leads (Transfers / Переданные лиды) ===")
-# Partner files: data (22).xlsx, data (49).xlsx, data (38).xlsx, data (40).xlsx
-partner_files = ['raw_data/archive/data (22).xlsx', 'raw_data/data (49).xlsx', 'raw_data/data (40).xlsx', 'raw_data/data (38).xlsx']
+partner_files = ['raw_data/data (51).xlsx', 'raw_data/data (40).xlsx', 'raw_data/data (38).xlsx']
 
 partner_leads_by_client = defaultdict(list)
 seen_partner_rows = set()
@@ -203,7 +202,7 @@ for pf in partner_files:
 print(f"Total clients in partner transfers: {len(partner_leads_by_client)}")
 
 print("\n=== 3. Loading General CRM Leads ===")
-crm_files = ['raw_data/archive/data (23).xlsx', 'raw_data/data (48).xlsx']
+crm_files = ['raw_data/data (50).xlsx', 'raw_data/data (39).xlsx']
 crm_leads_by_client = defaultdict(list)
 seen_crm_rows = set()
 
