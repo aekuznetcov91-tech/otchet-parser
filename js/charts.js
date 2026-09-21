@@ -12,7 +12,10 @@ function normalizeBrandJS(b) {
     let sUpper = s.toUpperCase();
     if (sUpper === 'TENET' || sUpper === 'ТENET' || sUpper === 'ТЕНЕТ' || sUpper === 'CHERY' || sUpper === 'ЧЕРИ') return 'CHERY & TENET';
     if (sUpper === 'SОLARIS' || sUpper === 'SOLARIS' || sUpper === 'СОЛЯРИС') return 'SOLARIS';
-    if (sUpper === 'ВЕELGEE' || sUpper === 'BELGEE') return 'Geely & Belgee';
+    if (sUpper === 'KNEWSTAR' || sUpper === 'КНЬЮСТАР' || sUpper === 'КНЮСТАР') return 'Knewstar';
+    if (sUpper === 'ВЕELGEE' || sUpper === 'BELGEE' || sUpper === 'БЕЛДЖИ') return 'Belgee';
+    if (sUpper === 'GEELY' || sUpper === 'ДЖИЛИ') return 'Geely';
+    if (sUpper === 'G B K' || sUpper === 'GBK') return 'Geely & Belgee';
     if (sUpper === 'SOUEAS') return 'SOUEAST';
     return s;
 }

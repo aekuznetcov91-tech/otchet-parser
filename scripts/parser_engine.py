@@ -60,8 +60,14 @@ def normalize_brand(tovar_str):
     t_latin = t_clean.translate(cyr_to_lat)
 
     # 1. Primary check: Full Brand Names (highest priority, avoids substring collisions)
-    if any(k in t_clean or k in t_latin for k in ["G B K", "GEELY", "BELGEE", "BEELGEE", "KNEWSTAR", "ДЖИЛИ", "БЕЛДЖИ"]):
-        return "Geely & Belgee"
+    if any(k in t_clean or k in t_latin for k in ["KNEWSTAR", "КНЬЮСТАР", "КНЮСТАР"]) or (re.search(r'\b001\b', t_latin) and any(k in t_clean or k in t_latin for k in ["G B K", "GEELY", "KNEWSTAR", "TUGELLA"])):
+        return "Knewstar"
+    if any(k in t_clean or k in t_latin for k in ["BELGEE", "BEELGEE", "БЕЛДЖИ"]):
+        return "Belgee"
+    if any(k in t_clean or k in t_latin for k in ["GEELY", "ДЖИЛИ", "G B K", "GBK"]) and re.search(r'\b(X50|X70|S50|X-50|X-70)\b', t_latin) and not re.search(r'\bX70\s*PLUS\b', t_latin):
+        return "Belgee"
+    if any(k in t_clean or k in t_latin for k in ["GEELY", "ДЖИЛИ"]) or (any(k in t_clean or k in t_latin for k in ["G B K", "GBK"]) and re.search(r'\b(MONJARO|COOLRAY|ATLAS|PREFACE|EMGRAND|OKAVANGO|TUGELLA|TUGGELLA|CITYRAY|EX5|EX-5)\b', t_latin)):
+        return "Geely"
     if any(k in t_clean or k in t_latin for k in ["HAVAL", "ХАВЕЙЛ"]):
         return "HAVAL"
     if any(k in t_clean or k in t_latin for k in ["OMODA", "JAECOO", "ОМОДА", "ДЖЕЙКУ", "ДЖАКУ"]):
@@ -98,14 +104,18 @@ def normalize_brand(tovar_str):
         return "HYUNDAI"
     if any(k in t_clean or k in t_latin for k in ["VOYAH", "ВОЯ"]):
         return "VOYAH"
+    if any(k in t_clean or k in t_latin for k in ["G B K", "GBK"]):
+        return "Geely & Belgee"
 
     # 2. Secondary check: Distinct vehicle models using regex word boundaries
     if re.search(r'\b(DASHING|X70\s*PLUS|T2|T1|X90\s*PLUS)\b', t_latin):
         return "JETOUR"
     if re.search(r'\b(JOLION|DARGO|H3|H9|M6|F7|F7X|H7)\b', t_latin):
         return "HAVAL"
-    if re.search(r'\b(MONJARO|COOLRAY|ATLAS|PREFACE|EMGRAND|OKAVANGO|TUGELLA|TUGGELLA|CITYRAY|EX5|X50|X70)\b', t_latin):
-        return "Geely & Belgee"
+    if re.search(r'\b(MONJARO|COOLRAY|ATLAS|PREFACE|EMGRAND|OKAVANGO|TUGELLA|TUGGELLA|CITYRAY|EX5|EX-5)\b', t_latin):
+        return "Geely"
+    if re.search(r'\b(X50|X70|S50|X-50|X-70)\b', t_latin):
+        return "Belgee"
     if re.search(r'\b(UNI-V|UNI-K|UNI-T|UNI-S|CS35|CS55|CS75|CS95|HUNTER|LAMORE|EADO|ALSVIN)\b', t_latin):
         return "CHANGAN"
     if re.search(r'\b(GS3|GS8|M8)\b', t_latin):
@@ -460,7 +470,7 @@ def calculate_brand_funnel(sys_db, leads_data=None):
             except Exception:
                 pass
 
-    all_brands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS', 'SOUEAST', 'BELGEE', 'GEELY', 'HAVAL', 'JAECOO', 'OMODA', 'МОСКВИЧ', 'JELAND']
+    all_brands = ['JETOUR', 'LADA', 'TENET', 'CHANGAN', 'GAC', 'SOLARIS', 'SOUEAST', 'BELGEE', 'GEELY', 'KNEWSTAR', 'HAVAL', 'JAECOO', 'OMODA', 'МОСКВИЧ', 'JELAND']
     months = ['2026-09', '2026-08', '2026-07', 'all']
 
     # Pre-aggregate dynamic CRM lead stats from leads_data if available
@@ -472,7 +482,8 @@ def calculate_brand_funnel(sys_db, leads_data=None):
     brand_canonical = {
         'JETOUR': 'JETOUR', 'LADA': 'LADA', 'ВАЗ': 'LADA', 'TENET': 'TENET', 'CHANGAN': 'CHANGAN',
         'GAC': 'GAC', 'SOLARIS': 'SOLARIS', 'SOUEAST': 'SOUEAST', 'BELGEE': 'BELGEE',
-        'GEELY': 'GEELY', 'HAVAL': 'HAVAL', 'JAECOO': 'JAECOO', 'OMODA': 'OMODA', 'МОСКВИЧ': 'МОСКВИЧ',
+        'GEELY': 'GEELY', 'KNEWSTAR': 'KNEWSTAR', 'КНЬЮСТАР': 'KNEWSTAR', 'КНЮСТАР': 'KNEWSTAR',
+        'HAVAL': 'HAVAL', 'JAECOO': 'JAECOO', 'OMODA': 'OMODA', 'МОСКВИЧ': 'МОСКВИЧ',
         'JELAND': 'JELAND', 'ДЖЕЙЛЕНД': 'JELAND'
     }
 
@@ -493,10 +504,10 @@ def calculate_brand_funnel(sys_db, leads_data=None):
                     break
             if not found_b:
                 b_norm = normalize_brand(combined)
-                if b_norm in brand_canonical.values():
-                    found_b = b_norm
+                if b_norm and b_norm.upper() in brand_canonical.values():
+                    found_b = b_norm.upper()
                 elif b_norm == 'Geely & Belgee':
-                    found_b = 'BELGEE' if any(k in combined for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70')) else 'GEELY'
+                    found_b = 'BELGEE' if any(k in combined for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70', 'S50')) else 'GEELY'
                 elif b_norm == 'OMODA & JAECOO':
                     if any(k in combined for k in ('JELAND', 'ДЖЕЙЛЕНД')):
                         found_b = 'JELAND'
@@ -540,16 +551,18 @@ def calculate_brand_funnel(sys_db, leads_data=None):
     by_month = {}
 
     def is_brand_match_for_funnel(r_brand, r_model, funnel_brand):
-        if r_brand == funnel_brand:
+        if (r_brand or '').upper() == funnel_brand:
             return True
         m = (r_model or '').upper()
         b_up = (r_brand or '').upper()
         if funnel_brand == 'JELAND':
             return 'JELAND' in b_up or 'JELAND' in m or 'ДЖЕЙЛЕНД' in m
         if funnel_brand == 'GEELY':
-            return r_brand == 'Geely & Belgee' and not any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70'))
+            return r_brand == 'Geely & Belgee' and not any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70', 'S50', '001', 'KNEWSTAR'))
         if funnel_brand == 'BELGEE':
-            return r_brand == 'Geely & Belgee' and any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70'))
+            return r_brand == 'Geely & Belgee' and any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70', 'S50'))
+        if funnel_brand == 'KNEWSTAR':
+            return r_brand == 'Geely & Belgee' and (any(k in m for k in ('KNEWSTAR', 'КНЬЮСТАР', 'КНЮСТАР')) or '001' in m)
         if funnel_brand == 'OMODA':
             return r_brand == 'OMODA & JAECOO' and not any(k in m for k in ('JAECOO', 'ДЖЕЙКУ', 'J7', 'J8', 'JELAND', 'ДЖЕЙЛЕНД'))
         if funnel_brand == 'JAECOO':
@@ -641,6 +654,7 @@ def calculate_brand_funnel(sys_db, leads_data=None):
                 elif b == 'SOUEAST': leads_count = int(310 * mult)
                 elif b == 'HAVAL': leads_count = int(450 * mult)
                 elif b in ['BELGEE', 'GEELY']: leads_count = int(280 * mult)
+                elif b == 'KNEWSTAR': leads_count = int(90 * mult)
                 elif b in ['JAECOO', 'OMODA', 'JELAND']: leads_count = int(210 * mult)
                 elif b == 'МОСКВИЧ': leads_count = int(110 * mult)
 
@@ -1148,7 +1162,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             if vin and not d12_client_map[cid]['vin']: d12_client_map[cid]['vin'] = vin
             if price > 0 and d12_client_map[cid]['price'] == 0: d12_client_map[cid]['price'] = price
 
-    oem_13_brands = {'JETOUR', 'LADA', 'HAVAL', 'CHANGAN', 'GEELY', 'BELGEE', 'CHERY', 'TENET', 'SOLARIS', 'SOUEAST', 'GAC', 'МОСКВИЧ', 'OMODA', 'JAECOO', 'HONGQI', 'XCITE'}
+    oem_13_brands = {'JETOUR', 'LADA', 'HAVAL', 'CHANGAN', 'GEELY', 'BELGEE', 'KNEWSTAR', 'CHERY', 'TENET', 'SOLARIS', 'SOUEAST', 'GAC', 'МОСКВИЧ', 'OMODA', 'JAECOO', 'HONGQI', 'XCITE'}
 
     # Pass 2: Aggregate events, qualification and transfer flags by client_id (deduplicated by client_id)
     clients_by_id = {}
