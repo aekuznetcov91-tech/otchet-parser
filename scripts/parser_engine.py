@@ -1425,10 +1425,7 @@ def run_pipeline():
             if fname.lower().endswith(('.xlsx', '.xlsm', '.csv', '.xls')):
                 fpath = os.path.join(sdir, fname)
 
-                # Performance optimization: skip superseded historical daily dumps
-                data_match = re.search(r'data \((\d+)\)\.xlsx', fname, re.IGNORECASE)
-                if data_match and int(data_match.group(1)) < 38:
-                    continue
+                # Read all current data (*).xlsx files in folder
 
                 # For intermediate daily DEAL_*.xls: keep July anchor (DEAL_20260904), August anchor (DEAL_20260914) and latest DEAL file
                 if fname.startswith('DEAL_') and not (fname.startswith('DEAL_20260904') or fname.startswith('DEAL_20260914') or fname == latest_deal_file):
