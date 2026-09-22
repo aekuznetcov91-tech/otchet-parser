@@ -1906,30 +1906,126 @@ def run_pipeline():
             if kam_prepay == "Евгения Добролюбова" and (prepay_month_str <= "2026-08" or not prepay_month_str):
                 kam_prepay = "Андрей Кузнецов"
 
-            # Priority OEM (15) routing for September 2026 and later:
+            # Priority OEM (15) routing and user-verified overrides for September 2026 and later:
             if oem_resolver:
                 deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip()
                 if deal_month_str and deal_month_str >= "2026-09":
-                    resolved_deal_kam = oem_resolver.resolve(
-                        inn=deal_inn,
-                        partner_name=partner_raw or cname,
-                        brand=final_brand or '',
-                        city=deal_city,
-                        fallback_kam=kam_partner
-                    )
-                    if resolved_deal_kam and resolved_deal_kam != "Не назначен":
-                        kam_partner = resolved_deal_kam
+                    # 5-6. Fresh -> Fresh Auto (Кузнецов)
+                    if any(k in p_lower for k in ['фреш', 'fresh']):
+                        cname = 'Fresh Auto'
+                        kam_partner = 'Андрей Кузнецов'
+                    # 14. Спектр: Апельсин vs Агат
+                    elif 'спектр' in p_lower:
+                        if deal_inn == '1657225323' or any(k in p_lower for k in ['апельсин', 'автосеть']):
+                            cname = 'Апельсин (Автосеть РФ)'
+                            kam_partner = 'Алексей Чихарев'
+                        elif deal_inn == '5258089355' or 'агат' in p_lower:
+                            cname = 'ГК АГАТ'
+                            kam_partner = 'Андрей Кузнецов'
+                    # 13. Эксперт авто Оренбург -> ГК Автопрестиж (Чихарев)
+                    elif 'оренбург' in p_lower and 'эксперт' in p_lower:
+                        cname = 'ГК Автопрестиж'
+                        kam_partner = 'Алексей Чихарев'
+                    # 12. Авто-моторс Сургут -> Чихарев
+                    elif any(k in p_lower for k in ['сургут', 'авто-моторс', 'автомоторс']):
+                        cname = 'ФДЦ АВТО-МОТОРС Сургут'
+                        kam_partner = 'Алексей Чихарев'
+                    # 1. Арконт -> Добролюбова
+                    elif 'арконт' in p_lower:
+                        cname = 'ГК Арконт'
+                        kam_partner = 'Евгения Добролюбова'
+                    # 2. Сильвер-авто -> Добролюбова
+                    elif 'сильвер' in p_lower:
+                        cname = 'ГК Сильвер'
+                        kam_partner = 'Евгения Добролюбова'
+                    # 3. ТВС Моторс -> Добролюбова
+                    elif 'твс' in p_lower:
+                        cname = 'ТВС Моторс'
+                        kam_partner = 'Евгения Добролюбова'
+                    # 4. Нижегородец -> Добролюбова
+                    elif 'нижегородец' in p_lower:
+                        cname = 'Нижегородец'
+                        kam_partner = 'Евгения Добролюбова'
+                    # 7. Авторитет -> Дариенко
+                    elif 'авторитет' in p_lower:
+                        cname = 'Авторитет'
+                        kam_partner = 'Светлана Дариенко'
+                    # 8. Сатурн 2 / Сатурн-Р
+                    elif 'сатурн' in p_lower:
+                        if deal_inn == '4826051045' or 'липецк' in p_lower or 'липецк' in deal_city.lower():
+                            cname = 'ГК Сатурн Липецк'
+                            kam_partner = 'Валерия Солдатова'
+                        else:
+                            cname = 'ГК Сатурн 2' if '2' in p_lower else 'Сатурн-Р'
+                            kam_partner = 'Евгения Добролюбова'
+                    # 9. Автосеть АМК РФ -> Добролюбова
+                    elif any(k in p_lower for k in ['амк', 'автосеть амк']):
+                        cname = 'ФДЦ Автосеть АМК РФ'
+                        kam_partner = 'Евгения Добролюбова'
+                    # 10. Планета Авто -> Добролюбова
+                    elif 'планета авто' in p_lower:
+                        cname = 'Планета Авто'
+                        kam_partner = 'Евгения Добролюбова'
+                    # 11. Эксперт Авто: Самара -> Добролюбова, Новосибирск -> Дариенко
+                    elif 'эксперт' in p_lower:
+                        if any(k in p_lower or k in deal_city.lower() for k in ['новосибирск', 'нск']):
+                            cname = 'Эксперт Авто (Новосибирск)'
+                            kam_partner = 'Светлана Дариенко'
+                        elif any(k in p_lower or k in deal_city.lower() for k in ['оренбург']):
+                            cname = 'ГК Автопрестиж'
+                            kam_partner = 'Алексей Чихарев'
+                        else:
+                            cname = 'Эксперт Авто (Самара)'
+                            kam_partner = 'Евгения Добролюбова'
+                    else:
+                        resolved_deal_kam = oem_resolver.resolve(
+                            inn=deal_inn,
+                            partner_name=partner_raw or cname,
+                            brand=final_brand or '',
+                            city=deal_city,
+                            fallback_kam=kam_partner
+                        )
+                        if resolved_deal_kam and resolved_deal_kam != "Не назначен":
+                            kam_partner = resolved_deal_kam
 
                 if prepay_month_str and prepay_month_str >= "2026-09":
-                    resolved_prepay_kam = oem_resolver.resolve(
-                        inn=deal_inn,
-                        partner_name=partner_raw or cname,
-                        brand=final_brand or '',
-                        city=deal_city,
-                        fallback_kam=kam_prepay
-                    )
-                    if resolved_prepay_kam and resolved_prepay_kam != "Не назначен":
-                        kam_prepay = resolved_prepay_kam
+                    if any(k in p_lower for k in ['фреш', 'fresh']):
+                        kam_prepay = 'Андрей Кузнецов'
+                    elif 'спектр' in p_lower:
+                        if deal_inn == '1657225323' or any(k in p_lower for k in ['апельсин', 'автосеть']):
+                            kam_prepay = 'Алексей Чихарев'
+                        elif deal_inn == '5258089355' or 'агат' in p_lower:
+                            kam_prepay = 'Андрей Кузнецов'
+                    elif 'оренбург' in p_lower and 'эксперт' in p_lower:
+                        kam_prepay = 'Алексей Чихарев'
+                    elif any(k in p_lower for k in ['сургут', 'авто-моторс', 'автомоторс']):
+                        kam_prepay = 'Алексей Чихарев'
+                    elif any(k in p_lower for k in ['арконт', 'сильвер', 'твс', 'нижегородец', 'планета авто', 'амк']):
+                        kam_prepay = 'Евгения Добролюбова'
+                    elif 'авторитет' in p_lower:
+                        kam_prepay = 'Светлана Дариенко'
+                    elif 'сатурн' in p_lower:
+                        if deal_inn == '4826051045' or 'липецк' in p_lower:
+                            kam_prepay = 'Валерия Солдатова'
+                        else:
+                            kam_prepay = 'Евгения Добролюбова'
+                    elif 'эксперт' in p_lower:
+                        if any(k in p_lower or k in deal_city.lower() for k in ['новосибирск', 'нск']):
+                            kam_prepay = 'Светлана Дариенко'
+                        elif any(k in p_lower or k in deal_city.lower() for k in ['оренбург']):
+                            kam_prepay = 'Алексей Чихарев'
+                        else:
+                            kam_prepay = 'Евгения Добролюбова'
+                    else:
+                        resolved_prepay_kam = oem_resolver.resolve(
+                            inn=deal_inn,
+                            partner_name=partner_raw or cname,
+                            brand=final_brand or '',
+                            city=deal_city,
+                            fallback_kam=kam_prepay
+                        )
+                        if resolved_prepay_kam and resolved_prepay_kam != "Не назначен":
+                            kam_prepay = resolved_prepay_kam
 
             if is_sale:
                 is_mp = any(k in b2c.upper() for k in ['МП1', 'МП2', 'МП3', 'MP1', 'MP2', 'MP3'])
