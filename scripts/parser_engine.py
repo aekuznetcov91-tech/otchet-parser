@@ -2141,17 +2141,30 @@ def run_pipeline():
         output_payload["banking_analytics"] = banking_analytics
 
     # 6. Save JSON and sync HTML assets to site/
-    os.makedirs(SITE_DIR, exist_ok=True)
-    with open(OUTPUT_JSON_SITE, 'w', encoding='utf-8') as f:
-        json.dump(output_payload, f, ensure_ascii=False, separators=(',', ':'))
+    def safe_save_json(payload, target_path):
+        temp_path = target_path + ".tmp"
+        raw_json = json.dumps(payload, ensure_ascii=False, separators=(',', ':'))
+        with open(temp_path, 'w', encoding='utf-8') as f:
+            chunk_size = 1024 * 1024
+            for i in range(0, len(raw_json), chunk_size):
+                f.write(raw_json[i:i + chunk_size])
+        if os.path.exists(target_path):
+            try:
+                os.remove(target_path)
+            except Exception:
+                pass
+        os.replace(temp_path, target_path)
 
-    with open(OUTPUT_JSON_ROOT, 'w', encoding='utf-8') as f:
-        json.dump(output_payload, f, ensure_ascii=False, separators=(',', ':'))
+    os.makedirs(SITE_DIR, exist_ok=True)
+    safe_save_json(output_payload, OUTPUT_JSON_SITE)
+    safe_save_json(output_payload, OUTPUT_JSON_ROOT)
 
     parent_root_json = os.path.join(os.path.dirname(PROJECT_ROOT), 'data.json')
     if os.path.exists(parent_root_json):
-        with open(parent_root_json, 'w', encoding='utf-8') as f:
-            json.dump(output_payload, f, ensure_ascii=False, separators=(',', ':'))
+        try:
+            safe_save_json(output_payload, parent_root_json)
+        except Exception:
+            pass
 
     print("-" * 60)
     print(f"✅ ПАРСИНГ УСПЕШНО ЗАВЕРШЕН!")
