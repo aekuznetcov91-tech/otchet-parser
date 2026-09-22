@@ -4015,7 +4015,7 @@
           "address": "г. Химки, Ленинградское ш., вл.18",
           "back_name": "",
           "email": "promo@avtomir.ru",
-          "responsible": "",
+          "responsible": "Андрей Кузнецов",
           "brand": "Geely & Belgee"
         },
         {
@@ -4041,7 +4041,7 @@
           "address": "г. Москва, Иркутская ул., д.5/6, стр.1",
           "back_name": "",
           "email": "promo@avtomir.ru",
-          "responsible": "",
+          "responsible": "Андрей Кузнецов",
           "brand": "Geely & Belgee"
         },
         {
@@ -4061,7 +4061,8 @@
           "sheet": "LADA",
           "city": "Ярославль, Проспект Октября, 92",
           "name": "ГК Автомир",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Андрей Кузнецов"
         },
         {
           "sheet": "HAVAL",
@@ -4212,7 +4213,7 @@
           "name": "ГК АВТОМИР",
           "legal_entity": "ООО АМ Капитал",
           "inn": "7708607959",
-          "responsible": "Не назначен"
+          "responsible": "Андрей Кузнецов"
         },
         {
           "sheet": "HAVAL",
