@@ -1436,6 +1436,14 @@ def run_pipeline():
     except Exception as e:
         print(f"[!] September BI + OEM enrichment skipped/warning: {e}")
 
+    try:
+        if PROJECT_ROOT not in sys.path:
+            sys.path.insert(0, PROJECT_ROOT)
+        from scripts.sync_kam_to_registry import sync_kam_to_registry
+        sync_kam_to_registry()
+    except Exception as e:
+        print(f"[!] OEM KAM sync to registry skipped/warning: {e}")
+
     # 1. Collect files from raw_data or root with MD5 hash deduplication
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
     deals_candidates = []
@@ -1636,6 +1644,16 @@ def run_pipeline():
         except Exception as e:
             print(f"[!] Предупреждение при загрузке моста сделок сентября: {e}")
 
+    try:
+        if PROJECT_ROOT not in sys.path:
+            sys.path.insert(0, PROJECT_ROOT)
+        from scripts.oem_kam_resolver import OemKamResolver
+        oem_excel_file = os.path.join(RAW_DATA_DIR, 'OEM СберАвто финал (15).xlsx')
+        oem_resolver = OemKamResolver(oem_excel_file)
+    except Exception as e:
+        print(f"[!] Предупреждение при инициализации OemKamResolver: {e}")
+        oem_resolver = None
+
     kam_dict_bitrix = {}
     kam_dict_bi = {}
     kam_dict_sber = {}
@@ -1823,49 +1841,50 @@ def run_pipeline():
                 elif 'авторитэйл м' in p_lower or 'авторитэйл' in p_lower or 'авторитэйл' in c_lower:
                     pid, cname, kam_partner = (1285, 'ГК Авторитэйл М', 'Валерия Солдатова')
 
-            # Explicit KAM reallocations:
-            if 'рольф' in p_lower or 'рольф' in c_lower:
-                kam_partner = "Андрей Кузнецов"
-            elif ('кунцево' in p_lower or 'кунцево' in c_lower) and 'рольф' not in p_lower:
-                kam_partner = "Алексей Чихарев"
-            elif 'борис' in p_lower or 'борис' in c_lower:
-                kam_partner = "Алексей Чихарев"
-            elif 'тд армада-авто' in p_lower or 'тд армада-авто' in c_lower:
-                kam_partner = "Андрей Кузнецов"
-            elif 'армада-авто' in p_lower or 'армада-авто' in c_lower:
-                kam_partner = "Алексей Чихарев"
-            elif 'оренбург' in p_lower or 'оренбург' in c_lower:
-                kam_partner = "Алексей Чихарев"
-            elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто', 'автолидер']) or any(k in c_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто', 'автолидер']):
-                kam_partner = "Андрей Кузнецов"
-            elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автопилот', 'максимум', 'вагнер авто']) or any(k in c_lower for k in ['лидер сервис', 'лидер online', 'автопилот', 'максимум', 'вагнер авто']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
-                kam_partner = "Светлана Дариенко"
-            elif 'автоград' in p_lower or 'автоград' in c_lower:
-                deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
-                if 'калининград' in deal_city:
-                    kam_partner = "Светлана Дариенко"
-                else:
+            # Explicit KAM reallocations (strictly for August 2026 and earlier):
+            if deal_month_str <= "2026-08" or not deal_month_str:
+                if 'рольф' in p_lower or 'рольф' in c_lower:
+                    kam_partner = "Андрей Кузнецов"
+                elif ('кунцево' in p_lower or 'кунцево' in c_lower) and 'рольф' not in p_lower:
                     kam_partner = "Алексей Чихарев"
-            elif 'премиум авто' in p_lower or 'премиум авто' in c_lower:
-                deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
-                if any(spb_k in deal_city for spb_k in ['санкт-петербург', 'спб']) or any(spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']) or (final_brand and 'geely' in str(final_brand).lower()):
-                    kam_partner = "Светлана Дариенко"
-                else:
+                elif 'борис' in p_lower or 'борис' in c_lower:
                     kam_partner = "Алексей Чихарев"
-            elif any(k in p_lower for k in ['эксперт св', 'автоимпорт центр']) or any(k in c_lower for k in ['эксперт св', 'автоимпорт центр']):
-                kam_partner = "Алексей Чихарев"
-            elif 'спектр' in p_lower and 'апельсин' in p_lower:
-                kam_partner = "Алексей Чихарев"
-            elif 'авторитэйл м' in p_lower or 'авторитэйл м' in c_lower:
-                deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
-                if any(spb_k in deal_city for spb_k in ['санкт-петербург', 'спб']):
+                elif 'тд армада-авто' in p_lower or 'тд армада-авто' in c_lower:
+                    kam_partner = "Андрей Кузнецов"
+                elif 'армада-авто' in p_lower or 'армада-авто' in c_lower:
+                    kam_partner = "Алексей Чихарев"
+                elif 'оренбург' in p_lower or 'оренбург' in c_lower:
+                    kam_partner = "Алексей Чихарев"
+                elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто', 'автолидер']) or any(k in c_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто', 'автолидер']):
+                    kam_partner = "Андрей Кузнецов"
+                elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автопилот', 'максимум', 'вагнер авто']) or any(k in c_lower for k in ['лидер сервис', 'лидер online', 'автопилот', 'максимум', 'вагнер авто']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
                     kam_partner = "Светлана Дариенко"
-                else:
+                elif 'автоград' in p_lower or 'автоград' in c_lower:
+                    deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
+                    if 'калининград' in deal_city:
+                        kam_partner = "Светлана Дариенко"
+                    else:
+                        kam_partner = "Алексей Чихарев"
+                elif 'премиум авто' in p_lower or 'премиум авто' in c_lower:
+                    deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
+                    if any(spb_k in deal_city for spb_k in ['санкт-петербург', 'спб']) or any(spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']) or (final_brand and 'geely' in str(final_brand).lower()):
+                        kam_partner = "Светлана Дариенко"
+                    else:
+                        kam_partner = "Алексей Чихарев"
+                elif any(k in p_lower for k in ['эксперт св', 'автоимпорт центр']) or any(k in c_lower for k in ['эксперт св', 'автоимпорт центр']):
+                    kam_partner = "Алексей Чихарев"
+                elif 'спектр' in p_lower and 'апельсин' in p_lower:
+                    kam_partner = "Алексей Чихарев"
+                elif 'авторитэйл м' in p_lower or 'авторитэйл м' in c_lower:
+                    deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
+                    if any(spb_k in deal_city for spb_k in ['санкт-петербург', 'спб']):
+                        kam_partner = "Светлана Дариенко"
+                    else:
+                        kam_partner = "Валерия Солдатова"
+                elif 'олимп' in p_lower or 'темп авто кубань' in p_lower or 'олимп' in c_lower:
+                    kam_partner = "Андрей Кузнецов"
+                elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']) or any(k in c_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']):
                     kam_partner = "Валерия Солдатова"
-            elif 'олимп' in p_lower or 'темп авто кубань' in p_lower or 'олимп' in c_lower:
-                kam_partner = "Андрей Кузнецов"
-            elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']) or any(k in c_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']):
-                kam_partner = "Валерия Солдатова"
 
             k_low = (kam_partner or "").lower()
             if 'кузнецов' in k_low:
@@ -1886,6 +1905,31 @@ def run_pipeline():
             kam_prepay = kam_partner
             if kam_prepay == "Евгения Добролюбова" and (prepay_month_str <= "2026-08" or not prepay_month_str):
                 kam_prepay = "Андрей Кузнецов"
+
+            # Priority OEM (15) routing for September 2026 and later:
+            if oem_resolver:
+                deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip()
+                if deal_month_str and deal_month_str >= "2026-09":
+                    resolved_deal_kam = oem_resolver.resolve(
+                        inn=deal_inn,
+                        partner_name=partner_raw or cname,
+                        brand=final_brand or '',
+                        city=deal_city,
+                        fallback_kam=kam_partner
+                    )
+                    if resolved_deal_kam and resolved_deal_kam != "Не назначен":
+                        kam_partner = resolved_deal_kam
+
+                if prepay_month_str and prepay_month_str >= "2026-09":
+                    resolved_prepay_kam = oem_resolver.resolve(
+                        inn=deal_inn,
+                        partner_name=partner_raw or cname,
+                        brand=final_brand or '',
+                        city=deal_city,
+                        fallback_kam=kam_prepay
+                    )
+                    if resolved_prepay_kam and resolved_prepay_kam != "Не назначен":
+                        kam_prepay = resolved_prepay_kam
 
             if is_sale:
                 is_mp = any(k in b2c.upper() for k in ['МП1', 'МП2', 'МП3', 'MP1', 'MP2', 'MP3'])
