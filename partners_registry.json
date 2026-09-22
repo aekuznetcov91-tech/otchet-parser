@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1578,
+  "total_master_partners": 1570,
   "partners": [
     {
       "partner_id": 1001,
@@ -3708,10 +3708,21 @@
         "Fresh Auto",
         "Fresh Auto (ООО «Фреш-К») - ONLINE",
         "ONLINE CHERY Фреш (ООО \"ФРЕШ АВТО ГАЗ\")",
-        "Fresh Auto (ООО «Фреш-К»)"
+        "Fresh Auto (ООО «Фреш-К»)",
+        "CHERY Фреш",
+        "ООО ФД",
+        "Приоритет_Fresh",
+        "Fresh Haval мин воды",
+        "Fresh Haval",
+        "Фреш"
       ],
       "bi_aliases": [
-        "Fresh Auto"
+        "Fresh Auto",
+        "CHERY Фреш",
+        "Приоритет_Fresh",
+        "Fresh Haval мин воды",
+        "Fresh Haval",
+        "Фреш"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -3768,6 +3779,48 @@
           "name": "Фрэш Авто",
           "legal_entity": "ООО ФРЕШ АВТО ГАЗ",
           "inn": "7724423589",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Минеральные Воды",
+          "group_link": "https://max.ru/join/FXsvjZRf7opLGdfshy7-vkbQ-m7IlfnQ0Co3PH4OwyA",
+          "name": "Fresh Haval мин воды",
+          "legal_entity": "ООО ФД",
+          "inn": "3443137377",
+          "address": "Мин воды ул. Автомобильная, 17",
+          "back_name": "",
+          "email": "i.cholokyan@freshauto.ru\n a.stambolyan@freshauto.ru\n i.kalenikina@freshauto.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Ростов-на-Дону",
+          "group_link": "https://max.ru/join/FXsvjZRf7opLGdfshy7-vkbQ-m7IlfnQ0Co3PH4OwyA",
+          "name": "Fresh Haval Ростов",
+          "legal_entity": "ООО Фреш МБ",
+          "inn": "3443137377",
+          "address": "Ростов-на-Дону, ул. Вавилова 59Е",
+          "back_name": "Fresh Auto",
+          "email": "i.akulov@freshauto.ru\n e.gorlov@freshauto.ru\n i.kalenikina@freshauto.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Минеральные Воды",
+          "name": "Fresh Haval мин воды",
+          "legal_entity": "ООО ФД",
+          "inn": "3443137377",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Ростов-на-Дону",
+          "name": "Fresh Haval Ростов",
+          "legal_entity": "ООО Фреш МБ",
+          "inn": "3443137377",
           "responsible": "Андрей Кузнецов"
         }
       ],
@@ -4825,11 +4878,24 @@
         "ООО \"АКСИОН\" ONLINE",
         "ООО \"АКСИОН\"",
         "АКСИОН ONLINE",
-        "ООО АКСИОН"
+        "ООО АКСИОН",
+        "АГАТ ООО \"АКЦЕНТ\" ONLINE",
+        "ООО \"ЛАДА ЦЕНТР НА ЛЕНИНА\"",
+        "ООО \"АРТКАР\" ONLINE",
+        "АГАТ ООО \"АКЦЕНТ\"",
+        "Сапфир",
+        "ООО \"САПФИР\"",
+        "ООО \"САПФИР\" ONLINE",
+        "ООО \"ЛАДА ЦЕНТР НА ЛЕНИНА\" ONLINE",
+        "ЛАДА ЦЕНТР НА ЛЕНИНА",
+        "ООО \"АРТКАР\"",
+        "АРТКАР",
+        "АКСИОН"
       ],
       "bi_aliases": [
         "ГК АГАТ",
-        "Агат Авто г.Иркутск"
+        "Агат Авто г.Иркутск",
+        "Сапфир"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -5101,7 +5167,6 @@
         "ONLINE Форвард-Авто",
         "ONLINE Сызранская СТА (АО \"СЫЗРАНСКАЯ СТО\")",
         "Форвард",
-        "Online ООО АВТО РИТЕЙЛ ДИАМАНТ / ГК Форвард",
         "Online ООО Автосеть Уфа",
         "ONLINE ФОРВАРД Авто Ижевск (ООО \"ФОРВАРД-АВТО\")"
       ],
@@ -5111,19 +5176,6 @@
       ],
       "pochta_aliases": [],
       "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Тюмень",
-          "group_link": "https://t.me/+nwbQsCMYlwFjZTYy",
-          "name": "Чери Центр Форвард-Авто",
-          "legal_entity": "ООО АВТО РИТЕЙЛ ДИАМАНТ",
-          "inn": "5906145075",
-          "address": "г. Тюмень,улица Республики, 282",
-          "back_name": "СберАвто",
-          "email": "v.bulutskova@chery-forward.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "CHERY & TENET"
-        },
         {
           "sheet": "CHERY&TENET",
           "city": "Уфа",
@@ -5156,14 +5208,6 @@
           "legal_entity": "ООО Автосеть Уфа",
           "inn": "0276945049",
           "responsible": "Евгения Добролюбова"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Тюмень",
-          "name": "Чери Центр Форвард-Авто",
-          "legal_entity": "ООО АВТО РИТЕЙЛ ДИАМАНТ",
-          "inn": "5906145075",
-          "responsible": "Светлана Дариенко"
         }
       ],
       "status": "verified"
@@ -5497,7 +5541,7 @@
       "partner_id": 1057,
       "canonical_name": "ООО Автосеть Уфа",
       "holding": "ООО",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "Online ООО Автосеть Уфа",
         "ООО Автосеть Уфа"
@@ -6558,7 +6602,7 @@
       "partner_id": 1073,
       "canonical_name": "CHERY ВИП АВТО",
       "holding": "CHERY",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ONLINE CHERY ВИП АВТО (ООО \"ВИП АВТО САМАРА\")",
         "CHERY ВИП АВТО"
@@ -6650,25 +6694,6 @@
           "responsible": "Алексей Чихарев"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1075,
-      "canonical_name": "CHERY Фреш",
-      "holding": "CHERY",
-      "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [
-        "ONLINE CHERY Фреш (ООО \"ФРЕШ АВТО ГАЗ\")",
-        "CHERY Фреш"
-      ],
-      "bi_aliases": [
-        "CHERY Фреш"
-      ],
-      "pochta_aliases": [
-        "Почта Фреш Чери Воронеж",
-        "Почта фреш Воронеж-2"
-      ],
-      "oem_data": [],
       "status": "verified"
     },
     {
@@ -7003,16 +7028,41 @@
     },
     {
       "partner_id": 1078,
-      "canonical_name": "ООО АВТО РИТЕЙЛ ДИАМАНТ / ГК Форвард",
+      "canonical_name": "Авторитейл Диаманд",
       "holding": "ООО",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "Online ООО АВТО РИТЕЙЛ ДИАМАНТ / ГК Форвард",
-        "ООО АВТО РИТЕЙЛ ДИАМАНТ / ГК Форвард"
+        "ООО АВТО РИТЕЙЛ ДИАМАНТ / ГК Форвард",
+        "ООО АВТО РИТЕЙЛ ДИАМАНТ",
+        "Авторитейл Диаманд",
+        "Авторитэйл Диамант"
       ],
       "bi_aliases": [],
       "pochta_aliases": [],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тюмень",
+          "group_link": "https://t.me/+nwbQsCMYlwFjZTYy",
+          "name": "Чери Центр Форвард-Авто",
+          "legal_entity": "ООО АВТО РИТЕЙЛ ДИАМАНТ",
+          "inn": "5906145075",
+          "address": "г. Тюмень,улица Республики, 282",
+          "back_name": "СберАвто",
+          "email": "v.bulutskova@chery-forward.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тюмень",
+          "name": "Чери Центр Форвард-Авто",
+          "legal_entity": "ООО АВТО РИТЕЙЛ ДИАМАНТ",
+          "inn": "5906145075",
+          "responsible": "Евгения Добролюбова"
+        }
+      ],
       "status": "verified"
     },
     {
@@ -9896,7 +9946,7 @@
       "partner_id": 1137,
       "canonical_name": "ООО \"КОНДОР-ПЛЮС",
       "holding": "ООО",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО \"КОНДОР-ПЛЮС\" ONLINE",
         "ООО \"КОНДОР-ПЛЮС"
@@ -11055,7 +11105,7 @@
       "partner_id": 1179,
       "canonical_name": "ГК Самара Авто",
       "holding": "ГК",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [],
       "bi_aliases": [
         "ГК Самара Авто"
@@ -11583,19 +11633,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1196,
-      "canonical_name": "Приоритет_Fresh",
-      "holding": "Приоритет_Fresh",
-      "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Приоритет_Fresh"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 1197,
       "canonical_name": "Приоритет_Автобан",
       "holding": "Приоритет_Автобан",
@@ -11992,19 +12029,6 @@
       "bitrix_aliases": [],
       "bi_aliases": [
         "Пятое Колесо"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1209,
-      "canonical_name": "Сапфир",
-      "holding": "Сапфир",
-      "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Сапфир"
       ],
       "pochta_aliases": [],
       "oem_data": [],
@@ -13794,67 +13818,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1239,
-      "canonical_name": "Fresh Haval мин воды",
-      "holding": "Fresh",
-      "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [
-        "ООО ФД",
-        "Fresh Haval (ООО Фреш МБ)"
-      ],
-      "bi_aliases": [
-        "Fresh Haval мин воды"
-      ],
-      "pochta_aliases": [
-        "i.cholokyan@freshauto.ru\n a.stambolyan@freshauto.ru\n i.kalenikina@freshauto.ru"
-      ],
-      "oem_data": [
-        {
-          "sheet": "HAVAL",
-          "city": "Минеральные Воды",
-          "group_link": "https://max.ru/join/FXsvjZRf7opLGdfshy7-vkbQ-m7IlfnQ0Co3PH4OwyA",
-          "name": "Fresh Haval мин воды",
-          "legal_entity": "ООО ФД",
-          "inn": "3443137377",
-          "address": "Мин воды ул. Автомобильная, 17",
-          "back_name": "",
-          "email": "i.cholokyan@freshauto.ru\n a.stambolyan@freshauto.ru\n i.kalenikina@freshauto.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Ростов-на-Дону",
-          "group_link": "https://max.ru/join/FXsvjZRf7opLGdfshy7-vkbQ-m7IlfnQ0Co3PH4OwyA",
-          "name": "Fresh Haval Ростов",
-          "legal_entity": "ООО Фреш МБ",
-          "inn": "3443137377",
-          "address": "Ростов-на-Дону, ул. Вавилова 59Е",
-          "back_name": "Fresh Auto",
-          "email": "i.akulov@freshauto.ru\n e.gorlov@freshauto.ru\n i.kalenikina@freshauto.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Минеральные Воды",
-          "name": "Fresh Haval мин воды",
-          "legal_entity": "ООО ФД",
-          "inn": "3443137377",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Ростов-на-Дону",
-          "name": "Fresh Haval Ростов",
-          "legal_entity": "ООО Фреш МБ",
-          "inn": "3443137377",
-          "responsible": "Андрей Кузнецов"
-        }
-      ],
-      "status": "verified"
-    },
-    {
       "partner_id": 1240,
       "canonical_name": "Авто Бизнес",
       "holding": "Авто",
@@ -15245,7 +15208,7 @@
       "partner_id": 1265,
       "canonical_name": "Гак Верра",
       "holding": "Гак",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "Урал Моторс"
       ],
@@ -15260,7 +15223,8 @@
           "sheet": "GAC",
           "city": "Стерлитомак,Элеваторная 39, стр.1",
           "name": "ГК ВЕРРА ГАК",
-          "brand": "GAC"
+          "brand": "GAC",
+          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -15269,7 +15233,7 @@
       "partner_id": 1266,
       "canonical_name": "Автолидер ГАК",
       "holding": "Автолидер",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО «АВТОЛИДЕР»."
       ],
@@ -15284,7 +15248,8 @@
           "sheet": "GAC",
           "city": "Тольятти г., Обводное ш., д. 8",
           "name": "ГК Автолидер",
-          "brand": "GAC"
+          "brand": "GAC",
+          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -17571,7 +17536,7 @@
       "partner_id": 632026,
       "canonical_name": "ООО \"УРАЛ-МОТОРС\" ONLINE",
       "holding": "",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО \"УРАЛ-МОТОРС\" ONLINE"
       ],
@@ -17587,32 +17552,6 @@
       "kam": "Не назначен",
       "bitrix_aliases": [
         "Альянс-АвтоМаркет (Альянс Select)"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632028,
-      "canonical_name": "ООО \"ЛАДА ЦЕНТР НА ЛЕНИНА\"",
-      "holding": "",
-      "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [
-        "ООО \"ЛАДА ЦЕНТР НА ЛЕНИНА\""
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632029,
-      "canonical_name": "ООО \"АРТКАР\" ONLINE",
-      "holding": "",
-      "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [
-        "ООО \"АРТКАР\" ONLINE"
       ],
       "bi_aliases": [],
       "pochta_aliases": [],
@@ -17658,7 +17597,7 @@
       "partner_id": 632031,
       "canonical_name": "АВТОЛИДЕР ONLINE",
       "holding": "",
-      "kam": "Андрей Кузнецов",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "АВТОЛИДЕР ONLINE"
       ],
@@ -26207,29 +26146,6 @@
       "canonical_name": "OEM Партнер",
       "kam": "Не назначен",
       "bitrix_aliases": [],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": []
-    },
-    {
-      "partner_id": 632042,
-      "canonical_name": "ООО \"АКСИОН",
-      "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [
-        "ООО \"АКСИОН\" ONLINE"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "holding": "ГК АГАТ"
-    },
-    {
-      "partner_id": 632043,
-      "canonical_name": "АГАТ ООО \"АКЦЕНТ",
-      "kam": "Андрей Кузнецов",
-      "bitrix_aliases": [
-        "АГАТ ООО \"АКЦЕНТ\" ONLINE"
-      ],
       "bi_aliases": [],
       "pochta_aliases": [],
       "oem_data": []
