@@ -193,6 +193,17 @@ def date_to_excel_serial(d_date):
         d_date = d_date.date()
     return (d_date - datetime.date(1899, 12, 30)).days
 
+def normalize_vin_str(vin_val):
+    """Normalize VIN: strip whitespace, map Cyrillic homoglyphs to Latin, standardize 1/I and 0/O for 17-char VINs."""
+    if not vin_val:
+        return ""
+    v = str(vin_val).strip().upper()
+    v = v.translate(str.maketrans('АВЕКМНОРСТХ', 'ABEKMHOPCTX'))
+    v = re.sub(r'[^A-Z0-9]', '', v)
+    if len(v) == 17:
+        v = v.replace('I', '1').replace('O', '0')
+    return v
+
 class HtmlTableParser(HTMLParser):
     """Fast streaming parser for HTML-based XLS tables."""
     def __init__(self):
@@ -1915,6 +1926,14 @@ def run_pipeline():
                     if 'диалог' in p_lower or deal_inn in ('1650207558', '1649021206', '1644062657'):
                         cname = 'Диалог Авто'
                         kam_partner = 'Алексей Чихарев'
+                    # Ринг Авто / ONLINE Ринг -> Солдатова
+                    elif 'ринг' in p_lower:
+                        cname = 'Ринг Авто'
+                        kam_partner = 'Валерия Солдатова'
+                    # Альфа-Сервис -> Добролюбова
+                    elif any(k in p_lower for k in ['альфа-сервис', 'альфа сервис']):
+                        cname = 'Альфа-Сервис'
+                        kam_partner = 'Евгения Добролюбова'
                     # Tenet центр Ника авто -> Добролюбова
                     elif any(k in p_lower for k in ['ника', 'велес авто']) or deal_inn == '5638074027':
                         cname = 'Tenet Центр Ника Авто'
@@ -2028,6 +2047,12 @@ def run_pipeline():
                     # Диалог авто -> Чихарев
                     if 'диалог' in p_lower or deal_inn in ('1650207558', '1649021206', '1644062657'):
                         kam_prepay = 'Алексей Чихарев'
+                    # Ринг Авто / ONLINE Ринг -> Солдатова
+                    elif 'ринг' in p_lower:
+                        kam_prepay = 'Валерия Солдатова'
+                    # Альфа-Сервис -> Добролюбова
+                    elif any(k in p_lower for k in ['альфа-сервис', 'альфа сервис']):
+                        kam_prepay = 'Евгения Добролюбова'
                     # Ника авто -> Добролюбова
                     elif any(k in p_lower for k in ['ника', 'велес авто']) or deal_inn == '5638074027':
                         kam_prepay = 'Евгения Добролюбова'
@@ -2142,12 +2167,17 @@ def run_pipeline():
                     "Date": deal_serial
                 })
                 if not is_prepay:
+                    debtor_calc_date = d_prepay_date or d_deal_date
+                    debtor_age = (datetime.date(2026, 9, 23) - debtor_calc_date).days if debtor_calc_date else 0
                     debtors.append({
                         "company": cname,
                         "raw_company": partner_raw,
                         "partner_id": pid,
+                        "client_id": client_id,
+                        "deal_id": deal_id,
                         "prepay_date": d_prepay_date.strftime("%d.%m.%Y") if d_prepay_date else (d_deal_date.strftime("%d.%m.%Y") if d_deal_date else ""),
                         "prepay_serial": prepay_serial or deal_serial,
+                        "aging_days": max(0, debtor_age),
                         "brand": final_brand,
                         "model": model,
                         "vin": vin,
@@ -2158,9 +2188,52 @@ def run_pipeline():
                         "b2c": b2c
                     })
 
-    # Deduplicate & exclude from debtors if the car (VIN) was already closed and sold in a main deal
-    sold_vins = {r['VIN'].upper().strip() for r in sys_db if r.get('SaleQty') == 1 and r.get('VIN') and len(r.get('VIN').strip()) >= 8}
-    debtors = [d for d in debtors if not (d.get('vin') and d.get('vin').upper().strip() in sold_vins)]
+    # Deduplicate & exclude from debtors if the car (VIN) was already closed and sold in a main deal or replaced
+    sold_vins_norm = {normalize_vin_str(r['VIN']) for r in sys_db if r.get('SaleQty') == 1 and r.get('VIN') and len(normalize_vin_str(r['VIN'])) >= 8}
+    sales_by_client = defaultdict(list)
+    for r in sys_db:
+        if r.get('SaleQty') == 1:
+            cid_s = str(r.get('ClientId') or '').strip()
+            if cid_s:
+                sales_by_client[cid_s].append(r)
+
+    filtered_debtors = []
+    seen_debtor_keys = set()
+    for d in debtors:
+        d_vin = str(d.get('vin') or '').strip()
+        d_vin_norm = normalize_vin_str(d_vin)
+        cid = str(d.get('client_id') or '').strip()
+        did = str(d.get('deal_id') or '').strip()
+        company = str(d.get('company') or '').strip()
+        brand = str(d.get('brand') or '').strip().upper()
+
+        # 1. Exact or homoglyph/typo normalized VIN match against closed sales
+        if d_vin_norm and len(d_vin_norm) >= 8 and d_vin_norm in sold_vins_norm:
+            continue
+
+        # 2. Check if client already completed purchase at this dealer/brand (replacement VIN or duplicate deal)
+        if cid and cid in sales_by_client:
+            client_sales = sales_by_client[cid]
+            if len(client_sales) <= 3:
+                matched_sale = None
+                for s in client_sales:
+                    s_did = str(s.get('DealId') or '').strip()
+                    s_brand = str(s.get('Brand') or '').strip().upper()
+                    if s_did != did and (s_brand == brand or not brand or brand == 'NONE'):
+                        matched_sale = s
+                        break
+                if matched_sale:
+                    continue
+
+        # 3. Deduplicate exact duplicate records in debtors (same normalized VIN and same client)
+        dedup_key = (d_vin_norm, cid, company) if (d_vin_norm and len(d_vin_norm) >= 8) else (did, company)
+        if dedup_key in seen_debtor_keys:
+            continue
+        seen_debtor_keys.add(dedup_key)
+
+        filtered_debtors.append(d)
+
+    debtors = filtered_debtors
 
     # 4. Process Leads
     if leads_data:
@@ -2267,6 +2340,12 @@ def run_pipeline():
                 if 'диалог' in p_lower:
                     cname = 'Диалог Авто'
                     kam = 'Алексей Чихарев'
+                elif 'ринг' in p_lower:
+                    cname = 'Ринг Авто'
+                    kam = 'Валерия Солдатова'
+                elif any(k in p_lower for k in ['альфа-сервис', 'альфа сервис']):
+                    cname = 'Альфа-Сервис'
+                    kam = 'Евгения Добролюбова'
                 elif any(k in p_lower for k in ['ника', 'велес авто']):
                     cname = 'Tenet Центр Ника Авто'
                     kam = 'Евгения Добролюбова'

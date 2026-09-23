@@ -13,46 +13,85 @@ function getDebtorChannelBadge(b2c) {
     return `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-700 border border-gray-200">${ch}</span>`;
 }
 
-function getDebtorAgingBadge(prepayDateStr) {
-    if (!prepayDateStr || prepayDateStr === '—') return '';
+let currentDebtorAgingCohort = 'all';
+
+function getDebtorAgeDays(d) {
+    if (d && typeof d.aging_days === 'number') return d.aging_days;
+    const prepayDateStr = (d && d.prepay_date) ? d.prepay_date : (typeof d === 'string' ? d : '');
+    if (!prepayDateStr || prepayDateStr === '—') return 0;
     try {
         const parts = prepayDateStr.split('.');
         if (parts.length === 3) {
             const pDate = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
             const now = new Date();
-            const diffDays = Math.floor((now - pDate) / (1000 * 60 * 60 * 24));
-            if (diffDays > 14) {
-                return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300 shadow-xs" title="Просрочка более 14 дней">${diffDays} дн.</span>`;
-            } else if (diffDays >= 7) {
-                return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-300 shadow-xs" title="Просрочка от 7 до 14 дней">${diffDays} дн.</span>`;
-            } else if (diffDays >= 0) {
-                return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">${diffDays} дн.</span>`;
-            }
+            return Math.max(0, Math.floor((now - pDate) / (1000 * 60 * 60 * 24)));
         }
     } catch(e) {}
+    return 0;
+}
+
+function getDebtorAgingBadge(prepayDateStr, car) {
+    if (!prepayDateStr || prepayDateStr === '—') return '';
+    const diffDays = car ? getDebtorAgeDays(car) : getDebtorAgeDays(prepayDateStr);
+    if (diffDays > 60) {
+        return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-black bg-rose-200 text-rose-950 border border-rose-400 shadow-xs" title="Зависший долг более 60 дней">${diffDays} дн.</span>`;
+    } else if (diffDays > 30) {
+        return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 shadow-xs" title="Контроль выдачи (31–60 дней)">${diffDays} дн.</span>`;
+    } else if (diffDays > 14) {
+        return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200 shadow-xs" title="В ожидании от 14 до 30 дней">${diffDays} дн.</span>`;
+    } else if (diffDays >= 0) {
+        return `<span class="ml-1.5 px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200" title="Свежая бронь (до 14 дней)">${diffDays} дн.</span>`;
+    }
     return '';
+}
+
+function setDebtorAgingCohort(cohort) {
+    currentDebtorAgingCohort = cohort || 'all';
+    const btns = document.querySelectorAll('.debtor-cohort-btn');
+    btns.forEach(btn => {
+        const c = btn.getAttribute('data-cohort');
+        if (c === currentDebtorAgingCohort) {
+            btn.classList.add('bg-slate-700', 'text-white', 'border-amber-400/80');
+            btn.classList.remove('bg-slate-800/80', 'text-slate-400', 'border-slate-700');
+        } else {
+            btn.classList.remove('bg-slate-700', 'text-white', 'border-amber-400/80');
+            btn.classList.add('bg-slate-800/80', 'text-slate-400', 'border-slate-700');
+        }
+    });
+    renderDebtorsTable(currentFilterConfig);
 }
 
 function getFilteredDebtors(filterCfg) {
     const cfg = filterCfg || currentFilterConfig;
     return rawDebtorsList.filter(d => {
-        if (!cfg || cfg.mode === 'all') return true;
-        if (cfg.mode === 'month') {
+        // 1. Period filter
+        if (cfg && cfg.mode === 'month') {
             let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0, 2).join('-') : "";
-            return m === cfg.month;
-        }
-        if (cfg.mode === 'custom') {
+            if (m !== cfg.month) return false;
+        } else if (cfg && cfg.mode === 'custom') {
             const fTime = cfg.from ? cfg.from.getTime() : -Infinity;
             const tTime = cfg.to ? cfg.to.getTime() : Infinity;
             if (d.prepay_serial && d.prepay_serial > 0) {
                 const jsD = excelToJSDate(d.prepay_serial);
                 if (jsD) {
                     const t = jsD.getTime();
-                    return t >= fTime && t <= tTime;
+                    if (t < fTime || t > tTime) return false;
                 }
             }
-            return true;
         }
+
+        // 2. Cohort filter (светофор)
+        if (currentDebtorAgingCohort && currentDebtorAgingCohort !== 'all') {
+            const days = getDebtorAgeDays(d);
+            if (currentDebtorAgingCohort === 'fresh') {
+                if (days > 30) return false;
+            } else if (currentDebtorAgingCohort === 'warning') {
+                if (days <= 30 || days > 60) return false;
+            } else if (currentDebtorAgingCohort === 'stale') {
+                if (days <= 60) return false;
+            }
+        }
+
         return true;
     });
 }
@@ -80,6 +119,46 @@ function renderDebtorsTable(filterCfg) {
     });
 
     let sortedCompanies = Object.values(compMap).sort((a, b) => b.cars.length - a.cars.length || a.name.localeCompare(b.name));
+
+    // Update Cohort Counts for Current Period
+    const periodAllDebtors = rawDebtorsList.filter(d => {
+        const cfg = filterCfg || currentFilterConfig;
+        if (!cfg || cfg.mode === 'all') return true;
+        if (cfg.mode === 'month') {
+            let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0, 2).join('-') : "";
+            return m === cfg.month;
+        }
+        if (cfg.mode === 'custom') {
+            const fTime = cfg.from ? cfg.from.getTime() : -Infinity;
+            const tTime = cfg.to ? cfg.to.getTime() : Infinity;
+            if (d.prepay_serial && d.prepay_serial > 0) {
+                const jsD = excelToJSDate(d.prepay_serial);
+                if (jsD) {
+                    const t = jsD.getTime();
+                    return t >= fTime && t <= tTime;
+                }
+            }
+        }
+        return true;
+    });
+
+    let countAll = periodAllDebtors.length;
+    let countFresh = 0, countWarning = 0, countStale = 0;
+    periodAllDebtors.forEach(d => {
+        const days = getDebtorAgeDays(d);
+        if (days <= 30) countFresh++;
+        else if (days <= 60) countWarning++;
+        else countStale++;
+    });
+
+    const bAll = document.getElementById('cohortBadgeAll');
+    const bFresh = document.getElementById('cohortBadgeFresh');
+    const bWarning = document.getElementById('cohortBadgeWarning');
+    const bStale = document.getElementById('cohortBadgeStale');
+    if (bAll) bAll.innerText = countAll;
+    if (bFresh) bFresh.innerText = countFresh;
+    if (bWarning) bWarning.innerText = countWarning;
+    if (bStale) bStale.innerText = countStale;
 
     // Update Mini KPIs
     const elDebtorComps = document.getElementById('kpiDebtorCompanies');
@@ -143,7 +222,7 @@ function renderDebtorsTable(filterCfg) {
                 </td>`;
             }
             html += `
-                <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}${getDebtorAgingBadge(car.prepay_date)}</td>
+                <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}${getDebtorAgingBadge(car.prepay_date, car)}</td>
                 <td>${getDebtorChannelBadge(car.b2c)}</td>
                 <td class="font-bold text-blue-900">${car.brand}</td>
                 <td class="text-slate-700 font-medium">${car.model || car.brand}</td>
@@ -370,4 +449,63 @@ function executeDebtorsExcelExport() {
 
     closeDebtorsExportModal();
     alert(`✅ Успешно выгружено ${exportedCount} файлов Excel в папку «Загрузки»!`);
+}
+
+function executeStaleDebtorsExcelExport() {
+    if (typeof XLSX === 'undefined') {
+        alert("Библиотека экспорта в Excel еще загружается, повторите попытку через секунду.");
+        return;
+    }
+    let staleDebtors = rawDebtorsList.filter(d => getDebtorAgeDays(d) > 60);
+    if (staleDebtors.length === 0) {
+        alert("Нет зависших долгов со сроком более 60 дней.");
+        return;
+    }
+
+    let wsData = [
+        ["ID Сделки", "Компания", "КАМ", "Дата аванса", "Срок просрочки (дн.)", "Марка", "Модель", "ВИН", "Стадия", "Цена авто (руб.)", "Менеджер", "Рекомендация"]
+    ];
+
+    staleDebtors.forEach(d => {
+        const days = getDebtorAgeDays(d);
+        wsData.push([
+            d.deal_id || "—",
+            d.company || "—",
+            d.kam || "Не назначен",
+            d.prepay_date || "—",
+            days,
+            d.brand || "—",
+            d.model || d.brand || "—",
+            d.vin || "—",
+            d.stage || "В ожидании ДКП",
+            d.price || 0,
+            d.manager || "—",
+            "Сверить с ДЦ / Закрыть в CRM (Сделка провалена/Возврат)"
+        ]);
+    });
+
+    let ws = XLSX.utils.aoa_to_sheet(wsData);
+    ws['!cols'] = [
+        { wch: 14 },
+        { wch: 32 },
+        { wch: 22 },
+        { wch: 15 },
+        { wch: 20 },
+        { wch: 18 },
+        { wch: 20 },
+        { wch: 24 },
+        { wch: 20 },
+        { wch: 16 },
+        { wch: 20 },
+        { wch: 45 }
+    ];
+
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Зависшие_долги_более_60дн");
+
+    let todayStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '_');
+    let fileName = `Реестр_зависших_долгов_более_60дней_${todayStr}.xlsx`;
+
+    XLSX.writeFile(wb, fileName);
+    alert(`✅ Успешно выгружен реестр зависших долгов (${staleDebtors.length} авто) в файл «${fileName}» для передачи координаторам и КАМам!`);
 }
