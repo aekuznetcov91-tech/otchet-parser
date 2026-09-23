@@ -612,17 +612,22 @@ function onPartnerPlanChange(partnerKey, val) {
     
     // In-place DOM update for row % and plan badge
     if (row) {
-        const tds = row.querySelectorAll('td');
-        const planPctCell = tds[3];
-        const totalDealsText = tds[9] ? tds[9].textContent.trim() : '0';
-        const totalDeals = parseInt(totalDealsText.replace(/\D/g, ''), 10) || 0;
+        const planPctCell = row.querySelector('.kam-plan-pct') || row.querySelectorAll('td')[3];
+        let totalDeals = 0;
+        if (row.dataset && row.dataset.totalDeals !== undefined) {
+            totalDeals = parseInt(row.dataset.totalDeals, 10) || 0;
+        } else {
+            const totalDealsEl = row.querySelector('.kam-total-deals');
+            const totalDealsText = totalDealsEl ? totalDealsEl.textContent.trim() : (row.querySelectorAll('td')[10] ? row.querySelectorAll('td')[10].textContent.trim() : '0');
+            totalDeals = parseInt(totalDealsText.replace(/\D/g, ''), 10) || 0;
+        }
         if (planPctCell) {
             const pct = num > 0 ? (totalDeals / num * 100) : 0;
             let planBadge = 'text-gray-400';
             if (num > 0) {
                 planBadge = pct >= 100 ? 'text-emerald-700 font-black' : (pct >= 70 ? 'text-blue-600 font-bold' : 'text-amber-600 font-bold');
             }
-            planPctCell.className = `text-center ${planBadge}`;
+            planPctCell.className = `text-center ${planBadge} kam-plan-pct`;
             planPctCell.textContent = num > 0 ? `${pct.toFixed(0)}%` : '—';
         }
     }
@@ -1749,7 +1754,9 @@ function renderKamTable(partners) {
 
         // Level 1: Partner Row
         html += `
-        <tr class="font-semibold bg-white hover:bg-blue-50/40 transition cursor-pointer select-none border-b border-gray-200" onclick="toggleKamPartnerRows('${safeKey}')">
+        <tr class="font-semibold bg-white hover:bg-blue-50/40 transition cursor-pointer select-none border-b border-gray-200" 
+            data-total-deals="${p.total_deals}" 
+            onclick="toggleKamPartnerRows('${safeKey}')">
             <td class="py-2.5 px-3">
                 <div class="flex items-center gap-1.5">
                     ${hasSubrows ? `<span id="kamArrow_${safeKey}" class="text-xs text-gray-400 transition-transform transform">▶</span>` : '<span class="w-3"></span>'}
@@ -1780,14 +1787,14 @@ function renderKamTable(partners) {
                 </div>
             </td>
             
-            <td class="text-center ${planBadge}">${p.plan > 0 ? `${p.plan_pct.toFixed(0)}%` : '—'}</td>
+            <td class="text-center ${planBadge} kam-plan-pct">${p.plan > 0 ? `${p.plan_pct.toFixed(0)}%` : '—'}</td>
             <td class="text-center font-bold text-gray-700">${fmt(p.trans_leads)}</td>
             <td class="text-center font-black text-purple-700 bg-purple-50/40">${fmt(p.trans_deals)}</td>
             <td class="text-center ${crColor}">${crFormatted}</td>
             <td class="text-center font-bold text-amber-700">${fmt(p.mp_deals)}</td>
             <td class="text-center font-bold text-sky-700 bg-sky-50/30">${fmt(p.fdc_online_deals)}</td>
             <td class="text-center bg-blue-50/20">${getMtdDynamicsHtml(p.total_deals, p.mtd_deals)}</td>
-            <td class="text-center font-black text-blue-700 bg-blue-50/40 text-sm">${fmt(p.total_deals)}</td>
+            <td class="text-center font-black text-blue-700 bg-blue-50/40 text-sm kam-total-deals">${fmt(p.total_deals)}</td>
             <td class="text-center bg-amber-50/30">${getDebtsHtml(p.debts_count, p.name)}</td>
         </tr>
         `;
