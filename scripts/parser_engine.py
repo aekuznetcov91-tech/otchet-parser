@@ -1134,7 +1134,8 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                     'brand': normalize_brand(str(get_exact_val(r, 'ТОВАР', 'БРЕНД') or '').strip()),
                     'price': float(str(get_exact_val(r, 'ЦЕНА', 'ФИНАЛЬНАЯЦЕНАB2C') or 0).replace(' ', '').replace('\xa0', '').replace(',', '.') or 0),
                     'month': deal_month_str,
-                    'is_sale': is_sale
+                    'is_sale': is_sale,
+                    'region': str(get_exact_val(r, 'ГОРОД', 'РЕГИОН', 'АДРЕС') or '').strip()
                 }
 
     # Pass 1: Extract client details from leads data
@@ -1143,7 +1144,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         if not cid:
             continue
         
-        reg = str(get_exact_val(r, 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОН', 'ADDRESS', 'АДРЕС') or '').strip()
+        reg = str(get_exact_val(r, 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОНКЛИЕНТА', 'РЕГИОНРЛ', 'РЕГИОН', 'ADDRESS', 'АДРЕС') or '').strip()
         partner = str(get_exact_val(r, 'ПАРТНЕР', 'ДИЛЕР', 'КОМПАНИЯ') or '').strip()
         raw_b = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
         brand = normalize_brand(raw_b) or 'Другие'
@@ -1200,7 +1201,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         if not dealer:
             dealer = 'Пул СберАвто (ДЦ не назначен)'
         
-        raw_reg = d12_info.get('region') or str(get_exact_val(r, 'РЕГИОН', 'АДРЕС') or '').strip()
+        raw_reg = d12_info.get('region') or deal_info.get('region') or str(get_exact_val(r, 'РЕГИОНКЛИЕНТА', 'РЕГИОНРЛ', 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОН', 'АДРЕС') or '').strip()
         norm_reg = normalize_region_clean(raw_reg)
         
         raw_b = d12_info.get('brand') or deal_info.get('brand') or str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
