@@ -1923,6 +1923,9 @@ def run_pipeline():
                     elif 'автомир' in p_lower and any(k in p_lower or k in deal_city.lower() for k in ['симферополь', 'крым']) or deal_inn == '9102289123':
                         cname = 'Автомир (Симферополь)'
                         kam_partner = 'Валерия Солдатова'
+                    # ГК Автомир (все остальные ДЦ, в т.ч. ООО "АМКапитал", Автомир-Трейд, Легат) -> Кузнецов
+                    elif any(k in p_lower for k in ['автомир', 'амкапитал', 'ам капитал', 'легат']):
+                        pid, cname, kam_partner = (1043, 'ГК Автомир', 'Андрей Кузнецов')
                     # Олимп (Темп Авто Кубань) -> Добролюбова
                     elif 'олимп' in p_lower or 'темп авто кубань' in p_lower or deal_inn == '2311093925':
                         cname = 'Олимп (Кубань)'
@@ -1992,7 +1995,7 @@ def run_pipeline():
                             cname = 'ГК Сатурн 2' if '2' in p_lower else 'Сатурн-Р'
                             kam_partner = 'Евгения Добролюбова'
                     # 9. Автосеть АМК РФ -> Добролюбова
-                    elif any(k in p_lower for k in ['амк', 'автосеть амк']):
+                    elif any(k in p_lower for k in ['амк', 'автосеть амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
                         cname = 'ФДЦ Автосеть АМК РФ'
                         kam_partner = 'Евгения Добролюбова'
                     # 10. Планета Авто -> Добролюбова
@@ -2031,6 +2034,9 @@ def run_pipeline():
                     # Автомир Симферополь -> Солдатова
                     elif 'автомир' in p_lower and any(k in p_lower or k in deal_city.lower() for k in ['симферополь', 'крым']) or deal_inn == '9102289123':
                         kam_prepay = 'Валерия Солдатова'
+                    # ГК Автомир (все остальные ДЦ, в т.ч. ООО "АМКапитал", Автомир-Трейд, Легат) -> Кузнецов
+                    elif any(k in p_lower for k in ['автомир', 'амкапитал', 'ам капитал', 'легат']):
+                        kam_prepay = 'Андрей Кузнецов'
                     # Олимп -> Добролюбова
                     elif 'олимп' in p_lower or 'темп авто кубань' in p_lower or deal_inn == '2311093925':
                         kam_prepay = 'Евгения Добролюбова'
@@ -2057,7 +2063,7 @@ def run_pipeline():
                         kam_prepay = 'Алексей Чихарев'
                     elif any(k in p_lower for k in ['сургут', 'авто-моторс', 'автомоторс']):
                         kam_prepay = 'Алексей Чихарев'
-                    elif any(k in p_lower for k in ['арконт', 'сильвер', 'твс', 'нижегородец', 'планета авто', 'амк']):
+                    elif any(k in p_lower for k in ['арконт', 'сильвер', 'твс', 'нижегородец', 'планета авто', 'амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
                         kam_prepay = 'Евгения Добролюбова'
                     elif 'авторитет' in p_lower:
                         kam_prepay = 'Светлана Дариенко'
@@ -2267,6 +2273,8 @@ def run_pipeline():
                 elif 'автомир' in p_lower and any(k in p_lower or k in lead_city.lower() for k in ['симферополь', 'крым']):
                     cname = 'Автомир (Симферополь)'
                     kam = 'Валерия Солдатова'
+                elif any(k in p_lower for k in ['автомир', 'амкапитал', 'ам капитал', 'легат']):
+                    pid, cname, kam = (1043, 'ГК Автомир', 'Андрей Кузнецов')
                 elif 'олимп' in p_lower or 'темп авто кубань' in p_lower:
                     cname = 'Олимп (Кубань)'
                     kam = 'Евгения Добролюбова'
@@ -2282,7 +2290,7 @@ def run_pipeline():
                 elif 'автофорум' in p_lower:
                     cname = 'Чери Автофорум'
                     kam = 'Евгения Добролюбова'
-                elif any(k in p_lower for k in ['арконт', 'сильвер', 'твс', 'нижегородец', 'планета авто', 'амк']):
+                elif any(k in p_lower for k in ['арконт', 'сильвер', 'твс', 'нижегородец', 'планета авто', 'амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
                     kam = 'Евгения Добролюбова'
                 elif 'эксперт' in p_lower:
                     if any(k in p_lower or k in lead_city.lower() for k in ['новосибирск', 'нск']):

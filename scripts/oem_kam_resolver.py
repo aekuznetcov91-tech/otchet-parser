@@ -242,6 +242,10 @@ class OemKamResolver:
         if 'автомир' in p_lower and any(k in p_lower or k in c_lower for k in ['симферополь', 'крым']) or c_inn == '9102289123':
             return 'Валерия Солдатова'
 
+        # ГК Автомир (все остальные ДЦ, в т.ч. ООО "АМКапитал", Автомир-Трейд, Легат) -> Кузнецов
+        if any(k in p_lower for k in ['автомир', 'амкапитал', 'ам капитал', 'легат']) or c_inn in ('7708607959', '7730569353', '7730568529'):
+            return 'Андрей Кузнецов'
+
         # Олимп (Темп Авто Кубань) -> Добролюбова
         if 'олимп' in p_lower or 'темп авто кубань' in p_lower or c_inn == '2311093925':
             return 'Евгения Добролюбова'
@@ -314,7 +318,7 @@ class OemKamResolver:
             return 'Евгения Добролюбова'
 
         # 9. Автосеть АМК -> Добролюбова
-        if any(k in p_lower for k in ['амк', 'автосеть амк']):
+        if any(k in p_lower for k in ['амк', 'автосеть амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
             return 'Евгения Добролюбова'
 
         # 5-6. Fresh -> Кузнецов
