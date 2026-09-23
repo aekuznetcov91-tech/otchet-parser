@@ -450,6 +450,13 @@ function normalizeBrandName(b) {
     return res ? res : 'Другие';
 }
 
+const CLOUD_PLANS_API = (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname.includes('workers.dev'))
+    ? '/api/kam-plans'
+    : 'https://dashbord-partners.beckelaguas723.workers.dev/api/kam-plans';
+
+let isSyncingPlansWithCloud = false;
+let planSaveDebounceTimer = null;
+
 /**
  * Retrieves KAM plans from localStorage/sessionStorage or defaults.
  */
@@ -484,9 +491,9 @@ function getKamPlansStore() {
 }
 
 /**
- * Saves KAM plans store to both localStorage and sessionStorage.
+ * Saves KAM plans store to both localStorage and sessionStorage, and auto-syncs to Cloudflare KV.
  */
-function saveKamPlansStore(store) {
+function saveKamPlansStore(store, pushToCloud = true) {
     try {
         localStorage.setItem(STORAGE_KEY_KAM_PLANS, JSON.stringify(store));
     } catch (e) {
@@ -495,6 +502,67 @@ function saveKamPlansStore(store) {
     try {
         sessionStorage.setItem(STORAGE_KEY_KAM_PLANS, JSON.stringify(store));
     } catch (e) {}
+
+    // Auto-sync to Cloudflare KV in background
+    if (pushToCloud) {
+        clearTimeout(planSaveDebounceTimer);
+        planSaveDebounceTimer = setTimeout(async () => {
+            try {
+                await fetch(CLOUD_PLANS_API, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                    body: JSON.stringify(store)
+                });
+                console.log('☁️ Plans auto-synced to Cloudflare KV database');
+            } catch (err) {
+                console.warn('Notice: Background cloud sync unavailable:', err);
+            }
+        }, 800);
+    }
+}
+
+/**
+ * Automatically loads the latest plans from Cloudflare KV database and updates the dashboard.
+ */
+async function syncKamPlansFromCloud() {
+    if (isSyncingPlansWithCloud) return;
+    isSyncingPlansWithCloud = true;
+    try {
+        const res = await fetch(CLOUD_PLANS_API, { cache: 'no-store' });
+        if (res.ok) {
+            const cloudData = await res.json();
+            if (cloudData && (cloudData.kam_plans || cloudData.partner_plans)) {
+                const localStore = getKamPlansStore();
+                const mergedKam = Object.assign({}, DEFAULT_KAM_PLANS.kam_plans, localStore.kam_plans || {}, cloudData.kam_plans || {});
+                const mergedPartners = Object.assign({}, DEFAULT_KAM_PLANS.partner_plans, localStore.partner_plans || {}, cloudData.partner_plans || {});
+                
+                const updated = {
+                    kam_plans: mergedKam,
+                    partner_plans: mergedPartners
+                };
+                saveKamPlansStore(updated, false); // save locally without echo
+                
+                // Refresh KAM tab if visible
+                const kamTab = document.getElementById('tab-kam');
+                if (kamTab && !kamTab.classList.contains('hidden')) {
+                    if (typeof renderKamTab === 'function') {
+                        renderKamTab(currentFilterConfig, true);
+                    }
+                }
+            }
+        }
+    } catch (e) {
+        console.warn('Notice: Cloud plans fetch skipped or offline:', e);
+    } finally {
+        isSyncingPlansWithCloud = false;
+    }
+}
+
+// Initial background sync from Cloudflare KV on page load
+if (typeof window !== 'undefined') {
+    setTimeout(() => {
+        syncKamPlansFromCloud();
+    }, 200);
 }
 
 /**
@@ -1176,6 +1244,9 @@ function getKamAggregatedData(filterCfg) {
  * Main render function for the KAM tab.
  */
 function renderKamTab(filterCfg, tableOnly = false) {
+    if (!isSyncingPlansWithCloud) {
+        syncKamPlansFromCloud();
+    }
     const agg = getKamAggregatedData(filterCfg || currentFilterConfig);
     const s = agg.summary;
 
@@ -1264,9 +1335,11 @@ function renderKamPlanHeader(s) {
                             Выполнение: ${pct.toFixed(1)}%
                         </span>
                     </div>
-                    <p class="text-xs text-gray-500 mt-0.5">
-                        Факт: <b class="text-gray-800">${fmt(factVal)} сделок</b> | 
-                        Сумма планов партнеров: <b class="text-blue-700">${fmt(s.sum_partner_plans)}</b>
+                    <p class="text-xs text-gray-500 mt-0.5 flex items-center gap-1.5 flex-wrap">
+                        <span>Факт: <b class="text-gray-800">${fmt(factVal)} сделок</b></span>
+                        <span>|</span>
+                        <span>Сумма планов партнеров: <b class="text-blue-700">${fmt(s.sum_partner_plans)}</b></span>
+                        <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 font-bold">☁️ Онлайн-синхронизация активна</span>
                     </p>
                 </div>
             </div>
@@ -1308,7 +1381,7 @@ function renderKamPlanHeader(s) {
                 <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
                     <div class="text-right">
                         <span class="text-[11px] font-bold text-gray-500 uppercase block">Общий план сделок</span>
-                        <span class="text-[10px] text-emerald-600 font-semibold">⚡ Автосохранение</span>
+                        <span class="text-[10px] text-emerald-600 font-semibold" title="Все изменения моментально сохраняются в облачную базу данных Cloudflare KV для всех пользователей">⚡ Автосохранение в облако</span>
                     </div>
                     <div class="relative">
                         <input type="number" min="0" step="1" 
