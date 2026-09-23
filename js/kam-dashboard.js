@@ -13,7 +13,7 @@ const DEFAULT_KAM_PLANS = {
     kam_plans: {
         "all": 1718,
         "Алексей Чихарев": 550,
-        "Андрей Кузнецов": 340,
+        "Андрей Кузнецов": 471,
         "Светлана Дариенко": 329,
         "Валерия Солдатова": 289,
         "Евгения Добролюбова": 210,
@@ -35,8 +35,11 @@ const DEFAULT_KAM_PLANS = {
         "1034": 1,
         "1036": 1,
         "1038": 18,
+        "1039": 25,
+        "1043": 105,
         "1047": 2,
         "1048": 25,
+        "1049": 92,
         "1053": 5,
         "1055": 5,
         "1056": 10,
@@ -53,10 +56,12 @@ const DEFAULT_KAM_PLANS = {
         "1077": 3,
         "1079": 1,
         "1081": 3,
+        "1084": 68,
         "1086": 8,
         "1088": 7,
         "1092": 1,
         "1093": 1,
+        "1098": 155,
         "1100": 1,
         "1107": 15,
         "1110": 1,
@@ -77,6 +82,7 @@ const DEFAULT_KAM_PLANS = {
         "1232": 2,
         "1237": 2,
         "1243": 10,
+        "1244": 26,
         "1246": 3,
         "1248": 7,
         "1253": 8,
@@ -120,10 +126,16 @@ const DEFAULT_KAM_PLANS = {
         "ID_1036__Евгения Добролюбова": 1,
         "ID_1038": 18,
         "ID_1038__Валерия Солдатова": 18,
+        "ID_1039": 25,
+        "ID_1039__Андрей Кузнецов": 25,
+        "ID_1043": 105,
+        "ID_1043__Андрей Кузнецов": 105,
         "ID_1047": 2,
         "ID_1047__Евгения Добролюбова": 2,
         "ID_1048": 25,
         "ID_1048__Валерия Солдатова": 25,
+        "ID_1049": 92,
+        "ID_1049__Андрей Кузнецов": 92,
         "ID_1053": 5,
         "ID_1053__Евгения Добролюбова": 5,
         "ID_1055": 5,
@@ -156,6 +168,8 @@ const DEFAULT_KAM_PLANS = {
         "ID_1079__Евгения Добролюбова": 1,
         "ID_1081": 3,
         "ID_1081__Евгения Добролюбова": 3,
+        "ID_1084": 68,
+        "ID_1084__Андрей Кузнецов": 68,
         "ID_1086": 8,
         "ID_1086__Евгения Добролюбова": 8,
         "ID_1088": 7,
@@ -164,6 +178,8 @@ const DEFAULT_KAM_PLANS = {
         "ID_1092__Евгения Добролюбова": 1,
         "ID_1093": 1,
         "ID_1093__Евгения Добролюбова": 1,
+        "ID_1098": 155,
+        "ID_1098__Андрей Кузнецов": 155,
         "ID_1100": 1,
         "ID_1100__Евгения Добролюбова": 1,
         "ID_1107": 15,
@@ -204,6 +220,8 @@ const DEFAULT_KAM_PLANS = {
         "ID_1237__Евгения Добролюбова": 2,
         "ID_1243": 10,
         "ID_1243__Евгения Добролюбова": 10,
+        "ID_1244": 26,
+        "ID_1244__Андрей Кузнецов": 26,
         "ID_1246": 3,
         "ID_1246__Валерия Солдатова": 3,
         "ID_1248": 7,
@@ -244,10 +262,15 @@ const DEFAULT_KAM_PLANS = {
         "P_OEM_a34f7047": 10,
         "P_OEM_d33020ac": 3,
         "P_OEM_f6c70f64": 5,
+        "Fresh Auto": 25,
+        "fresh auto": 25,
+        "Фреш Авто": 25,
         "Verra": 5,
         "ААА Моторс": 1,
         "АМР": 10,
         "Авто Сити": 7,
+        "АвтоГермес": 155,
+        "автогермес": 155,
         "Авто-Ревю": 5,
         "АвтоМаркет Jetour": 15,
         "АвтоЮг": 17,
@@ -276,8 +299,16 @@ const DEFAULT_KAM_PLANS = {
         "Башавтоком": 3,
         "Брянскзапчасть": 2,
         "ВИП АВТО Тенет": 2,
+        "ГК АГАТ": 92,
+        "гк агат": 92,
+        "АГАТ": 92,
         "ГК Автобан Джетур": 10,
+        "ГК Автомир": 105,
+        "гк автомир": 105,
         "ГК Авторитэйл М": 25,
+        "ГК КОРС Джетур": 26,
+        "гк корс джетур": 26,
+        "КОРС Джетур": 26,
         "ГК Арконт Холдинг": 15,
         "ГК Артан": 8,
         "ГК Сильвер": 7,
@@ -331,6 +362,9 @@ const DEFAULT_KAM_PLANS = {
         "Оса Холдинг": 1,
         "Планета Авто": 5,
         "РВ Сервис": 10,
+        "РОЛЬФ": 68,
+        "рольф": 68,
+        "Рольф": 68,
         "Ринг": 18,
         "Ринг Авто": 18,
         "СаранскАвто": 5,
@@ -417,16 +451,30 @@ function normalizeBrandName(b) {
 }
 
 /**
- * Retrieves KAM plans from localStorage or defaults.
+ * Retrieves KAM plans from localStorage/sessionStorage or defaults.
  */
 function getKamPlansStore() {
     try {
-        const raw = localStorage.getItem(STORAGE_KEY_KAM_PLANS);
+        let raw = localStorage.getItem(STORAGE_KEY_KAM_PLANS);
+        if (!raw) {
+            raw = sessionStorage.getItem(STORAGE_KEY_KAM_PLANS);
+        }
         if (raw) {
             const parsed = JSON.parse(raw);
+            const mergedKam = Object.assign({}, DEFAULT_KAM_PLANS.kam_plans, parsed.kam_plans || {});
+            const mergedPartners = Object.assign({}, DEFAULT_KAM_PLANS.partner_plans);
+            if (parsed.partner_plans) {
+                for (let k in parsed.partner_plans) {
+                    const val = parsed.partner_plans[k];
+                    // Keep positive customized plans; don't let empty/0 wipe out configured defaults
+                    if (val > 0 || !(k in DEFAULT_KAM_PLANS.partner_plans)) {
+                        mergedPartners[k] = val;
+                    }
+                }
+            }
             return {
-                kam_plans: Object.assign({}, DEFAULT_KAM_PLANS.kam_plans, parsed.kam_plans || {}),
-                partner_plans: Object.assign({}, DEFAULT_KAM_PLANS.partner_plans, parsed.partner_plans || {})
+                kam_plans: mergedKam,
+                partner_plans: mergedPartners
             };
         }
     } catch (e) {
@@ -436,7 +484,7 @@ function getKamPlansStore() {
 }
 
 /**
- * Saves KAM plans store to localStorage.
+ * Saves KAM plans store to both localStorage and sessionStorage.
  */
 function saveKamPlansStore(store) {
     try {
@@ -444,6 +492,9 @@ function saveKamPlansStore(store) {
     } catch (e) {
         console.warn('Ошибка сохранения sberauto_kam_plans в localStorage:', e);
     }
+    try {
+        sessionStorage.setItem(STORAGE_KEY_KAM_PLANS, JSON.stringify(store));
+    } catch (e) {}
 }
 
 /**
@@ -465,17 +516,33 @@ function onKamOverallPlanChange(kamName, val) {
 }
 
 /**
- * Updates individual partner plan and auto-refreshes partner row progress.
+ * Updates individual partner plan with multi-key redundancy and auto-refreshes row progress.
  */
 function onPartnerPlanChange(partnerKey, val) {
     const num = Math.max(0, parseInt(val, 10) || 0);
     const store = getKamPlansStore();
     store.partner_plans[partnerKey] = num;
+
+    // Multi-key redundancy so plan is resilient against filter changes, reassignment, or ID lookup
+    const m = partnerKey.match(/ID_([a-zA-Z0-9_-]+)/);
+    if (m && m[1]) {
+        const pid = m[1];
+        store.partner_plans[`ID_${pid}`] = num;
+        store.partner_plans[pid] = num;
+    }
+    const safeKey = partnerKey.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const row = document.querySelector(`tr[onclick*="${safeKey}"]`);
+    if (row) {
+        const nameEl = row.querySelector('.font-bold.text-xs');
+        if (nameEl && nameEl.textContent) {
+            const pName = nameEl.textContent.trim();
+            store.partner_plans[pName] = num;
+            store.partner_plans[pName.toLowerCase()] = num;
+        }
+    }
     saveKamPlansStore(store);
     
     // In-place DOM update for row % and plan badge
-    const safeKey = partnerKey.replace(/[^a-zA-Z0-9_-]/g, '_');
-    const row = document.querySelector(`tr[onclick*="${safeKey}"]`);
     if (row) {
         const tds = row.querySelectorAll('td');
         const planPctCell = tds[3];
@@ -498,6 +565,50 @@ function onPartnerPlanChange(partnerKey, val) {
 
     if (typeof showToast === 'function') {
         showToast(`План партнера сохранен: ${fmtNum(num)} сделок`, 'success', 1500);
+    }
+}
+
+/**
+ * Exports all current plans to JSON string / clipboard.
+ */
+function exportKamPlansJson() {
+    const store = getKamPlansStore();
+    const str = JSON.stringify(store, null, 2);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(str).then(() => {
+            if (typeof showToast === 'function') showToast('Планы скопированы в буфер обмена (JSON)!', 'success', 3000);
+            else alert('Планы скопированы в буфер обмена!');
+        }).catch(() => {
+            prompt('Скопируйте конфигурацию планов (JSON):', str);
+        });
+    } else {
+        prompt('Скопируйте конфигурацию планов (JSON):', str);
+    }
+}
+
+/**
+ * Imports plans from JSON string.
+ */
+function importKamPlansPrompt() {
+    const input = prompt('Вставьте JSON с планами КАМ и партнеров:');
+    if (!input) return;
+    try {
+        const parsed = JSON.parse(input);
+        if (parsed && (parsed.kam_plans || parsed.partner_plans)) {
+            const current = getKamPlansStore();
+            const updated = {
+                kam_plans: Object.assign({}, current.kam_plans, parsed.kam_plans || {}),
+                partner_plans: Object.assign({}, current.partner_plans, parsed.partner_plans || {})
+            };
+            saveKamPlansStore(updated);
+            renderKamTab(currentFilterConfig);
+            if (typeof showToast === 'function') showToast('Планы успешно импортированы и сохранены!', 'success', 3000);
+            else alert('Планы успешно импортированы!');
+        } else {
+            alert('Некорректный формат JSON: отсутствуют kam_plans или partner_plans.');
+        }
+    } catch (e) {
+        alert('Ошибка парсинга JSON: ' + e.message);
     }
 }
 
@@ -1209,6 +1320,16 @@ function renderKamPlanHeader(s) {
                             title="Введите общий план сделок (сохраняется автоматически)">
                     </div>
                     <span class="text-xs font-bold text-gray-400">шт.</span>
+                </div>
+
+                <!-- Export / Import Plans Backup -->
+                <div class="flex items-center gap-1.5 bg-white p-1.5 rounded-xl border border-gray-200 shadow-sm">
+                    <button type="button" onclick="exportKamPlansJson()" class="px-2.5 py-1 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-[11px] font-bold shadow-xs flex items-center gap-1 transition" title="Скопировать все планы КАМ и партнеров в буфер обмена (JSON)">
+                        <span>📋</span> Экспорт
+                    </button>
+                    <button type="button" onclick="importKamPlansPrompt()" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-[11px] font-bold shadow-xs flex items-center gap-1 transition" title="Импортировать планы из JSON">
+                        <span>📥</span> Импорт
+                    </button>
                 </div>
             </div>
         </div>
