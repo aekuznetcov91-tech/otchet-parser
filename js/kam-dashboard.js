@@ -994,8 +994,20 @@ function getKamAggregatedData(filterCfg) {
             const dName = d.dealer_name || '';
             const matchedEntry = matchDealerToPartner(dName);
             if (matchedEntry) {
-                const key = `ID_${matchedEntry.id}`;
-                const ps = partnerStats[key];
+                const targetPid = matchedEntry.id;
+                const targetPname = (matchedEntry.name || '').toLowerCase();
+                let ps = null;
+                for (let k in partnerStats) {
+                    const psItem = partnerStats[k];
+                    if (targetPid && psItem.id === targetPid) {
+                        ps = psItem;
+                        break;
+                    }
+                    if (psItem.name && psItem.name.toLowerCase() === targetPname) {
+                        ps = psItem;
+                        break;
+                    }
+                }
                 if (ps) {
                     ps.in_leads += (d.total_clients || 0);
                     ps.qual_leads += (d.qual_clients || 0);
@@ -1005,6 +1017,7 @@ function getKamAggregatedData(filterCfg) {
                         if (!ps.brands[ntb]) {
                             ps.brands[ntb] = { name: ntb, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
                         }
+                        ps.brands[ntb].trans_leads += (d.trans_clients || 0);
                     });
                 }
             }
