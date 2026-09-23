@@ -860,7 +860,9 @@ function getKamAggregatedData(filterCfg) {
                             trans_deals: 0,
                             mp_deals: 0,
                             fdc_online_deals: 0,
-                            total_deals: 0
+                            total_deals: 0,
+                            mtd_deals: 0,
+                            debts_count: 0
                         };
                     }
                     if (!oemBrands[br]) {
@@ -870,7 +872,9 @@ function getKamAggregatedData(filterCfg) {
                             trans_deals: 0,
                             mp_deals: 0,
                             fdc_online_deals: 0,
-                            total_deals: 0
+                            total_deals: 0,
+                            mtd_deals: 0,
+                            debts_count: 0
                         };
                     }
                 });
@@ -889,6 +893,8 @@ function getKamAggregatedData(filterCfg) {
                 mp_deals: 0,
                 fdc_online_deals: 0,
                 total_deals: 0,
+                mtd_deals: 0,
+                debts_count: 0,
                 cities: oemCities,
                 brands: oemBrands
             };
@@ -918,7 +924,7 @@ function getKamAggregatedData(filterCfg) {
 
         // Ensure brand entry exists in partner's brands
         if (!ps.brands[brand]) {
-            ps.brands[brand] = { name: brand, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0 };
+            ps.brands[brand] = { name: brand, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
         }
 
         // Distribute to matching OEM city/brand
@@ -932,7 +938,7 @@ function getKamAggregatedData(filterCfg) {
             const firstCity = Object.values(ps.cities)[0];
             if (firstCity) {
                 if (!firstCity.brands[brand]) {
-                    firstCity.brands[brand] = { name: brand, dealer_name: '', trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0 };
+                    firstCity.brands[brand] = { name: brand, dealer_name: '', trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
                 }
                 return firstCity.brands[brand];
             }
@@ -992,12 +998,137 @@ function getKamAggregatedData(filterCfg) {
                     (d.top_brands || []).forEach(tb => {
                         const ntb = normalizeBrandName(tb);
                         if (!ps.brands[ntb]) {
-                            ps.brands[ntb] = { name: ntb, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0 };
+                            ps.brands[ntb] = { name: ntb, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
                         }
                     });
                 }
             }
         });
+    });
+
+    // 3.1 Calculate MTD (Month-To-Date) Deals from previous month
+    let prevMonth = null;
+    let isLatestMonth = false;
+    let maxDealDay = 31;
+
+    if (activeMonth && activeMonth !== 'all') {
+        const parts = activeMonth.split('-');
+        if (parts.length === 2) {
+            let y = parseInt(parts[0], 10);
+            let m = parseInt(parts[1], 10);
+            m -= 1;
+            if (m === 0) {
+                m = 12;
+                y -= 1;
+            }
+            prevMonth = `${y}-${String(m).padStart(2, '0')}`;
+        }
+
+        const allMonths = Array.from(new Set(rawDbPartners.map(r => (r.Month || '').replace("'", "")).filter(Boolean))).sort();
+        const latestMonth = allMonths[allMonths.length - 1];
+        isLatestMonth = (activeMonth === latestMonth);
+
+        if (isLatestMonth) {
+            let foundMax = 0;
+            rawDbPartners.forEach(r => {
+                if ((r.Month || '').replace("'", "") === activeMonth && r.Type === 'Сделка' && r.Date) {
+                    const d = typeof excelToJSDate === 'function' ? excelToJSDate(r.Date) : null;
+                    if (d && d.getDate() > foundMax) {
+                        foundMax = d.getDate();
+                    }
+                }
+            });
+            maxDealDay = foundMax > 0 ? foundMax : new Date().getDate();
+        } else {
+            maxDealDay = 31;
+        }
+    }
+
+    if (prevMonth) {
+        rawDbPartners.forEach(r => {
+            if ((r.Month || '').replace("'", "") !== prevMonth || r.Type !== 'Сделка') return;
+
+            // Day cutoff check
+            if (isLatestMonth && r.Date) {
+                const d = typeof excelToJSDate === 'function' ? excelToJSDate(r.Date) : null;
+                if (d && d.getDate() > maxDealDay) return;
+            }
+
+            const pEntry = r.PartnerId ? partnerLookup[`ID_${r.PartnerId}`] : matchDealerToPartner(r.Partner);
+            const targetPid = r.PartnerId || (pEntry ? pEntry.id : null);
+            const targetPname = (pEntry ? pEntry.name : (r.Partner || '')).toLowerCase();
+
+            let targetPs = null;
+            for (let k in partnerStats) {
+                const psItem = partnerStats[k];
+                if (targetPid && psItem.id === targetPid) {
+                    targetPs = psItem;
+                    break;
+                }
+                if (psItem.name && psItem.name.toLowerCase() === targetPname) {
+                    targetPs = psItem;
+                    break;
+                }
+            }
+
+            if (targetPs) {
+                const qty = (r.Qty || 1);
+                targetPs.mtd_deals += qty;
+                const rawBrand = r.Brand || 'Другие';
+                const brand = normalizeBrandName(rawBrand);
+                if (!targetPs.brands[brand]) {
+                    targetPs.brands[brand] = { name: brand, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
+                }
+                targetPs.brands[brand].mtd_deals += qty;
+            }
+        });
+    }
+
+    // 3.2 Calculate Debts (all active open debts for unclosed prepaid deals across entire database)
+    const allDebtors = (typeof rawDebtorsList !== 'undefined' && rawDebtorsList.length > 0)
+        ? rawDebtorsList
+        : (payload.debtors || []);
+
+    allDebtors.forEach(d => {
+        let pEntry = null;
+        if (d.partner_id && partnerLookup[`ID_${d.partner_id}`]) {
+            pEntry = partnerLookup[`ID_${d.partner_id}`];
+        } else {
+            pEntry = matchDealerToPartner(d.company || d.raw_company);
+        }
+
+        const targetPid = d.partner_id || (pEntry ? pEntry.id : null);
+        const targetPname = (pEntry ? pEntry.name : (d.company || d.raw_company || '')).toLowerCase();
+
+        let targetPs = null;
+        for (let k in partnerStats) {
+            const psItem = partnerStats[k];
+            if (targetPid && psItem.id === targetPid) {
+                targetPs = psItem;
+                break;
+            }
+            if (psItem.name && psItem.name.toLowerCase() === targetPname) {
+                targetPs = psItem;
+                break;
+            }
+        }
+
+        if (!targetPs) {
+            const finalPid = targetPid;
+            const finalName = pEntry ? pEntry.name : (d.company || d.raw_company || 'Неизвестный партнер');
+            const dKam = normalizeKamName(d.kam || (pEntry ? pEntry.kam : 'Не назначен'));
+            targetPs = getPartnerStats(finalPid, finalName, dKam);
+        }
+
+        if (targetPs) {
+            targetPs.debts_count = (targetPs.debts_count || 0) + 1;
+            const rawBrand = d.brand || 'Другие';
+            const brand = normalizeBrandName(rawBrand);
+            if (!targetPs.brands[brand]) {
+                targetPs.brands[brand] = { name: brand, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
+            }
+            targetPs.brands[brand].debts_count = (targetPs.brands[brand].debts_count || 0) + 1;
+        }
     });
 
     // 4. Calculate Legal Entities with Deals for Selected KAM
@@ -1070,6 +1201,8 @@ function getKamAggregatedData(filterCfg) {
     let sumFdcOnlineDeals = 0;
     let sumTotalDeals = 0;
     let sumPartnerPlans = 0;
+    let sumMtdDeals = 0;
+    let sumDebts = 0;
 
     filteredPartners.forEach(p => {
         const plan = plansStore.partner_plans[p.key] || plansStore.partner_plans[`ID_${p.id}`] || plansStore.partner_plans[String(p.id)] || plansStore.partner_plans[p.name] || plansStore.partner_plans[(p.name || '').toLowerCase()] || 0;
@@ -1085,6 +1218,8 @@ function getKamAggregatedData(filterCfg) {
         sumFdcOnlineDeals += p.fdc_online_deals;
         sumTotalDeals += p.total_deals;
         sumPartnerPlans += plan;
+        sumMtdDeals += (p.mtd_deals || 0);
+        sumDebts += (p.debts_count || 0);
     });
 
     // If "All KAMs" selected, use company-wide totals
@@ -1221,6 +1356,8 @@ function getKamAggregatedData(filterCfg) {
             mp_deals: sumMpDeals,
             fdc_online_deals: sumFdcOnlineDeals,
             total_deals: sumTotalDeals,
+            mtd_deals: sumMtdDeals,
+            debts_count: sumDebts,
             overall_cr_pct: overallCrPct,
             overall_plan: overallKamPlan,
             overall_plan_pct: overallPlanPct,
@@ -1423,6 +1560,99 @@ function renderKamPlanHeader(s) {
 }
 
 /**
+ * Formats MTD deal comparison with percentage dynamic.
+ * Formula: ((Текущие - MTD) / MTD) * 100%
+ */
+function getMtdDynamicsHtml(currentDeals, mtdDeals) {
+    if (mtdDeals === null || mtdDeals === undefined || (typeof currentFilterConfig !== 'undefined' && currentFilterConfig.mode === 'all')) {
+        return '<span class="text-gray-400 font-medium">—</span>';
+    }
+    const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
+    const cur = currentDeals || 0;
+    const mtd = mtdDeals || 0;
+
+    if (mtd === 0) {
+        if (cur > 0) {
+            return `<div class="flex items-center justify-center gap-1">
+                <span class="font-bold text-gray-700 text-xs">${fmt(mtd)}</span>
+                <span class="text-[10px] font-black text-emerald-700 bg-emerald-50 px-1 py-0.2 rounded border border-emerald-200">+${fmt(cur)}</span>
+            </div>`;
+        }
+        return `<span class="text-gray-400 font-medium text-xs">${fmt(mtd)} <span class="text-[10px] text-gray-400">(0%)</span></span>`;
+    }
+
+    const diffPct = ((cur - mtd) / mtd) * 100;
+    const sign = diffPct > 0 ? '+' : '';
+    const pctStr = `${sign}${diffPct.toFixed(0)}%`;
+
+    let badgeClass = 'text-gray-600 bg-gray-50 border-gray-200';
+    if (diffPct > 0) {
+        badgeClass = 'text-emerald-700 bg-emerald-50 border-emerald-200 font-black';
+    } else if (diffPct < 0) {
+        badgeClass = 'text-rose-700 bg-rose-50 border-rose-200 font-bold';
+    }
+
+    return `<div class="flex items-center justify-center gap-1">
+        <span class="font-bold text-gray-800 text-xs">${fmt(mtd)}</span>
+        <span class="text-[10px] px-1 py-0.2 rounded border ${badgeClass}">${pctStr}</span>
+    </div>`;
+}
+
+/**
+ * Formats Debts count with interactive clickable badge opening Debtors tab.
+ */
+function getDebtsHtml(debtsCount, partnerName) {
+    const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
+    if (!debtsCount || debtsCount <= 0) {
+        return `<span class="text-gray-400 font-medium text-xs">—</span>`;
+    }
+    const safeName = (partnerName || '').replace(/'/g, "\\'");
+    return `<button type="button" 
+        onclick="event.stopPropagation(); openDebtorsTabForPartner('${safeName}')"
+        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-black bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 shadow-xs transition cursor-pointer"
+        title="Нажмите, чтобы открыть реестр должников по партнеру ${safeName}">
+        <span>⚠️</span> ${fmt(debtsCount)}
+    </button>`;
+}
+
+/**
+ * Formats Debts count for brand subrows.
+ */
+function getBrandDebtsHtml(debtsCount, partnerName, brandName) {
+    const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
+    if (!debtsCount || debtsCount <= 0) {
+        return `<span class="text-gray-400 font-medium text-[11px]">—</span>`;
+    }
+    const safeSearch = `${partnerName} ${brandName}`.replace(/'/g, "\\'");
+    return `<button type="button" 
+        onclick="event.stopPropagation(); openDebtorsTabForPartner('${safeSearch}')"
+        class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition cursor-pointer"
+        title="Нажмите, чтобы открыть должников по ${safeSearch}">
+        ${fmt(debtsCount)}
+    </button>`;
+}
+
+/**
+ * Opens Debtors tab with pre-filled search query for this partner
+ */
+function openDebtorsTabForPartner(partnerQuery) {
+    const btn = document.querySelector("button[onclick*='tab-details']");
+    if (typeof switchTab === 'function') {
+        switchTab('tab-details', btn);
+    }
+    setTimeout(() => {
+        const searchInput = document.getElementById('searchDebtors');
+        if (searchInput) {
+            searchInput.value = partnerQuery || '';
+            if (typeof filterDebtorsTable === 'function') {
+                filterDebtorsTable(partnerQuery || '');
+            }
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 50);
+}
+
+/**
  * Renders the hierarchical table: Partner -> City -> Brand.
  */
 function renderKamTable(partners) {
@@ -1457,16 +1687,22 @@ function renderKamTable(partners) {
             <tr>
                 <th style="min-width: 250px;">Партнер / Город / Бренд</th>
                 <th style="width: 140px; text-align: center;">Закрепленный КАМ</th>
-                <th style="width: 130px; text-align: center;">План сделок</th>
-                <th style="width: 120px; text-align: center;">% плана</th>
-                <th style="width: 120px; text-align: center;">Передано лидов</th>
-                <th style="width: 140px; text-align: center;" title="Сделки, пришедшие из переданных лидов (входят в состав сделок МП/ФДЦ)">
+                <th style="width: 120px; text-align: center;">План сделок</th>
+                <th style="width: 100px; text-align: center;">% плана</th>
+                <th style="width: 110px; text-align: center;">Передано лидов</th>
+                <th style="width: 130px; text-align: center;" title="Сделки, пришедшие из переданных лидов (входят в состав сделок МП/ФДЦ)">
                     Сделки с передачи <span class="text-[10px] text-purple-600 block">(из переданных)</span>
                 </th>
-                <th style="width: 120px; text-align: center;" title="Конверсия: Сделки с передачи / Передано лидов">CR (Передача)</th>
-                <th style="width: 110px; text-align: center;">Сделки МП</th>
-                <th style="width: 140px; text-align: center;">Сделки ФДЦ / Online</th>
-                <th style="width: 120px; text-align: center;">Сделки Всего</th>
+                <th style="width: 110px; text-align: center;" title="Конверсия: Сделки с передачи / Передано лидов">CR (Передача)</th>
+                <th style="width: 105px; text-align: center;">Сделки МП</th>
+                <th style="width: 130px; text-align: center;">Сделки ФДЦ / Online</th>
+                <th style="width: 130px; text-align: center;" title="Сделок на эту же дату в прошлом месяце (динамика к текущим сделкам)">
+                    MTD <span class="text-[10px] text-blue-500 block font-normal">(прошлый мес.)</span>
+                </th>
+                <th style="width: 115px; text-align: center;">Сделки Всего</th>
+                <th style="width: 110px; text-align: center;" title="Количество ДКП с внесенной предоплатой в ожидании реализации сделки">
+                    Долги <span class="text-[10px] text-amber-500 block font-normal">(ожидание ДКП)</span>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -1475,7 +1711,7 @@ function renderKamTable(partners) {
     if (displayList.length === 0) {
         html += `
         <tr>
-            <td colspan="10" class="text-center py-8 text-gray-400 font-medium">
+            <td colspan="12" class="text-center py-8 text-gray-400 font-medium">
                 🔍 Партнеры по выбранным фильтрам не найдены
             </td>
         </tr>
@@ -1484,7 +1720,7 @@ function renderKamTable(partners) {
         return;
     }
 
-    let tPlan = 0, tTransL = 0, tTransD = 0, tMpD = 0, tFdcOnlD = 0, tTotD = 0;
+    let tPlan = 0, tTransL = 0, tTransD = 0, tMpD = 0, tFdcOnlD = 0, tMtdD = 0, tTotD = 0, tDebts = 0;
 
     displayList.forEach((p, idx) => {
         tPlan += (p.plan || 0);
@@ -1492,7 +1728,9 @@ function renderKamTable(partners) {
         tTransD += p.trans_deals;
         tMpD += p.mp_deals;
         tFdcOnlD += p.fdc_online_deals;
+        tMtdD += (p.mtd_deals || 0);
         tTotD += p.total_deals;
+        tDebts += (p.debts_count || 0);
 
         const safeKey = p.key.replace(/[^a-zA-Z0-9_-]/g, '_');
         const crFormatted = p.trans_leads > 0 ? `${p.cr_pct.toFixed(1)}%` : (p.trans_deals > 0 ? '—' : '0%');
@@ -1548,7 +1786,9 @@ function renderKamTable(partners) {
             <td class="text-center ${crColor}">${crFormatted}</td>
             <td class="text-center font-bold text-amber-700">${fmt(p.mp_deals)}</td>
             <td class="text-center font-bold text-sky-700 bg-sky-50/30">${fmt(p.fdc_online_deals)}</td>
+            <td class="text-center bg-blue-50/20">${getMtdDynamicsHtml(p.total_deals, p.mtd_deals)}</td>
             <td class="text-center font-black text-blue-700 bg-blue-50/40 text-sm">${fmt(p.total_deals)}</td>
+            <td class="text-center bg-amber-50/30">${getDebtsHtml(p.debts_count, p.name)}</td>
         </tr>
         `;
 
@@ -1569,12 +1809,14 @@ function renderKamTable(partners) {
                     <td class="text-center text-gray-400 text-[11px]">—</td>
                     <td class="text-center text-gray-500 font-medium">—</td>
                     <td class="text-center text-gray-500 font-medium">—</td>
+                    <td class="text-center text-gray-400 text-[11px]">—</td>
                     <td class="text-center text-gray-700 font-bold">—</td>
+                    <td class="text-center text-gray-400 text-[11px]">—</td>
                 </tr>
                 `;
 
                 Object.entries(cityData.brands || {}).forEach(([brandName, brandInfo]) => {
-                    const bStats = p.brands[brandName] || brandInfo || { trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0 };
+                    const bStats = p.brands[brandName] || brandInfo || { trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
                     const bCr = bStats.trans_leads > 0 ? `${(bStats.trans_deals / bStats.trans_leads * 100).toFixed(1)}%` : '—';
                     
                     html += `
@@ -1591,7 +1833,9 @@ function renderKamTable(partners) {
                         <td class="text-center text-gray-500">${bCr}</td>
                         <td class="text-center text-amber-700">${fmt(bStats.mp_deals)}</td>
                         <td class="text-center text-sky-700">${fmt(bStats.fdc_online_deals)}</td>
+                        <td class="text-center">${getMtdDynamicsHtml(bStats.total_deals, bStats.mtd_deals)}</td>
                         <td class="text-center font-bold text-blue-600">${fmt(bStats.total_deals)}</td>
+                        <td class="text-center">${getBrandDebtsHtml(bStats.debts_count, p.name, brandName)}</td>
                     </tr>
                     `;
                 });
@@ -1614,7 +1858,9 @@ function renderKamTable(partners) {
             <td class="text-center">${totalCr}</td>
             <td class="text-center">${fmt(tMpD)}</td>
             <td class="text-center">${fmt(tFdcOnlD)}</td>
+            <td class="text-center">${getMtdDynamicsHtml(tTotD, tMtdD)}</td>
             <td class="text-center">${fmt(tTotD)}</td>
+            <td class="text-center text-amber-900">${tDebts > 0 ? fmt(tDebts) : '—'}</td>
         </tr>
     </tbody>
     </table>

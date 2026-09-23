@@ -19,7 +19,8 @@ class TestDashboardJavaScript(unittest.TestCase):
             os.path.join(JS_DIR, 'debtors.js'),
             os.path.join(JS_DIR, 'data-loader.js'),
             os.path.join(JS_DIR, 'lead-geo.js'),
-            os.path.join(JS_DIR, 'banking-dashboard.js')
+            os.path.join(JS_DIR, 'banking-dashboard.js'),
+            os.path.join(JS_DIR, 'kam-dashboard.js')
         ]
 
     def test_js_files_exist(self):
@@ -130,6 +131,28 @@ console.log('OK');
         res = subprocess.run([NODE_BIN, '-e', test_script], capture_output=True, text=True)
         self.assertEqual(res.returncode, 0, f'renderDebtorsTable with real data failed: ' + res.stderr)
         self.assertIn('OK', res.stdout)
+
+    def test_kam_dashboard_sync(self):
+        root_kam = os.path.join(BASE_DIR, 'js', 'kam-dashboard.js')
+        site_kam = os.path.join(JS_DIR, 'kam-dashboard.js')
+        self.assertTrue(os.path.exists(root_kam), "js/kam-dashboard.js missing")
+        self.assertTrue(os.path.exists(site_kam), "site/js/kam-dashboard.js missing")
+        with open(root_kam, 'r', encoding='utf-8') as f1, open(site_kam, 'r', encoding='utf-8') as f2:
+            self.assertEqual(f1.read(), f2.read(), "js/kam-dashboard.js and site/js/kam-dashboard.js must be identical")
+
+    def test_kam_dashboard_mtd_and_debts_structure(self):
+        site_kam = os.path.join(JS_DIR, 'kam-dashboard.js')
+        with open(site_kam, 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        self.assertIn('getMtdDynamicsHtml', content)
+        self.assertIn('getDebtsHtml', content)
+        self.assertIn('getBrandDebtsHtml', content)
+        self.assertIn('openDebtorsTabForPartner', content)
+        self.assertIn('MTD <span class="text-[10px] text-blue-500 block font-normal">(прошлый мес.)</span>', content)
+        self.assertIn('Долги <span class="text-[10px] text-amber-500 block font-normal">(ожидание ДКП)</span>', content)
+        self.assertIn('mtd_deals', content)
+        self.assertIn('debts_count', content)
 
 if __name__ == '__main__':
     unittest.main()
