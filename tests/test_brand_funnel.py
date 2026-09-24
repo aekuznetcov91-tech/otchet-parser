@@ -234,6 +234,20 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         self.assertIn('exportPartnerDealsToExcel', tables_js, "exportPartnerDealsToExcel функция должна быть в tables.js")
         self.assertIn('pdeals_row_', tables_js, "Идентификаторы строк сделок pdeals_row_ должны формироваться в tables.js")
 
+    def test_14_historical_months_preservation(self):
+        """Проверка строгого сохранения полной историчности с начала года (январь - сентябрь)"""
+        db = self.data.get('sys_db', [])
+        sale_months = set(r.get('SaleMonth') for r in db if r.get('SaleQty') == 1)
+        expected_months = ['2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08', '2026-09']
+        for m in expected_months:
+            self.assertIn(m, sale_months, f"Месяц {m} обязательно должен присутствовать в истории продаж")
+        
+        aug_sales = len([r for r in db if r.get('SaleMonth') == '2026-08' and r.get('SaleQty') == 1])
+        self.assertGreaterEqual(aug_sales, 1700, f"История за август не должна уменьшаться (факт: {aug_sales})")
+        
+        sep_sales = len([r for r in db if r.get('SaleMonth') == '2026-09' and r.get('SaleQty') == 1])
+        self.assertGreater(sep_sales, 800, f"Сентябрь должен содержать актуальные сделки (факт: {sep_sales})")
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
 

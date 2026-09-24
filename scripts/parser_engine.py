@@ -238,22 +238,36 @@ def extract_rows_from_matrix(matrix):
         return []
     header_idx = -1
     for i, row in enumerate(matrix[:25]):
+        non_empty = [c for c in row if c is not None and str(c).strip()]
+        if len(non_empty) < 3:
+            continue
         row_str = clean_key("".join(str(c) for c in row))
+        if 'ПРИМЕНЕННЫЕФИЛЬТРЫ' in row_str:
+            continue
         if (
             'ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ' in row_str or 
             'EVENTNAME' in row_str or 
             ('БИТРИКС' in row_str and 'ПОЧТА' in row_str) or
             ('СТАДИЯСДЕЛКИ' in row_str and 'ТОВАР' in row_str) or
             ('БИТРИКС' in row_str and 'КАМ' in row_str) or
-            ('ДАТА' in row_str and 'ЦЕНААВТО' in row_str) or
-            ('CLIENTID' in row_str and ('ПАРТНЕР' in row_str or 'BI' in row_str or 'LINK' in row_str or 'SOURCE' in row_str)) or
-            ('SALEMONTH' in row_str and 'PREPAYMONTH' in row_str)
+            ('ДАТА' in row_str and ('ЦЕНААВТО' in row_str or 'URL' in row_str or 'ОТВЕТСТВЕННЫЙ' in row_str or 'СУММА' in row_str)) or
+            ('CLIENTID' in row_str and ('ПАРТНЕР' in row_str or 'BI' in row_str or 'LINK' in row_str or 'SOURCE' in row_str or 'EVENTNAME' in row_str or 'URL' in row_str)) or
+            ('SALEMONTH' in row_str and 'PREPAYMONTH' in row_str) or
+            ('ОТВЕТСТВЕННЫЙ' in row_str and 'ПАРТНЕР' in row_str) or
+            ('УНИКАЛЬНЫЕКЛИЕНТЫ' in row_str)
         ):
             header_idx = i
             break
 
     if header_idx == -1:
-        header_idx = 0
+        for i, row in enumerate(matrix[:25]):
+            non_empty = [c for c in row if c is not None and str(c).strip()]
+            row_str = clean_key("".join(str(c) for c in row))
+            if len(non_empty) >= 3 and 'ПРИМЕНЕННЫЕФИЛЬТРЫ' not in row_str:
+                header_idx = i
+                break
+        if header_idx == -1:
+            header_idx = 0
 
     headers = [str(c).strip() for c in matrix[header_idx]]
     clean_headers = [clean_key(h) for h in headers]
@@ -1477,11 +1491,7 @@ def run_pipeline():
             if fname.lower().endswith(('.xlsx', '.xlsm', '.csv', '.xls')):
                 fpath = os.path.join(sdir, fname)
 
-                # Read all current data (*).xlsx files in folder
-
-                # For intermediate daily DEAL_*.xls: keep July anchor (DEAL_20260904), August anchor (DEAL_20260914) and latest DEAL file
-                if fname.startswith('DEAL_') and not (fname.startswith('DEAL_20260904') or fname.startswith('DEAL_20260914') or fname == latest_deal_file):
-                    continue
+                # Read all tabular files; deduplicate identical files by MD5 content hash
 
                 try:
                     with open(fpath, 'rb') as fp:
@@ -1580,18 +1590,34 @@ def run_pipeline():
             if c_dt:
                 c_months.add(c_dt.strftime('%Y-%m'))
         
-        if len(c_months) == 1 and '2026-09' in c_months and len(crm_lead_files) > 1:
+        if len(c_months) == 1 and '2026-09' in c_months:
             print(f"[*] Файл общих лидов CRM {latest_crm_name} содержит только 2026-09. Дополняем историей (август и ранее)...")
             historical_crm_rows = []
             for _, prev_crm_name, prev_crm_rows in crm_lead_files[1:]:
+                added_now = 0
                 for r in prev_crm_rows:
                     dt = parse_custom_date(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА'))
                     m_str = dt.strftime('%Y-%m') if dt else '2026-08'
                     if m_str != '2026-09':
                         historical_crm_rows.append(r)
-                if historical_crm_rows:
-                    print(f"[*] Добавлено {len(historical_crm_rows)} исторических записей CRM из {prev_crm_name}")
+                        added_now += 1
+                if added_now > 0:
+                    print(f"[*] Добавлено {added_now} исторических записей CRM из {prev_crm_name}")
                     break
+            
+            # If previous CRM files lacked older months, check partner_lead_files (e.g. data (39).xlsx)
+            if not historical_crm_rows and partner_lead_files:
+                for _, p_name, p_rows in partner_lead_files:
+                    added_p = 0
+                    for r in p_rows:
+                        dt = parse_custom_date(get_exact_val(r, 'ДАТА', 'ДАТАСОБЫТИЯ'))
+                        m_str = dt.strftime('%Y-%m') if dt else '2026-08'
+                        if m_str != '2026-09':
+                            historical_crm_rows.append(r)
+                            added_p += 1
+                    if added_p > 0:
+                        print(f"[*] Добавлено {added_p} исторических записей лидов из {p_name}")
+                        break
             crm_leads_data = historical_crm_rows + latest_crm_rows
         else:
             crm_leads_data = latest_crm_rows
@@ -1603,20 +1629,45 @@ def run_pipeline():
     all_leads_data = crm_leads_data + leads_data
     print(f"[*] Общий массив всех лидов: {len(all_leads_data)} записей")
 
+    HISTORICAL_DEALS_CACHE_PATH = os.path.join(DATA_DIR, 'historical_deals_cache.json')
+    SITE_DEALS_CACHE_PATH = os.path.join(PROJECT_ROOT, 'site', 'historical_deals_cache.json')
+
     def file_rank_deals(item):
         fname, fpath, rows = item
         m = re.search(r'DEAL_(\d{8})', fname)
         if m:
-            return (0, m.group(1))
+            return (0, m.group(1), fname)
         mtime = os.path.getmtime(fpath) if os.path.exists(fpath) else 0
-        return (1, str(mtime))
+        return (1, str(mtime), fname)
 
-    # Merge deal candidates in ascending order of file mtime (older first, newer overwrites)
-    # This preserves multi-month history (e.g. July) while updating fresh August deals.
+    # Merge deal candidates in ascending order of file date/mtime (older first, newer overwrites)
+    # This preserves multi-month history (January - August) while updating fresh September deals.
     deals_candidates.sort(key=file_rank_deals)
     
     merged_deals_dict = {}
+
+    # 1. Load persistent historical deals cache if present (guarantees past months can never be lost)
+    cache_to_load = HISTORICAL_DEALS_CACHE_PATH if os.path.exists(HISTORICAL_DEALS_CACHE_PATH) else (
+        SITE_DEALS_CACHE_PATH if os.path.exists(SITE_DEALS_CACHE_PATH) else ''
+    )
+    if cache_to_load:
+        try:
+            with open(cache_to_load, 'r', encoding='utf-8') as f:
+                hist_deals = json.load(f)
+                for r in hist_deals:
+                    did = str(get_exact_val(r, 'ID', 'IDСДЕЛКИ') or '').strip()
+                    tovar = str(get_exact_val(r, 'ТОВАР') or '').strip()
+                    vin = str(get_exact_val(r, 'VIN') or '').strip()
+                    key = f"{did}::{tovar}" if (did and tovar) else (f"{did}::{vin}" if (did and vin) else f"{did}::{len(merged_deals_dict)}")
+                    merged_deals_dict[key] = r
+                print(f"[*] Загружен постоянный кэш исторических сделок: {len(merged_deals_dict)} записей")
+        except Exception as e:
+            print(f"[!] Предупреждение при загрузке historical_deals_cache: {e}")
+
+    # 2. Merge all discovered deal candidate files (older to newer)
     for d_fname, d_fpath, d_rows in deals_candidates:
+        file_added = 0
+        file_updated = 0
         for r in d_rows:
             stream = str(get_exact_val(r, 'СТРИМ') or '').strip()
             if stream and stream != 'Импортеры':
@@ -1625,11 +1676,35 @@ def run_pipeline():
             tovar = str(get_exact_val(r, 'ТОВАР') or '').strip()
             vin = str(get_exact_val(r, 'VIN') or '').strip()
             key = f"{did}::{tovar}" if (did and tovar) else (f"{did}::{vin}" if (did and vin) else f"{did}::{len(merged_deals_dict)}")
+            if key in merged_deals_dict:
+                file_updated += 1
+            else:
+                file_added += 1
             merged_deals_dict[key] = r
+        print(f"[*] Сделки из {d_fname}: {len(d_rows)} строк (новых: {file_added}, обновлено: {file_updated})")
 
     deals_data = list(merged_deals_dict.values())
-    latest_deal_file = deals_candidates[-1][0]
+    latest_deal_file = deals_candidates[-1][0] if deals_candidates else 'historical_cache'
     print(f"[*] Сформирован объединенный массив сделок: {len(deals_data)} записей (свежий файл: {latest_deal_file})")
+
+    # 3. Save/update persistent historical deals cache for all closed past months (< 2026-09)
+    current_month_str = '2026-09'
+    hist_to_cache = []
+    for r in deals_data:
+        dt = parse_custom_date(get_exact_val(r, 'ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ'))
+        m_str = dt.strftime('%Y-%m') if dt else ''
+        if m_str and m_str < current_month_str:
+            hist_to_cache.append(r)
+    
+    if hist_to_cache:
+        try:
+            with open(HISTORICAL_DEALS_CACHE_PATH, 'w', encoding='utf-8') as f:
+                json.dump(hist_to_cache, f, ensure_ascii=False)
+            with open(SITE_DEALS_CACHE_PATH, 'w', encoding='utf-8') as f:
+                json.dump(hist_to_cache, f, ensure_ascii=False)
+            print(f"[*] Сохранен кэш историчности закрытых месяцев (< {current_month_str}): {len(hist_to_cache)} сделок")
+        except Exception as e:
+            print(f"[!] Ошибка сохранения historical_deals_cache: {e}")
 
     directory_data = directory_candidates[0][1] if directory_candidates else []
 
