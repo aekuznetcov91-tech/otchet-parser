@@ -188,3 +188,107 @@ function getDebtorChannelBadge(b2c) {
     if (ch.includes('лида') || ch.includes('Лид')) return `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700 border border-amber-200 shadow-xs">${ch}</span>`;
     return `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-700 border border-gray-200">${ch}</span>`;
 }
+
+/**
+ * Formats brand sales into a presentation string:
+ * JETOUR {N} шт. | LADA {N} шт. | CHANGAN {N} шт. | G B K {N} шт. | GAC {N} шт. | SOLARIS {N} шт. | SOUEAST {N} шт. | TENET {N} шт. | Jeland {N} шт. | O&J {N} шт. | HAVAL {N} шт. |
+ * @param {Array} salesDb - Optional sales array
+ * @returns {string}
+ */
+function formatBrandsForPresentation(salesDb) {
+    const list = salesDb || window.currentFilteredSales || (window.APP_DATA && window.APP_DATA.sys_db) || [];
+    const counts = {
+        'JETOUR': 0,
+        'LADA': 0,
+        'CHANGAN': 0,
+        'G B K': 0,
+        'GAC': 0,
+        'SOLARIS': 0,
+        'SOUEAST': 0,
+        'TENET': 0,
+        'Jeland': 0,
+        'O&J': 0,
+        'HAVAL': 0
+    };
+
+    list.forEach(r => {
+        const b = (r.Brand || '').toUpperCase().trim();
+        const m = (r.Model || '').toUpperCase().trim();
+
+        if (b.includes('JETOUR') || m.includes('JETOUR')) {
+            counts['JETOUR']++;
+        } else if (b.includes('LADA') || b.includes('ВАЗ') || m.includes('LADA') || m.includes('VESTA') || m.includes('GRANTA')) {
+            counts['LADA']++;
+        } else if (b.includes('CHANGAN') || m.includes('CHANGAN')) {
+            counts['CHANGAN']++;
+        } else if (['GEELY', 'BELGEE', 'БЕЛДЖИ', 'KNEWSTAR', 'КНЬЮСТАР', 'КНЮСТАР'].some(k => b.includes(k) || m.includes(k))) {
+            counts['G B K']++;
+        } else if (b.includes('GAC') || m.includes('GAC')) {
+            counts['GAC']++;
+        } else if (b.includes('SOLARIS') || b.includes('СОЛЯРИС') || b.includes('SОLARIS') || m.includes('SOLARIS')) {
+            counts['SOLARIS']++;
+        } else if (b.includes('SOUEAST') || b.includes('SOUEAS') || m.includes('SOUEAST')) {
+            counts['SOUEAST']++;
+        } else if (b.includes('JELAND') || m.includes('JELAND') || m.includes('ДЖЕЙЛЕНД')) {
+            counts['Jeland']++;
+        } else if (['OMODA', 'JAECOO', 'ДЖЕЙКУ'].some(k => b.includes(k) || m.includes(k))) {
+            counts['O&J']++;
+        } else if (b.includes('TENET') || m.includes('TENET') || m.includes('ТЕНЕТ') || b.includes('CHERY') || m.includes('CHERY')) {
+            counts['TENET']++;
+        } else if (b.includes('HAVAL') || b.includes('ХАВЕЙЛ') || m.includes('HAVAL')) {
+            counts['HAVAL']++;
+        }
+    });
+
+    const parts = Object.entries(counts).map(([brand, count]) => `${brand} ${count} шт.`);
+    return parts.join(' | ') + ' | ';
+}
+
+/**
+ * Copies brand presentation string to clipboard with toast notification
+ * @param {HTMLElement} btn
+ */
+async function copyBrandsPresentationText(btn) {
+    const text = formatBrandsForPresentation();
+    const origContent = btn ? btn.innerHTML : '';
+    if (btn) {
+        btn.innerHTML = '<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i> Копирование...';
+        btn.disabled = true;
+    }
+
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+        } else {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        }
+        showToast('Текст для презентации скопирован!', 'success');
+        if (btn) {
+            btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i> Скопировано!';
+            btn.style.background = '#22c55e';
+            btn.style.color = 'white';
+            setTimeout(() => {
+                btn.innerHTML = origContent;
+                btn.style.background = '';
+                btn.style.color = '';
+                btn.disabled = false;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }, 2000);
+        }
+    } catch (e) {
+        showToast('Не удалось скопировать', 'error');
+        if (btn) {
+            btn.innerHTML = origContent;
+            btn.disabled = false;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    }
+}
+

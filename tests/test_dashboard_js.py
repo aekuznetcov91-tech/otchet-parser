@@ -154,5 +154,27 @@ console.log('OK');
         self.assertIn('mtd_deals', content)
         self.assertIn('debts_count', content)
 
+    def test_utils_sync_and_format_brands_presentation(self):
+        root_utils = os.path.join(BASE_DIR, 'js', 'utils.js')
+        site_utils = os.path.join(JS_DIR, 'utils.js')
+        self.assertTrue(os.path.exists(root_utils), "js/utils.js missing")
+        self.assertTrue(os.path.exists(site_utils), "site/js/utils.js missing")
+        with open(root_utils, 'r', encoding='utf-8') as f1, open(site_utils, 'r', encoding='utf-8') as f2:
+            self.assertEqual(f1.read(), f2.read(), "js/utils.js and site/js/utils.js must be identical")
+
+        root_index = os.path.join(BASE_DIR, 'index.html')
+        site_index = os.path.join(SITE_DIR, 'index.html')
+        with open(root_index, 'r', encoding='utf-8') as f1, open(site_index, 'r', encoding='utf-8') as f2:
+            self.assertEqual(f1.read(), f2.read(), "index.html and site/index.html must be identical")
+
+        with open(site_index, 'r', encoding='utf-8') as f:
+            index_content = f.read()
+        self.assertIn('copyBrandsPresentationText', index_content, "index.html must include copyBrandsPresentationText button")
+
+        with open(site_utils, 'r', encoding='utf-8') as f:
+            utils_content = f.read()
+        self.assertIn('function formatBrandsForPresentation', utils_content)
+        self.assertIn('function copyBrandsPresentationText', utils_content)
+
 if __name__ == '__main__':
     unittest.main()

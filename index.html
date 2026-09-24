@@ -166,9 +166,14 @@
                     <h2 class="text-base font-bold text-gray-700 uppercase tracking-wide flex items-center gap-2">
                         <i data-lucide="pie-chart" class="w-4 h-4 text-blue-600"></i> Сплит по брендам
                     </h2>
-                    <button onclick="copyCardToClipboard('chartContainerBrands', this)" class="copy-btn">
-                        <i data-lucide="copy" class="w-3.5 h-3.5"></i> Скопировать
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyBrandsPresentationText(this)" class="copy-btn" title="Скопировать сплит брендов для презентации">
+                            <i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> Презентация
+                        </button>
+                        <button onclick="copyCardToClipboard('chartContainerBrands', this)" class="copy-btn" title="Скопировать диаграмму как изображение">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i> Скопировать
+                        </button>
+                    </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     <div class="md:col-span-5 border-r border-gray-100 pr-2">
