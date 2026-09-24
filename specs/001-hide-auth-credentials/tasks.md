@@ -33,4 +33,4 @@
 
 - [x] T009 [US3] Add automated security test in `tests/test_auth_security.py` verifying no credentials leaked in tracked code or markdown files.
 - [x] T010 [US3] Run full test suite: `python -m unittest discover tests` (all 29 tests pass).
-- [ ] T011 [US3] Deploy secured bundle via `deploy_to_cloudflare.py` and synchronize to Git `origin main`.
+- [x] T011 [US3] Deploy secured bundle via `deploy_to_cloudflare.py` and synchronize to Git `origin main`.
