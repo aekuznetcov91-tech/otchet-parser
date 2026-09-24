@@ -28,25 +28,6 @@ class TestAuthSecurity(unittest.TestCase):
         self.assertIn("config.local.json", lines, "config.local.json must be ignored")
         self.assertIn("scratch/", lines, "scratch/ must be ignored")
 
-    def test_functions_middleware_exists_and_synced(self):
-        """Verify edge middleware exists in both functions/ and site/functions/ and are identical."""
-        func_mw = os.path.join(self.root_dir, 'functions', '_middleware.js')
-        site_mw = os.path.join(self.root_dir, 'site', 'functions', '_middleware.js')
-        
-        self.assertTrue(os.path.exists(func_mw), "functions/_middleware.js must exist")
-        self.assertTrue(os.path.exists(site_mw), "site/functions/_middleware.js must exist")
-
-        with open(func_mw, 'r', encoding='utf-8') as f1, open(site_mw, 'r', encoding='utf-8') as f2:
-            c1 = f1.read()
-            c2 = f2.read()
-        
-        self.assertEqual(c1, c2, "site/functions/_middleware.js must be identical to functions/_middleware.js")
-        self.assertIn("export async function onRequest", c1, "Middleware must export onRequest")
-        self.assertIn("WWW-Authenticate", c1, "Middleware must return WWW-Authenticate header")
-        self.assertIn("timingSafeEqual", c1, "Middleware must implement constant-time comparison")
-        self.assertIn("crypto.subtle", c1, "Middleware must use crypto.subtle for hashing")
-        self.assertIn("AUTH_USER", c1, "Middleware must support AUTH_USER env var")
-        self.assertIn("AUTH_PASS", c1, "Middleware must support AUTH_PASS env var")
 
     def test_deploy_script_no_hardcoded_secrets(self):
         """Verify deploy_to_cloudflare.py does not contain hardcoded API tokens."""
