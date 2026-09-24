@@ -61,8 +61,8 @@ class TestAuthSecurity(unittest.TestCase):
         if git_res.returncode == 0:
             tracked_files = git_res.stdout.splitlines()
             for rel_path in tracked_files:
-                # Skip binary or very large files
-                if rel_path.endswith(('.png', '.jpg', '.ico', '.xlsx', '.xls', '.json')):
+                # Skip binary, large files, or the security test itself
+                if rel_path.endswith(('.png', '.jpg', '.ico', '.xlsx', '.xls', '.json')) or 'test_auth_security.py' in rel_path:
                     continue
                 full_path = os.path.join(self.root_dir, rel_path)
                 if os.path.exists(full_path):
