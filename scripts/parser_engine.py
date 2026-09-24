@@ -1630,7 +1630,6 @@ def run_pipeline():
     print(f"[*] Общий массив всех лидов: {len(all_leads_data)} записей")
 
     HISTORICAL_DEALS_CACHE_PATH = os.path.join(DATA_DIR, 'historical_deals_cache.json')
-    SITE_DEALS_CACHE_PATH = os.path.join(PROJECT_ROOT, 'site', 'historical_deals_cache.json')
 
     def file_rank_deals(item):
         fname, fpath, rows = item
@@ -1647,12 +1646,9 @@ def run_pipeline():
     merged_deals_dict = {}
 
     # 1. Load persistent historical deals cache if present (guarantees past months can never be lost)
-    cache_to_load = HISTORICAL_DEALS_CACHE_PATH if os.path.exists(HISTORICAL_DEALS_CACHE_PATH) else (
-        SITE_DEALS_CACHE_PATH if os.path.exists(SITE_DEALS_CACHE_PATH) else ''
-    )
-    if cache_to_load:
+    if os.path.exists(HISTORICAL_DEALS_CACHE_PATH):
         try:
-            with open(cache_to_load, 'r', encoding='utf-8') as f:
+            with open(HISTORICAL_DEALS_CACHE_PATH, 'r', encoding='utf-8') as f:
                 hist_deals = json.load(f)
                 for r in hist_deals:
                     did = str(get_exact_val(r, 'ID', 'IDСДЕЛКИ') or '').strip()
@@ -1699,8 +1695,6 @@ def run_pipeline():
     if hist_to_cache:
         try:
             with open(HISTORICAL_DEALS_CACHE_PATH, 'w', encoding='utf-8') as f:
-                json.dump(hist_to_cache, f, ensure_ascii=False)
-            with open(SITE_DEALS_CACHE_PATH, 'w', encoding='utf-8') as f:
                 json.dump(hist_to_cache, f, ensure_ascii=False)
             print(f"[*] Сохранен кэш историчности закрытых месяцев (< {current_month_str}): {len(hist_to_cache)} сделок")
         except Exception as e:
