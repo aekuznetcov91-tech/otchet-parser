@@ -1,0 +1,7 @@
+{
+  "account_id": "YOUR_CLOUDFLARE_ACCOUNT_ID",
+  "api_token": "YOUR_CLOUDFLARE_API_TOKEN",
+  "project_name": "dashbord-partners1",
+  "auth_user": "director",
+  "auth_pass": "your_secure_password_here"
+}

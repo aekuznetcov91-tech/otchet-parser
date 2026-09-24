@@ -80,8 +80,8 @@ def deploy():
         
         if res.returncode == 0 or 'Success' in combined or 'Deployment complete' in combined or 'pages.dev' in combined:
             print("\n[+] USPESHNO VYGRUZHENO NA CLOUDFLARE PAGES!")
-            print("[+] Sayt s avtorizaciey: https://dashbord-partners.beckelaguas723.workers.dev")
-            print("[+] Pryamaya ssylka:     https://dashbord-partners1.pages.dev")
+            print("[+] Proizvodstvennyy URL (zaschishen avtorizaciey): https://dashbord-partners.beckelaguas723.workers.dev")
+            print("[+] Cloudflare Pages URL (zaschishen avtorizaciey):   https://dashbord-partners1.pages.dev")
         else:
             print("\n[!] Oshibka wrangler pri vygruzke:")
             if not combined.strip():
@@ -111,7 +111,7 @@ def sync_and_push_git(commit_message=None):
                 # Always rebase latest remote commits before committing to prevent push rejects
                 subprocess.run(["git", "pull", "--rebase", "origin", "main"], capture_output=True)
                 
-                subprocess.run(["git", "add", "raw_data/", "data.json", "site/", "scripts/", "js/", "css/", "docs/", "README.md", "deploy_to_cloudflare.py", "partners_registry.json", "russia_dealer_benchmarks.json", "data/", ".geminirules", ".cursorrules", ".windsurfrules", "AGENTS.md", "index.html", "tests/"], capture_output=True)
+                subprocess.run(["git", "add", "raw_data/", "data.json", "site/", "scripts/", "js/", "css/", "docs/", "README.md", "deploy_to_cloudflare.py", "partners_registry.json", "russia_dealer_benchmarks.json", "data/", ".geminirules", ".cursorrules", ".windsurfrules", "AGENTS.md", "index.html", "tests/", "functions/", ".specify/", "specs/", "config.local.json.template"], capture_output=True)
                 
                 msg = commit_message or "data(deploy): auto-sync data and assets with Cloudflare deployment"
                 subprocess.run(["git", "commit", "-m", msg], capture_output=True)

@@ -940,8 +940,8 @@ Google Таблица по ссылке сейчас закрыта настро
   описание структуры файла, полезные фишки.
 
 ### 5. Замена API-токена Cloudflare (без IP-ограничений)
-- Старый токен cfut_BbPf... имел IP-ограничение — работал только с IP Бориса.
-- Новый токен cfut_ljB4... — без IP-ограничений, работает с любого ПК.
+- Старый токен имел IP-ограничение — работал только с IP Бориса.
+- Новый токен — без IP-ограничений, работает с любого ПК.
 - Прописан в config.local.json (файл в .gitignore, в репозиторий не попадает).
 - Деплой успешно протестирован.
 
@@ -962,11 +962,11 @@ Google Таблица по ссылке сейчас закрыта настро
 
 Cloudflare:
   Account ID:  8847a4c47c5dbe34f3887ce61182873a
-  API Token:   cfut_ljB4xxxx...xxxx[SEE config.local.json]
+  API Token:   [См. config.local.json / выдается администратором]
   Project:     dashbord-partners1
   Worker URL:  https://dashbord-partners.beckelaguas723.workers.dev
   Pages URL:   https://dashbord-partners1.pages.dev
-  Login:       director / password
+  Login:       [Защищено авторизацией / выдается администратором]
 
 Git:
   Repo:   https://github.com/beckelaguas723-gif/otchet-parser.git
@@ -983,8 +983,8 @@ Git:
    git clone https://github.com/beckelaguas723-gif/otchet-parser.git
    Перейди в папку проекта.
 
-2. Создай файл config.local.json в корне проекта:
-   {"account_id":"8847a4c47c5dbe34f3887ce61182873a","api_token":"cfut_ljB4xxxx...xxxx[SEE config.local.json]","project_name":"dashbord-partners1"}
+2. Создай файл config.local.json в корне проекта (по шаблону config.local.json.template):
+   {"account_id":"8847a4c47c5dbe34f3887ce61182873a","api_token":"YOUR_API_TOKEN","project_name":"dashbord-partners1"}
 
 3. Установи зависимости:
    - Python (с галочкой Add Python to PATH при установке)

@@ -1,7 +1,7 @@
 # ТЕХНИЧЕСКИЙ КОНТЕКСТ ПРОЕКТА: B2C ANALYTICS DASHBOARD & PARTNERS
 
 **Дата обновления:** 21.09.2026  
-**Хостинг/Деплой:** Cloudflare Pages (`dashbord-partners1.pages.dev`), прокси Worker (`dashbord-partners.beckelaguas723.workers.dev`, Basic Auth: `director` / `password`).  
+**Хостинг/Деплой:** Cloudflare Pages (`dashbord-partners1.pages.dev`) и прокси Worker (`dashbord-partners.beckelaguas723.workers.dev`). Доступ ко всем ресурсам защищён авторизацией (HTTP Basic Auth, логин и пароль предоставляются администратором проекта).  
 **Репозиторий:** `https://github.com/beckelaguas723-gif/otchet-parser.git` (ветка `main`).
 
 ---
