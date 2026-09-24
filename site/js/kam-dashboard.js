@@ -894,6 +894,7 @@ function getKamAggregatedData(filterCfg) {
                 in_leads: 0,
                 qual_leads: 0,
                 trans_leads: 0,
+                has_trans_from_db: false,
                 trans_deals: 0,
                 mp_deals: 0,
                 fdc_online_deals: 0,
@@ -953,10 +954,10 @@ function getKamAggregatedData(filterCfg) {
         const cityBrandEntry = recordCityMatch();
 
         if (r.Type === 'Лид') {
-            ps.in_leads += (r.Qty || 1);
             ps.trans_leads += (r.Qty || 1);
             ps.brands[brand].trans_leads += (r.Qty || 1);
             if (cityBrandEntry) cityBrandEntry.trans_leads += (r.Qty || 1);
+            ps.has_trans_from_db = true;
         } else if (r.Type === 'Сделка') {
             ps.total_deals += (r.Qty || 1);
             ps.brands[brand].total_deals += (r.Qty || 1);
@@ -1011,17 +1012,27 @@ function getKamAggregatedData(filterCfg) {
                 if (ps) {
                     ps.in_leads += (d.total_clients || 0);
                     ps.qual_leads += (d.qual_clients || 0);
-                    ps.trans_leads += (d.trans_clients || 0);
-                    (d.top_brands || []).forEach(tb => {
-                        const ntb = normalizeBrandName(tb);
-                        if (!ps.brands[ntb]) {
-                            ps.brands[ntb] = { name: ntb, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
-                        }
-                        ps.brands[ntb].trans_leads += (d.trans_clients || 0);
-                    });
+                    // Prevent double counting: only add trans_clients from geo-dealers if partner has NO leads in sys_db_partners
+                    if (!ps.has_trans_from_db) {
+                        ps.trans_leads += (d.trans_clients || 0);
+                        (d.top_brands || []).forEach(tb => {
+                            const ntb = normalizeBrandName(tb);
+                            if (!ps.brands[ntb]) {
+                                ps.brands[ntb] = { name: ntb, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
+                            }
+                            ps.brands[ntb].trans_leads += (d.trans_clients || 0);
+                        });
+                    }
                 }
             }
         });
+    });
+
+    // Ensure in_leads is at least equal to trans_leads
+    Object.values(partnerStats).forEach(ps => {
+        if (ps.in_leads < ps.trans_leads) {
+            ps.in_leads = ps.trans_leads;
+        }
     });
 
     // 3.1 Calculate MTD (Month-To-Date) Deals from previous month
@@ -1244,7 +1255,7 @@ function getKamAggregatedData(filterCfg) {
     if (currentKamFilter === 'all') {
         sumTotalInLeads = lgdSummary.total_clients || 23572;
         sumQualLeads = lgdSummary.qual_clients || 8961;
-        sumTransLeads = lgdSummary.trans_clients || 1052;
+        sumTransLeads = sumTransLeads || lgdSummary.trans_clients || 1052;
     } else {
         if (sumTotalInLeads === 0 && sumQualLeads > 0) {
             sumTotalInLeads = Math.round(sumQualLeads * 3.1);
