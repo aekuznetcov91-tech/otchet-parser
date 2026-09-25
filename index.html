@@ -242,7 +242,10 @@
         </div>
         <div class="card overflow-x-auto">
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-lg font-bold text-gray-800">ТИП СДЕЛКИ (B2C) ПО МАРКАМ</h2>
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <h2 class="text-lg font-bold text-gray-800">ТИП СДЕЛКИ (B2C) ПО МАРКАМ</h2>
+                    <span id="mtdBadgeB2CBrands" class="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-bold border border-blue-200 hidden"></span>
+                </div>
                 <div class="flex items-center gap-2">
                     <div class="relative"><i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-2"></i><input id="searchB2CBrands" type="text" class="search-box" placeholder="Поиск..." oninput="filterTable(this, 'tableB2CBrands')"></div>
                     <button class="copy-btn" onclick="copyTableToClipboard('tableB2CBrands')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
@@ -252,7 +255,10 @@
         </div>
         <div class="card overflow-x-auto">
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-lg font-bold text-gray-800">СТРУКТУРА СДЕЛОК B2C ВНУТРИ БРЕНДА (%)</h2>
+                <div class="flex items-center gap-2.5 flex-wrap">
+                    <h2 class="text-lg font-bold text-gray-800">СТРУКТУРА СДЕЛОК B2C ВНУТРИ БРЕНДА (%)</h2>
+                    <span id="mtdBadgeB2CStruct" class="text-xs px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-bold border border-blue-200 hidden"></span>
+                </div>
                 <div class="flex items-center gap-2">
                     <button class="copy-btn" onclick="copyTableToClipboard('tableB2CStruct')"><i data-lucide="clipboard-copy" class="w-3.5 h-3.5"></i> В Excel</button>
                 </div>

@@ -176,5 +176,28 @@ console.log('OK');
         self.assertIn('function formatBrandsForPresentation', utils_content)
         self.assertIn('function copyBrandsPresentationText', utils_content)
 
+    def test_tables_mtd_dynamics_sync_and_structure(self):
+        root_tables = os.path.join(BASE_DIR, 'js', 'tables.js')
+        site_tables = os.path.join(JS_DIR, 'tables.js')
+        self.assertTrue(os.path.exists(root_tables), "js/tables.js missing")
+        self.assertTrue(os.path.exists(site_tables), "site/js/tables.js missing")
+        with open(root_tables, 'r', encoding='utf-8') as f1, open(site_tables, 'r', encoding='utf-8') as f2:
+            self.assertEqual(f1.read(), f2.read(), "js/tables.js and site/js/tables.js must be identical")
+
+        with open(site_tables, 'r', encoding='utf-8') as f:
+            content = f.read()
+        self.assertIn('isMtd', content, "tables.js must define isMtd")
+        self.assertIn('maxCurDay', content, "tables.js must compute maxCurDay for MTD comparison")
+        self.assertIn('mtdBadgeB2CBrands', content, "tables.js must update mtdBadgeB2CBrands")
+        self.assertIn('mtdBadgeB2CStruct', content, "tables.js must update mtdBadgeB2CStruct")
+        self.assertIn('mtdTitleAttr', content, "tables.js must set informative mtdTitleAttr")
+
+        site_index = os.path.join(SITE_DIR, 'index.html')
+        with open(site_index, 'r', encoding='utf-8') as f:
+            index_content = f.read()
+        self.assertIn('mtdBadgeB2CBrands', index_content, "index.html must have mtdBadgeB2CBrands element")
+        self.assertIn('mtdBadgeB2CStruct', index_content, "index.html must have mtdBadgeB2CStruct element")
+
 if __name__ == '__main__':
     unittest.main()
+

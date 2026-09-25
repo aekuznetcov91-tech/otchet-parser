@@ -119,14 +119,77 @@ function renderDynamicsTab(sDb, pDb, isAll) {
         prevMonthStr = `${y}-${String(m).padStart(2, '0')}`;
     }
 
+    // Determine if current month is in-progress (MTD: Month-To-Date comparison)
+    let maxCurDay = 0;
+    sDb.forEach(r => {
+        let dt = typeof excelToJSDate === 'function' ? excelToJSDate(r.DealDate || r.SaleDate) : null;
+        if (dt && dt.getDate() > maxCurDay) maxCurDay = dt.getDate();
+    });
+
+    let daysInCurMonth = 31;
+    if (curMonthStr && /^\d{4}-\d{2}$/.test(curMonthStr)) {
+        let [y, m] = curMonthStr.split('-').map(Number);
+        daysInCurMonth = new Date(y, m, 0).getDate();
+    }
+
+    const isMtd = maxCurDay > 0 && maxCurDay < daysInCurMonth;
+
+    let prevMonthKey = prevMonthStr ? prevMonthStr.split('-')[1] : '';
+    let curMonthKey = curMonthStr ? curMonthStr.split('-')[1] : '';
+    let prevMonthName = (typeof MONTH_NAMES_RU !== 'undefined' && MONTH_NAMES_RU[prevMonthKey]) || prevMonthStr || '';
+    let curMonthName = (typeof MONTH_NAMES_RU !== 'undefined' && MONTH_NAMES_RU[curMonthKey]) || curMonthStr || '';
+
+    const mtdTitleAttr = isMtd
+        ? `title="MTD (с 1 по ${maxCurDay} число): сравнение с 1–${maxCurDay} ${prevMonthName}"`
+        : `title="Сравнение с полным месяцем ${prevMonthName}"`;
+
     let prevSalesDb = [];
     if (prevMonthStr && typeof db !== 'undefined' && Array.isArray(db)) {
-        prevSalesDb = db.filter(r => r.SaleQty > 0 && (r.SaleMonth || '').replace("'", "") === prevMonthStr);
+        prevSalesDb = db.filter(r => {
+            if (r.SaleQty <= 0) return false;
+            if ((r.SaleMonth || '').replace(/'/g, "") !== prevMonthStr) return false;
+            if (isMtd) {
+                let dt = typeof excelToJSDate === 'function' ? excelToJSDate(r.DealDate || r.SaleDate) : null;
+                if (!dt) return false;
+                return dt.getDate() <= maxCurDay;
+            }
+            return true;
+        });
     }
     const hasPrev = prevMonthStr && prevSalesDb.length > 0;
     const prevGrandTotal = prevSalesDb.length;
     const prevBrandTotals = {};
     brands.forEach(b => prevBrandTotals[b] = prevSalesDb.filter(r => getNormalizedBrand(r) === b).length);
+
+    // Update MTD indicators in card headers
+    const badgeText = isMtd 
+        ? `MTD: 1–${maxCurDay} ${curMonthName.toLowerCase().slice(0, 3)} vs 1–${maxCurDay} ${prevMonthName.toLowerCase().slice(0, 3)}`
+        : (prevMonthName ? `vs ${prevMonthName}` : '');
+
+    const elBadgeBrands = document.getElementById('mtdBadgeB2CBrands');
+    if (elBadgeBrands) {
+        if (hasPrev && badgeText) {
+            elBadgeBrands.textContent = badgeText;
+            elBadgeBrands.title = isMtd 
+                ? `MTD (Month-To-Date): сравнение динамики за 1–${maxCurDay} число текущего месяца с аналогичным периодом (1–${maxCurDay}) ${prevMonthName}`
+                : `Сравнение с полным месяцем ${prevMonthName}`;
+            elBadgeBrands.classList.remove('hidden');
+        } else {
+            elBadgeBrands.classList.add('hidden');
+        }
+    }
+    const elBadgeStruct = document.getElementById('mtdBadgeB2CStruct');
+    if (elBadgeStruct) {
+        if (hasPrev && badgeText) {
+            elBadgeStruct.textContent = badgeText;
+            elBadgeStruct.title = isMtd 
+                ? `MTD (Month-To-Date): сравнение структуры за 1–${maxCurDay} число текущего месяца с аналогичным периодом (1–${maxCurDay}) ${prevMonthName}`
+                : `Сравнение с полным месяцем ${prevMonthName}`;
+            elBadgeStruct.classList.remove('hidden');
+        } else {
+            elBadgeStruct.classList.add('hidden');
+        }
+    }
 
     const calcMet = (sales, prepays, brand, idx) => {
         let filteredS = brand ? sales.filter(r => getNormalizedBrand(r) === brand) : sales;
@@ -171,9 +234,9 @@ function renderDynamicsTab(sDb, pDb, isAll) {
         let rowDiff = rowCount - prevRowCount;
         let rowBadge = '';
         if (hasPrev) {
-            if (rowDiff > 0) rowBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${rowDiff}</span>`;
-            else if (rowDiff < 0) rowBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap">▼${rowDiff}</span>`;
-            else rowBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+            if (rowDiff > 0) rowBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▲+${rowDiff}</span>`;
+            else if (rowDiff < 0) rowBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▼${rowDiff}</span>`;
+            else rowBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>=</span>`;
         }
 
         // Subtotal row delta (share %)
@@ -182,9 +245,9 @@ function renderDynamicsTab(sDb, pDb, isAll) {
         let rowShareDiff = (curRowShare - prevRowShare) * 100;
         let rowShareBadge = '';
         if (hasPrev) {
-            if (rowShareDiff >= 0.1) rowShareBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${rowShareDiff.toFixed(1)}%</span>`;
-            else if (rowShareDiff <= -0.1) rowShareBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap">▼${rowShareDiff.toFixed(1)}%</span>`;
-            else rowShareBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+            if (rowShareDiff >= 0.1) rowShareBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▲+${rowShareDiff.toFixed(1)}%</span>`;
+            else if (rowShareDiff <= -0.1) rowShareBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▼${rowShareDiff.toFixed(1)}%</span>`;
+            else rowShareBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>=</span>`;
         }
 
         h2 += `<tr><td class="font-bold">${t}</td><td class="font-bold bg-gray-50"><div class="flex items-center justify-between"><span>${fmtNum(rowCount)}</span>${rowBadge}</div></td>`;
@@ -198,9 +261,9 @@ function renderDynamicsTab(sDb, pDb, isAll) {
             let cellDiff = cell - prevCell;
             let cellBadge = '';
             if (hasPrev) {
-                if (cellDiff > 0) cellBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${cellDiff}</span>`;
-                else if (cellDiff < 0) cellBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap">▼${cellDiff}</span>`;
-                else cellBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+                if (cellDiff > 0) cellBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▲+${cellDiff}</span>`;
+                else if (cellDiff < 0) cellBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▼${cellDiff}</span>`;
+                else cellBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>=</span>`;
             }
 
             // Share % cell badge in tableB2CStruct (share inside brand)
@@ -209,9 +272,9 @@ function renderDynamicsTab(sDb, pDb, isAll) {
             let diffPct = (curPct - prevPct) * 100;
             let structBadge = '';
             if (hasPrev && (brandTotals[b] > 0 || (prevBrandTotals[b] || 0) > 0)) {
-                if (diffPct >= 0.1) structBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${diffPct.toFixed(1)}%</span>`;
-                else if (diffPct <= -0.1) structBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap">▼${diffPct.toFixed(1)}%</span>`;
-                else structBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+                if (diffPct >= 0.1) structBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▲+${diffPct.toFixed(1)}%</span>`;
+                else if (diffPct <= -0.1) structBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▼${diffPct.toFixed(1)}%</span>`;
+                else structBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>=</span>`;
             }
 
             h2 += `<td><div class="flex items-center justify-between"><span>${fmtNum(cell)}</span>${cellBadge}</div></td>`;
@@ -224,9 +287,9 @@ function renderDynamicsTab(sDb, pDb, isAll) {
     let grandDiff = grandTotal - prevGrandTotal;
     let grandBadge = '';
     if (hasPrev) {
-        if (grandDiff > 0) grandBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${grandDiff}</span>`;
-        else if (grandDiff < 0) grandBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap">▼${grandDiff}</span>`;
-        else grandBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+        if (grandDiff > 0) grandBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▲+${grandDiff}</span>`;
+        else if (grandDiff < 0) grandBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▼${grandDiff}</span>`;
+        else grandBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>=</span>`;
     }
 
     h2 += `<tr class="table-total"><td>ИТОГО (шт.)</td><td><div class="flex items-center justify-between"><span>${fmtNum(grandTotal)}</span>${grandBadge}</div></td>`;
@@ -236,9 +299,9 @@ function renderDynamicsTab(sDb, pDb, isAll) {
         let bDiff = brandTotals[b] - (prevBrandTotals[b] || 0);
         let bBadge = '';
         if (hasPrev) {
-            if (bDiff > 0) bBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${bDiff}</span>`;
-            else if (bDiff < 0) bBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap">▼${bDiff}</span>`;
-            else bBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+            if (bDiff > 0) bBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▲+${bDiff}</span>`;
+            else if (bDiff < 0) bBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▼${bDiff}</span>`;
+            else bBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>=</span>`;
         }
 
         let curBrandShare = grandTotal > 0 ? brandTotals[b] / grandTotal : 0;
@@ -246,9 +309,9 @@ function renderDynamicsTab(sDb, pDb, isAll) {
         let bShareDiff = (curBrandShare - prevBrandShare) * 100;
         let bShareBadge = '';
         if (hasPrev) {
-            if (bShareDiff >= 0.1) bShareBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${bShareDiff.toFixed(1)}%</span>`;
-            else if (bShareDiff <= -0.1) bShareBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap">▼${bShareDiff.toFixed(1)}%</span>`;
-            else bShareBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+            if (bShareDiff >= 0.1) bShareBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▲+${bShareDiff.toFixed(1)}%</span>`;
+            else if (bShareDiff <= -0.1) bShareBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>▼${bShareDiff.toFixed(1)}%</span>`;
+            else bShareBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap cursor-help" ${mtdTitleAttr}>=</span>`;
         }
 
         h2 += `<td><div class="flex items-center justify-between"><span>${fmtNum(brandTotals[b])}</span>${bBadge}</div></td>`;
