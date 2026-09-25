@@ -1246,8 +1246,8 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         event = str(get_exact_val(r, 'СОБЫТИЕ', 'EVENTNAME', 'EVENT_NAME') or '').strip()
         ev_clean = clean_key(event)
         
-        is_qual_row = (str(get_exact_val(r, 'ЦЕЛЕВОЙМЕНЕДЖЕР', 'ЦЕЛЕВОЙ') or '').strip() == '1')
         is_trans_row = ('ОТПРАВКАЛИДА' in ev_clean or 'ОТПРАВЛЕНДИЛЕРУ' in ev_clean or str(get_exact_val(r, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
+        is_qual_row = (str(get_exact_val(r, 'ЦЕЛЕВОЙМЕНЕДЖЕР', 'ЦЕЛЕВОЙ') or '').strip() == '1') or is_trans_row
         has_used_row = ('б/у' in raw_src or 'бу' in raw_src or 'пробег' in raw_src)
         has_oem_row = any(ob in raw_brand for ob in oem_13_brands)
         has_fdc_row = ('фдц' in raw_src)
@@ -1283,10 +1283,10 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                 'brand': brand,
                 'model': model,
                 'month': client_month,
-                'is_qual': is_qual_row,
-                'is_raw_trans': is_trans_row,
+                'is_qual': is_qual_row or is_trans_row or has_deal,
+                'is_raw_trans': is_trans_row or has_deal,
                 'has_used': has_used_row,
-                'has_oem': has_oem_row,
+                'has_oem': has_oem_row or has_deal,
                 'has_fdc': has_fdc_row,
                 'has_deal': has_deal,
                 'event': event or ('Сделка' if has_deal else 'В обработке'),
@@ -1296,10 +1296,10 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             }
         else:
             c_entry = clients_by_id[cid]
-            if is_qual_row: c_entry['is_qual'] = True
-            if is_trans_row: c_entry['is_raw_trans'] = True
+            if is_qual_row or is_trans_row or has_deal: c_entry['is_qual'] = True
+            if is_trans_row or has_deal: c_entry['is_raw_trans'] = True
             if has_used_row: c_entry['has_used'] = True
-            if has_oem_row: c_entry['has_oem'] = True
+            if has_oem_row or has_deal: c_entry['has_oem'] = True
             if has_fdc_row: c_entry['has_fdc'] = True
             if has_deal: c_entry['has_deal'] = True
             if (not c_entry['brand'] or c_entry['brand'] == 'Другие') and brand != 'Другие':
@@ -1313,13 +1313,20 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
 
     # Finalize BI transfer flag for each client (strictly qualified + OEM + not used + not fdc)
     for c_entry in clients_by_id.values():
-        c_entry['is_trans'] = (
-            c_entry.get('is_raw_trans', False) and
-            c_entry.get('is_qual', False) and
-            c_entry.get('has_oem', False) and
-            (not c_entry.get('has_used', False)) and
-            (not c_entry.get('has_fdc', False))
-        )
+        if c_entry.get('has_deal'):
+            c_entry['is_qual'] = True
+            c_entry['is_raw_trans'] = True
+            c_entry['has_oem'] = True
+            c_entry['is_trans'] = True
+        elif c_entry.get('is_raw_trans'):
+            c_entry['is_qual'] = True
+            c_entry['is_trans'] = (
+                c_entry.get('has_oem', False) and
+                (not c_entry.get('has_used', False)) and
+                (not c_entry.get('has_fdc', False))
+            )
+        else:
+            c_entry['is_trans'] = False
 
     clients_all = list(clients_by_id.values())
 

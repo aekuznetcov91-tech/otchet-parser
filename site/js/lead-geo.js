@@ -90,8 +90,8 @@ function renderLeadGeoTable() {
     let totalDealsFiltered = 0;
     let matchingDealersCount = 0;
 
-    let html = `<table id="tableLeadGeo" class="min-w-full">
-        <thead>
+    let html = `<table id="tableLeadGeo" class="min-w-full divide-y divide-slate-200">
+        <thead class="bg-slate-50 text-slate-700 text-xs font-bold uppercase tracking-wider">
             <tr>
                 <th style="min-width: 260px;">Регион / Дилерский Центр</th>
                 <th style="text-align: center; width: 140px;">Квалифицировано</th>
@@ -102,7 +102,7 @@ function renderLeadGeoTable() {
                 <th style="text-align: right; width: 170px;">База клиентов БФС</th>
             </tr>
         </thead>
-        <tbody>`;
+        <tbody class="divide-y divide-slate-100 bg-white">`;
 
     rawRegions.forEach((reg, rIdx) => {
         // Filter dealers within region
@@ -139,42 +139,42 @@ function renderLeadGeoTable() {
         // Group Header (Region Row)
         const safeRegName = encodeURIComponent(reg.region_name);
         html += `
-        <tr class="bg-slate-800/90 text-white font-bold cursor-pointer group hover:bg-slate-800 transition select-none" onclick="toggleRegionRows('${rIdx}')">
+        <tr class="region-group-row bg-slate-50/90 hover:bg-emerald-50/60 font-bold cursor-pointer group border-b border-slate-200 transition select-none" onclick="toggleRegionRows('${rIdx}')">
             <td class="py-3 px-4 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <span id="regionArrow_${rIdx}" class="text-xs transition-transform transform">▶</span>
-                    <span class="text-sm font-black text-white">${reg.region_name}</span>
-                    <span class="px-2 py-0.5 text-[10px] rounded-full bg-slate-700 text-slate-300 font-semibold border border-slate-600">
+                    <span id="regionArrow_${rIdx}" class="text-xs transition-transform transform text-slate-400 group-hover:text-emerald-600 font-bold">▶</span>
+                    <span class="text-sm font-black text-slate-900">${reg.region_name}</span>
+                    <span class="px-2 py-0.5 text-[10px] rounded-full bg-slate-200 text-slate-700 font-bold border border-slate-300">
                         ${filteredDealers.length} ДЦ
                     </span>
                 </div>
             </td>
-            <td class="text-center font-bold text-emerald-400">
-                <span class="cursor-pointer underline decoration-dotted hover:text-emerald-300" onclick="event.stopPropagation(); openRegionClientDrilldown('${safeRegName}', 'qual')" title="Показать всех квалифицированных клиентов региона">
+            <td class="text-center font-black text-emerald-700">
+                <span class="cursor-pointer underline decoration-dotted hover:text-emerald-800" onclick="event.stopPropagation(); openRegionClientDrilldown('${safeRegName}', 'qual')" title="Показать всех квалифицированных клиентов региона">
                     ${fmtNum(regQual)}
                 </span>
             </td>
-            <td class="text-center font-bold text-blue-400">
-                <span class="cursor-pointer underline decoration-dotted hover:text-blue-300" onclick="event.stopPropagation(); openRegionClientDrilldown('${safeRegName}', 'trans')" title="Показать всех переданных клиентов региона">
+            <td class="text-center font-black text-blue-700">
+                <span class="cursor-pointer underline decoration-dotted hover:text-blue-800" onclick="event.stopPropagation(); openRegionClientDrilldown('${safeRegName}', 'trans')" title="Показать всех переданных клиентов региона">
                     ${fmtNum(regTrans)}
                 </span>
             </td>
             <td class="text-center">
-                <div class="flex items-center justify-center gap-1.5 text-xs font-semibold text-slate-300">
+                <div class="flex items-center justify-center gap-1.5 text-xs font-bold text-slate-700">
                     <span>${regTransPct}%</span>
-                    <div class="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden shrink-0">
+                    <div class="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden shrink-0">
                         <div class="h-full bg-emerald-500 rounded-full" style="width: ${Math.min(100, parseFloat(regTransPct))}%"></div>
                     </div>
                 </div>
             </td>
-            <td class="text-center font-black text-amber-400">
-                <span class="cursor-pointer underline decoration-dotted hover:text-amber-300" onclick="event.stopPropagation(); openRegionClientDrilldown('${safeRegName}', 'deals')" title="Показать все сделки региона">
+            <td class="text-center font-black text-purple-700">
+                <span class="cursor-pointer underline decoration-dotted hover:text-purple-800" onclick="event.stopPropagation(); openRegionClientDrilldown('${safeRegName}', 'deals')" title="Показать все сделки региона">
                     ${fmtNum(regDeals)}
                 </span>
             </td>
-            <td class="text-center text-xs text-slate-300 font-semibold">${regCr}%</td>
+            <td class="text-center text-xs text-slate-800 font-black">${regCr}%</td>
             <td class="text-right">
-                <button onclick="event.stopPropagation(); openRegionClientDrilldown('${safeRegName}', 'all')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition shadow-sm inline-flex items-center gap-1 cursor-pointer">
+                <button onclick="event.stopPropagation(); openRegionClientDrilldown('${safeRegName}', 'all')" class="px-3 py-1 bg-white hover:bg-emerald-50 text-emerald-700 border border-emerald-300 rounded-lg text-xs font-bold transition shadow-sm inline-flex items-center gap-1 cursor-pointer">
                     <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     Клиенты региона
                 </button>
@@ -188,7 +188,7 @@ function renderLeadGeoTable() {
             const brandsBadge = (d.top_brands || []).map(b => `<span class="px-1.5 py-0.2 bg-gray-100 text-gray-700 rounded text-[10px] font-semibold border border-gray-200">${b}</span>`).join(' ');
 
             html += `
-            <tr class="region-subrow-${rIdx} ${rowBg} hover:bg-emerald-50/50 transition" style="display: none;">
+            <tr class="dealer-subrow region-subrow-${rIdx} ${rowBg} hover:bg-blue-50/40 border-b border-slate-100 transition" style="display: none;">
                 <td class="pl-8 py-2.5">
                     <div class="font-bold text-slate-900 text-xs">${d.dealer_name}</div>
                     <div class="text-[11px] text-gray-500 flex items-center gap-1 mt-0.5">
@@ -222,7 +222,7 @@ function renderLeadGeoTable() {
                     ${d.deals_cr_pct}%
                 </td>
                 <td class="text-right">
-                    <button onclick="openDealerClientDrilldown('${safeRegName}', '${safeDealerName}', 'all')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg text-xs font-bold transition inline-flex items-center gap-1 cursor-pointer">
+                    <button onclick="openDealerClientDrilldown('${safeRegName}', '${safeDealerName}', 'all')" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition inline-flex items-center gap-1 cursor-pointer shadow-sm">
                         <span>🔗 БФС (${d.clients ? d.clients.length : 0})</span>
                     </button>
                 </td>
@@ -235,13 +235,13 @@ function renderLeadGeoTable() {
     let totalCr = totalTransFiltered > 0 ? ((totalDealsFiltered / totalTransFiltered) * 100).toFixed(1) : '0.0';
 
     html += `
-    <tr class="table-total">
-        <td>ИТОГО ПО ВЫБОРКЕ (${matchingDealersCount} ДЦ)</td>
-        <td class="text-center font-black text-emerald-700">${fmtNum(totalQualFiltered)}</td>
-        <td class="text-center font-black text-blue-700">${fmtNum(totalTransFiltered)}</td>
-        <td class="text-center font-black">${totalTransPct}%</td>
-        <td class="text-center font-black text-purple-800">${fmtNum(totalDealsFiltered)}</td>
-        <td class="text-center font-black text-emerald-700">${totalCr}%</td>
+    <tr class="table-total bg-slate-900 text-white font-bold">
+        <td class="py-3 px-4 font-black">ИТОГО ПО ВЫБОРКЕ (${matchingDealersCount} ДЦ)</td>
+        <td class="text-center font-black text-emerald-400">${fmtNum(totalQualFiltered)}</td>
+        <td class="text-center font-black text-blue-400">${fmtNum(totalTransFiltered)}</td>
+        <td class="text-center font-black text-white">${totalTransPct}%</td>
+        <td class="text-center font-black text-amber-300">${fmtNum(totalDealsFiltered)}</td>
+        <td class="text-center font-black text-emerald-400">${totalCr}%</td>
         <td></td>
     </tr>
     </tbody></table>`;

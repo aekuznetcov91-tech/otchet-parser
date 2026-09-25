@@ -11,6 +11,67 @@ tr.group-header td { background-color: #e0e7ff; font-weight: 700; font-size: 0.8
 .table-total { background-color: #22c55e !important; color: white !important; font-weight: 700; }
 .table-total td { color: white !important; font-weight: 700; }
 .table-subtotal { background-color: #f1f5f9; font-weight: 600; }
+
+/* Clean White UI for Lead-Geo Matrix (Frontend UI Engineering) */
+#tableLeadGeo {
+    background-color: #ffffff !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.75rem !important;
+    overflow: hidden !important;
+}
+#tableLeadGeo thead th {
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    padding: 10px 14px !important;
+}
+#tableLeadGeo tr.region-group-row {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    transition: background-color 0.15s ease !important;
+}
+#tableLeadGeo tr.region-group-row:hover {
+    background-color: #eff6ff !important;
+}
+#tableLeadGeo tr.region-group-row td {
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    padding: 11px 14px !important;
+}
+#tableLeadGeo tr.dealer-subrow {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    transition: background-color 0.15s ease !important;
+}
+#tableLeadGeo tr.dealer-subrow:hover {
+    background-color: #f8fafc !important;
+}
+#tableLeadGeo tr.dealer-subrow td {
+    border-bottom: 1px solid #f1f5f9 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    padding: 9px 14px !important;
+}
+#tableLeadGeo tr.table-total td {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    border: none !important;
+    padding: 12px 14px !important;
+}
 .kpi-card { border-left: 4px solid; padding: 1rem; border-radius: 0.5rem; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
 .copy-btn { font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 0.375rem; background-color: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 500; }
 .copy-btn:hover { background-color: #e5e7eb; color: #1f2937; }

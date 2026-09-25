@@ -964,12 +964,22 @@ function initTableSorting() {
         th.dataset.sorted = "true";
         th.style.cursor = "pointer";
         th.title = "Нажмите для сортировки";
-        th.addEventListener('click', () => {
+        th.addEventListener('click', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+            
             const table = th.closest('table');
             if (!table) return;
-            const tbody = table.querySelector('tbody');
+
+            const thead = table.querySelector(':scope > thead');
+            if (thead && !thead.contains(th)) return;
+
+            const tbody = table.querySelector(':scope > tbody') || table.tBodies[0];
             if (!tbody) return;
-            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            // CRITICAL FIX: Only select direct child <tr> of this table's <tbody>!
+            // querySelectorAll('tr') selects nested rows inside accordion deal tables,
+            // which pulls inner deal rows out of the drilldown and flattens them into the main table.
+            const directRows = Array.from(tbody.children).filter(el => el.tagName === 'TR');
             const colIdx = Array.from(th.parentNode.children).indexOf(th);
 
             // Determine sort direction: default to desc for numeric, asc for text on first click
@@ -984,11 +994,11 @@ function initTableSorting() {
                 nextDir = isTextCol ? 'asc' : 'desc';
             }
 
-            table.querySelectorAll('th').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
+            table.querySelectorAll(':scope > thead th').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
             th.classList.add(nextDir === 'asc' ? 'sort-asc' : 'sort-desc');
 
-            const totalRows = rows.filter(r => r.classList.contains('table-total') || r.classList.contains('table-subtotal') || r.classList.contains('group-header'));
-            const sortableRows = rows.filter(r => !r.classList.contains('table-total') && !r.classList.contains('table-subtotal') && !r.classList.contains('group-header') && !r.classList.contains('partner-deals-row'));
+            const totalRows = directRows.filter(r => r.classList.contains('table-total') || r.classList.contains('table-subtotal') || r.classList.contains('group-header'));
+            const sortableRows = directRows.filter(r => !r.classList.contains('table-total') && !r.classList.contains('table-subtotal') && !r.classList.contains('group-header') && !r.classList.contains('partner-deals-row'));
 
             sortableRows.sort((a, b) => {
                 let aCell = a.children[colIdx];
@@ -1009,16 +1019,18 @@ function initTableSorting() {
                 return nextDir === 'asc' ? aVal.localeCompare(bVal, 'ru') : bVal.localeCompare(aVal, 'ru');
             });
 
-            tbody.innerHTML = '';
+            // Re-order nodes cleanly using DocumentFragment without touching inner DOM of accordions
+            const frag = document.createDocumentFragment();
             sortableRows.forEach(r => {
-                tbody.appendChild(r);
+                frag.appendChild(r);
                 const pKey = r.dataset.partnerKey;
                 if (pKey) {
                     const childRow = document.getElementById('pdeals_row_' + pKey);
-                    if (childRow) tbody.appendChild(childRow);
+                    if (childRow) frag.appendChild(childRow);
                 }
             });
-            totalRows.forEach(r => tbody.appendChild(r));
+            totalRows.forEach(r => frag.appendChild(r));
+            tbody.appendChild(frag);
         });
     });
 }
