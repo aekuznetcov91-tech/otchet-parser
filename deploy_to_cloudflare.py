@@ -121,6 +121,16 @@ def sync_and_push_git(commit_message=None):
                     print("[+] Uspeshno zapusheno v Git (origin main)!")
                 else:
                     print(f"[!] Warning Git push: {push_res.stderr.strip() or push_res.stdout.strip()}")
+                
+                # Auto-sync comrade remote if configured
+                try:
+                    remotes = subprocess.run(["git", "remote"], capture_output=True, text=True).stdout.split()
+                    if "comrade" in remotes:
+                        c_push = subprocess.run(["git", "push", "comrade", "main"], capture_output=True, text=True)
+                        if c_push.returncode == 0:
+                            print("[+] Uspeshno sinkhronizirovano s repo tovarishcha (comrade main)!")
+                except Exception:
+                    pass
             else:
                 print("[+] Git derevo chistoe, vse izmeneniya uzhe v Git.")
     except Exception as e:
