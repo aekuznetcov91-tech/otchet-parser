@@ -90,13 +90,47 @@ function setupSmartSearch(inputId, targetContainerId) {
  * @param {boolean} isAll Whether all periods are selected
  */
 function renderDynamicsTab(sDb, pDb, isAll) {
-    let brands = Array.from(new Set(sDb.map(r => r.Brand))).filter(b => b && b !== "ВНЕСЕНИЕ").sort();
+    const getNormalizedBrand = (r) => {
+        let b = r.Brand || '';
+        let m = (r.SaleMonth || r.PrepayMonth || '').replace("'", "");
+        if (m >= '2026-09') {
+            let ub = b.toUpperCase();
+            if (ub === 'OMODA' || ub === 'JAECOO' || ub === 'OMODA & JAECOO') {
+                return 'JELAND';
+            }
+        }
+        return b;
+    };
+
+    let brands = Array.from(new Set(sDb.map(r => getNormalizedBrand(r)))).filter(b => b && b !== "ВНЕСЕНИЕ").sort();
     let b2cTypes = new Set(sDb.map(r => r.B2C || "(пусто)"));
     let b2cArr = Array.from(b2cTypes).sort();
 
+    // Determine current and previous month for dynamics comparison
+    let curMonthStr = (typeof currentFilterConfig !== 'undefined' && currentFilterConfig && currentFilterConfig.mode === 'month')
+        ? currentFilterConfig.month
+        : (sDb.length > 0 ? (sDb[0].SaleMonth || '').replace("'", "") : null);
+
+    let prevMonthStr = null;
+    if (curMonthStr && /^\d{4}-\d{2}$/.test(curMonthStr)) {
+        let [y, m] = curMonthStr.split('-').map(Number);
+        m--;
+        if (m < 1) { m = 12; y--; }
+        prevMonthStr = `${y}-${String(m).padStart(2, '0')}`;
+    }
+
+    let prevSalesDb = [];
+    if (prevMonthStr && typeof db !== 'undefined' && Array.isArray(db)) {
+        prevSalesDb = db.filter(r => r.SaleQty > 0 && (r.SaleMonth || '').replace("'", "") === prevMonthStr);
+    }
+    const hasPrev = prevMonthStr && prevSalesDb.length > 0;
+    const prevGrandTotal = prevSalesDb.length;
+    const prevBrandTotals = {};
+    brands.forEach(b => prevBrandTotals[b] = prevSalesDb.filter(r => getNormalizedBrand(r) === b).length);
+
     const calcMet = (sales, prepays, brand, idx) => {
-        let filteredS = brand ? sales.filter(r => r.Brand === brand) : sales;
-        let filteredP = brand ? prepays.filter(r => r.Brand === brand) : prepays;
+        let filteredS = brand ? sales.filter(r => getNormalizedBrand(r) === brand) : sales;
+        let filteredP = brand ? prepays.filter(r => getNormalizedBrand(r) === brand) : prepays;
         let t = filteredS.length, pr = filteredS.reduce((s,x)=>s+x.Price,0), rev = filteredS.reduce((s,x)=>s+x.Revenue,0);
         if (idx === 0) return t;
         if (idx === 1) return t > 0 ? pr / t : 0;
@@ -125,26 +159,100 @@ function renderDynamicsTab(sDb, pDb, isAll) {
 
     let b2cTotals = {}, brandTotals = {};
     b2cArr.forEach(t => b2cTotals[t] = 0);
-    brands.forEach(b => brandTotals[b] = sDb.filter(r => r.Brand === b).length);
+    brands.forEach(b => brandTotals[b] = sDb.filter(r => getNormalizedBrand(r) === b).length);
     let grandTotal = sDb.length;
 
     b2cArr.forEach(t => {
         let rowCount = sDb.filter(r => (r.B2C||"(пусто)") === t).length;
         b2cTotals[t] = rowCount;
-        h2 += `<tr><td class="font-bold">${t}</td><td class="font-bold bg-gray-50">${fmtNum(rowCount)}</td>`;
-        h3 += `<tr><td class="font-bold">${t}</td><td class="font-bold bg-gray-50">${grandTotal > 0 ? fmtPct(rowCount/grandTotal) : "0%"}</td>`;
+
+        // Subtotal row delta (volume)
+        let prevRowCount = hasPrev ? prevSalesDb.filter(r => (r.B2C||"(пусто)") === t).length : 0;
+        let rowDiff = rowCount - prevRowCount;
+        let rowBadge = '';
+        if (hasPrev) {
+            if (rowDiff > 0) rowBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${rowDiff}</span>`;
+            else if (rowDiff < 0) rowBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap">▼${rowDiff}</span>`;
+            else rowBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+        }
+
+        // Subtotal row delta (share %)
+        let curRowShare = grandTotal > 0 ? (rowCount / grandTotal) : 0;
+        let prevRowShare = prevGrandTotal > 0 ? (prevRowCount / prevGrandTotal) : 0;
+        let rowShareDiff = (curRowShare - prevRowShare) * 100;
+        let rowShareBadge = '';
+        if (hasPrev) {
+            if (rowShareDiff >= 0.1) rowShareBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${rowShareDiff.toFixed(1)}%</span>`;
+            else if (rowShareDiff <= -0.1) rowShareBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap">▼${rowShareDiff.toFixed(1)}%</span>`;
+            else rowShareBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+        }
+
+        h2 += `<tr><td class="font-bold">${t}</td><td class="font-bold bg-gray-50"><div class="flex items-center justify-between"><span>${fmtNum(rowCount)}</span>${rowBadge}</div></td>`;
+        h3 += `<tr><td class="font-bold">${t}</td><td class="font-bold bg-gray-50"><div class="flex items-center justify-between"><span>${grandTotal > 0 ? fmtPct(curRowShare) : "0%"}</span>${rowShareBadge}</div></td>`;
+
         brands.forEach(b => {
-            let cell = sDb.filter(r => (r.B2C||"(пусто)") === t && r.Brand === b).length;
-            h2 += `<td>${fmtNum(cell)}</td>`;
-            h3 += `<td>${brandTotals[b] > 0 ? fmtPct(cell/brandTotals[b]) : "0%"}</td>`;
+            let cell = sDb.filter(r => (r.B2C||"(пусто)") === t && getNormalizedBrand(r) === b).length;
+            let prevCell = hasPrev ? prevSalesDb.filter(r => (r.B2C||"(пусто)") === t && getNormalizedBrand(r) === b).length : 0;
+
+            // Volume cell badge in tableB2CBrands
+            let cellDiff = cell - prevCell;
+            let cellBadge = '';
+            if (hasPrev) {
+                if (cellDiff > 0) cellBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${cellDiff}</span>`;
+                else if (cellDiff < 0) cellBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap">▼${cellDiff}</span>`;
+                else cellBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+            }
+
+            // Share % cell badge in tableB2CStruct (share inside brand)
+            let curPct = brandTotals[b] > 0 ? (cell / brandTotals[b]) : 0;
+            let prevPct = (prevBrandTotals[b] && prevBrandTotals[b] > 0) ? (prevCell / prevBrandTotals[b]) : 0;
+            let diffPct = (curPct - prevPct) * 100;
+            let structBadge = '';
+            if (hasPrev && (brandTotals[b] > 0 || (prevBrandTotals[b] || 0) > 0)) {
+                if (diffPct >= 0.1) structBadge = `<span class="text-[11px] font-semibold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${diffPct.toFixed(1)}%</span>`;
+                else if (diffPct <= -0.1) structBadge = `<span class="text-[11px] font-semibold text-rose-600 ml-1.5 whitespace-nowrap">▼${diffPct.toFixed(1)}%</span>`;
+                else structBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+            }
+
+            h2 += `<td><div class="flex items-center justify-between"><span>${fmtNum(cell)}</span>${cellBadge}</div></td>`;
+            h3 += `<td><div class="flex items-center justify-between"><span>${brandTotals[b] > 0 ? fmtPct(curPct) : "0%"}</span>${structBadge}</div></td>`;
         });
         h2 += `</tr>`; h3 += `</tr>`;
     });
-    h2 += `<tr class="table-total"><td>ИТОГО (шт.)</td><td>${fmtNum(grandTotal)}</td>`;
+
+    // Grand total footer volume badge
+    let grandDiff = grandTotal - prevGrandTotal;
+    let grandBadge = '';
+    if (hasPrev) {
+        if (grandDiff > 0) grandBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${grandDiff}</span>`;
+        else if (grandDiff < 0) grandBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap">▼${grandDiff}</span>`;
+        else grandBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+    }
+
+    h2 += `<tr class="table-total"><td>ИТОГО (шт.)</td><td><div class="flex items-center justify-between"><span>${fmtNum(grandTotal)}</span>${grandBadge}</div></td>`;
     h3 += `<tr class="table-total"><td>ДОЛЯ БРЕНДА</td><td>100%</td>`;
+
     brands.forEach(b => {
-        h2 += `<td>${fmtNum(brandTotals[b])}</td>`;
-        h3 += `<td>${fmtPct(brandTotals[b]/grandTotal)}</td>`;
+        let bDiff = brandTotals[b] - (prevBrandTotals[b] || 0);
+        let bBadge = '';
+        if (hasPrev) {
+            if (bDiff > 0) bBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${bDiff}</span>`;
+            else if (bDiff < 0) bBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap">▼${bDiff}</span>`;
+            else bBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+        }
+
+        let curBrandShare = grandTotal > 0 ? brandTotals[b] / grandTotal : 0;
+        let prevBrandShare = prevGrandTotal > 0 ? (prevBrandTotals[b] || 0) / prevGrandTotal : 0;
+        let bShareDiff = (curBrandShare - prevBrandShare) * 100;
+        let bShareBadge = '';
+        if (hasPrev) {
+            if (bShareDiff >= 0.1) bShareBadge = `<span class="text-[11px] font-bold text-emerald-600 ml-1.5 whitespace-nowrap">▲+${bShareDiff.toFixed(1)}%</span>`;
+            else if (bShareDiff <= -0.1) bShareBadge = `<span class="text-[11px] font-bold text-rose-600 ml-1.5 whitespace-nowrap">▼${bShareDiff.toFixed(1)}%</span>`;
+            else bShareBadge = `<span class="text-[10px] text-gray-400 ml-1.5 whitespace-nowrap">=</span>`;
+        }
+
+        h2 += `<td><div class="flex items-center justify-between"><span>${fmtNum(brandTotals[b])}</span>${bBadge}</div></td>`;
+        h3 += `<td><div class="flex items-center justify-between"><span>${fmtPct(curBrandShare)}</span>${bShareBadge}</div></td>`;
     });
     const elB2CBrands = document.getElementById('tableB2CBrands');
     if (elB2CBrands) {
@@ -164,27 +272,6 @@ function renderDynamicsTab(sDb, pDb, isAll) {
  * @param {string|null} period Current period identifier
  */
 function renderDynMonthsTab(sDb, isAll, period) {
-    let hDb = db.filter(r => r.SaleQty > 0 || r.PrepayQty > 0);
-    let hData = {};
-    hDb.forEach(r => {
-        let b = r.Brand || "N/A"; let m = (r.SaleMonth || r.PrepayMonth || "N/A").replace("'", "");
-        let k = b + "|" + m;
-        if (!hData[k]) hData[k] = {s:0, rev:0, pr:0, p:0, b, m};
-        if (r.SaleQty > 0) { hData[k].s++; hData[k].rev += (r.Revenue||0); hData[k].pr += r.Price; }
-        if (r.PrepayQty > 0) hData[k].p++;
-    });
-    let histRows = Object.values(hData).sort((a,b) => a.b.localeCompare(b.b) || a.m.localeCompare(b.m));
-    let hHist = `<table id="tableHistDyn"><thead><tr><th>Марка авто</th><th>Месяц</th><th>Кол-во продаж</th><th>Средний чек</th><th>ARPU (без НДС)</th><th>Предоплат</th></tr></thead><tbody>`;
-    histRows.forEach(r => {
-        hHist += `<tr><td class="font-bold">${r.b}</td><td>${r.m}</td><td>${fmtNum(r.s)}</td>
-        <td>${r.s>0?fmtNum(r.pr/r.s):0}</td><td>${r.s>0?fmtNum(r.rev/r.s):0}</td><td>${fmtNum(r.p)}</td></tr>`;
-    });
-    const elHistDyn = document.getElementById('tableHistDyn');
-    if (elHistDyn) {
-        elHistDyn.innerHTML = hHist + `</tbody></table>`;
-        setupSmartSearch('searchHistDyn', 'tableHistDyn');
-    }
-
     let dates = sDb.map(r => excelToJSDate(r.DealDate)).filter(d => d);
     if (dates.length === 0) return;
 
@@ -315,13 +402,17 @@ function exportPartnerDealsToExcel(key) {
     const rows = item.deals;
 
     const wsData = [
-        ['№', 'Юр. лицо (CRM)', 'ID (Сумма id)', 'Client_ID', 'ВИН', 'Марка', 'Модель', 'АВ (КВ. Авто NEW, руб)']
+        ['№', 'Юр. лицо (CRM)', 'ID (Сумма id)', 'Client_ID', 'ВИН', 'Марка', 'Модель', 'Стоимость авто (руб)', 'АВ (КВ. Авто NEW, руб)', '% АВ от стоимости']
     ];
 
     let totalAB = 0;
+    let totalPrice = 0;
     rows.forEach((d, idx) => {
         const ab = Number(d.comm) || 0;
+        const pr = Number(d.price) || 0;
         totalAB += ab;
+        totalPrice += pr;
+        const pctStr = (pr > 0 && ab > 0) ? `${((ab / pr) * 100).toFixed(1)}%` : '—';
         wsData.push([
             idx + 1,
             d.rawPartner ? String(d.rawPartner) : '—',
@@ -330,11 +421,14 @@ function exportPartnerDealsToExcel(key) {
             d.vin ? String(d.vin) : '—',
             d.brand ? String(d.brand) : '—',
             d.model ? String(d.model) : '—',
-            ab
+            pr,
+            ab,
+            pctStr
         ]);
     });
 
-    wsData.push(['', '', '', '', '', 'ИТОГО:', `${rows.length} шт.`, totalAB]);
+    const totalPctStr = (totalPrice > 0 && totalAB > 0) ? `${((totalAB / totalPrice) * 100).toFixed(1)}%` : '—';
+    wsData.push(['', '', '', '', '', '', 'ИТОГО:', totalPrice, totalAB, totalPctStr]);
 
     const ws = XLSX.utils.aoa_to_sheet(wsData);
 
@@ -346,7 +440,9 @@ function exportPartnerDealsToExcel(key) {
         { wch: 24 },
         { wch: 18 },
         { wch: 22 },
-        { wch: 24 }
+        { wch: 20 },
+        { wch: 22 },
+        { wch: 18 }
     ];
 
     const wb = XLSX.utils.book_new();
@@ -532,6 +628,8 @@ function renderPartnersTable(filterCfg) {
                     `<code class="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded font-mono text-[11px] font-bold select-all border border-slate-200">${escapeHtml(dl.vin)}</code>` : 
                     '<span class="text-slate-300">—</span>';
 
+                let pctAB = (dl.price > 0 && dl.comm > 0) ? `${((dl.comm / dl.price) * 100).toFixed(1)}%` : '—';
+
                 dealRowsHtml += `<tr class="hover:bg-blue-50/40 transition">
                     <td class="py-1.5 px-2.5 text-center text-slate-400 font-mono text-xs">${idx + 1}</td>
                     <td class="py-1.5 px-2.5">${rawPartnerHtml}</td>
@@ -540,9 +638,14 @@ function renderPartnersTable(filterCfg) {
                     <td class="py-1.5 px-2.5">${vinHtml}</td>
                     <td class="py-1.5 px-2.5 font-bold text-slate-800">${escapeHtml(dl.brand || '—')}</td>
                     <td class="py-1.5 px-2.5 text-slate-700 font-medium">${escapeHtml(dl.model || '—')}</td>
+                    <td class="py-1.5 px-2.5 text-right font-medium text-slate-700">${dl.price > 0 ? fmtRub(dl.price) : '—'}</td>
                     <td class="py-1.5 px-2.5 text-right font-black text-emerald-700">${fmtRub(dl.comm)}</td>
+                    <td class="py-1.5 px-2.5 text-center font-bold text-blue-700 bg-blue-50/50">${pctAB}</td>
                 </tr>`;
             });
+
+            let totalPrice = data.dealsList.reduce((sum, dl) => sum + (dl.price || 0), 0);
+            let totalPctAB = (totalPrice > 0 && totalAB > 0) ? `${((totalAB / totalPrice) * 100).toFixed(1)}%` : '—';
 
             html += `<tr id="pdeals_row_${k}" class="partner-deals-row hidden bg-slate-50/90">
                 <td colspan="10" class="!p-0 border-b-2 border-blue-300">
@@ -558,6 +661,9 @@ function renderPartnersTable(filterCfg) {
                                 </span>
                                 <span class="text-xs text-slate-600 font-medium ml-1">
                                     Сумма АВ: <b class="text-emerald-700 font-bold">${fmtRub(totalAB)}</b>
+                                </span>
+                                <span class="text-xs text-slate-600 font-medium ml-1">
+                                    % АВ: <b class="text-blue-700 font-bold">${totalPctAB}</b>
                                 </span>
                             </div>
                             <div>
@@ -578,7 +684,9 @@ function renderPartnersTable(filterCfg) {
                                         <th class="py-2 px-2.5 !bg-slate-800">ВИН</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">Марка</th>
                                         <th class="py-2 px-2.5 !bg-slate-800">Модель</th>
+                                        <th class="py-2 px-2.5 text-right !bg-slate-800">Стоимость авто</th>
                                         <th class="py-2 px-2.5 text-right !bg-slate-800">АВ (КВ. Авто NEW)</th>
+                                        <th class="py-2 px-2.5 text-center !bg-slate-800">% АВ</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100">
@@ -587,7 +695,9 @@ function renderPartnersTable(filterCfg) {
                                 <tfoot class="bg-slate-100 font-black border-t-2 border-slate-300 text-slate-800 sticky bottom-0 z-10">
                                     <tr>
                                         <td colspan="7" class="py-2 px-2.5 text-right font-bold text-slate-700">ИТОГО (${dCount} шт.):</td>
+                                        <td class="py-2 px-2.5 text-right text-slate-800 font-bold">${fmtRub(totalPrice)}</td>
                                         <td class="py-2 px-2.5 text-right text-emerald-700 font-black text-sm">${fmtRub(totalAB)}</td>
+                                        <td class="py-2 px-2.5 text-center text-blue-800 font-black text-sm bg-blue-100/50">${totalPctAB}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -842,25 +952,42 @@ function initTableSorting() {
             if (!tbody) return;
             const rows = Array.from(tbody.querySelectorAll('tr'));
             const colIdx = Array.from(th.parentNode.children).indexOf(th);
-            const isAsc = th.classList.contains('sort-asc');
+
+            // Determine sort direction: default to desc for numeric, asc for text on first click
+            let nextDir = 'desc';
+            if (th.classList.contains('sort-desc')) {
+                nextDir = 'asc';
+            } else if (th.classList.contains('sort-asc')) {
+                nextDir = 'desc';
+            } else {
+                // If text column like Name or KAM, default to asc, else desc
+                const isTextCol = (colIdx === 1 || colIdx === 2);
+                nextDir = isTextCol ? 'asc' : 'desc';
+            }
 
             table.querySelectorAll('th').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
-            th.classList.toggle('sort-asc', !isAsc);
-            th.classList.toggle('sort-desc', isAsc);
+            th.classList.add(nextDir === 'asc' ? 'sort-asc' : 'sort-desc');
 
             const totalRows = rows.filter(r => r.classList.contains('table-total') || r.classList.contains('table-subtotal') || r.classList.contains('group-header'));
             const sortableRows = rows.filter(r => !r.classList.contains('table-total') && !r.classList.contains('table-subtotal') && !r.classList.contains('group-header') && !r.classList.contains('partner-deals-row'));
 
             sortableRows.sort((a, b) => {
-                let aVal = a.children[colIdx]?.innerText.trim() || '';
-                let bVal = b.children[colIdx]?.innerText.trim() || '';
-                let aNum = parseFloat(aVal.replace(/[^0-9.-]+/g, ''));
-                let bNum = parseFloat(bVal.replace(/[^0-9.-]+/g, ''));
+                let aCell = a.children[colIdx];
+                let bCell = b.children[colIdx];
+                let aVal = aCell ? aCell.innerText.trim() : '';
+                let bVal = bCell ? bCell.innerText.trim() : '';
+
+                let aNumStr = aVal.replace(/\s+/g, '').replace(/[^\d.-]/g, '');
+                let bNumStr = bVal.replace(/\s+/g, '').replace(/[^\d.-]/g, '');
+                let aNum = aNumStr !== '' ? parseFloat(aNumStr) : NaN;
+                let bNum = bNumStr !== '' ? parseFloat(bNumStr) : NaN;
 
                 if (!isNaN(aNum) && !isNaN(bNum)) {
-                    return isAsc ? aNum - bNum : bNum - aNum;
+                    return nextDir === 'asc' ? aNum - bNum : bNum - aNum;
                 }
-                return isAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                if (!isNaN(aNum)) return -1;
+                if (!isNaN(bNum)) return 1;
+                return nextDir === 'asc' ? aVal.localeCompare(bVal, 'ru') : bVal.localeCompare(aVal, 'ru');
             });
 
             tbody.innerHTML = '';

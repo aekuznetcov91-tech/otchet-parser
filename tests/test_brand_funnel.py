@@ -248,6 +248,21 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         sep_sales = len([r for r in db if r.get('SaleMonth') == '2026-09' and r.get('SaleQty') == 1])
         self.assertGreater(sep_sales, 800, f"Сентябрь должен содержать актуальные сделки (факт: {sep_sales})")
 
+    def test_15_jeland_brand_unification_from_september(self):
+        """Проверка объединения OMODA, JAECOO и JELAND в единый бренд JELAND с сентября 2026"""
+        from scripts.parser_engine import normalize_brand
+        
+        # Исторические месяцы остаются OMODA & JAECOO
+        self.assertEqual(normalize_brand("OMODA C5", month="2026-08"), "OMODA & JAECOO")
+        self.assertEqual(normalize_brand("JAECOO J7", month="2026-08"), "OMODA & JAECOO")
+        
+        # С сентября 2026 объединяются в JELAND
+        self.assertEqual(normalize_brand("OMODA C5", month="2026-09"), "JELAND")
+        self.assertEqual(normalize_brand("JAECOO J7", month="2026-09"), "JELAND")
+        self.assertEqual(normalize_brand("JELAND", month="2026-09"), "JELAND")
+        self.assertEqual(normalize_brand("JELAND", month="2026-08"), "JELAND")
+        self.assertEqual(normalize_brand("HAVAL Jolion", month="2026-09"), "HAVAL")
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
 

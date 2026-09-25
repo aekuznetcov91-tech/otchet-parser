@@ -438,7 +438,12 @@ function normalizeBrandName(b) {
     if (ub.includes('SOUEAST') || ub.includes('SOUEAS') || ub.includes('СОУИСТ')) return 'SOUEAST';
     if (ub.includes('GAC')) return 'GAC';
     if (ub.includes('МОСКВИЧ')) return 'МОСКВИЧ';
-    if (ub.includes('OMODA') || ub.includes('JAECOO')) return 'OMODA & JAECOO';
+    if (ub.includes('JELAND') || ub.includes('ДЖЕЙЛЕНД')) return 'JELAND';
+    if (ub.includes('OMODA') || ub.includes('JAECOO')) {
+        let m = (window.selectedKamMonth || '').replace("'", "");
+        if (m >= '2026-09') return 'JELAND';
+        return 'OMODA & JAECOO';
+    }
     if (ub.includes('HONGQI')) return 'HONGQI';
     if (ub.includes('XCITE')) return 'XCITE';
     if (ub.includes('KIA') || ub.includes('КИА')) return 'KIA';
@@ -1725,10 +1730,10 @@ function renderKamTable(partners) {
                 <th style="width: 110px; text-align: center;" title="Конверсия: Сделки с передачи / Передано лидов">CR (Передача)</th>
                 <th style="width: 105px; text-align: center;">Сделки МП</th>
                 <th style="width: 130px; text-align: center;">Сделки ФДЦ / Online</th>
+                <th style="width: 115px; text-align: center;">Сделки Всего</th>
                 <th style="width: 130px; text-align: center;" title="Сделок на эту же дату в прошлом месяце (динамика к текущим сделкам)">
                     MTD <span class="text-[10px] text-blue-500 block font-normal">(прошлый мес.)</span>
                 </th>
-                <th style="width: 115px; text-align: center;">Сделки Всего</th>
                 <th style="width: 110px; text-align: center;" title="Количество ДКП с внесенной предоплатой в ожидании реализации сделки">
                     Долги <span class="text-[10px] text-amber-500 block font-normal">(ожидание ДКП)</span>
                 </th>
@@ -1763,7 +1768,19 @@ function renderKamTable(partners) {
 
         const safeKey = p.key.replace(/[^a-zA-Z0-9_-]/g, '_');
         const crFormatted = p.trans_leads > 0 ? `${p.cr_pct.toFixed(1)}%` : (p.trans_deals > 0 ? '—' : '0%');
-        const crColor = p.trans_leads > 0 && p.trans_deals > 0 ? 'text-emerald-700 font-black' : (p.trans_deals > 0 ? 'text-blue-600 font-bold' : 'text-gray-500');
+        
+        let crColor = 'text-gray-500';
+        if (p.trans_leads > 0) {
+            if (p.cr_pct < 7) {
+                crColor = 'text-rose-600 font-bold';
+            } else if (p.cr_pct <= 13) {
+                crColor = 'text-amber-600 font-bold';
+            } else {
+                crColor = 'text-emerald-700 font-black';
+            }
+        } else if (p.trans_deals > 0) {
+            crColor = 'text-blue-600 font-bold';
+        }
 
         let planBadge = 'text-gray-400';
         if (p.plan > 0) {
@@ -1817,8 +1834,8 @@ function renderKamTable(partners) {
             <td class="text-center ${crColor}">${crFormatted}</td>
             <td class="text-center font-bold text-amber-700">${fmt(p.mp_deals)}</td>
             <td class="text-center font-bold text-sky-700 bg-sky-50/30">${fmt(p.fdc_online_deals)}</td>
-            <td class="text-center bg-blue-50/20">${getMtdDynamicsHtml(p.total_deals, p.mtd_deals)}</td>
             <td class="text-center font-black text-blue-700 bg-blue-50/40 text-sm kam-total-deals">${fmt(p.total_deals)}</td>
+            <td class="text-center bg-blue-50/20">${getMtdDynamicsHtml(p.total_deals, p.mtd_deals)}</td>
             <td class="text-center bg-amber-50/30">${getDebtsHtml(p.debts_count, p.name)}</td>
         </tr>
         `;
@@ -1840,15 +1857,24 @@ function renderKamTable(partners) {
                     <td class="text-center text-gray-400 text-[11px]">—</td>
                     <td class="text-center text-gray-500 font-medium">—</td>
                     <td class="text-center text-gray-500 font-medium">—</td>
-                    <td class="text-center text-gray-400 text-[11px]">—</td>
                     <td class="text-center text-gray-700 font-bold">—</td>
+                    <td class="text-center text-gray-400 text-[11px]">—</td>
                     <td class="text-center text-gray-400 text-[11px]">—</td>
                 </tr>
                 `;
 
                 Object.entries(cityData.brands || {}).forEach(([brandName, brandInfo]) => {
                     const bStats = p.brands[brandName] || brandInfo || { trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
-                    const bCr = bStats.trans_leads > 0 ? `${(bStats.trans_deals / bStats.trans_leads * 100).toFixed(1)}%` : '—';
+                    const bCrVal = bStats.trans_leads > 0 ? (bStats.trans_deals / bStats.trans_leads * 100) : 0;
+                    const bCr = bStats.trans_leads > 0 ? `${bCrVal.toFixed(1)}%` : (bStats.trans_deals > 0 ? '—' : '0%');
+                    let bCrColor = 'text-gray-500';
+                    if (bStats.trans_leads > 0) {
+                        if (bCrVal < 7) bCrColor = 'text-rose-600 font-bold';
+                        else if (bCrVal <= 13) bCrColor = 'text-amber-600 font-bold';
+                        else bCrColor = 'text-emerald-700 font-black';
+                    } else if (bStats.trans_deals > 0) {
+                        bCrColor = 'text-blue-600 font-bold';
+                    }
                     
                     html += `
                     <tr class="kam-subrow-${safeKey} hidden bg-white/90 text-[11px] hover:bg-gray-100 transition border-b border-gray-100">
@@ -1861,11 +1887,11 @@ function renderKamTable(partners) {
                         <td class="text-center text-gray-400">—</td>
                         <td class="text-center text-gray-600">${fmt(bStats.trans_leads)}</td>
                         <td class="text-center text-purple-700 font-semibold">${fmt(bStats.trans_deals)}</td>
-                        <td class="text-center text-gray-500">${bCr}</td>
+                        <td class="text-center ${bCrColor}">${bCr}</td>
                         <td class="text-center text-amber-700">${fmt(bStats.mp_deals)}</td>
                         <td class="text-center text-sky-700">${fmt(bStats.fdc_online_deals)}</td>
-                        <td class="text-center">${getMtdDynamicsHtml(bStats.total_deals, bStats.mtd_deals)}</td>
                         <td class="text-center font-bold text-blue-600">${fmt(bStats.total_deals)}</td>
+                        <td class="text-center">${getMtdDynamicsHtml(bStats.total_deals, bStats.mtd_deals)}</td>
                         <td class="text-center">${getBrandDebtsHtml(bStats.debts_count, p.name, brandName)}</td>
                     </tr>
                     `;
@@ -1875,7 +1901,14 @@ function renderKamTable(partners) {
     });
 
     // Table Total Footer
-    const totalCr = tTransL > 0 ? `${(tTransD / tTransL * 100).toFixed(1)}%` : '0%';
+    const totalCrVal = tTransL > 0 ? (tTransD / tTransL * 100) : 0;
+    const totalCr = tTransL > 0 ? `${totalCrVal.toFixed(1)}%` : '0%';
+    let totalCrColor = 'text-gray-700';
+    if (tTransL > 0) {
+        if (totalCrVal < 7) totalCrColor = 'text-rose-600 font-bold';
+        else if (totalCrVal <= 13) totalCrColor = 'text-amber-600 font-bold';
+        else totalCrColor = 'text-emerald-700 font-black';
+    }
     const totalPlanPct = tPlan > 0 ? `${(tTotD / tPlan * 100).toFixed(1)}%` : '—';
 
     html += `
@@ -1886,11 +1919,11 @@ function renderKamTable(partners) {
             <td class="text-center">${totalPlanPct}</td>
             <td class="text-center">${fmt(tTransL)}</td>
             <td class="text-center">${fmt(tTransD)}</td>
-            <td class="text-center">${totalCr}</td>
+            <td class="text-center ${totalCrColor}">${totalCr}</td>
             <td class="text-center">${fmt(tMpD)}</td>
             <td class="text-center">${fmt(tFdcOnlD)}</td>
-            <td class="text-center">${getMtdDynamicsHtml(tTotD, tMtdD)}</td>
             <td class="text-center">${fmt(tTotD)}</td>
+            <td class="text-center">${getMtdDynamicsHtml(tTotD, tMtdD)}</td>
             <td class="text-center text-amber-900">${tDebts > 0 ? fmt(tDebts) : '—'}</td>
         </tr>
     </tbody>

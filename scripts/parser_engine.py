@@ -45,7 +45,7 @@ def get_exact_val(row, *search_keys):
             return row[c_sk]
     return ""
 
-def normalize_brand(tovar_str):
+def normalize_brand(tovar_str, month=None):
     """Normalize vehicle brand name from raw product/deal text."""
     t = str(tovar_str or "").upper().strip()
     aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "ВНЕСЕНИЕ", "АВАНС", "ОФОРМЛЕНИЕ", "ДОГОВОР", "УСЛУГА", "КОМИССИЯ", "ДОП", "БРОНИРОВАНИЕ", "БРОНЬ", "БРОНИР")
@@ -71,7 +71,11 @@ def normalize_brand(tovar_str):
         return "Geely"
     if any(k in t_clean or k in t_latin for k in ["HAVAL", "ХАВЕЙЛ"]):
         return "HAVAL"
+    if any(k in t_clean or k in t_latin for k in ["JELAND", "ДЖЕЙЛЕНД"]):
+        return "JELAND"
     if any(k in t_clean or k in t_latin for k in ["OMODA", "JAECOO", "ОМОДА", "ДЖЕЙКУ", "ДЖАКУ"]):
+        if month and str(month) >= "2026-09":
+            return "JELAND"
         return "OMODA & JAECOO"
     if any(k in t_clean or k in t_latin for k in ["TENET", "ТЕНЕТ", "CHERY", "ЧЕРИ"]):
         return "CHERY & TENET"
@@ -124,6 +128,8 @@ def normalize_brand(tovar_str):
     if re.search(r'\b(TIGGO|ARRIZO|T4L|T4|T7|T8)\b', t_latin):
         return "CHERY & TENET"
     if re.search(r'\b(C5|S5|J7|J8)\b', t_latin):
+        if month and str(month) >= "2026-09":
+            return "JELAND"
         return "OMODA & JAECOO"
 
     words = re.split(r'[\s,/-]+', t_clean.strip())
@@ -553,6 +559,9 @@ def calculate_brand_funnel(sys_db, leads_data=None):
             else:
                 m_key = f"{d_ev.year:04d}-{d_ev.month:02d}"
 
+            if m_key >= '2026-09' and found_b in ('OMODA', 'JAECOO'):
+                found_b = 'JELAND'
+
             ev = str(r.get('Событие') or r.get('СОБЫТИЕ') or '').strip().lower()
             val = str(r.get('Значение') or r.get('ЗНАЧЕНИЕ') or '').strip().lower()
             src = str(r.get('Источник') or r.get('ИСТОЧНИК') or 'Без источника').strip()
@@ -576,13 +585,17 @@ def calculate_brand_funnel(sys_db, leads_data=None):
 
     by_month = {}
 
-    def is_brand_match_for_funnel(r_brand, r_model, funnel_brand):
+    def is_brand_match_for_funnel(r_brand, r_model, funnel_brand, m_str=None):
         if (r_brand or '').upper() == funnel_brand:
             return True
         m = (r_model or '').upper()
         b_up = (r_brand or '').upper()
         if funnel_brand == 'JELAND':
+            if m_str and m_str >= '2026-09':
+                return any(k in b_up or k in m for k in ('JELAND', 'ДЖЕЙЛЕНД', 'OMODA', 'JAECOO', 'ОМОДА', 'ДЖЕЙКУ')) or r_brand == 'OMODA & JAECOO'
             return 'JELAND' in b_up or 'JELAND' in m or 'ДЖЕЙЛЕНД' in m
+        if m_str and m_str >= '2026-09' and funnel_brand in ('OMODA', 'JAECOO'):
+            return False
         if funnel_brand == 'GEELY':
             return r_brand == 'Geely & Belgee' and not any(k in m for k in ('BELGEE', 'БЕЛДЖИ', 'X50', 'X70', 'S50', '001', 'KNEWSTAR'))
         if funnel_brand == 'BELGEE':
@@ -606,9 +619,9 @@ def calculate_brand_funnel(sys_db, leads_data=None):
 
         for b in all_brands:
             if m == 'all':
-                b_sales = [r for r in sys_db if r.get('SaleQty') == 1 and is_brand_match_for_funnel(r.get('Brand'), r.get('Model'), b)]
+                b_sales = [r for r in sys_db if r.get('SaleQty') == 1 and is_brand_match_for_funnel(r.get('Brand'), r.get('Model'), b, m_str=r.get('SaleMonth'))]
             else:
-                b_sales = [r for r in sys_db if r.get('SaleQty') == 1 and r.get('SaleMonth') == m and is_brand_match_for_funnel(r.get('Brand'), r.get('Model'), b)]
+                b_sales = [r for r in sys_db if r.get('SaleQty') == 1 and r.get('SaleMonth') == m and is_brand_match_for_funnel(r.get('Brand'), r.get('Model'), b, m_str=m)]
 
             b_mp2 = [r for r in b_sales if 'МП2' in str(r.get('B2C') or '').upper()]
             b_no_mp2 = [r for r in b_sales if 'МП2' not in str(r.get('B2C') or '').upper()]
@@ -1845,7 +1858,7 @@ def run_pipeline():
         if any(k in b2c_upper for k in ("МП1", "МП2", "МП3", "ВХОДЯЩАЯЗАЯВКА", "PARTNER")):
             chart_group = "Partners"
 
-        final_brand = normalize_brand(tovar)
+        final_brand = normalize_brand(tovar, month=deal_month_str or prepay_month_str)
         final_revenue = round(comm / 1.22, 2) if (is_sale and comm > 0) else 0.0
 
         # Model extraction
@@ -2469,7 +2482,7 @@ def run_pipeline():
             seen_partner_leads.add(lead_dedup_key)
 
             raw_brand = str(get_exact_val(row, 'БРЕНД', 'БРЕНДB2C') or "").strip()
-            final_brand = normalize_brand(raw_brand) if raw_brand else ""
+            final_brand = normalize_brand(raw_brand, month=lead_month_str) if raw_brand else ""
 
             sys_db_partners.append({
                 "Month": lead_month_str,

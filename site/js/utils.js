@@ -215,6 +215,9 @@ function formatBrandsForPresentation(salesDb) {
         const b = (r.Brand || '').toUpperCase().trim();
         const m = (r.Model || '').toUpperCase().trim();
 
+        const dealMonth = (r.SaleMonth || r.Month || '').replace("'", "");
+        const isSepPlus = dealMonth >= '2026-09';
+
         if (b.includes('JETOUR') || m.includes('JETOUR')) {
             counts['JETOUR']++;
         } else if (b.includes('LADA') || b.includes('ВАЗ') || m.includes('LADA') || m.includes('VESTA') || m.includes('GRANTA')) {
@@ -232,7 +235,11 @@ function formatBrandsForPresentation(salesDb) {
         } else if (b.includes('JELAND') || m.includes('JELAND') || m.includes('ДЖЕЙЛЕНД')) {
             counts['Jeland']++;
         } else if (['OMODA', 'JAECOO', 'ДЖЕЙКУ'].some(k => b.includes(k) || m.includes(k))) {
-            counts['O&J']++;
+            if (isSepPlus) {
+                counts['Jeland']++;
+            } else {
+                counts['O&J']++;
+            }
         } else if (b.includes('TENET') || m.includes('TENET') || m.includes('ТЕНЕТ') || b.includes('CHERY') || m.includes('CHERY')) {
             counts['TENET']++;
         } else if (b.includes('HAVAL') || b.includes('ХАВЕЙЛ') || m.includes('HAVAL')) {

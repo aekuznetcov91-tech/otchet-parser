@@ -142,7 +142,7 @@ function renderLeadGeoTable() {
         <tr class="bg-slate-800/90 text-white font-bold cursor-pointer group hover:bg-slate-800 transition select-none" onclick="toggleRegionRows('${rIdx}')">
             <td class="py-3 px-4 flex items-center justify-between">
                 <div class="flex items-center gap-2">
-                    <span id="regionArrow_${rIdx}" class="text-xs transition-transform transform rotate-90">▶</span>
+                    <span id="regionArrow_${rIdx}" class="text-xs transition-transform transform">▶</span>
                     <span class="text-sm font-black text-white">${reg.region_name}</span>
                     <span class="px-2 py-0.5 text-[10px] rounded-full bg-slate-700 text-slate-300 font-semibold border border-slate-600">
                         ${filteredDealers.length} ДЦ
@@ -188,7 +188,7 @@ function renderLeadGeoTable() {
             const brandsBadge = (d.top_brands || []).map(b => `<span class="px-1.5 py-0.2 bg-gray-100 text-gray-700 rounded text-[10px] font-semibold border border-gray-200">${b}</span>`).join(' ');
 
             html += `
-            <tr class="region-subrow-${rIdx} ${rowBg} hover:bg-emerald-50/50 transition">
+            <tr class="region-subrow-${rIdx} ${rowBg} hover:bg-emerald-50/50 transition" style="display: none;">
                 <td class="pl-8 py-2.5">
                     <div class="font-bold text-slate-900 text-xs">${d.dealer_name}</div>
                     <div class="text-[11px] text-gray-500 flex items-center gap-1 mt-0.5">
@@ -256,18 +256,13 @@ function renderLeadGeoTable() {
 function toggleRegionRows(rIdx) {
     const rows = document.querySelectorAll(`.region-subrow-${rIdx}`);
     const arrow = document.getElementById(`regionArrow_${rIdx}`);
-    let isHidden = false;
+    if (rows.length === 0) return;
+    const isCurrentlyHidden = rows[0].style.display === 'none';
     rows.forEach(r => {
-        if (r.style.display === 'none') {
-            r.style.display = '';
-            isHidden = false;
-        } else {
-            r.style.display = 'none';
-            isHidden = true;
-        }
+        r.style.display = isCurrentlyHidden ? '' : 'none';
     });
     if (arrow) {
-        arrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(90deg)';
+        arrow.style.transform = isCurrentlyHidden ? 'rotate(90deg)' : 'rotate(0deg)';
     }
 }
 
