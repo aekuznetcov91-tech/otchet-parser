@@ -48,7 +48,7 @@ def get_exact_val(row, *search_keys):
 def normalize_brand(tovar_str):
     """Normalize vehicle brand name from raw product/deal text."""
     t = str(tovar_str or "").upper().strip()
-    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "ВНЕСЕНИЕ", "АВАНС", "ОФОРМЛЕНИЕ", "ДОГОВОР", "УСЛУГА", "КОМИССИЯ", "ДОП")
+    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "ВНЕСЕНИЕ", "АВАНС", "ОФОРМЛЕНИЕ", "ДОГОВОР", "УСЛУГА", "КОМИССИЯ", "ДОП", "БРОНИРОВАНИЕ", "БРОНЬ", "БРОНИР")
     if any(kw in t for kw in aux_keywords):
         return None
 
@@ -918,7 +918,7 @@ def calculate_discount_analytics(deals_data):
     tot_sa_disc = 0.0
     tot_dc_disc = 0.0
 
-    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА")
+    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "БРОНИРОВАНИЕ", "БРОНЬ", "БРОНИР")
 
     for r in deals_data:
         tovar = str(get_exact_val(r, 'ТОВАР') or '')
@@ -1140,7 +1140,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
     Includes client-level database for interactive drilldown with BFS URLs.
     Includes monthly breakdown ('all', '2026-08', '2026-07').
     """
-    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "АВАНС")
+    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ВНЕСЕНИЕ АВАНСА", "АВАНС", "БРОНИРОВАНИЕ", "БРОНЬ", "БРОНИР")
     d12_client_map = {}
     deals_client_map = {}
 
@@ -1756,7 +1756,7 @@ def run_pipeline():
     sys_db_partners = []
     debtors = []
 
-    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП. ОБОРУДОВАНИЕ")
+    aux_keywords = ("КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП. ОБОРУДОВАНИЕ", "БРОНИРОВАНИЕ", "БРОНЬ", "БРОНИР")
 
     # Build lookup map for Lead ID and strictly transferred clients by month (deduplicated by client_id)
     leads_sum_id_by_client = {}
@@ -2260,11 +2260,15 @@ def run_pipeline():
     # Deduplicate & exclude from debtors if the car (VIN) was already closed and sold in a main deal or replaced
     sold_vins_norm = {normalize_vin_str(r['VIN']) for r in sys_db if r.get('SaleQty') == 1 and r.get('VIN') and len(normalize_vin_str(r['VIN'])) >= 8}
     sales_by_client = defaultdict(list)
+    sales_by_deal = defaultdict(list)
     for r in sys_db:
         if r.get('SaleQty') == 1:
             cid_s = str(r.get('ClientId') or '').strip()
             if cid_s:
                 sales_by_client[cid_s].append(r)
+            did_s = str(r.get('DealId') or '').strip()
+            if did_s:
+                sales_by_deal[did_s].append(r)
 
     filtered_debtors = []
     seen_debtor_keys = set()
@@ -2280,21 +2284,23 @@ def run_pipeline():
         if d_vin_norm and len(d_vin_norm) >= 8 and d_vin_norm in sold_vins_norm:
             continue
 
-        # 2. Check if client already completed purchase at this dealer/brand (replacement VIN or duplicate deal)
+        # 2. Check if this exact DealId is already closed and realized as a sale
+        if did and did in sales_by_deal:
+            continue
+
+        # 3. Check if client already completed purchase at this dealer/brand (replacement VIN or duplicate deal)
         if cid and cid in sales_by_client:
             client_sales = sales_by_client[cid]
-            if len(client_sales) <= 3:
-                matched_sale = None
-                for s in client_sales:
-                    s_did = str(s.get('DealId') or '').strip()
-                    s_brand = str(s.get('Brand') or '').strip().upper()
-                    if s_did != did and (s_brand == brand or not brand or brand == 'NONE'):
-                        matched_sale = s
-                        break
-                if matched_sale:
-                    continue
+            matched_sale = None
+            for s in client_sales:
+                s_brand = str(s.get('Brand') or '').strip().upper()
+                if s_brand == brand or not brand or brand == 'NONE' or len(client_sales) == 1:
+                    matched_sale = s
+                    break
+            if matched_sale:
+                continue
 
-        # 3. Deduplicate exact duplicate records in debtors (same normalized VIN and same client)
+        # 4. Deduplicate exact duplicate records in debtors (same normalized VIN and same client)
         dedup_key = (d_vin_norm, cid, company) if (d_vin_norm and len(d_vin_norm) >= 8) else (did, company)
         if dedup_key in seen_debtor_keys:
             continue

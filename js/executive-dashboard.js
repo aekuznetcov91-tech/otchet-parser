@@ -24,18 +24,81 @@ function getAlertDealChannelKey(b2c) {
     return 'retail';
 }
 
+function canonicalPartnerName(name) {
+    if (!name) return 'Неизвестный партнер';
+    let s = name.trim();
+    const low = s.toLowerCase();
+    
+    // Диалог Авто (Казань, Альметьевск, Набережные Челны)
+    if (low.includes('диалог')) return 'Диалог Авто';
+    
+    // Башавтоком / Чанган Центр
+    if (low.includes('башавтоком') || low.includes('чанган центр') || low.includes('changan центр')) return 'Башавтоком / Чанган Центр';
+    
+    // ГК Арконт
+    if (low.includes('арконт')) return 'ГК Арконт';
+    
+    // ГК Сильвер
+    if (low.includes('сильвер')) return 'ГК Сильвер';
+    
+    // АвтоМаркет Jetour
+    if (low.includes('автомаркет')) return 'АвтоМаркет Jetour';
+    
+    // Автомир Симферополь vs Автомир
+    if (low.includes('автомир') && (low.includes('симферополь') || low.includes('крым'))) return 'Автомир (Симферополь)';
+    
+    // Олимп (Темп Авто Кубань)
+    if (low.includes('олимп')) return 'Олимп (Кубань)';
+    
+    // Автосеть РФ / Апельсин
+    if (low.includes('апельсин') || (low.includes('автосеть рф') && (low.includes('пилот') || low.includes('амк')))) return 'Апельсин (Автосеть РФ)';
+    
+    // БН-Моторс
+    if (low.includes('бн-моторс') || low.includes('бн моторс') || low.includes('дебрянск') || low.includes('бнм')) return 'ГК БН-Моторс';
+    
+    // Восток Моторс
+    if (low.includes('восток моторс') || low.includes('восток-моторс')) return 'ООО "ВОСТОК МОТОРС" ONLINE';
+    
+    // Эксперт Авто Оренбург
+    if (low.includes('эксперт') && (low.includes('оренбург') || low.includes('эксперт св'))) return 'Эксперт Авто (Оренбург)';
+    
+    // Автопрестиж
+    if (low.includes('автопрестиж')) return 'ГК Автопрестиж';
+
+    // Нижегородец
+    if (low.includes('нижегородец')) return 'Нижегородец';
+
+    return s;
+}
+
+function isAutomotiveBrand(b) {
+    if (!b) return false;
+    const bNorm = b.trim();
+    if (!bNorm || bNorm === 'Другие' || bNorm === 'NONE' || bNorm === '—') return false;
+    const lower = bNorm.toLowerCase();
+    if (lower.includes('бронир') || lower.includes('бронь') || lower.includes('услуг') || 
+        lower.includes('страх') || lower.includes('доп') || lower.includes('аванс') || 
+        lower.includes('комисс') || lower.includes('кредит') || lower.includes('каско') || 
+        lower.includes('осаго') || lower.includes('договор')) {
+        return false;
+    }
+    return true;
+}
+
 /**
  * Main render function called from data-loader.js updateAllTabs()
  */
-function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig) {
+function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig, debtorsList) {
     const container = document.getElementById('executiveDashboardContainer');
     if (!container) return;
+
+    const actualDebtors = debtorsList || window.rawDebtorsList || (window.currentData && window.currentData.debtors) || [];
 
     // 1. Calculate Pace / Run-rate metrics with dynamic filter support
     const paceData = calculatePaceMetrics(sDb, allDb, filterConfig);
 
     // 2. Calculate Alerts Radar
-    const alertData = calculateAlertsRadar(allDb, pDb, allPartners || [], filterConfig);
+    const alertData = calculateAlertsRadar(allDb, pDb, allPartners || [], filterConfig, actualDebtors);
 
     // 3. Calculate Margin & ARPU by Channel
     const marginData = calculateChannelUnitEconomics(sDb);
@@ -301,7 +364,7 @@ function renderPaceCardHTML(p) {
  * BLOCK 2: ALERTS RADAR (РАДАР КРИТИЧЕСКИХ ОТКЛОНЕНИЙ)
  * =========================================================================
  */
-function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
+function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig, debtorsList) {
     const deals = allDb || [];
     const salesOnly = deals.filter(d => (d.SaleQty > 0) || (d.SaleMonth && d.SaleMonth.length > 0));
 
@@ -342,37 +405,34 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         ? `${curMonthName} (MTD ${latestDay} дн.) vs ${prevMonthName}`
         : `${curMonthName} vs ${prevMonthName}`;
 
-    // Common Stuck Prepayments
-    const refDate = globalMaxSaleDate || new Date();
-    const partnerPrepays = (allPartners || []).filter(r => r.Type === 'Предоплата' && r.Month === curMonthPrefix);
+    // Verified Stuck Prepayments from Debtors registry (excludes delivered cars & replaced VINs)
+    const actualDebtors = debtorsList || window.rawDebtorsList || (window.currentData && window.currentData.debtors) || [];
     const allStuckPrepays = [];
-    partnerPrepays.forEach(p => {
-        if (p.Date) {
-            const dt = excelToJSDate(p.Date);
-            if (dt) {
-                const diffDays = Math.round((refDate - dt) / (1000 * 60 * 60 * 24));
-                if (diffDays >= 7) {
-                    allStuckPrepays.push({
-                        partner: p.Partner || 'Неизвестный партнер',
-                        rawPartner: p.RawPartner || '',
-                        kam: p.KAM || '—',
-                        days: diffDays,
-                        dateStr: dt.toLocaleDateString('ru-RU')
-                    });
-                }
-            }
+    actualDebtors.forEach(d => {
+        // Month filter check
+        if (filterConfig && filterConfig.mode === 'month' && filterConfig.month) {
+            let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0, 2).join('-') : "";
+            if (m && m !== filterConfig.month) return;
+        }
+        const days = (typeof d.aging_days === 'number') ? d.aging_days : (typeof getDebtorAgeDays === 'function' ? getDebtorAgeDays(d) : 0);
+        if (days >= 7) {
+            allStuckPrepays.push({
+                partner: canonicalPartnerName(d.company || d.raw_company),
+                rawPartner: d.raw_company || d.company || '',
+                kam: d.kam || '—',
+                brand: d.brand || '',
+                model: d.model || '',
+                vin: d.vin || '',
+                clientId: d.client_id || '',
+                dealId: d.deal_id || '',
+                days: days,
+                dateStr: d.prepay_date || '',
+                b2c: d.b2c || '',
+                channelKey: getAlertDealChannelKey(d.b2c)
+            });
         }
     });
     allStuckPrepays.sort((a, b) => b.days - a.days);
-
-    // Partner channel distribution lookup
-    const partnerChannels = {};
-    (allPartners || []).filter(r => r.Type === 'Сделка').forEach(r => {
-        const p = r.Partner;
-        const ch = getAlertDealChannelKey(r.B2C);
-        if (!partnerChannels[p]) partnerChannels[p] = {};
-        partnerChannels[p][ch] = (partnerChannels[p][ch] || 0) + (r.Qty || 1);
-    });
 
     // Deals for cur and prev period
     const curMonthDeals = salesOnly.filter(d => (d.SaleMonth || '').replace(/'/g, '') === curMonthPrefix);
@@ -400,19 +460,21 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
     const channelsData = {};
 
     ALERT_CHANNELS.forEach(ch => {
-        // 1. BRAND DYNAMICS (GROWTH & DROPS)
+        // 1. BRAND DYNAMICS (GROWTH & DROPS) - strictly automotive brands only
         const cCur = ch.key === 'all' ? curMonthDeals : curMonthDeals.filter(d => getAlertDealChannelKey(d.B2C) === ch.key);
         const cPrev = ch.key === 'all' ? prevMonthDeals : prevMonthDeals.filter(d => getAlertDealChannelKey(d.B2C) === ch.key);
 
         const bCur = {}, bPrev = {};
         cCur.forEach(d => {
-            let b = (d.Brand || 'Другие').trim();
+            let b = (d.Brand || '').trim();
             if (b === 'SOUEAS') b = 'SOUEAST';
+            if (!isAutomotiveBrand(b)) return;
             bCur[b] = (bCur[b] || 0) + 1;
         });
         cPrev.forEach(d => {
-            let b = (d.Brand || 'Другие').trim();
+            let b = (d.Brand || '').trim();
             if (b === 'SOUEAS') b = 'SOUEAST';
+            if (!isAutomotiveBrand(b)) return;
             bPrev[b] = (bPrev[b] || 0) + 1;
         });
 
@@ -450,24 +512,26 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         brandAlerts.sort((a, b) => a.diff - b.diff); // largest drops first (-172, -19...)
         brandGrowth.sort((a, b) => b.diff - a.diff); // largest growth first (+44, +21...)
 
-        // 2. DEALER DYNAMICS (CHURN RISK & GROWTH)
+        // 2. DEALER DYNAMICS (CHURN RISK & GROWTH) - matching via canonicalPartnerName
         const pPrev = ch.key === 'all' ? prevPartnersDeals : prevPartnersDeals.filter(r => getAlertDealChannelKey(r.B2C) === ch.key);
         const pCur = ch.key === 'all' ? curPartnersDeals : curPartnersDeals.filter(r => getAlertDealChannelKey(r.B2C) === ch.key);
 
         const dPrevMap = {}, dCurMap = {};
         pPrev.forEach(r => {
-            const p = r.Partner || 'Неизвестный партнер';
+            const rawName = r.Partner || 'Неизвестный партнер';
+            const p = canonicalPartnerName(rawName);
             if (!dPrevMap[p]) {
-                dPrevMap[p] = { partner: p, prevDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || '' };
+                dPrevMap[p] = { partner: p, prevDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || rawName };
             }
             dPrevMap[p].prevDeals += (r.Qty || 1);
             if (r.KAM && dPrevMap[p].kam === '—') dPrevMap[p].kam = r.KAM;
         });
 
         pCur.forEach(r => {
-            const p = r.Partner || 'Неизвестный партнер';
+            const rawName = r.Partner || 'Неизвестный партнер';
+            const p = canonicalPartnerName(rawName);
             if (!dCurMap[p]) {
-                dCurMap[p] = { partner: p, curDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || '' };
+                dCurMap[p] = { partner: p, curDeals: 0, kam: r.KAM || '—', rawPartner: r.RawPartner || rawName };
             }
             dCurMap[p].curDeals += (r.Qty || 1);
             if (r.KAM && dCurMap[p].kam === '—') dCurMap[p].kam = r.KAM;
@@ -518,23 +582,10 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig) {
         dealerAlerts.sort((a, b) => b.prevDeals - a.prevDeals);
         dealerGrowth.sort((a, b) => b.diff - a.diff);
 
-        // 3. STUCK PREPAYMENTS for this channel
+        // 3. STUCK PREPAYMENTS for this channel from verified debtors
         let channelStuckPrepays = allStuckPrepays;
         if (ch.key !== 'all') {
-            channelStuckPrepays = allStuckPrepays.filter(p => {
-                const raw = ((p.rawPartner || '') + ' ' + (p.partner || '')).toLowerCase();
-                if (ch.key === 'opt') {
-                    if (raw.includes('мп2') || raw.includes('мп 2')) return true;
-                    if (partnerChannels[p.partner] && partnerChannels[p.partner]['opt']) return true;
-                    return false;
-                }
-                if (ch.key === 'retail') {
-                    if (raw.includes('online') || raw.includes('онлайн') || raw.includes('фдц') || raw.includes('гп') || raw.includes('b2c') || raw.includes('лид')) return true;
-                    if (partnerChannels[p.partner] && partnerChannels[p.partner]['retail']) return true;
-                    return false;
-                }
-                return false;
-            });
+            channelStuckPrepays = allStuckPrepays.filter(p => p.channelKey === ch.key);
         }
 
         channelsData[ch.key] = {
@@ -683,17 +734,35 @@ function renderPrepayAlertItemsHTML(stuckPrepays) {
             </div>
         `;
     }
-    return stuckPrepays.map(p => `
-        <div class="flex items-center justify-between p-2.5 rounded-2xl bg-amber-50/70 border border-amber-200/70">
-            <div class="min-w-0 pr-2">
-                <div class="text-xs font-black text-slate-800 truncate">${p.partner}</div>
-                <div class="text-[11px] text-slate-500 mt-0.5">Аванс от ${p.dateStr} • КАМ: <b>${p.kam}</b></div>
+    return stuckPrepays.map(p => {
+        const severityClass = p.days >= 30 ? 'bg-rose-50/80 border-rose-200 text-rose-950' : 
+                             (p.days >= 14 ? 'bg-amber-50/80 border-amber-200 text-amber-950' : 'bg-slate-50 border-slate-200/80 text-slate-800');
+        const badgeClass = p.days >= 30 ? 'bg-rose-600 text-white' : 
+                          (p.days >= 14 ? 'bg-amber-200 text-amber-900 border border-amber-300' : 'bg-amber-100 text-amber-800 border border-amber-200');
+        const carInfo = [p.brand, p.model].filter(Boolean).join(' ');
+        const vinInfo = p.vin && p.vin !== p.dealId ? `VIN: ${p.vin}` : (p.dealId ? `Сделка #${p.dealId}` : '');
+        const chBadge = p.b2c ? `<span class="text-[10px] px-1.5 py-0.2 rounded font-bold bg-indigo-100 text-indigo-800">${p.b2c}</span>` : '';
+
+        return `
+            <div class="flex items-center justify-between p-2.5 rounded-2xl border ${severityClass}">
+                <div class="min-w-0 pr-2">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="text-xs font-black truncate">${p.partner}</span>
+                        ${chBadge}
+                        ${carInfo ? `<span class="text-[11px] font-semibold text-slate-700 truncate">• ${carInfo}</span>` : ''}
+                    </div>
+                    <div class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-2 flex-wrap">
+                        <span>Аванс от <b>${p.dateStr}</b></span>
+                        ${vinInfo ? `<span class="font-mono text-[10px] bg-slate-200/70 text-slate-700 px-1.5 py-0.2 rounded">${vinInfo}</span>` : ''}
+                        <span>• КАМ: <span class="font-medium text-slate-700">${p.kam}</span></span>
+                    </div>
+                </div>
+                <span class="text-xs px-2.5 py-0.5 rounded-full font-black ${badgeClass} whitespace-nowrap shrink-0">
+                    ${p.days} дн. завис
+                </span>
             </div>
-            <span class="text-xs px-2.5 py-0.5 rounded-full font-black bg-amber-200 text-amber-900 whitespace-nowrap">
-                ${p.days} дн. завис
-            </span>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function updateAlertFooter(tabName) {

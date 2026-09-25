@@ -228,7 +228,7 @@ function updateAllTabs() {
 
     // Executive Dashboard: Pace, Alerts, Margin & Partner Health Matrix
     if (typeof renderExecutiveDashboard === 'function') {
-        renderExecutiveDashboard(sDb, pDb, db, dbPartners, currentFilterConfig);
+        renderExecutiveDashboard(sDb, pDb, db, dbPartners, currentFilterConfig, rawDebtorsList);
     }
 
     renderDashTables(sDb);
