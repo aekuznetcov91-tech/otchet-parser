@@ -773,26 +773,30 @@
                 </div>
             </div>
 
-            <!-- KAM Selector Pills -->
-            <div class="flex items-center gap-1.5 flex-wrap">
-                <button data-kam="all" onclick="setKamManagerFilter('all')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow-sm bg-blue-600 text-white cursor-pointer border border-blue-600">
-                    Все КАМы
-                </button>
-                <button data-kam="Алексей Чихарев" onclick="setKamManagerFilter('Алексей Чихарев')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
-                    Алексей Чихарев
-                </button>
-                <button data-kam="Андрей Кузнецов" onclick="setKamManagerFilter('Андрей Кузнецов')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
-                    Андрей Кузнецов
-                </button>
-                <button data-kam="Светлана Дариенко" onclick="setKamManagerFilter('Светлана Дариенко')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
-                    Светлана Дариенко
-                </button>
-                <button data-kam="Валерия Солдатова" onclick="setKamManagerFilter('Валерия Солдатова')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
-                    Валерия Солдатова
-                </button>
-                <button data-kam="Евгения Добролюбова" onclick="setKamManagerFilter('Евгения Добролюбова')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
-                    Евгения Добролюбова
-                </button>
+            <!-- KAM Selector Pills & Auth Status Widget -->
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <button data-kam="all" onclick="setKamManagerFilter('all')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition shadow-sm bg-blue-600 text-white cursor-pointer border border-blue-600">
+                        Все КАМы
+                    </button>
+                    <button data-kam="Алексей Чихарев" onclick="setKamManagerFilter('Алексей Чихарев')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                        Алексей Чихарев
+                    </button>
+                    <button data-kam="Андрей Кузнецов" onclick="setKamManagerFilter('Андрей Кузнецов')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                        Андрей Кузнецов
+                    </button>
+                    <button data-kam="Светлана Дариенко" onclick="setKamManagerFilter('Светлана Дариенко')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                        Светлана Дариенко
+                    </button>
+                    <button data-kam="Валерия Солдатова" onclick="setKamManagerFilter('Валерия Солдатова')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                        Валерия Солдатова
+                    </button>
+                    <button data-kam="Евгения Добролюбова" onclick="setKamManagerFilter('Евгения Добролюбова')" class="kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200">
+                        Евгения Добролюбова
+                    </button>
+                </div>
+
+                <div id="kamAuthWidgetContainer" class="flex items-center gap-2"></div>
             </div>
         </div>
 
@@ -1146,6 +1150,61 @@
                     Закрыть
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- KAM Account Login Modal -->
+    <div id="kamLoginModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 transition-all duration-200">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-gray-100 overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-150">
+            <div class="p-6 bg-gradient-to-r from-slate-900 to-indigo-950 text-white relative">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600/30 border border-blue-400/30 flex items-center justify-center text-xl shadow-inner">
+                        🔐
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold">Вход в профиль КАМ</h3>
+                        <p class="text-xs text-slate-300">Управление планами и целями партнеров</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeKamLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition text-lg leading-none cursor-pointer">✕</button>
+            </div>
+            
+            <form id="kamLoginForm" onsubmit="handleKamLoginSubmit(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1.5">Сотрудник</label>
+                    <select id="kamLoginSelect" class="w-full text-sm font-semibold bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition cursor-pointer" onchange="onKamLoginAccountSelect(this.value)">
+                        <option value="chikharev">👤 Алексей Чихарев (Ведущий КАМ)</option>
+                        <option value="kuznetsov">👤 Андрей Кузнецов (Ведущий КАМ)</option>
+                        <option value="darienko">👤 Светлана Дариенко (КАМ СЗФО / Сибирь)</option>
+                        <option value="soldatova">👤 Валерия Солдатова (КАМ Юг / Черноземье)</option>
+                        <option value="dobrolyubova">👤 Евгения Добролюбова (КАМ)</option>
+                        <option value="admin">👑 Руководитель / Администратор</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="block text-xs font-bold text-gray-700 uppercase">PIN-код / Пароль</label>
+                        <span id="kamPinHint" class="text-[11px] text-blue-600 font-semibold cursor-pointer hover:underline" onclick="fillKamTestPin()">Подставить тестовый PIN</span>
+                    </div>
+                    <input type="password" id="kamLoginPin" maxlength="8" placeholder="••••" autocomplete="current-password" required
+                        class="w-full text-center text-lg tracking-widest font-black bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+                    <div id="kamLoginError" class="text-xs text-rose-600 font-semibold mt-1.5 hidden"></div>
+                </div>
+                
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 leading-relaxed">
+                    💡 <b>Разграничение доступа:</b> сотрудник может редактировать только свои планы и планы своих партнеров. Руководитель имеет доступ ко всем планам.
+                </div>
+                
+                <div class="flex items-center gap-2 pt-2">
+                    <button type="submit" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-600/20 transition cursor-pointer">
+                        Войти в учетную запись
+                    </button>
+                    <button type="button" onclick="closeKamLoginModal()" class="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition cursor-pointer">
+                        Отмена
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

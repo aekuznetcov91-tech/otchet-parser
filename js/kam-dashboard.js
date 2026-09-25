@@ -462,6 +462,249 @@ const CLOUD_PLANS_API = (typeof window !== 'undefined' && window.location && win
 let isSyncingPlansWithCloud = false;
 let planSaveDebounceTimer = null;
 
+/* ====================================================================
+ * KAM ROLE-BASED ACCESS & ACCOUNT AUTHENTICATION
+ * Ensures employees can only edit plans for their own account / partners,
+ * while Administrators (Руководитель) have unrestricted access.
+ * ====================================================================*/
+const KAM_AUTH_STORAGE_KEY = 'sberauto_kam_active_account';
+
+const KAM_AUTH_ACCOUNTS = {
+    'admin': {
+        id: 'admin',
+        name: 'Руководитель',
+        role: 'Руководитель / Администратор',
+        pins: ['7777', '2026'],
+        isAdmin: true,
+        displayName: 'Руководитель (Все права)'
+    },
+    'chikharev': {
+        id: 'chikharev',
+        name: 'Алексей Чихарев',
+        role: 'Ведущий КАМ',
+        pins: ['1001'],
+        isAdmin: false,
+        displayName: 'Алексей Чихарев'
+    },
+    'kuznetsov': {
+        id: 'kuznetsov',
+        name: 'Андрей Кузнецов',
+        role: 'Ведущий КАМ',
+        pins: ['2002'],
+        isAdmin: false,
+        displayName: 'Андрей Кузнецов'
+    },
+    'darienko': {
+        id: 'darienko',
+        name: 'Светлана Дариенко',
+        role: 'КАМ (СЗФО / Сибирь)',
+        pins: ['3003'],
+        isAdmin: false,
+        displayName: 'Светлана Дариенко'
+    },
+    'soldatova': {
+        id: 'soldatova',
+        name: 'Валерия Солдатова',
+        role: 'КАМ (Юг / Черноземье)',
+        pins: ['4004'],
+        isAdmin: false,
+        displayName: 'Валерия Солдатова'
+    },
+    'dobrolyubova': {
+        id: 'dobrolyubova',
+        name: 'Евгения Добролюбова',
+        role: 'КАМ (Регионы / Урал)',
+        pins: ['5005'],
+        isAdmin: false,
+        displayName: 'Евгения Добролюбова'
+    }
+};
+
+function getKamActiveUser() {
+    try {
+        const id = localStorage.getItem(KAM_AUTH_STORAGE_KEY);
+        if (id && KAM_AUTH_ACCOUNTS[id]) {
+            return KAM_AUTH_ACCOUNTS[id];
+        }
+    } catch (e) {}
+    return null;
+}
+
+function canUserEditOverallPlan(kamName) {
+    const user = getKamActiveUser();
+    if (!user) return false;
+    if (user.isAdmin) return true;
+    if (!kamName || kamName === 'all') return false; // Общий план сети меняет только Администратор/Руководитель
+    return normalizeKamName(kamName) === normalizeKamName(user.name);
+}
+
+function canUserEditPartnerPlan(partnerKam) {
+    const user = getKamActiveUser();
+    if (!user) return false;
+    if (user.isAdmin) return true;
+    if (!partnerKam || partnerKam === '—' || partnerKam === 'Не назначен') return false;
+    return normalizeKamName(partnerKam) === normalizeKamName(user.name);
+}
+
+function renderKamAuthWidget() {
+    const cont = document.getElementById('kamAuthWidgetContainer');
+    if (!cont) return;
+    const user = getKamActiveUser();
+    if (user) {
+        cont.innerHTML = `
+            <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-300 px-3 py-1.5 rounded-xl shadow-xs">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <div class="flex flex-col text-left">
+                    <span class="text-xs font-black text-emerald-950 flex items-center gap-1">
+                        ${user.isAdmin ? '👑' : '👤'} ${user.name}
+                    </span>
+                    <span class="text-[10px] text-emerald-700 font-semibold leading-none">${user.role}</span>
+                </div>
+                <button type="button" onclick="kamLogout()" class="ml-2 px-2 py-0.5 bg-white hover:bg-rose-50 text-rose-600 hover:text-rose-700 border border-rose-200 rounded-lg text-[10px] font-bold transition shadow-2xs cursor-pointer" title="Выйти из профиля">
+                    Выйти
+                </button>
+            </div>
+        `;
+    } else {
+        cont.innerHTML = `
+            <button type="button" onclick="openKamLoginModal()" class="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold shadow-sm transition cursor-pointer">
+                <span>🔐</span>
+                <span>Войти в профиль КАМ</span>
+            </button>
+        `;
+    }
+}
+
+function openKamLoginModal(preselectKamName = '') {
+    const modal = document.getElementById('kamLoginModal');
+    if (!modal) return;
+    const select = document.getElementById('kamLoginSelect');
+    const pinInput = document.getElementById('kamLoginPin');
+    const errEl = document.getElementById('kamLoginError');
+    if (errEl) errEl.classList.add('hidden');
+    if (pinInput) pinInput.value = '';
+
+    if (select && preselectKamName) {
+        if (preselectKamName === 'admin' || preselectKamName === 'all') {
+            select.value = 'admin';
+        } else {
+            const norm = normalizeKamName(preselectKamName);
+            for (const [id, acc] of Object.entries(KAM_AUTH_ACCOUNTS)) {
+                if (normalizeKamName(acc.name) === norm) {
+                    select.value = id;
+                    break;
+                }
+            }
+        }
+    }
+    modal.classList.remove('hidden');
+    if (pinInput) setTimeout(() => pinInput.focus(), 100);
+}
+
+function closeKamLoginModal() {
+    const modal = document.getElementById('kamLoginModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function fillKamTestPin() {
+    const select = document.getElementById('kamLoginSelect');
+    const pinInput = document.getElementById('kamLoginPin');
+    if (select && pinInput) {
+        const acc = KAM_AUTH_ACCOUNTS[select.value];
+        if (acc && acc.pins && acc.pins.length > 0) {
+            pinInput.value = acc.pins[0];
+            const errEl = document.getElementById('kamLoginError');
+            if (errEl) errEl.classList.add('hidden');
+        }
+    }
+}
+
+function onKamLoginAccountSelect(accId) {
+    const pinInput = document.getElementById('kamLoginPin');
+    const errEl = document.getElementById('kamLoginError');
+    if (errEl) errEl.classList.add('hidden');
+    if (pinInput) {
+        pinInput.value = '';
+        pinInput.focus();
+    }
+}
+
+function handleKamLoginSubmit(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const select = document.getElementById('kamLoginSelect');
+    const pinInput = document.getElementById('kamLoginPin');
+    const errEl = document.getElementById('kamLoginError');
+    if (!select || !pinInput) return;
+
+    const accId = select.value;
+    const acc = KAM_AUTH_ACCOUNTS[accId];
+    const enteredPin = (pinInput.value || '').trim();
+
+    if (!acc || !acc.pins.includes(enteredPin)) {
+        if (errEl) {
+            errEl.textContent = '❌ Неверный PIN-код. Проверьте код и повторите попытку.';
+            errEl.classList.remove('hidden');
+        }
+        return;
+    }
+
+    try {
+        localStorage.setItem(KAM_AUTH_STORAGE_KEY, accId);
+    } catch (err) {}
+
+    closeKamLoginModal();
+
+    if (typeof showToast === 'function') {
+        showToast(`Вход выполнен: ${acc.name} (${acc.role})`, 'success', 3000);
+    }
+
+    if (!acc.isAdmin && typeof setKamManagerFilter === 'function') {
+        setKamManagerFilter(acc.name);
+    } else {
+        renderKamTab(currentFilterConfig);
+    }
+}
+
+function kamLogout() {
+    try {
+        localStorage.removeItem(KAM_AUTH_STORAGE_KEY);
+    } catch (e) {}
+
+    if (typeof showToast === 'function') {
+        showToast('Вы вышли из учетной записи КАМ (режим просмотра)', 'info', 2000);
+    }
+
+    renderKamTab(currentFilterConfig);
+}
+
+function getPartnerPlanCellHtml(p) {
+    const partnerKam = p.kam || '';
+    const canEdit = canUserEditPartnerPlan(partnerKam);
+    const user = getKamActiveUser();
+
+    if (canEdit) {
+        return `
+            <input type="number" min="0" step="1" 
+                value="${p.plan || ''}" 
+                placeholder="—"
+                class="w-16 text-center text-xs font-bold text-blue-700 bg-gray-50 border border-gray-300 rounded px-1.5 py-0.5 outline-none focus:bg-white focus:border-blue-500 transition"
+                onchange="onPartnerPlanChange('${p.key}', this.value, '${partnerKam}')"
+                onkeyup="if(event.key==='Enter') this.blur();"
+                title="Введите план сделок для «${p.name}» (сохраняется автоматически)">
+        `;
+    } else {
+        const lockHint = user
+            ? `План закреплен за КАМом: ${partnerKam || 'Не назначен'}. Редактирование доступно только ему или Руководителю.`
+            : `План закреплен за КАМом: ${partnerKam || 'Не назначен'}. Войдите в профиль для редактирования.`;
+        return `
+            <div class="flex items-center justify-center gap-1 cursor-pointer group" onclick="openKamLoginModal('${partnerKam}')" title="${lockHint} (нажмите для входа)">
+                <span class="text-xs font-bold ${p.plan > 0 ? 'text-gray-700' : 'text-gray-400'}">${p.plan > 0 ? p.plan : '—'}</span>
+                <span class="text-[10px] text-gray-400 group-hover:text-blue-600 transition">🔒</span>
+            </div>
+        `;
+    }
+}
+
 /**
  * Retrieves KAM plans from localStorage/sessionStorage or defaults.
  */
@@ -574,6 +817,16 @@ if (typeof window !== 'undefined') {
  * Updates overall plan for a KAM manager and auto-refreshes KPI/bars.
  */
 function onKamOverallPlanChange(kamName, val) {
+    if (!canUserEditOverallPlan(kamName)) {
+        const displayName = kamName === 'all' ? 'Все КАМы (Сеть)' : kamName;
+        if (typeof showToast === 'function') {
+            showToast(`🔒 Редактирование плана «${displayName}» доступно только закрепленному сотруднику или Руководителю`, 'warning', 3500);
+        }
+        openKamLoginModal(kamName);
+        const agg = getKamAggregatedData(currentFilterConfig);
+        renderKamPlanHeader(agg.summary);
+        return;
+    }
     const num = Math.max(0, parseInt(val, 10) || 0);
     const store = getKamPlansStore();
     store.kam_plans[kamName] = num;
@@ -591,7 +844,15 @@ function onKamOverallPlanChange(kamName, val) {
 /**
  * Updates individual partner plan with multi-key redundancy and auto-refreshes row progress.
  */
-function onPartnerPlanChange(partnerKey, val) {
+function onPartnerPlanChange(partnerKey, val, partnerKam = '') {
+    if (!canUserEditPartnerPlan(partnerKam)) {
+        if (typeof showToast === 'function') {
+            showToast(`🔒 Редактирование плана партнера доступно только КАМу (${partnerKam || '—'}) или Руководителю`, 'warning', 3500);
+        }
+        openKamLoginModal(partnerKam);
+        renderKamTableOnly();
+        return;
+    }
     const num = Math.max(0, parseInt(val, 10) || 0);
     const store = getKamPlansStore();
     store.partner_plans[partnerKey] = num;
@@ -665,9 +926,19 @@ function exportKamPlansJson() {
 }
 
 /**
- * Imports plans from JSON string.
+ * Imports plans from JSON string (Requires Supervisor/Admin role).
  */
 function importKamPlansPrompt() {
+    const user = getKamActiveUser();
+    if (!user || !user.isAdmin) {
+        if (typeof showToast === 'function') {
+            showToast('🔒 Импорт планов из JSON доступен только Руководителю / Администратору', 'warning', 3500);
+        } else {
+            alert('Импорт планов доступен только Руководителю / Администратору.');
+        }
+        openKamLoginModal('admin');
+        return;
+    }
     const input = prompt('Вставьте JSON с планами КАМ и партнеров:');
     if (!input) return;
     try {
@@ -1422,6 +1693,9 @@ function renderKamTab(filterCfg, tableOnly = false) {
     const s = agg.summary;
 
     if (!tableOnly) {
+        // 0. Render KAM Authentication Status Widget
+        renderKamAuthWidget();
+
         // 1. Render Top 5 Executive KPI Cards
         const elInLeads = document.getElementById('kamKpiInLeads');
         const elQualLeads = document.getElementById('kamKpiQualLeads');
@@ -1490,6 +1764,37 @@ function renderKamPlanHeader(s) {
         progressColor = 'bg-amber-500';
     }
 
+    const canEditOverall = canUserEditOverallPlan(kamName);
+    const activeAuthUser = getKamActiveUser();
+    let overallPlanInputHtml = '';
+
+    if (canEditOverall) {
+        overallPlanInputHtml = `
+            <input type="number" min="0" step="1" 
+                value="${planVal || ''}" 
+                placeholder="0"
+                class="w-24 text-center text-base font-black text-blue-700 bg-blue-50/70 border border-blue-300 rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 transition"
+                onchange="onKamOverallPlanChange('${kamName}', this.value)"
+                onkeyup="if(event.key==='Enter') this.blur();"
+                title="Введите общий план сделок (сохраняется автоматически)">
+        `;
+    } else {
+        const lockTitle = activeAuthUser
+            ? (kamName === 'all' 
+                ? 'Общий план сети может устанавливать только Руководитель / Администратор' 
+                : `План сотрудника «${displayName}» может редактировать только он сам или Руководитель`)
+            : `Для изменения плана войдите в профиль сотрудника «${displayName}» или Руководителя`;
+        overallPlanInputHtml = `
+            <div class="flex items-center gap-1.5 cursor-pointer group" onclick="openKamLoginModal('${kamName}')" title="${lockTitle} (нажмите для входа)">
+                <input type="number" disabled
+                    value="${planVal || ''}" 
+                    placeholder="0"
+                    class="w-24 text-center text-base font-black text-gray-500 bg-gray-100 border border-gray-200 rounded-lg px-2 py-1 cursor-not-allowed opacity-80">
+                <span class="text-xs text-amber-600 group-hover:text-blue-600 transition" title="Заблокировано (требуется вход)">🔒</span>
+            </div>
+        `;
+    }
+
     const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
 
     cont.innerHTML = `
@@ -1555,13 +1860,7 @@ function renderKamPlanHeader(s) {
                         <span class="text-[10px] text-emerald-600 font-semibold" title="Все изменения моментально сохраняются в облачную базу данных Cloudflare KV для всех пользователей">⚡ Автосохранение в облако</span>
                     </div>
                     <div class="relative">
-                        <input type="number" min="0" step="1" 
-                            value="${planVal || ''}" 
-                            placeholder="0"
-                            class="w-24 text-center text-base font-black text-blue-700 bg-blue-50/70 border border-blue-300 rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 transition"
-                            onchange="onKamOverallPlanChange('${kamName}', this.value)"
-                            onkeyup="if(event.key==='Enter') this.blur();"
-                            title="Введите общий план сделок (сохраняется автоматически)">
+                        ${overallPlanInputHtml}
                     </div>
                     <span class="text-xs font-bold text-gray-400">шт.</span>
                 </div>
@@ -1815,16 +2114,10 @@ function renderKamTable(partners) {
             </td>
             <td class="text-center text-xs text-gray-600">${p.kam || '—'}</td>
             
-            <!-- Interactive Partner Plan Input with Auto-Save -->
+            <!-- Interactive Partner Plan Input with Auto-Save (Role Protected) -->
             <td class="text-center" onclick="event.stopPropagation()">
                 <div class="flex items-center justify-center gap-1">
-                    <input type="number" min="0" step="1" 
-                        value="${p.plan || ''}" 
-                        placeholder="—"
-                        class="w-16 text-center text-xs font-bold text-blue-700 bg-gray-50 border border-gray-300 rounded px-1.5 py-0.5 outline-none focus:bg-white focus:border-blue-500 transition"
-                        onchange="onPartnerPlanChange('${p.key}', this.value)"
-                        onkeyup="if(event.key==='Enter') this.blur();"
-                        title="Введите план сделок (сохраняется автоматически)">
+                    ${getPartnerPlanCellHtml(p)}
                 </div>
             </td>
             

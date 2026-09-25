@@ -51,5 +51,29 @@ class TestAuthSecurity(unittest.TestCase):
                         data = f.read()
                     self.assertNotIn("cfut_", data, f"Found Cloudflare API token in tracked file: {rel_path}")
 
+    def test_kam_role_based_access(self):
+        """Verify KAM role-based auth and modal are present in js and html."""
+        kam_js_path = os.path.join(self.root_dir, 'js', 'kam-dashboard.js')
+        site_kam_js_path = os.path.join(self.root_dir, 'site', 'js', 'kam-dashboard.js')
+        index_html_path = os.path.join(self.root_dir, 'index.html')
+        site_html_path = os.path.join(self.root_dir, 'site', 'index.html')
+
+        for p in [kam_js_path, site_kam_js_path]:
+            self.assertTrue(os.path.exists(p), f"{p} should exist")
+            with open(p, 'r', encoding='utf-8') as f:
+                content = f.read()
+            self.assertIn("KAM_AUTH_ACCOUNTS", content, f"KAM_AUTH_ACCOUNTS must be defined in {p}")
+            self.assertIn("canUserEditOverallPlan", content, f"canUserEditOverallPlan must be defined in {p}")
+            self.assertIn("canUserEditPartnerPlan", content, f"canUserEditPartnerPlan must be defined in {p}")
+            self.assertIn("getPartnerPlanCellHtml", content, f"getPartnerPlanCellHtml must be defined in {p}")
+
+        for p in [index_html_path, site_html_path]:
+            self.assertTrue(os.path.exists(p), f"{p} should exist")
+            with open(p, 'r', encoding='utf-8') as f:
+                content = f.read()
+            self.assertIn("kamLoginModal", content, f"kamLoginModal must be in {p}")
+            self.assertIn("kamAuthWidgetContainer", content, f"kamAuthWidgetContainer must be in {p}")
+
 if __name__ == '__main__':
     unittest.main()
+
