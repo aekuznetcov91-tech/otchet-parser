@@ -293,12 +293,47 @@ def extract_rows_from_matrix(matrix):
             result.append(row_dict)
     return result
 
+def safe_open_rb(filepath):
+    """Safely open binary file for reading even if locked exclusively by MS Excel on Windows."""
+    try:
+        return open(filepath, 'rb')
+    except PermissionError:
+        if sys.platform == 'win32':
+            try:
+                import ctypes, msvcrt
+                GENERIC_READ = 0x80000000
+                FILE_SHARE_READ = 1
+                FILE_SHARE_WRITE = 2
+                FILE_SHARE_DELETE = 4
+                OPEN_EXISTING = 3
+                FILE_ATTRIBUTE_NORMAL = 0x80
+                handle = ctypes.windll.kernel32.CreateFileW(
+                    os.path.abspath(filepath),
+                    GENERIC_READ,
+                    FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                    None,
+                    OPEN_EXISTING,
+                    FILE_ATTRIBUTE_NORMAL,
+                    None
+                )
+                if handle not in (0, -1):
+                    fd = msvcrt.open_osfhandle(handle, os.O_RDONLY)
+                    return open(fd, 'rb')
+            except Exception:
+                pass
+        raise
+
 def read_xlsx_xml(filepath):
     """High-performance direct streaming parser for zipped XLSX XML files."""
     ns = '{http://schemas.openxmlformats.org/spreadsheetml/2006/main}'
     datasets = []
     try:
-        with zipfile.ZipFile(filepath, 'r') as z:
+        fp = safe_open_rb(filepath)
+    except Exception:
+        return []
+
+    try:
+        with zipfile.ZipFile(fp, 'r') as z:
             # 1. Read shared strings
             ss = []
             if 'xl/sharedStrings.xml' in z.namelist():
@@ -357,6 +392,11 @@ def read_xlsx_xml(filepath):
         return datasets
     except Exception:
         return []
+    finally:
+        try:
+            fp.close()
+        except Exception:
+            pass
 
 def read_tabular_file(filepath):
     """Read CSV, HTML/XLS, or XLSX file format dynamically with error tolerance."""
@@ -382,7 +422,7 @@ def read_tabular_file(filepath):
 
     # Handle HTML table or CSV
     datasets = []
-    with open(filepath, 'rb') as f:
+    with safe_open_rb(filepath) as f:
         raw_bytes = f.read()
 
     encoding = 'windows-1251'
@@ -519,7 +559,35 @@ def calculate_brand_funnel(sys_db, leads_data=None):
         'JELAND': 'JELAND', 'ДЖЕЙЛЕНД': 'JELAND'
     }
 
+    qual_clients_by_new_lead_mgr = set()
     if leads_data:
+        client_evs_map = defaultdict(set)
+        client_new_lead_dt = {}
+        client_mgr_assign_dt = {}
+        for r in leads_data:
+            cid = str(r.get('client_id') or r.get('CLIENTID') or get_exact_val(r, 'IDКЛИЕНТА', 'ID') or '').strip()
+            if not cid: continue
+            ev = str(r.get('Событие') or r.get('СОБЫТИЕ') or r.get('EVENTNAME') or r.get('EVENT_NAME') or '').strip()
+            ev_clean = clean_key(ev)
+            client_evs_map[cid].add(ev_clean)
+            d_val = r.get('Дата события') or r.get('ДАТАСОБЫТИЯ') or r.get('Дата') or r.get('ДАТА')
+            d_ev = parse_custom_date(d_val)
+            if 'НОВЫЙЛИД' in ev_clean and d_ev:
+                if cid not in client_new_lead_dt or d_ev < client_new_lead_dt[cid]:
+                    client_new_lead_dt[cid] = d_ev
+            if 'ЗАКРЕПЛЕНИЕМЕНЕДЖЕРА' in ev_clean and d_ev:
+                if cid not in client_mgr_assign_dt or d_ev > client_mgr_assign_dt[cid]:
+                    client_mgr_assign_dt[cid] = d_ev
+
+        for cid, ev_set in client_evs_map.items():
+            has_new = any('НОВЫЙЛИД' in e for e in ev_set)
+            has_mgr = any('ЗАКРЕПЛЕНИЕМЕНЕДЖЕРА' in e for e in ev_set)
+            if has_new and has_mgr:
+                l_dt = client_new_lead_dt.get(cid)
+                m_dt = client_mgr_assign_dt.get(cid)
+                if not l_dt or not m_dt or m_dt >= l_dt:
+                    qual_clients_by_new_lead_mgr.add(cid)
+
         for r in leads_data:
             cid = str(r.get('client_id') or r.get('CLIENTID') or '').strip()
             if not cid: continue
@@ -572,7 +640,7 @@ def calculate_brand_funnel(sys_db, leads_data=None):
                 st = crm_lead_stats[target_m][found_b]
                 st['leads'].add(cid)
                 st['sources'][src] += 1
-                if 'квалиф' in ev or 'квалификация' in ev or 'квалифицирован' in val:
+                if (cid in qual_clients_by_new_lead_mgr) or ('квалиф' in ev or 'квалификация' in ev or 'квалифицирован' in val):
                     st['qual'].add(cid)
                 if 'расчет' in ev or 'калькулятор' in ev or 'витрина' in ev:
                     st['calc'].add(cid)
@@ -1196,12 +1264,29 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                     'region': str(get_exact_val(r, 'ГОРОД', 'РЕГИОН', 'АДРЕС') or '').strip()
                 }
 
-    # Pass 1: Extract client details from leads data
+    client_crm_events = defaultdict(set)
+    client_new_lead_dt = {}
+    client_mgr_assign_dt = {}
+
+    # Pass 1: Extract client details and event timestamps from leads data
     for r in leads_data:
         cid = str(get_exact_val(r, 'CLIENTID', 'IDКЛИЕНТА', 'ID') or '').strip()
         if not cid:
             continue
         
+        ev_str = str(get_exact_val(r, 'СОБЫТИЕ', 'EVENTNAME', 'EVENT_NAME') or '').strip()
+        ev_clean = clean_key(ev_str)
+        client_crm_events[cid].add(ev_clean)
+        
+        d_val = str(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА') or '').strip()
+        p_dt = parse_custom_date(d_val)
+        if 'НОВЫЙЛИД' in ev_clean and p_dt:
+            if cid not in client_new_lead_dt or p_dt < client_new_lead_dt[cid]:
+                client_new_lead_dt[cid] = p_dt
+        if 'ЗАКРЕПЛЕНИЕМЕНЕДЖЕРА' in ev_clean and p_dt:
+            if cid not in client_mgr_assign_dt or p_dt > client_mgr_assign_dt[cid]:
+                client_mgr_assign_dt[cid] = p_dt
+
         reg = str(get_exact_val(r, 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОНКЛИЕНТА', 'РЕГИОНРЛ', 'РЕГИОН', 'ADDRESS', 'АДРЕС') or '').strip()
         partner = str(get_exact_val(r, 'ПАРТНЕР', 'ДИЛЕР', 'КОМПАНИЯ') or '').strip()
         raw_b = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
@@ -1231,6 +1316,17 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             if vin and not d12_client_map[cid]['vin']: d12_client_map[cid]['vin'] = vin
             if price > 0 and d12_client_map[cid]['price'] == 0: d12_client_map[cid]['price'] = price
 
+    # Identification of qualified clients: 'Новый лид', followed by 'Закрепление менеджера'
+    qual_clients_by_new_lead_mgr = set()
+    for cid, ev_set in client_crm_events.items():
+        has_new = any('НОВЫЙЛИД' in e for e in ev_set)
+        has_mgr = any('ЗАКРЕПЛЕНИЕМЕНЕДЖЕРА' in e for e in ev_set)
+        if has_new and has_mgr:
+            l_dt = client_new_lead_dt.get(cid)
+            m_dt = client_mgr_assign_dt.get(cid)
+            if not l_dt or not m_dt or m_dt >= l_dt:
+                qual_clients_by_new_lead_mgr.add(cid)
+
     oem_13_brands = {'JETOUR', 'LADA', 'HAVAL', 'CHANGAN', 'GEELY', 'BELGEE', 'KNEWSTAR', 'CHERY', 'TENET', 'SOLARIS', 'SOUEAST', 'GAC', 'МОСКВИЧ', 'OMODA', 'JAECOO', 'HONGQI', 'XCITE'}
 
     # Pass 2: Aggregate events, qualification and transfer flags by client_id (deduplicated by client_id)
@@ -1247,7 +1343,6 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         ev_clean = clean_key(event)
         
         is_trans_row = ('ОТПРАВКАЛИДА' in ev_clean or 'ОТПРАВЛЕНДИЛЕРУ' in ev_clean or str(get_exact_val(r, 'ОТПРАВЛЕНДИЛЕРУ', 'ПЕРЕДАНДИЛЕРУ', 'ПЕРЕДАН') or '').strip() == '1')
-        is_qual_row = (str(get_exact_val(r, 'ЦЕЛЕВОЙМЕНЕДЖЕР', 'ЦЕЛЕВОЙ') or '').strip() == '1') or is_trans_row
         has_used_row = ('б/у' in raw_src or 'бу' in raw_src or 'пробег' in raw_src)
         has_oem_row = any(ob in raw_brand for ob in oem_13_brands)
         has_fdc_row = ('фдц' in raw_src)
@@ -1274,6 +1369,8 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         lead_month = p_date.strftime('%Y-%m') if p_date else '2026-08'
         client_month = deal_month if has_deal else lead_month
 
+        is_client_qual = (cid in qual_clients_by_new_lead_mgr) or is_trans_row or has_deal
+
         if cid not in clients_by_id:
             clients_by_id[cid] = {
                 'id': cid,
@@ -1283,7 +1380,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
                 'brand': brand,
                 'model': model,
                 'month': client_month,
-                'is_qual': is_qual_row or is_trans_row or has_deal,
+                'is_qual': is_client_qual,
                 'is_raw_trans': is_trans_row or has_deal,
                 'has_used': has_used_row,
                 'has_oem': has_oem_row or has_deal,
@@ -1296,7 +1393,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             }
         else:
             c_entry = clients_by_id[cid]
-            if is_qual_row or is_trans_row or has_deal: c_entry['is_qual'] = True
+            if is_client_qual: c_entry['is_qual'] = True
             if is_trans_row or has_deal: c_entry['is_raw_trans'] = True
             if has_used_row: c_entry['has_used'] = True
             if has_oem_row or has_deal: c_entry['has_oem'] = True
@@ -1313,6 +1410,10 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
 
     # Finalize BI transfer flag for each client (strictly qualified + OEM + not used + not fdc)
     for c_entry in clients_by_id.values():
+        cid_val = c_entry.get('id')
+        if (cid_val in qual_clients_by_new_lead_mgr) or c_entry.get('has_deal') or c_entry.get('is_raw_trans'):
+            c_entry['is_qual'] = True
+
         if c_entry.get('has_deal'):
             c_entry['is_qual'] = True
             c_entry['is_raw_trans'] = True
@@ -1534,7 +1635,7 @@ def run_pipeline():
                 # Read all tabular files; deduplicate identical files by MD5 content hash
 
                 try:
-                    with open(fpath, 'rb') as fp:
+                    with safe_open_rb(fpath) as fp:
                         fhash = hashlib.md5(fp.read(1024 * 1024)).hexdigest()
                 except Exception:
                     fhash = fname
