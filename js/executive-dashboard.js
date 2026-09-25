@@ -409,10 +409,16 @@ function calculateAlertsRadar(allDb, pDb, allPartners, filterConfig, debtorsList
     const actualDebtors = debtorsList || window.rawDebtorsList || (window.currentData && window.currentData.debtors) || [];
     const allStuckPrepays = [];
     actualDebtors.forEach(d => {
-        // Month filter check
+        // Month filter check: include active unclosed advances up to selected period
         if (filterConfig && filterConfig.mode === 'month' && filterConfig.month) {
             let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0, 2).join('-') : "";
-            if (m && m !== filterConfig.month) return;
+            if (m && m > filterConfig.month) return;
+        } else if (filterConfig && filterConfig.mode === 'custom' && filterConfig.to) {
+            const tTime = filterConfig.to.getTime();
+            if (d.prepay_serial && d.prepay_serial > 0) {
+                const jsD = excelToJSDate(d.prepay_serial);
+                if (jsD && jsD.getTime() > tTime) return;
+            }
         }
         const days = (typeof d.aging_days === 'number') ? d.aging_days : (typeof getDebtorAgeDays === 'function' ? getDebtorAgeDays(d) : 0);
         if (days >= 7) {

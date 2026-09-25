@@ -692,5 +692,14 @@ function switchTab(tabId, btn) {
     if (tabId === 'tab-lead-geo' && typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
     if (tabId === 'tab-kam' && typeof renderKamTab === 'function') renderKamTab(currentFilterConfig);
     if (tabId === 'tab-banking' && typeof renderBankingDashboard === 'function') renderBankingDashboard();
+    if (tabId === 'tab-details') {
+        const sInput = document.getElementById('searchDebtors');
+        if (sInput) {
+            sInput.value = '';
+            if (typeof filterDebtorsTable === 'function') filterDebtorsTable('');
+        }
+        if (typeof renderDebtorsTable === 'function') renderDebtorsTable(currentFilterConfig);
+        if (typeof renderWaitingTable === 'function') renderWaitingTable(currentFilterConfig);
+    }
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }

@@ -547,7 +547,7 @@ function renderPartnersTable(filterCfg) {
                 <th>Сделки с лидов</th>
                 <th>Сделки с МП</th>
                 <th>Сделки Тотал</th>
-                <th>Конверсия (Сделка/Лид)</th>
+                <th>CR (Сделка с лида / Лид)</th>
                 <th style="text-align: right;">Управление</th>
             </tr>
         </thead>
@@ -557,12 +557,24 @@ function renderPartnersTable(filterCfg) {
 
     sorted.forEach(data => {
         tL += data.leads; tP += data.prepays; tLD += data.leadDirectDeals; tMP += data.mpDeals; tD += data.deals;
-        let cr = data.leads > 0 ? fmtPct(data.deals / data.leads) : (data.deals > 0 ? "— (нет лидов)" : "0%");
+        let crVal = data.leads > 0 ? (data.leadDirectDeals / data.leads * 100) : 0;
+        let cr = data.leads > 0 ? `${crVal.toFixed(1)}%` : (data.leadDirectDeals > 0 ? "— (нет лидов)" : "0%");
         let idBadge = data.id ? 
             `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-xs">ID: ${data.id}</span>` : 
             `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded font-bold text-xs">Не сметчен</span>`;
 
-        let crColor = data.leads > 0 && data.deals > 0 ? 'text-emerald-700 font-black' : (data.deals > 0 ? 'text-blue-600 font-bold' : 'text-gray-500');
+        let crColor = 'text-gray-500';
+        if (data.leads > 0) {
+            if (crVal < 7) {
+                crColor = 'text-rose-600 font-bold';
+            } else if (crVal <= 13) {
+                crColor = 'text-amber-600 font-bold';
+            } else {
+                crColor = 'text-emerald-700 font-black';
+            }
+        } else if (data.leadDirectDeals > 0) {
+            crColor = 'text-blue-600 font-bold';
+        }
 
         const k = data.key;
         const dCount = data.dealsList.length;
@@ -718,7 +730,14 @@ function renderPartnersTable(filterCfg) {
         }
     });
 
-    let tCr = tL > 0 ? fmtPct(tD / tL) : "0%";
+    let tCrVal = tL > 0 ? (tLD / tL * 100) : 0;
+    let tCr = tL > 0 ? `${tCrVal.toFixed(1)}%` : "0%";
+    let tCrColor = 'text-gray-800 font-black';
+    if (tL > 0) {
+        if (tCrVal < 7) tCrColor = 'text-rose-600 font-black';
+        else if (tCrVal <= 13) tCrColor = 'text-amber-600 font-black';
+        else tCrColor = 'text-emerald-700 font-black';
+    }
     html += `<tr class="table-total">
         <td>ИТОГО</td>
         <td>—</td>
@@ -728,7 +747,7 @@ function renderPartnersTable(filterCfg) {
         <td>${fmtNum(tLD)}</td>
         <td>${fmtNum(tMP)}</td>
         <td>${fmtNum(tD)}</td>
-        <td>${tCr}</td>
+        <td class="${tCrColor}">${tCr}</td>
         <td></td>
     </tr></tbody></table>`;
 

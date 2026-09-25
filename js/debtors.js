@@ -64,10 +64,10 @@ function setDebtorAgingCohort(cohort) {
 function getFilteredDebtors(filterCfg) {
     const cfg = filterCfg || currentFilterConfig;
     return rawDebtorsList.filter(d => {
-        // 1. Period filter
+        // 1. Period filter: debtors are active unclosed advances awaiting vehicle delivery.
         if (cfg && cfg.mode === 'month') {
             let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0, 2).join('-') : "";
-            if (m !== cfg.month) return false;
+            if (m && m > cfg.month) return false;
         } else if (cfg && cfg.mode === 'custom') {
             const fTime = cfg.from ? cfg.from.getTime() : -Infinity;
             const tTime = cfg.to ? cfg.to.getTime() : Infinity;
@@ -75,7 +75,7 @@ function getFilteredDebtors(filterCfg) {
                 const jsD = excelToJSDate(d.prepay_serial);
                 if (jsD) {
                     const t = jsD.getTime();
-                    if (t < fTime || t > tTime) return false;
+                    if (t > tTime) return false;
                 }
             }
         }
@@ -126,16 +126,15 @@ function renderDebtorsTable(filterCfg) {
         if (!cfg || cfg.mode === 'all') return true;
         if (cfg.mode === 'month') {
             let m = d.prepay_date ? d.prepay_date.split('.').reverse().slice(0, 2).join('-') : "";
-            return m === cfg.month;
+            return !m || m <= cfg.month;
         }
         if (cfg.mode === 'custom') {
-            const fTime = cfg.from ? cfg.from.getTime() : -Infinity;
             const tTime = cfg.to ? cfg.to.getTime() : Infinity;
             if (d.prepay_serial && d.prepay_serial > 0) {
                 const jsD = excelToJSDate(d.prepay_serial);
                 if (jsD) {
                     const t = jsD.getTime();
-                    return t >= fTime && t <= tTime;
+                    return t <= tTime;
                 }
             }
         }

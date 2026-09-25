@@ -1067,85 +1067,105 @@ def load_master_partners_registry():
     return reg_data, bitrix_map, bi_map, pochta_map, oem_map
 
 
-def normalize_region_clean(raw_reg):
+def normalize_region_clean(raw_reg, dealer=''):
     if not raw_reg or str(raw_reg).lower() in ('не указан', 'nan', 'null', 'без региона', ''):
-        return 'Другие регионы'
+        raw_reg = ''
     r = str(raw_reg).strip()
     r = re.sub(r'\s+', ' ', r)
     r_up = r.upper()
-    if 'МОСКВА' in r_up or 'МОСКОВСКАЯ' in r_up:
-        return 'Москва и Московская область'
-    if 'САНКТ-ПЕТЕРБУРГ' in r_up or 'ПЕТЕРБУРГ' in r_up or 'ЛЕНИНГРАДСКАЯ' in r_up:
-        return 'Санкт-Петербург и Ленинградская область'
-    if 'КРАСНОДАР' in r_up:
-        return 'Краснодарский край'
-    if 'ТАТАРСТАН' in r_up:
-        return 'Республика Татарстан'
-    if 'БАШКОРТОСТАН' in r_up:
-        return 'Республика Башкортостан'
-    if 'РОСТОВ' in r_up:
-        return 'Ростовская область'
-    if 'СВЕРДЛОВСК' in r_up or 'ЕКАТЕРИНБУРГ' in r_up:
-        return 'Свердловская область'
-    if 'САМАР' in r_up:
-        return 'Самарская область'
-    if 'НИЖЕГОРОД' in r_up:
-        return 'Нижегородская область'
-    if 'ЧЕЛЯБИНСК' in r_up:
-        return 'Челябинская область'
-    if 'ПЕРМ' in r_up:
-        return 'Пермский край'
-    if 'СТАВРОПОЛЬ' in r_up:
-        return 'Ставропольский край'
-    if 'ВОРОНЕЖ' in r_up:
-        return 'Воронежская область'
-    if 'НОВОСИБИРСК' in r_up:
-        return 'Новосибирская область'
-    if 'ТЮМЕН' in r_up:
-        return 'Тюменская область'
-    if 'ВОЛГОГРАД' in r_up:
-        return 'Волгоградская область'
-    if 'САРАТОВ' in r_up:
-        return 'Саратовская область'
-    if 'УЛЬЯНОВСК' in r_up:
-        return 'Ульяновская область'
-    if 'ЯРОСЛАВ' in r_up:
-        return 'Ярославская область'
-    if 'ТУЛЬСК' in r_up:
-        return 'Тульская область'
-    if 'РЯЗАН' in r_up:
-        return 'Рязанская область'
-    if 'ВЛАДИМИР' in r_up:
-        return 'Владимирская область'
-    if 'БЕЛГОРОД' in r_up:
-        return 'Белгородская область'
-    if 'КАЛУЖ' in r_up:
-        return 'Калужская область'
-    if 'УДМУРТ' in r_up:
-        return 'Удмуртская Республика'
-    if 'ЧУВАШ' in r_up:
-        return 'Чувашская Республика'
-    if 'КИРОВ' in r_up:
-        return 'Кировская область'
-    if 'ЛИПЕЦК' in r_up:
-        return 'Липецкая область'
-    if 'ОРЕНБУРГ' in r_up:
-        return 'Оренбургская область'
-    if 'КУРСК' in r_up:
-        return 'Курская область'
-    if 'БРЯНСК' in r_up:
-        return 'Брянская область'
-    if 'ИВАНОВ' in r_up:
-        return 'Ивановская область'
-    if 'ТВЕР' in r_up:
-        return 'Тверская область'
-    if 'ОМСК' in r_up:
-        return 'Омская область'
-    if 'КРАСНОЯРСК' in r_up:
-        return 'Красноярский край'
-    if 'ХАНТЫ' in r_up or 'ХМАО' in r_up or 'СУРГУТ' in r_up:
-        return 'ХМАО — Югра'
-    return r.title()
+    d_up = str(dealer or '').upper()
+
+    # 1. Direct region & city patterns
+    if any(k in r_up for k in ['МОСКВ', 'ЗЕЛЕНОГРАД']): return 'Москва и Московская область'
+    if any(k in r_up for k in ['САНКТ-ПЕТЕРБУРГ', 'ПЕТЕРБУРГ', 'ЛЕНИНГРАДСК', 'СПБ', 'ВЫБОРГ', 'ГАТЧИН']): return 'Санкт-Петербург и Ленинградская область'
+    if any(k in r_up for k in ['КРАСНОДАР', 'СОЧИ', 'НОВОРОССИЙСК', 'АРМАВИР', 'АНАПА', 'ГЕЛЕНДЖИК']): return 'Краснодарский край'
+    if any(k in r_up for k in ['ТАТАРСТАН', 'КАЗАН', 'ЧЕЛНЫ', 'АЛЬМЕТЬЕВ', 'НИЖНЕКАМ', 'ЕЛАБУГ']): return 'Республика Татарстан'
+    if any(k in r_up for k in ['БАШКОРТОСТАН', 'УФА', 'СТЕРЛИТАМАК', 'САЛАВАТ', 'НЕФТЕКАМ']): return 'Республика Башкортостан'
+    if any(k in r_up for k in ['РОСТОВ', 'ТАГАНРОГ', 'ШАХТЫ', 'БАТАЙСК', 'НОВОЧЕРКАССК']): return 'Ростовская область'
+    if any(k in r_up for k in ['СВЕРДЛОВСК', 'ЕКАТЕРИНБУРГ', 'ТАГИЛ', 'КАМЕНСК-УРАЛЬСК', 'ПЕРВОУРАЛЬСК']): return 'Свердловская область'
+    if any(k in r_up for k in ['САМАР', 'ТОЛЬЯТТИ', 'СЫЗРАН']): return 'Самарская область'
+    if any(k in r_up for k in ['НИЖЕГОРОД', 'НИЖНИЙ НОВГОРОД', 'ДЗЕРЖИНСК', 'АРЗАМАС']): return 'Нижегородская область'
+    if any(k in r_up for k in ['ЧЕЛЯБИНСК', 'МАГНИТОГОРСК', 'ЗЛАТОУСТ', 'МИАСС']): return 'Челябинская область'
+    if any(k in r_up for k in ['ПЕРМ', 'БЕРЕЗНИК', 'СОЛИКАМСК']): return 'Пермский край'
+    if any(k in r_up for k in ['СТАВРОПОЛЬ', 'ПЯТИГОРСК', 'КИСЛОВОДСК', 'НЕВИННОМЫССК', 'ЕССЕНТУК']): return 'Ставропольский край'
+    if any(k in r_up for k in ['ВОРОНЕЖ', 'БОРИСОГЛЕБСК', 'РОССОШ']): return 'Воронежская область'
+    if any(k in r_up for k in ['НОВОСИБИРСК', 'БЕРДСК', 'ИСКИТИМ']): return 'Новосибирская область'
+    if any(k in r_up for k in ['ТЮМЕН', 'ТОБОЛЬСК', 'ИШИМ']): return 'Тюменская область'
+    if any(k in r_up for k in ['ВОЛГОГРАД', 'ВОЛЖСК', 'КАМЫШИН']): return 'Волгоградская область'
+    if any(k in r_up for k in ['САРАТОВ', 'ЭНГЕЛЬС', 'БАЛАКОВО']): return 'Саратовская область'
+    if any(k in r_up for k in ['УЛЬЯНОВСК', 'ДИМИТРОВГРАД']): return 'Ульяновская область'
+    if any(k in r_up for k in ['ЯРОСЛАВ', 'РЫБИНСК', 'ПЕРЕСЛАВЛЬ']): return 'Ярославская область'
+    if any(k in r_up for k in ['ТУЛЬСК', 'ТУЛА', 'НОВОМОСКОВСК']): return 'Тульская область'
+    if any(k in r_up for k in ['РЯЗАН']): return 'Рязанская область'
+    if any(k in r_up for k in ['ВЛАДИМИР', 'КОВРОВ', 'МУРОМ']): return 'Владимирская область'
+    if any(k in r_up for k in ['БЕЛГОРОД', 'СТАРЫЙ ОСКОЛ', 'ГУБКИН']): return 'Белгородская область'
+    if any(k in r_up for k in ['КАЛУЖ', 'КАЛУГА', 'ОБНИНСК']): return 'Калужская область'
+    if any(k in r_up for k in ['УДМУРТ', 'ИЖЕВСК', 'САРАПУЛ', 'ВОТКИНСК']): return 'Удмуртская Республика'
+    if any(k in r_up for k in ['ЧУВАШ', 'ЧЕБОКСАР', 'НОВОЧЕБОКСАРСК']): return 'Чувашская Республика'
+    if any(k in r_up for k in ['КИРОВ', 'КИРОВО-ЧЕПЕЦК']): return 'Кировская область'
+    if any(k in r_up for k in ['ЛИПЕЦК', 'ЕЛЕЦ']): return 'Липецкая область'
+    if any(k in r_up for k in ['ОРЕНБУРГ', 'ОРСК', 'НОВОТРОИЦК']): return 'Оренбургская область'
+    if any(k in r_up for k in ['КУРСК', 'ЖЕЛЕЗНОГОРСК']): return 'Курская область'
+    if any(k in r_up for k in ['БРЯНСК', 'КЛИНЦЫ']): return 'Брянская область'
+    if any(k in r_up for k in ['ИВАНОВ', 'КИНЕШМА', 'ШУЯ']): return 'Ивановская область'
+    if any(k in r_up for k in ['ТВЕР', 'РЖЕВ', 'ВЫШНИЙ ВОЛОЧЕК']): return 'Тверская область'
+    if any(k in r_up for k in ['ОМСК', 'ТАРА']): return 'Омская область'
+    if any(k in r_up for k in ['КРАСНОЯРСК', 'НОРИЛЬСК', 'АЧИНСК', 'КАНСК']): return 'Красноярский край'
+    if any(k in r_up for k in ['ХАНТЫ', 'ХМАО', 'СУРГУТ', 'НИЖНЕВАРТОВСК', 'НЕФТЕЮГАНСК']): return 'ХМАО — Югра'
+    if any(k in r_up for k in ['КЕМЕРОВ', 'НОВОКУЗНЕЦК', 'ПРОКОПЬЕВСК', 'КУЗБАСС']): return 'Кемеровская область (Кузбасс)'
+    if any(k in r_up for k in ['ИРКУТСК', 'БРАТСК', 'АНГАРСК']): return 'Иркутская область'
+    if any(k in r_up for k in ['АЛТАЙ', 'БАРНАУЛ', 'БИЙСК', 'РУБЦОВСК']): return 'Алтайский край'
+    if any(k in r_up for k in ['ХАБАРОВСК', 'КОМСОМОЛЬСК']): return 'Хабаровский край'
+    if any(k in r_up for k in ['ПРИМОР', 'ВЛАДИВОСТОК', 'УССУРИЙСК', 'НАХОДКА']): return 'Приморский край'
+    if any(k in r_up for k in ['АРХАНГЕЛЬСК', 'СЕВЕРОДВИНСК', 'КОТЛАС']): return 'Архангельская область'
+    if any(k in r_up for k in ['МУРМАНСК', 'АПАТИТЫ', 'СЕВЕРОМОРСК']): return 'Мурманская область'
+    if any(k in r_up for k in ['КАЛИНИНГРАД']): return 'Калининградская область'
+    if any(k in r_up for k in ['ВОЛОГОД', 'ВОЛОГДА', 'ЧЕРЕПОВЕЦ']): return 'Вологодская область'
+    if any(k in r_up for k in ['ПЕНЗ', 'ЗАРЕЧНЫЙ']): return 'Пензенская область'
+    if any(k in r_up for k in ['ТАМБОВ', 'МИЧУРИНСК']): return 'Тамбовская область'
+    if any(k in r_up for k in ['КОСТРОМ']): return 'Костромская область'
+    if any(k in r_up for k in ['СМОЛЕНСК', 'ВЯЗЬМА']): return 'Смоленская область'
+    if any(k in r_up for k in ['ОРЛОВ', 'ОРЕЛ', 'ОРЁЛ']): return 'Орловская область'
+    if any(k in r_up for k in ['ПСКОВ', 'ВЕЛИКИЕ ЛУКИ']): return 'Псковская область'
+    if any(k in r_up for k in ['НОВГОРОДСК', 'ВЕЛИКИЙ НОВГОРОД', 'БОРОВИЧИ']): return 'Новгородская область'
+    if any(k in r_up for k in ['КАРЕЛ', 'ПЕТРОЗАВОДСК']): return 'Республика Карелия'
+    if any(k in r_up for k in ['МОРДОВ', 'САРАНСК']): return 'Республика Мордовия'
+    if any(k in r_up for k in ['МАРИЙ', 'ЙОШКАР-ОЛА']): return 'Республика Марий Эл'
+    if any(k in r_up for k in ['ХАКАС', 'АБАКАН']): return 'Республика Хакасия'
+    if any(k in r_up for k in ['БУРЯТ', 'УЛАН-УДЭ']): return 'Республика Бурятия'
+    if any(k in r_up for k in ['ДАГЕСТАН', 'МАХАЧКАЛА', 'ДЕРБЕНТ']): return 'Республика Дагестан'
+    if any(k in r_up for k in ['КАБАРДИН', 'НАЛЬЧИК']): return 'Кабардино-Балкарская Республика'
+    if any(k in r_up for k in ['СЕВЕРНАЯ ОСЕТИЯ', 'ВЛАДИКАВКАЗ']): return 'Республика Северная Осетия — Алания'
+    if any(k in r_up for k in ['ЧЕЧНЯ', 'ГРОЗНЫЙ']): return 'Чеченская Республика'
+    if any(k in r_up for k in ['ЯМАЛО-НЕНЕЦ', 'ЯНАО', 'НОВЫЙ УРЕНГОЙ', 'НОЯБРЬСК']): return 'ЯНАО'
+
+    # 2. Fallback to dealer location if client address was empty
+    if d_up and d_up != 'ПУЛ СБЕРАВТО (ДЦ НЕ НАЗНАЧЕН)':
+        if any(k in d_up for k in ['АМКАПИТАЛ', 'АВТОГЕРМЕС', 'АЛТУФЬЕВО', 'КАР АЦ', 'АВИЛОН', 'КУНЦЕВО', 'МЭЙДЖОР', 'MAJOR']):
+            return 'Москва и Московская область'
+        if any(k in d_up for k in ['АВТОПОЛЕ', 'МАКСИМУМ', 'ВАГНЕР', 'ПРАГМАТИКА', 'СИГМА', 'ЛАХТА']):
+            return 'Санкт-Петербург и Ленинградская область'
+        if any(k in d_up for k in ['ТЕМП АВТО К', 'ТЕХНО-ТЕМП', 'ТРАНСФОР', 'ОПТИМА КУБАНЬ', 'КРАСНОДАР']):
+            return 'Краснодарский край'
+        if any(k in d_up for k in ['ДИАЛОГ', 'АПЕЛЬСИН', 'ТТС', 'ТРАНСТЕХСЕРВИС', 'КАЗАН']):
+            return 'Республика Татарстан'
+        if any(k in d_up for k in ['БАШАВТОКОМ', 'ТЕНЕТ УФА', 'УРАЛ-МОТОРС']):
+            return 'Республика Башкортостан'
+        if any(k in d_up for k in ['НОВОМОСКОВСК', 'КОРС']):
+            return 'Тульская область'
+        if any(k in d_up for k in ['ВОСТОК МОТОРС', 'АВТОБАН', 'ИЮЛЬ', 'ЕКАТЕРИНБУРГ']):
+            return 'Свердловская область'
+        if any(k in d_up for k in ['САМАРА АВТО', 'ВИП АВТО']):
+            return 'Самарская область'
+        if any(k in d_up for k in ['НИЖЕГОРОДЕЦ', 'ЮНИКОР']):
+            return 'Нижегородская область'
+        if any(k in d_up for k in ['ФРЕШ', 'FRESH']):
+            return 'Воронежская область'
+
+    if r:
+        return r.title()
+    return 'Другие регионы'
+
 
 def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
     """
@@ -1240,7 +1260,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             dealer = 'Пул СберАвто (ДЦ не назначен)'
         
         raw_reg = d12_info.get('region') or deal_info.get('region') or str(get_exact_val(r, 'РЕГИОНКЛИЕНТА', 'РЕГИОНРЛ', 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОН', 'АДРЕС') or '').strip()
-        norm_reg = normalize_region_clean(raw_reg)
+        norm_reg = normalize_region_clean(raw_reg, dealer=dealer)
         
         raw_b = d12_info.get('brand') or deal_info.get('brand') or str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
         brand = normalize_brand(raw_b) or 'Другие'
@@ -2346,10 +2366,100 @@ def run_pipeline():
 
             if "сберавто" in p_lower or "сбер авто" in p_lower:
                 contact_name = str(get_exact_val(row, 'НАЗВАНИЕКОНТАКТА', 'КОНТАКТ') or "").strip()
-                if contact_name and contact_name.lower() in pochta_map:
-                    pid, cname, kam = pochta_map[contact_name.lower()]
-                elif contact_name and contact_name.lower() in kam_dict_sber:
-                    kam = kam_dict_sber.get(contact_name.lower(), "")
+                if contact_name:
+                    c_low = contact_name.lower()
+                    if c_low in pochta_map:
+                        pid, cname, kam = pochta_map[c_low]
+                    elif c_low in kam_dict_sber:
+                        cname = contact_name
+                        kam = kam_dict_sber.get(c_low, "")
+                    else:
+                        cname = contact_name
+
+                    # Substring match known dealer queues
+                    if any(k in c_low for k in ['борисхоф', ' бх', 'бх ']):
+                        pid, cname, kam = (1205, 'БорисХоф', 'Алексей Чихарев')
+                    elif any(k in c_low for k in ['фреш', 'fresh']):
+                        pid, cname, kam = (1073, 'Fresh Auto', 'Андрей Кузнецов')
+                    elif any(k in c_low for k in ['тенет уфа', 'башавтоком']):
+                        pid, cname, kam = (1134, 'Башавтоком / Чанган Центр', 'Евгения Добролюбова')
+                    elif 'форвард' in c_low:
+                        if 'тюмень' in c_low:
+                            pid, cname, kam = (1128, 'ГК Форвард-Авто', 'Алексей Чихарев')
+                        else:
+                            pid, cname, kam = (1128, 'ГК Форвард-Авто', 'Евгения Добролюбова')
+                    elif 'лунаавто' in c_low or 'чери нвск' in c_low or 'нск' in c_low:
+                        if 'o&j' in c_low:
+                            cname = 'O&J Новосибирск'
+                            kam = 'Светлана Дариенко'
+                        else:
+                            pid, cname, kam = (1232, 'ЛунаАвто', 'Светлана Дариенко')
+                    elif 'авто-континент' in c_low or 'иркутск' in c_low:
+                        pid, cname, kam = (1138, 'Авто-Континент', 'Светлана Дариенко')
+                    elif 'вип авто' in c_low:
+                        pid, cname, kam = (1248, 'ООО "ВИП АВТО САМАРА"', 'Евгения Добролюбова')
+                    elif 'арконт' in c_low:
+                        pid, cname, kam = (1253, 'ГК Арконт', 'Евгения Добролюбова')
+                    elif 'темп авто' in c_low or 'авто дон' in c_low:
+                        pid, cname, kam = (1186, 'ЧЕРИ ЦЕНТР ТЕМП АВТО ДОН', 'Валерия Солдатова')
+                    elif 'сигма' in c_low:
+                        pid, cname, kam = (1028, 'Сигма', 'Светлана Дариенко')
+                    elif 'оптима' in c_low:
+                        pid, cname, kam = (1281, 'ГК Оптима', 'Валерия Солдатова')
+                    elif 'ай-би-эм' in c_low or 'би-эм' in c_low or 'кемерово' in c_low:
+                        pid, cname, kam = (1265, 'Ай-Би-Эм Кемерово', 'Алексей Чихарев')
+                    elif 'диалог' in c_low:
+                        pid, cname, kam = (1237, 'Диалог Авто', 'Алексей Чихарев')
+                    elif 'апельсин' in c_low:
+                        pid, cname, kam = (1243, 'Апельсин (Автосеть РФ)', 'Алексей Чихарев')
+                    elif 'твс' in c_low:
+                        pid, cname, kam = (1259, 'ТВС Моторс', 'Евгения Добролюбова')
+                    elif 'автогарантия' in c_low or 'челябинск' in c_low:
+                        pid, cname, kam = (1125, 'Автогарантия', 'Евгения Добролюбова')
+                    elif 'интерпартнер' in c_low or 'ижевск' in c_low:
+                        pid, cname, kam = (1122, 'Интерпартнер', 'Евгения Добролюбова')
+                    elif 'леон' in c_low:
+                        pid, cname, kam = (1246, 'Леон Авто КРД', 'Валерия Солдатова')
+                    elif 'автокласс' in c_low or 'тула' in c_low:
+                        pid, cname, kam = (1118, 'Автокласс', 'Алексей Чихарев')
+                    elif 'анкаравто' in c_low or 'калуга' in c_low:
+                        pid, cname, kam = (1119, 'АнкарАвто', 'Алексей Чихарев')
+                    elif 'автолюкс' in c_low or 'пятигорск' in c_low:
+                        pid, cname, kam = (1225, 'Автолюкс Пятигорск', 'Валерия Солдатова')
+                    elif 'таганрог' in c_low:
+                        cname = 'Таганрог Модус/Ринг'
+                        kam = 'Валерия Солдатова'
+                    elif 'автоград' in c_low or 'калининград' in c_low:
+                        pid, cname, kam = (1266, 'ONLINE АВТОЦЕНТР АВТОГРАД', 'Светлана Дариенко')
+                    elif 'автостиль' in c_low or 'новгород' in c_low:
+                        pid, cname, kam = (1034, 'Автостиль', 'Светлана Дариенко')
+                    elif 'брянск' in c_low or 'бн-моторс' in c_low:
+                        pid, cname, kam = (1260, 'ГК БН-Моторс', 'Евгения Добролюбова')
+                    elif 'архангельск' in c_low:
+                        cname = 'Архангельск Динамика'
+                        kam = 'Светлана Дариенко'
+                    elif 'нижегородец' in c_low or 'чери нн' in c_low:
+                        pid, cname, kam = (1048, 'Нижегородец', 'Евгения Добролюбова')
+                    elif 'экскурс' in c_low or 'пермь' in c_low:
+                        cname = 'Экскурс Пермь'
+                        kam = 'Евгения Добролюбова'
+                    elif 'омода самара' in c_low or 'самара' in c_low:
+                        pid, cname, kam = (1106, 'ГК Самара-Авто', 'Евгения Добролюбова')
+                    elif 'o&j екб' in c_low or 'екб' in c_low:
+                        cname = 'O&J Екатеринбург'
+                        kam = 'Евгения Добролюбова'
+                    elif 'o&j казань' in c_low:
+                        cname = 'O&J Казань'
+                        kam = 'Алексей Чихарев'
+                    elif 'o&j крд' in c_low:
+                        cname = 'O&J Краснодар'
+                        kam = 'Валерия Солдатова'
+                    elif 'o&j мск' in c_low:
+                        cname = 'O&J Москва'
+                        kam = 'Алексей Чихарев'
+                    elif 'tenet' in c_low:
+                        cname = 'Tenet SberAuto'
+                        kam = 'Евгения Добролюбова'
                 elif p_lower in bi_map:
                     pid, cname, kam = bi_map[p_lower]
             elif p_lower in bi_map:
@@ -2469,6 +2579,50 @@ def run_pipeline():
                     else:
                         cname = 'Эксперт Авто (Самара)'
                         kam = 'Евгения Добролюбова'
+                elif any(k in p_lower for k in ['мэйджор', 'major']):
+                    pid, cname, kam = (1078, 'ГК Major/Мэйджор', 'Алексей Чихарев')
+                elif 'dss' in p_lower:
+                    cname = 'DSS Group'
+                    kam = 'Алексей Чихарев'
+                elif 'вилледж' in p_lower or 'аутлет' in p_lower:
+                    cname = 'Аутлет Авто Вилледж'
+                    kam = 'Светлана Дариенко'
+                elif 'автомобилия' in p_lower:
+                    cname = 'Автомобилия (Ярославль)'
+                    kam = 'Алексей Чихарев'
+                elif 'rekord' in p_lower or 'рекорд' in p_lower:
+                    cname = 'Автосалон REKORD'
+                    kam = 'Алексей Чихарев'
+                elif 'альянс' in p_lower:
+                    cname = 'Альянс Select'
+                    kam = 'Алексей Чихарев'
+                elif 'тверь' in p_lower or 'макон' in p_lower:
+                    cname = 'Единый центр Trade-In Тверь' if 'trade-in' in p_lower else 'Макон Авто'
+                    kam = 'Алексей Чихарев'
+                elif 'км/ч' in p_lower or 'км-ч' in p_lower:
+                    cname = 'Приоритет_КМ/ч АсП'
+                    kam = 'Валерия Солдатова'
+                elif 'yes auto' in p_lower or 'иркутск' in p_lower:
+                    cname = 'Yes Auto Иркутск'
+                    kam = 'Светлана Дариенко'
+                elif 'аксель' in p_lower or 'мурманск' in p_lower:
+                    cname = 'Аксель Мурманск'
+                    kam = 'Светлана Дариенко'
+                elif 'брайт парк' in p_lower:
+                    cname = 'Брайт Парк'
+                    kam = 'Евгения Добролюбова'
+                elif 'прайм авто' in p_lower or 'prime auto' in p_lower:
+                    cname = 'Прайм Авто PRIME AUTO Новосибирск'
+                    kam = 'Светлана Дариенко'
+                elif 'ситидрайв' in p_lower:
+                    cname = 'СитиДрайв'
+                    kam = 'Алексей Чихарев'
+                elif 'тауэр' in p_lower:
+                    cname = 'Тауэр Авто Jetour'
+                    kam = 'Алексей Чихарев'
+                elif 'глобус' in p_lower or 'автосфера' in p_lower:
+                    cname = 'Глобус Автосфера'
+                    kam = 'Валерия Солдатова'
                 else:
                     res_kam = oem_resolver.resolve(partner_name=partner_raw or cname, city=lead_city, fallback_kam=kam)
                     if res_kam and res_kam != "Не назначен":
