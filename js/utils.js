@@ -190,64 +190,62 @@ function getDebtorChannelBadge(b2c) {
 }
 
 /**
- * Formats brand sales into a presentation string:
- * JETOUR {N} шт. | LADA {N} шт. | CHANGAN {N} шт. | G B K {N} шт. | GAC {N} шт. | SOLARIS {N} шт. | SOUEAST {N} шт. | TENET {N} шт. | Jeland {N} шт. | O&J {N} шт. | HAVAL {N} шт. |
+ * Normalizes brand name for presentation and charts.
+ * @param {string} b
+ * @returns {string}
+ */
+function normalizeBrandPresentation(b) {
+    if (typeof normalizeBrandJS === 'function') return normalizeBrandJS(b);
+    if (!b) return '';
+    let s = String(b).trim();
+    let sUpper = s.toUpperCase();
+    if (sUpper === 'TENET' || sUpper === 'ТENET' || sUpper === 'ТЕНЕТ' || sUpper === 'CHERY' || sUpper === 'ЧЕРИ') return 'CHERY & TENET';
+    if (sUpper === 'SОLARIS' || sUpper === 'SOLARIS' || sUpper === 'СОЛЯРИС') return 'SOLARIS';
+    if (sUpper === 'KNEWSTAR' || sUpper === 'КНЬЮСТАР' || sUpper === 'КНЮСТАР') return 'Knewstar';
+    if (sUpper === 'ВЕELGEE' || sUpper === 'BELGEE' || sUpper === 'БЕЛДЖИ') return 'Belgee';
+    if (sUpper === 'GEELY' || sUpper === 'ДЖИЛИ') return 'Geely';
+    if (sUpper === 'G B K' || sUpper === 'GBK') return 'Geely & Belgee';
+    if (sUpper === 'SOUEAS') return 'SOUEAST';
+    if (sUpper === 'JAECO0' || sUpper === 'ДЖЕЙКУ') return 'JAECOO';
+    return s;
+}
+
+/**
+ * Formats brand sales into a presentation string identical to the chart/table:
+ * {BRAND_1} {N} шт. | {BRAND_2} {N} шт. | ...
  * @param {Array} salesDb - Optional sales array
  * @returns {string}
  */
 function formatBrandsForPresentation(salesDb) {
-    const list = salesDb || window.currentFilteredSales || (window.APP_DATA && window.APP_DATA.sys_db) || [];
-    const counts = {
-        'JETOUR': 0,
-        'LADA': 0,
-        'CHANGAN': 0,
-        'G B K': 0,
-        'GAC': 0,
-        'SOLARIS': 0,
-        'SOUEAST': 0,
-        'TENET': 0,
-        'Jeland': 0,
-        'O&J': 0,
-        'HAVAL': 0
-    };
-
-    list.forEach(r => {
-        const b = (r.Brand || '').toUpperCase().trim();
-        const m = (r.Model || '').toUpperCase().trim();
-
-        const dealMonth = (r.SaleMonth || r.Month || '').replace("'", "");
-        const isSepPlus = dealMonth >= '2026-09';
-
-        if (b.includes('JETOUR') || m.includes('JETOUR')) {
-            counts['JETOUR']++;
-        } else if (b.includes('LADA') || b.includes('ВАЗ') || m.includes('LADA') || m.includes('VESTA') || m.includes('GRANTA')) {
-            counts['LADA']++;
-        } else if (b.includes('CHANGAN') || m.includes('CHANGAN')) {
-            counts['CHANGAN']++;
-        } else if (['GEELY', 'BELGEE', 'БЕЛДЖИ', 'KNEWSTAR', 'КНЬЮСТАР', 'КНЮСТАР'].some(k => b.includes(k) || m.includes(k))) {
-            counts['G B K']++;
-        } else if (b.includes('GAC') || m.includes('GAC')) {
-            counts['GAC']++;
-        } else if (b.includes('SOLARIS') || b.includes('СОЛЯРИС') || b.includes('SОLARIS') || m.includes('SOLARIS')) {
-            counts['SOLARIS']++;
-        } else if (b.includes('SOUEAST') || b.includes('SOUEAS') || m.includes('SOUEAST')) {
-            counts['SOUEAST']++;
-        } else if (b.includes('JELAND') || m.includes('JELAND') || m.includes('ДЖЕЙЛЕНД')) {
-            counts['Jeland']++;
-        } else if (['OMODA', 'JAECOO', 'ДЖЕЙКУ'].some(k => b.includes(k) || m.includes(k))) {
-            if (isSepPlus) {
-                counts['Jeland']++;
-            } else {
-                counts['O&J']++;
-            }
-        } else if (b.includes('TENET') || m.includes('TENET') || m.includes('ТЕНЕТ') || b.includes('CHERY') || m.includes('CHERY')) {
-            counts['TENET']++;
-        } else if (b.includes('HAVAL') || b.includes('ХАВЕЙЛ') || m.includes('HAVAL')) {
-            counts['HAVAL']++;
+    let list = salesDb || window.currentFilteredSales;
+    if (!list || !list.length) {
+        if (typeof getFilteredData === 'function') {
+            const fd = getFilteredData();
+            if (fd && fd.sDb && fd.sDb.length) list = fd.sDb;
         }
+    }
+    if (!list || !list.length) {
+        if (typeof db !== 'undefined' && Array.isArray(db) && db.length) {
+            list = db.filter(r => r.SaleQty > 0);
+        } else if (window.dataPayload && Array.isArray(window.dataPayload.sys_db)) {
+            list = window.dataPayload.sys_db.filter(r => r.SaleQty > 0);
+        }
+    }
+    list = list || [];
+
+    const aux = ["ВНЕСЕНИЕ", "АВАНС", "КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП", "СЕРВИС", "ФИНАНС", "ДОГОВОР", "ОФОРМЛЕН", "КОМИСС", "УСЛУГ", "НЕИЗВЕСТН", "ДРУГИЕ", "NULL", "UNDEFINED"];
+
+    const counts = {};
+    list.forEach(r => {
+        let b = normalizeBrandPresentation(r.Brand);
+        if (!b || b === 'null' || b === 'undefined' || b === 'Другие' || aux.some(k => String(b).toUpperCase().includes(k))) return;
+        counts[b] = (counts[b] || 0) + 1;
     });
 
-    const parts = Object.entries(counts).map(([brand, count]) => `${brand} ${count} шт.`);
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    if (sorted.length === 0) return '';
+
+    const parts = sorted.map(([brand, count]) => `${brand} ${count} шт.`);
     return parts.join(' | ') + ' | ';
 }
 
@@ -264,14 +262,24 @@ async function copyBrandsPresentationText(btn) {
     }
 
     try {
+        let copied = false;
         if (navigator.clipboard && navigator.clipboard.writeText) {
-            await navigator.clipboard.writeText(text);
-        } else {
+            try {
+                await navigator.clipboard.writeText(text);
+                copied = true;
+            } catch (clipErr) {
+                console.warn('navigator.clipboard.writeText failed, using fallback textarea', clipErr);
+            }
+        }
+        if (!copied) {
             const ta = document.createElement('textarea');
             ta.value = text;
             ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            ta.style.top = '-9999px';
             ta.style.opacity = '0';
             document.body.appendChild(ta);
+            ta.focus();
             ta.select();
             document.execCommand('copy');
             document.body.removeChild(ta);

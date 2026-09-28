@@ -17,6 +17,7 @@ function normalizeBrandJS(b) {
     if (sUpper === 'GEELY' || sUpper === 'ДЖИЛИ') return 'Geely';
     if (sUpper === 'G B K' || sUpper === 'GBK') return 'Geely & Belgee';
     if (sUpper === 'SOUEAS') return 'SOUEAST';
+    if (sUpper === 'JAECO0' || sUpper === 'ДЖЕЙКУ') return 'JAECOO';
     return s;
 }
 

@@ -185,6 +185,8 @@ function getFilteredData() {
 
 function updateAllTabs() {
     const { sDb, pDb } = getFilteredData();
+    window.currentFilteredSales = sDb;
+    window.currentFilteredPrepays = pDb;
     let tS = sDb.length, tP = pDb.length;
     const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.innerText = v; };
 
