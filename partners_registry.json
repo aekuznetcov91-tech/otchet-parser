@@ -459,7 +459,7 @@
     {
       "partner_id": 1008,
       "canonical_name": "ООО Р-МОТОРС ЛАДА (Тюмень)",
-      "holding": "ООО",
+      "holding": "ООО Р-МОТОРС ЛАДА (Тюмень)",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ООО Р-МОТОРС ЛАДА (Тюмень)",
@@ -669,7 +669,7 @@
     {
       "partner_id": 1011,
       "canonical_name": "ГК Сигма",
-      "holding": "ООО",
+      "holding": "ГК Сигма",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "ООО \"СИГМА АВТО\"",
@@ -3838,14 +3838,16 @@
     {
       "partner_id": 1040,
       "canonical_name": "Авто Премиум Тверь",
-      "holding": "ONLIN",
+      "holding": "Авто Премиум",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ONLINE ООО \"СОЮЗ-Т\"",
-        "ONLIN Авто Премиум Тверь"
+        "ООО \"СОЮЗ-Т\"",
+        "Авто Премиум Тверь",
+        "Авто Премиум Тверь ONLINE"
       ],
       "bi_aliases": [
-        "ONLIN Авто Премиум Тверь"
+        "Авто Премиум Тверь"
       ],
       "pochta_aliases": [],
       "oem_data": [],
@@ -4993,7 +4995,7 @@
     {
       "partner_id": 1050,
       "canonical_name": "ООО \"АВТОГРАД-Н",
-      "holding": "ООО",
+      "holding": "ООО \"АВТОГРАД-Н",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"АВТОГРАД-Н\" Online"
@@ -5437,7 +5439,7 @@
     {
       "partner_id": 1057,
       "canonical_name": "ООО Автосеть Уфа",
-      "holding": "ООО",
+      "holding": "ООО Автосеть Уфа",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "Online ООО Автосеть Уфа",
@@ -6207,7 +6209,7 @@
     {
       "partner_id": 1069,
       "canonical_name": "ИП Олейник Андрей Сергеевич",
-      "holding": "ИП",
+      "holding": "ИП Олейник Андрей Сергеевич",
       "kam": "Не назначен",
       "bitrix_aliases": [
         "ИП Олейник Андрей Сергеевич online",
@@ -6874,7 +6876,7 @@
     {
       "partner_id": 1078,
       "canonical_name": "Авторитейл Диаманд",
-      "holding": "ООО",
+      "holding": "Авторитейл Диаманд",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "Online ООО АВТО РИТЕЙЛ ДИАМАНТ / ГК Форвард",
@@ -7291,7 +7293,7 @@
     {
       "partner_id": 1083,
       "canonical_name": "ООО \"НЕВААВТО",
-      "holding": "ООО",
+      "holding": "ООО \"НЕВААВТО",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "ООО \"НЕВААВТО\" online",
@@ -7946,7 +7948,7 @@
     {
       "partner_id": 1099,
       "canonical_name": "ООО \"ДЕЛИВЕРИ КАР",
-      "holding": "ООО",
+      "holding": "ООО \"ДЕЛИВЕРИ КАР",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ONLINE ООО \"ДЕЛИВЕРИ КАР\"",
@@ -8454,7 +8456,7 @@
     {
       "partner_id": 1113,
       "canonical_name": "ООО \"ТОП-СЕРВИС",
-      "holding": "ООО",
+      "holding": "ООО \"ТОП-СЕРВИС",
       "kam": "Не назначен",
       "bitrix_aliases": [
         "Online ООО \"ТОП-СЕРВИС\""
@@ -8467,7 +8469,7 @@
     {
       "partner_id": 1114,
       "canonical_name": "ООО \"ВОРОНЕЖ-АВТО-СИТИ",
-      "holding": "ООО",
+      "holding": "ООО \"ВОРОНЕЖ-АВТО-СИТИ",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ООО \"ВОРОНЕЖ-АВТО-СИТИ\" Online",
@@ -8481,7 +8483,7 @@
     {
       "partner_id": 1115,
       "canonical_name": "ООО \"ТАМБОВ-АВТО",
-      "holding": "ООО",
+      "holding": "ООО \"ТАМБОВ-АВТО",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "Online ООО \"ТАМБОВ-АВТО\""
@@ -8967,7 +8969,7 @@
     {
       "partner_id": 1117,
       "canonical_name": "ООО \"ПАРУС",
-      "holding": "ООО",
+      "holding": "ООО \"ПАРУС",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"ПАРУС\" online",
@@ -8990,7 +8992,7 @@
     {
       "partner_id": 1118,
       "canonical_name": "ООО \"АВТО СИТИ\"",
-      "holding": "ООО",
+      "holding": "ООО \"АВТО СИТИ\"",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ООО \"АВТО СИТИ\" ONLINE",
@@ -9030,7 +9032,7 @@
     {
       "partner_id": 1119,
       "canonical_name": "ООО \"КМ-АВТО САРАНСК-2",
-      "holding": "ООО",
+      "holding": "ООО \"КМ-АВТО САРАНСК-2",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ООО \"КМ-АВТО САРАНСК-2\" ONLINE",
@@ -9066,7 +9068,7 @@
     {
       "partner_id": 1120,
       "canonical_name": "ООО \"МАРКАР ГРУПП",
-      "holding": "ООО",
+      "holding": "ООО \"МАРКАР ГРУПП",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"МАРКАР ГРУПП\" ONLINE",
@@ -9179,7 +9181,7 @@
     {
       "partner_id": 1124,
       "canonical_name": "ООО \"МЛАДА - АВТО",
-      "holding": "ООО",
+      "holding": "ООО \"МЛАДА - АВТО",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"МЛАДА - АВТО\" online",
@@ -9236,7 +9238,7 @@
     {
       "partner_id": 1125,
       "canonical_name": "ООО \"ГЛАЗУРИТ",
-      "holding": "ООО",
+      "holding": "ООО \"ГЛАЗУРИТ",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО \"ГЛАЗУРИТ\" online",
@@ -9275,7 +9277,7 @@
     {
       "partner_id": 1126,
       "canonical_name": "ООО \"Центр Лада",
-      "holding": "ООО",
+      "holding": "ООО \"Центр Лада",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"Центр Лада\" ONLINE",
@@ -9299,7 +9301,7 @@
     {
       "partner_id": 1128,
       "canonical_name": "ООО \"ТД АРМАДА-АВТО",
-      "holding": "ООО",
+      "holding": "ООО \"ТД АРМАДА-АВТО",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ONLINE ООО \"ТД АРМАДА-АВТО\"",
@@ -9371,7 +9373,7 @@
     {
       "partner_id": 1130,
       "canonical_name": "ООО \"КАР АЦ",
-      "holding": "ООО",
+      "holding": "ООО \"КАР АЦ",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"КАР АЦ\" ONLINE",
@@ -9538,7 +9540,7 @@
     {
       "partner_id": 1132,
       "canonical_name": "Динамика Вологда",
-      "holding": "ООО",
+      "holding": "Динамика Вологда",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "ООО \"ДИНАМИКА ВОЛОГДА\" ONLINE",
@@ -9589,7 +9591,7 @@
     {
       "partner_id": 1133,
       "canonical_name": "ООО \"ТАУЭР ЛТД",
-      "holding": "ООО",
+      "holding": "ООО \"ТАУЭР ЛТД",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"ТАУЭР ЛТД\" online",
@@ -9625,7 +9627,7 @@
     {
       "partner_id": 1134,
       "canonical_name": "Чери Автофорум",
-      "holding": "ООО",
+      "holding": "Чери Автофорум",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО \"АВТОФОРУМ\" ONLINE",
@@ -9705,7 +9707,7 @@
     {
       "partner_id": 1136,
       "canonical_name": "ООО \"РАДАР-ЗАПАД",
-      "holding": "ООО",
+      "holding": "ООО \"РАДАР-ЗАПАД",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"РАДАР-ЗАПАД\" online",
@@ -9719,7 +9721,7 @@
     {
       "partner_id": 1137,
       "canonical_name": "ООО \"КОНДОР-ПЛЮС",
-      "holding": "ООО",
+      "holding": "ООО \"КОНДОР-ПЛЮС",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО \"КОНДОР-ПЛЮС\" ONLINE",
@@ -9771,7 +9773,7 @@
     {
       "partner_id": 1139,
       "canonical_name": "ООО \"ВИП АВТО САМАРА",
-      "holding": "ООО",
+      "holding": "ООО \"ВИП АВТО САМАРА",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО \"ВИП АВТО САМАРА\" ONLINE",
@@ -12994,7 +12996,7 @@
     {
       "partner_id": 1229,
       "canonical_name": "Авто для Вас Премиум",
-      "holding": "Авто",
+      "holding": "Авто для Вас Премиум",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ООО Авто для Вас Премиум"
@@ -13446,7 +13448,7 @@
     {
       "partner_id": 1240,
       "canonical_name": "Авто Бизнес",
-      "holding": "Авто",
+      "holding": "Авто Бизнес",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО АВТО БИЗНЕС",
@@ -17147,12 +17149,16 @@
     {
       "partner_id": 632032,
       "canonical_name": "Премиум Авто ONLINE",
-      "holding": "",
+      "holding": "Премиум Авто",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
-        "Премиум Авто ONLINE"
+        "Премиум Авто ONLINE",
+        "Премиум Авто"
       ],
-      "bi_aliases": [],
+      "bi_aliases": [
+        "Премиум Авто ONLINE",
+        "Премиум Авто"
+      ],
       "pochta_aliases": [],
       "oem_data": [],
       "status": "verified"

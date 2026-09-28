@@ -305,12 +305,26 @@ def apply_merges_to_file(filepath):
     p1040 = partners_by_id.get(1040)
     if p1040:
         p1040['canonical_name'] = 'Авто Премиум Тверь'
+        p1040['holding'] = 'Авто Премиум'
         p1040['kam'] = 'Алексей Чихарев'
+        p1040['bitrix_aliases'] = ['ONLINE ООО "СОЮЗ-Т"', 'ООО "СОЮЗ-Т"', 'Авто Премиум Тверь', 'Авто Премиум Тверь ONLINE']
+        p1040['bi_aliases'] = ['Авто Премиум Тверь']
     
     p632032 = partners_by_id.get(632032)
     if p632032:
         p632032['canonical_name'] = 'Премиум Авто ONLINE'
+        p632032['holding'] = 'Премиум Авто'
         p632032['kam'] = 'Светлана Дариенко'
+        p632032['bitrix_aliases'] = ['Премиум Авто ONLINE', 'Премиум Авто']
+        p632032['bi_aliases'] = ['Премиум Авто ONLINE', 'Премиум Авто']
+
+    # General cleanup of corrupted/truncated holdings like 'ONLIN', 'ONLINE', 'ООО', 'ИП'
+    for p in partners:
+        h = (p.get('holding') or '').strip()
+        if h.upper() in ['ONLIN', 'ONLINE', 'ОНЛАЙН', 'ООО', 'ИП', 'АВТО']:
+            p['holding'] = p.get('canonical_name') or ''
+        p['bitrix_aliases'] = [a for a in p.get('bitrix_aliases', []) if a.strip().lower() not in ['onlin', 'online', 'онлайн', 'ооо', 'ип']]
+        p['bi_aliases'] = [a for a in p.get('bi_aliases', []) if a.strip().lower() not in ['onlin', 'online', 'онлайн', 'ооо', 'ип']]
 
     # 4. Авторитет: Архангельск (1138) -> Светлана Дариенко (только Лада)
     #    Авторитет (Симферополь, 1286) -> Валерия Солдатова (Jetour, Soueast)

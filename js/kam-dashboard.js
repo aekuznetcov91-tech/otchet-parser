@@ -1059,6 +1059,12 @@ function getKamAggregatedData(filterCfg) {
     const partnerLookup = {};
     const partnerListForMatching = [];
 
+    const GENERIC_STOP_WORDS = new Set([
+        'ооо', 'зао', 'пао', 'ао', 'ип', 'online', 'онлайн', 'onlin', 
+        'авто', 'auto', 'холдинг', 'holding', 'группа', 'group', 'моторс', 'motors',
+        'центр', 'дилер', 'сервис', 'плюс', 'трейд', 'компания', 'россия', 'russia'
+    ]);
+
     registry.forEach(p => {
         if (p.partner_id === 1210 || (p.canonical_name && p.canonical_name.toLowerCase().includes('сберавто'))) {
             return;
@@ -1066,12 +1072,16 @@ function getKamAggregatedData(filterCfg) {
         const normKam = normalizeKamName(p.kam);
         const pid = p.partner_id;
         const cname = p.canonical_name || `Партнер #${pid}`;
-        const holding = p.holding || cname;
+        const rawHolding = (p.holding || '').trim();
+        const holding = (rawHolding && !GENERIC_STOP_WORDS.has(rawHolding.toLowerCase())) ? rawHolding : cname;
         const aliases = [cname, holding, ...(p.bitrix_aliases || []), ...(p.bi_aliases || [])];
         (p.oem_data || []).forEach(oem => {
             if (oem.name) aliases.push(oem.name);
         });
-        const cleanAliases = Array.from(new Set(aliases.map(a => (a || '').toLowerCase().trim()).filter(a => a.length > 0)));
+        const cleanAliases = Array.from(new Set(
+            aliases.map(a => (a || '').toLowerCase().trim())
+                   .filter(a => a.length >= 3 && !GENERIC_STOP_WORDS.has(a))
+        ));
 
         const entry = {
             id: pid,
@@ -1101,8 +1111,10 @@ function getKamAggregatedData(filterCfg) {
         // 2. Substring match
         for (let p of partnerListForMatching) {
             for (let a of p.aliases) {
-                if (a.length >= 4 && (a.includes(dn) || dn.includes(a))) {
-                    return p;
+                if (a.length >= 5 && !GENERIC_STOP_WORDS.has(a)) {
+                    if (dn.includes(a) || (a.includes(dn) && dn.length >= 6)) {
+                        return p;
+                    }
                 }
             }
         }
@@ -1236,7 +1248,15 @@ function getKamAggregatedData(filterCfg) {
                 }
                 return firstCity.brands[brand];
             }
-            return null;
+            // fallback: create city dynamically if ps.cities has no cities
+            const txCity = String(r.City || '').trim() || 'Город не указан';
+            if (!ps.cities[txCity]) {
+                ps.cities[txCity] = { name: txCity, brands: {} };
+            }
+            if (!ps.cities[txCity].brands[brand]) {
+                ps.cities[txCity].brands[brand] = { name: brand, dealer_name: '', trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
+            }
+            return ps.cities[txCity].brands[brand];
         };
 
         const cityBrandEntry = recordCityMatch();
@@ -1505,6 +1525,35 @@ function getKamAggregatedData(filterCfg) {
     // 5. Calculate Totals & CR
     const plansStore = getKamPlansStore();
     const allPartnersList = Object.values(partnerStats);
+
+    // Guarantee that every partner with brands has at least one city containing those brands
+    allPartnersList.forEach(p => {
+        const cKeys = Object.keys(p.cities || {});
+        const bKeys = Object.keys(p.brands || {});
+        if (bKeys.length > 0) {
+            if (cKeys.length === 0) {
+                const defCity = (p.oem_data && p.oem_data[0] && p.oem_data[0].city) ? p.oem_data[0].city : 'Город не указан';
+                p.cities[defCity] = { name: defCity, brands: {} };
+                bKeys.forEach(bk => {
+                    p.cities[defCity].brands[bk] = { ...p.brands[bk] };
+                });
+            } else {
+                const firstCityName = cKeys[0];
+                bKeys.forEach(bk => {
+                    let brandFound = false;
+                    for (let cName of cKeys) {
+                        if (p.cities[cName].brands && p.cities[cName].brands[bk]) {
+                            brandFound = true;
+                            break;
+                        }
+                    }
+                    if (!brandFound) {
+                        p.cities[firstCityName].brands[bk] = { ...p.brands[bk] };
+                    }
+                });
+            }
+        }
+    });
 
     // Filter by selected KAM manager
     const filteredPartners = allPartnersList.filter(p => {
@@ -2082,7 +2131,7 @@ function renderKamTable(partners) {
         tTotD += p.total_deals;
         tDebts += (p.debts_count || 0);
 
-        const safeKey = p.key.replace(/[^a-zA-Z0-9_-]/g, '_');
+        const safeKey = 'krow_' + idx + '_' + (p.id ? String(p.id) : 'raw') + '_' + p.key.replace(/[^a-zA-Z0-9_-]/g, '_');
         const crFormatted = p.trans_leads > 0 ? `${p.cr_pct.toFixed(1)}%` : (p.trans_deals > 0 ? '—' : '0%');
         
         let crColor = 'text-gray-500';
@@ -2152,12 +2201,20 @@ function renderKamTable(partners) {
 
         // Level 2 & 3: Breakdown by City & Brands (Hidden Accordion Subrows)
         if (hasSubrows) {
-            Object.entries(p.cities || {}).forEach(([cityName, cityData]) => {
+            const renderCities = Object.keys(p.cities || {}).length > 0 ? p.cities : {
+                'Город не указан': {
+                    name: 'Город не указан',
+                    brands: p.brands || {}
+                }
+            };
+
+            Object.entries(renderCities).forEach(([cityName, cityData]) => {
+                const cityBrands = (cityData.brands && Object.keys(cityData.brands).length > 0) ? cityData.brands : (p.brands || {});
                 html += `
                 <tr class="kam-subrow-${safeKey} hidden bg-slate-50/90 text-xs border-l-4 border-blue-400">
                     <td class="py-1.5 pl-8 font-semibold text-gray-800 flex items-center gap-2">
                         <span class="text-blue-600 font-bold">📍 ${cityName}</span>
-                        <span class="text-[10px] text-gray-400">(${Object.keys(cityData.brands || {}).length} брендов)</span>
+                        <span class="text-[10px] text-gray-400">(${Object.keys(cityBrands).length} брендов)</span>
                     </td>
                     <td class="text-center text-gray-400 text-[11px]">—</td>
                     <td class="text-center text-gray-400 text-[11px]">—</td>
