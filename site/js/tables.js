@@ -565,7 +565,9 @@ function renderPartnersTable(filterCfg) {
         }
 
         if (r.Type === 'Лид') {
-            pStats[key].leads += (r.Qty || 1);
+            if (!r.HasPrepay || r.HasPrepay === 0) {
+                pStats[key].leads += (r.Qty || 1);
+            }
             if (r.RawPartner) pStats[key].rawBi.add(r.RawPartner);
         } else if (r.Type === 'Сделка') {
             pStats[key].deals += (r.Qty || 1);
@@ -605,7 +607,7 @@ function renderPartnersTable(filterCfg) {
                 <th style="width: 65px;">ID</th>
                 <th>Партнер (Master Name)</th>
                 <th>Закрепленный КАМ</th>
-                <th>Лиды (BI)</th>
+                <th title="Переданные партнерам целевые лиды без зафиксированной предоплаты">Лиды (BI)</th>
                 <th>Предоплаты</th>
                 <th>Сделки с лидов</th>
                 <th>Сделки с МП</th>

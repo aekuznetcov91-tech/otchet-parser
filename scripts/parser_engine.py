@@ -2452,6 +2452,19 @@ def run_pipeline():
     debtors = filtered_debtors
 
     # 4. Process Leads
+    # Build a lookup of clients with prepayments to tag leads with HasPrepay
+    clients_with_prepay = set()
+    for r in sys_db:
+        cid = str(r.get('ClientId') or '').strip()
+        if cid and (r.get('PrepayQty', 0) > 0 or r.get('PrepayDate')):
+            clients_with_prepay.add(cid)
+    for r in deals_data:
+        cid = str(get_exact_val(r, 'IDКЛИЕНТА', 'CLIENTID') or '').strip()
+        raw_prepay = get_exact_val(r, 'ДАТАВНЕСЕНИЯПРЕДОПЛАТЫРОЗНИЦА', 'ДАТАПОЛУЧЕНИЯАВАНСА')
+        if cid and raw_prepay and str(raw_prepay).strip():
+            clients_with_prepay.add(cid)
+    print(f"[*] Сформирован реестр клиентов с предоплатами: {len(clients_with_prepay)} уникальных ClientId")
+
     if leads_data:
         seen_partner_leads = set()
         for row in leads_data:
@@ -2745,6 +2758,7 @@ def run_pipeline():
 
             raw_brand = str(get_exact_val(row, 'БРЕНД', 'БРЕНДB2C') or "").strip()
             final_brand = normalize_brand(raw_brand, month=lead_month_str) if raw_brand else ""
+            has_client_prepay = 1 if (client_id and client_id in clients_with_prepay) else 0
 
             sys_db_partners.append({
                 "Month": lead_month_str,
@@ -2757,7 +2771,8 @@ def run_pipeline():
                 "Brand": final_brand,
                 "Date": lead_serial,
                 "ClientId": client_id,
-                "LeadId": sid
+                "LeadId": sid,
+                "HasPrepay": has_client_prepay
             })
 
 

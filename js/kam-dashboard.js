@@ -1230,10 +1230,12 @@ function getKamAggregatedData(filterCfg) {
         const cityBrandEntry = recordCityMatch();
 
         if (r.Type === 'Лид') {
-            ps.trans_leads += (r.Qty || 1);
-            ps.brands[brand].trans_leads += (r.Qty || 1);
-            if (cityBrandEntry) cityBrandEntry.trans_leads += (r.Qty || 1);
-            ps.has_trans_from_db = true;
+            if (!r.HasPrepay || r.HasPrepay === 0) {
+                ps.trans_leads += (r.Qty || 1);
+                ps.brands[brand].trans_leads += (r.Qty || 1);
+                if (cityBrandEntry) cityBrandEntry.trans_leads += (r.Qty || 1);
+                ps.has_trans_from_db = true;
+            }
         } else if (r.Type === 'Сделка') {
             ps.total_deals += (r.Qty || 1);
             ps.brands[brand].total_deals += (r.Qty || 1);
