@@ -1,0 +1,218 @@
+=== DEALS FOR АВТОПРЕМИУМ / ПРЕМИУМ АВТО / СОЮЗ-Т ===
+
+=== SYS_DB_PARTNERS ===
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=632032 | name=Премиум Авто ONLINE | kam=Алексей Чихарев | month=2026-08 | type=Предоплата | count=1
+DB: pid=632032 | name=Премиум Авто ONLINE | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Без сделки | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-07 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-06 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-06 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-05 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-04 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Светлана Дариенко | month=2026-03 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-09 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-09 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Сделка | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Предоплата | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-09 | type=Сделка | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-09 | type=Предоплата | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-05 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-06 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-06 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-06 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-07 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Лид | count=1
+DB: pid=1040 | name=ONLIN Авто Премиум Тверь | kam=Светлана Дариенко | month=2026-08 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-01 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-01 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-01 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-01 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-01 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-01 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-02 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-02 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-02 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-02 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-03 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-03 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-03 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-03 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-03 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-04 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-04 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-04 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-04 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-05 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-06 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-06 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-07 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-08 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-08 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-08 | type=Лид | count=1
+DB: pid=1040 | name=Макон Авто | kam=Алексей Чихарев | month=2026-09 | type=Лид | count=1
+DB: pid=1012 | name=Jetour Авто Премиум | kam=Алексей Чихарев | month=2026-09 | type=Лид | count=1

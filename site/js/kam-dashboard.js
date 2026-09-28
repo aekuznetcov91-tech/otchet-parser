@@ -1060,6 +1060,9 @@ function getKamAggregatedData(filterCfg) {
     const partnerListForMatching = [];
 
     registry.forEach(p => {
+        if (p.partner_id === 1210 || (p.canonical_name && p.canonical_name.toLowerCase().includes('сберавто'))) {
+            return;
+        }
         const normKam = normalizeKamName(p.kam);
         const pid = p.partner_id;
         const cname = p.canonical_name || `Партнер #${pid}`;
@@ -1090,6 +1093,9 @@ function getKamAggregatedData(filterCfg) {
     const matchDealerToPartner = (dealerName) => {
         if (!dealerName) return null;
         const dn = dealerName.toLowerCase().trim();
+        if (dn === 'сберавто' || dn === 'пул сберавто' || dn.includes('пул сберавто') || dn.includes('сберавто')) {
+            return null;
+        }
         // 1. Direct alias match
         if (partnerLookup[`NAME_${dn}`]) return partnerLookup[`NAME_${dn}`];
         // 2. Substring match
@@ -1186,6 +1192,9 @@ function getKamAggregatedData(filterCfg) {
 
     // 1. Seed partners from registry so all assigned partners appear with their STRICT OEM geography
     registry.forEach(p => {
+        if (p.partner_id === 1210 || (p.canonical_name && p.canonical_name.toLowerCase().includes('сберавто'))) {
+            return;
+        }
         let normKam = normalizeKamName(p.kam);
         if (activeMonth <= '2026-08' && normKam === 'Евгения Добролюбова') {
             normKam = 'Андрей Кузнецов';
@@ -1195,6 +1204,9 @@ function getKamAggregatedData(filterCfg) {
 
     // 2. Process transactions from sys_db_partners (deals, prepays, BI leads)
     fPartners.forEach(r => {
+        if (r.PartnerId === 1210 || (r.Partner && r.Partner.toLowerCase().includes('сберавто'))) {
+            return;
+        }
         const normKam = normalizeKamName(r.KAM);
         const ps = getPartnerStats(r.PartnerId, r.Partner, normKam);
         if (normKam && normKam !== 'Не назначен') {
@@ -1496,6 +1508,7 @@ function getKamAggregatedData(filterCfg) {
 
     // Filter by selected KAM manager
     const filteredPartners = allPartnersList.filter(p => {
+        if (p.id === 1210 || (p.name && p.name.toLowerCase() === 'сберавто')) return false;
         if (currentKamFilter === 'all') return true;
         return normalizeKamName(p.kam) === normalizeKamName(currentKamFilter);
     });
@@ -1547,6 +1560,7 @@ function getKamAggregatedData(filterCfg) {
     let assignedPartnersCount = 0;
     const assignedMasterPartners = [];
     registry.forEach(p => {
+        if (p.partner_id === 1210 || (p.canonical_name && p.canonical_name.toLowerCase().includes('сберавто'))) return;
         let pKam = normalizeKamName(p.kam);
         if (activeMonth <= '2026-08' && pKam === 'Евгения Добролюбова') pKam = 'Андрей Кузнецов';
         if (currentKamFilter === 'all' || pKam === normalizeKamName(currentKamFilter)) {
@@ -1561,6 +1575,7 @@ function getKamAggregatedData(filterCfg) {
     
     // Seed from assigned partners & OEM data
     registry.forEach(p => {
+        if (p.partner_id === 1210 || (p.canonical_name && p.canonical_name.toLowerCase().includes('сберавто'))) return;
         let pKam = normalizeKamName(p.kam);
         if (activeMonth <= '2026-08' && pKam === 'Евгения Добролюбова') pKam = 'Андрей Кузнецов';
         if (currentKamFilter !== 'all' && pKam !== normalizeKamName(currentKamFilter)) return;

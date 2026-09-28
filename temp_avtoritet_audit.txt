@@ -1,0 +1,106 @@
+REGISTRY PARTNER 1138: Авторитет | kam=Светлана Дариенко
+  bitrix_aliases: ['ONLINE ООО АВТОРИТЕТ', 'Online Авторитет-М', 'Авторитет']
+  bi_aliases: ['Авторитет']
+  pochta_aliases: []
+  oem_data: [{'sheet': 'LADA', 'city': 'Архангельск', 'group_link': 'https://max.ru/join/utE025UlzDXaeX4C3b868Nlz8QgZM_vvV9ls8wJ8YRI', 'name': 'Авторитет', 'legal_entity': 'ООО Авторитет', 'inn': '2902039507', 'address': 'ул. Октябрят, 31, Архангельск', 'back_name': '', 'email': '', 'responsible': '', 'brand': 'LADA'}, {'sheet': 'JETOUR', 'city': 'Симферополь', 'group_link': 'https://max.ru/join/AwIKqhz7UTgHun-C52ZtkX33cZom5Fe_N0sc4BESsTA', 'name': 'Автодель', 'legal_entity': 'ООО Авторитет-М', 'inn': '9102001105', 'address': 'г. Симферополь, ул. Киевская 187', 'back_name': '', 'email': 'vtovstokor@avtodel.com, manager3@jetour-avtodel.ru, manager2@jetour-avtodel.ru, manager4@jetour-avtodel.ru', 'responsible': 'Валерия Солдатова', 'brand': 'JETOUR'}, {'sheet': 'Soueast', 'city': 'Симферополь', 'group_link': 'https://max.ru/join/AwIKqhz7UTgHun-C52ZtkX33cZom5Fe_N0sc4BESsTA', 'name': 'Автодель', 'legal_entity': 'ООО Авторитет-М', 'inn': '9102001105', 'address': 'г. Симферополь, ул. Киевская 187', 'back_name': '-', 'email': 'vtovstokor@avtodel.com, manager3@jetour-avtodel.ru, manager2@jetour-avtodel.ru', 'responsible': 'Валерия Солдатова', 'brand': 'Soueast'}, {'sheet': 'JETOUR', 'city': 'Симферополь', 'name': 'Автодель', 'legal_entity': 'ООО Авторитет-М', 'inn': '9102001105', 'responsible': 'Валерия Солдатова'}, {'sheet': 'Soueast', 'city': 'Симферополь', 'name': 'Автодель', 'legal_entity': 'ООО Авторитет-М', 'inn': '9102001105', 'responsible': 'Валерия Солдатова'}, {'sheet': 'LADA', 'city': 'Архангельск', 'name': 'Авторитет', 'legal_entity': 'ООО Авторитет', 'inn': '2902039507', 'responsible': 'Не назначен'}]
+
+=== DEALS FOR АВТОРИТЕТ ===
+
+=== SYS_DB_PARTNERS FOR АВТОРИТЕТ ===
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=SOUEAST | month=2026-08 | type=Сделка | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=None | month=2026-08 | type=Предоплата | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=JETOUR | month=2026-08 | type=Сделка | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-07 | type=Сделка | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-06 | type=Сделка | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=None | month=2026-06 | type=Предоплата | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-09 | type=Сделка | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=None | month=2026-09 | type=Предоплата | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=SOUEAST | month=2026-09 | type=Сделка | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=None | month=2026-09 | type=Предоплата | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=SOUEAST | month=2026-09 | type=Сделка | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=None | month=2026-09 | type=Предоплата | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=FORD | month=2026-01 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-01 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=RENAULT | month=2026-02 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-04 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-05 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=VOLKSWAGEN | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-08 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-08 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-08 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-01 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-01 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-01 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-01 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-01 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-02 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-02 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-02 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-02 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-02 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-02 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-03 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-04 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-04 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-05 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-05 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-05 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-05 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-05 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-06 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-07 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-08 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-08 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-08 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=OMODA & JAECOO | month=2026-08 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-08 | type=Лид | count=1
+DB: pid=1138 | name=Авторитет | kam=Светлана Дариенко | brand=LADA | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=CHERY & TENET | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1
+DB: pid=1138 | name=Авто-Континент | kam=Светлана Дариенко | brand=JELAND | month=2026-09 | type=Лид | count=1

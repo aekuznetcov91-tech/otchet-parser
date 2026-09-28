@@ -183,6 +183,13 @@ MERGERS = [
         'target_name': 'ГК БН-МОТОРС',
         'target_kam': 'Евгения Добролюбова',
         'donor_ids': [1186]
+    },
+    # 26. ГК Сигма: merge 1024 into 1011
+    {
+        'target_id': 1011,
+        'target_name': 'ГК Сигма',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [1024]
     }
 ]
 
@@ -265,7 +272,6 @@ def apply_merges_to_file(filepath):
                 for pa in donor.get('pochta_aliases') or []:
                     target['pochta_aliases'].append(pa)
                 for oem in donor.get('oem_data') or []:
-                    # deduplicate oem by inn + brand
                     target['oem_data'].append(oem)
 
                 removed_pids.add(did)
@@ -273,6 +279,93 @@ def apply_merges_to_file(filepath):
         target['bitrix_aliases'] = clean_list(target['bitrix_aliases'])
         target['bi_aliases'] = clean_list(target['bi_aliases'])
         target['pochta_aliases'] = clean_list(target['pochta_aliases'])
+
+    # Explicit cleanup & allocations:
+    # 1. Clean Sigma pochta aliases from non-Sigma partners
+    p1012 = partners_by_id.get(1012)
+    if p1012 and 'pochta_aliases' in p1012:
+        p1012['pochta_aliases'] = [a for a in p1012['pochta_aliases'] if 'сигма' not in a.lower()]
+    p1013 = partners_by_id.get(1013)
+    if p1013 and 'pochta_aliases' in p1013:
+        p1013['pochta_aliases'] = [a for a in p1013['pochta_aliases'] if 'сигма' not in a.lower()]
+    
+    # 2. Ensure ГК Сигма (1011) has both pochta aliases
+    p1011 = partners_by_id.get(1011)
+    if p1011:
+        p1011['canonical_name'] = 'ГК Сигма'
+        p1011['kam'] = 'Светлана Дариенко'
+        if 'pochta_aliases' not in p1011 or not p1011['pochta_aliases']:
+            p1011['pochta_aliases'] = []
+        p1011['pochta_aliases'].extend(['Почта Сигма Чери СПб1', 'Почта Сигма Чери СПб2'])
+        p1011['pochta_aliases'] = clean_list(p1011['pochta_aliases'])
+        p1011['bi_aliases'].extend(['Приоритет_Сигма СПб', 'СберАвто (Почта Сигма Чери O&J СПб1, Почта Сигма Чери O&J СПб2)', 'Сигма'])
+        p1011['bi_aliases'] = clean_list(p1011['bi_aliases'])
+
+    # 3. Автопремиум: Тверь (1040) -> Алексей Чихарев, СПб (632032) -> Светлана Дариенко
+    p1040 = partners_by_id.get(1040)
+    if p1040:
+        p1040['canonical_name'] = 'Авто Премиум Тверь'
+        p1040['kam'] = 'Алексей Чихарев'
+    
+    p632032 = partners_by_id.get(632032)
+    if p632032:
+        p632032['canonical_name'] = 'Премиум Авто ONLINE'
+        p632032['kam'] = 'Светлана Дариенко'
+
+    # 4. Авторитет: Архангельск (1138) -> Светлана Дариенко (только Лада)
+    #    Авторитет (Симферополь, 1286) -> Валерия Солдатова (Jetour, Soueast)
+    p1138 = partners_by_id.get(1138)
+    if p1138:
+        p1138['canonical_name'] = 'Авторитет (Архангельск)'
+        p1138['kam'] = 'Светлана Дариенко'
+        p1138['bitrix_aliases'] = [a for a in p1138.get('bitrix_aliases', []) if 'авторитет-м' not in a.lower()]
+        p1138['oem_data'] = [oem for oem in p1138.get('oem_data', []) if (oem.get('brand') or '').upper() == 'LADA' or (oem.get('city') or '').lower() == 'архангельск']
+
+    p1286 = partners_by_id.get(1286)
+    if not p1286:
+        p1286 = {
+            'partner_id': 1286,
+            'canonical_name': 'Авторитет (Симферополь)',
+            'holding': 'Автодель',
+            'kam': 'Валерия Солдатова',
+            'bitrix_aliases': ['Online Авторитет-М', 'Автодель', 'ООО "АВТОРИТЕТ-М"', 'Авторитет-М'],
+            'bi_aliases': ['Авторитет-М', 'Автодель', 'Авторитет (Симферополь)'],
+            'pochta_aliases': [],
+            'oem_data': [
+                {
+                    'sheet': 'JETOUR',
+                    'city': 'Симферополь',
+                    'group_link': 'https://max.ru/join/AwIKqhz7UTgHun-C52ZtkX33cZom5Fe_N0sc4BESsTA',
+                    'name': 'Автодель',
+                    'legal_entity': 'ООО Авторитет-М',
+                    'inn': '9102001105',
+                    'address': 'г. Симферополь, ул. Киевская 187',
+                    'back_name': '',
+                    'email': 'vtovstokor@avtodel.com, manager3@jetour-avtodel.ru, manager2@jetour-avtodel.ru, manager4@jetour-avtodel.ru',
+                    'responsible': 'Валерия Солдатова',
+                    'brand': 'JETOUR'
+                },
+                {
+                    'sheet': 'Soueast',
+                    'city': 'Симферополь',
+                    'group_link': 'https://max.ru/join/AwIKqhz7UTgHun-C52ZtkX33cZom5Fe_N0sc4BESsTA',
+                    'name': 'Автодель',
+                    'legal_entity': 'ООО Авторитет-М',
+                    'inn': '9102001105',
+                    'address': 'г. Симферополь, ул. Киевская 187',
+                    'back_name': '-',
+                    'email': 'vtovstokor@avtodel.com, manager3@jetour-avtodel.ru, manager2@jetour-avtodel.ru',
+                    'responsible': 'Валерия Солдатова',
+                    'brand': 'SOUEAST'
+                }
+            ],
+            'status': 'verified'
+        }
+        partners.append(p1286)
+        partners_by_id[1286] = p1286
+    else:
+        p1286['canonical_name'] = 'Авторитет (Симферополь)'
+        p1286['kam'] = 'Валерия Солдатова'
 
     # Filter out removed donor partners
     new_partners = [p for p in partners if (p.get('partner_id') or p.get('id')) not in removed_pids]
@@ -283,6 +376,42 @@ def apply_merges_to_file(filepath):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print(f"Successfully processed {filepath}: removed {len(removed_pids)} duplicate partners. Total remaining: {len(new_partners)}")
+
+def apply_merges_to_data_json(filepath):
+    if not os.path.exists(filepath):
+        print(f"File not found: {filepath}")
+        return
+    with open(filepath, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    donor_to_target = {}
+    for m in MERGERS:
+        for did in m['donor_ids']:
+            donor_to_target[did] = (m['target_id'], m['target_name'], m['target_kam'])
+
+    modified = False
+    for r in data.get('sys_db_partners', []):
+        pid = r.get('PartnerId')
+        if pid in donor_to_target:
+            tid, tname, tkam = donor_to_target[pid]
+            r['PartnerId'] = tid
+            r['Partner'] = tname
+            if tkam: r['KAM'] = tkam
+            modified = True
+
+    for r in data.get('deals', []):
+        pid = r.get('PartnerId')
+        if pid in donor_to_target:
+            tid, tname, tkam = donor_to_target[pid]
+            r['PartnerId'] = tid
+            r['PartnerName'] = tname
+            if tkam: r['KAM'] = tkam
+            modified = True
+
+    if modified:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        print(f"Successfully updated donor IDs in {filepath}")
 
 if __name__ == '__main__':
     paths = [

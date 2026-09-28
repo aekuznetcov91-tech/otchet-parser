@@ -1,0 +1,20 @@
+PID: 1011 | NAME: ООО "СИГМА АВТО | KAM: Светлана Дариенко
+  bitrix: ['ООО "СИГМА АВТО"', 'ООО "СИГМА АВТО', 'ONLINE ООО "СИГМА МОТОРС ГМБХ"']
+  bi: ['СберАвто (Почта Сигма Чери O&J СПб1, Почта Сигма Чери O&J СПб2)']
+  pochta: ['Почта Сигма Чери СПб2']
+PID: 1012 | NAME: Jetour Авто Премиум | KAM: Алексей Чихарев
+  bitrix: ['Online Авто Премиум / ООО Лидер Сервис', 'Jetour Авто Премиум', 'ONLINE ООО "СОЮЗ-Т"']
+  bi: ['Online Jetour Авто Премиум', 'Jetour Авто Премиум']
+  pochta: ['Почта Сигма Чери СПб1']
+PID: 1013 | NAME: Глобус Автосфера | KAM: Валерия Солдатова
+  bitrix: ['ONLINE ООО "АВТОСФЕРА"', 'Глобус Автосфера']
+  bi: ['Глобус Автосфера']
+  pochta: ['Почта Сигма Чери СПб2']
+PID: 1024 | NAME: Приоритет_Сигма СПб | KAM: Светлана Дариенко
+  bitrix: ['ООО"СИГМА СЕРВИС" online']
+  bi: ['Приоритет_Сигма СПб']
+  pochta: []
+PID: 1257 | NAME: АлексМоторс | KAM: Светлана Дариенко
+  bitrix: ['ООО АлексМоторс', 'АЛЕКСМОТОРС ONLINE']
+  bi: ['АлексМоторс']
+  pochta: ['sales1@jetour-aleksmotors.ru sales2@jetour-aleksmotors.ru sales3@jetour-aleksmotors.ru\xa0 sales4@jetour-aleksmotors.ru\xa0 marketing@jetour-aleksmotors.ru\xa0 rop@jetour-aleksmotors.ru']

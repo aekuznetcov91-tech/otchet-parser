@@ -1235,6 +1235,95 @@ def normalize_region_clean(raw_reg, dealer=''):
     return 'Другие регионы'
 
 
+def resolve_sberauto_lead_partner(contact_name, raw_partner=""):
+    """
+    Distributes SberAuto platform leads to their actual dealer queues and KAMs by contact name.
+    """
+    c_low = (contact_name or "").lower().strip()
+    p_low = (raw_partner or "").lower().strip()
+    if not ("сберавто" in p_low or "сбер авто" in p_low or not p_low):
+        return None
+    if not c_low:
+        return None
+
+    # Substring match known dealer queues
+    if any(k in c_low for k in ['борисхоф', ' бх', 'бх ']):
+        return (1070, 'БорисХоф', 'Алексей Чихарев')
+    elif any(k in c_low for k in ['фреш', 'fresh']):
+        return (1039, 'Fresh Auto', 'Андрей Кузнецов')
+    elif any(k in c_low for k in ['тенет уфа', 'башавтоком']):
+        return (1176, 'ГК Башавтоком', 'Евгения Добролюбова')
+    elif 'форвард' in c_low:
+        if 'тюмень' in c_low:
+            return (1128, 'ГК Форвард-Авто', 'Алексей Чихарев')
+        else:
+            return (1128, 'ГК Форвард-Авто', 'Евгения Добролюбова')
+    elif 'лунаавто' in c_low or 'чери нвск' in c_low or 'нск' in c_low:
+        if 'o&j' in c_low:
+            return (1029, 'O&J Новосибирск', 'Светлана Дариенко')
+        else:
+            return (1029, 'ЛунаАвто', 'Светлана Дариенко')
+    elif 'авто-континент' in c_low or 'иркутск' in c_low:
+        return (1287, 'Авто-Континент', 'Светлана Дариенко')
+    elif 'вип авто' in c_low:
+        return (1139, 'ООО "ВИП АВТО САМАРА"', 'Евгения Добролюбова')
+    elif 'арконт' in c_low:
+        return (1112, 'ГК Арконт Холдинг', 'Евгения Добролюбова')
+    elif 'темп авто' in c_low or 'авто дон' in c_low:
+        return (1010, 'ЧЕРИ ЦЕНТР ТЕМП АВТО ДОН', 'Валерия Солдатова')
+    elif 'сигма' in c_low:
+        return (1011, 'ГК Сигма', 'Светлана Дариенко')
+    elif 'оптима' in c_low:
+        return (1030, 'ГК Оптима', 'Валерия Солдатова')
+    elif 'ай-би-эм' in c_low or 'би-эм' in c_low or 'кемерово' in c_low:
+        return (1027, 'Ай-Би-Эм', 'Светлана Дариенко')
+    elif 'диалог' in c_low:
+        return (1082, 'ГК Диалог Авто', 'Алексей Чихарев')
+    elif 'апельсин' in c_low:
+        return (1053, 'ФДЦ Автосеть АМК РФ', 'Алексей Чихарев')
+    elif 'твс' in c_low:
+        return (1079, 'CHERY ТВС Моторс', 'Евгения Добролюбова')
+    elif 'автогарантия' in c_low or 'челябинск' in c_low:
+        return (1125, 'Автогарантия', 'Евгения Добролюбова')
+    elif 'интерпартнер' in c_low or 'ижевск' in c_low:
+        return (1123, 'Интерпартнер', 'Евгения Добролюбова')
+    elif 'леон' in c_low:
+        return (1023, 'Леон Авто', 'Валерия Солдатова')
+    elif 'автокласс' in c_low or 'тула' in c_low:
+        return (1103, 'ГК Автокласс', 'Алексей Чихарев')
+    elif 'анкаравто' in c_low or 'калуга' in c_low:
+        return (1119, 'АнкарАвто', 'Алексей Чихарев')
+    elif 'автолюкс' in c_low or 'пятигорск' in c_low:
+        return (1225, 'Автолюкс Пятигорск', 'Валерия Солдатова')
+    elif 'таганрог' in c_low:
+        return (1094, 'Таганрог Модус/Ринг', 'Валерия Солдатова')
+    elif 'автоград' in c_low or 'калининград' in c_low:
+        return (1121, 'АВТОЦЕНТР АВТОГРАД', 'Светлана Дариенко')
+    elif 'автостиль' in c_low or 'новгород' in c_low:
+        return (1034, 'Автостиль', 'Светлана Дариенко')
+    elif 'брянск' in c_low or 'бн-моторс' in c_low:
+        return (1177, 'ГК БН-МОТОРС, БНМ', 'Евгения Добролюбова')
+    elif 'архангельск' in c_low:
+        return (1138, 'Авторитет (Архангельск)', 'Светлана Дариенко')
+    elif 'нижегородец' in c_low or 'чери нн' in c_low:
+        return (1071, 'CHERY/TENET Нижегородец', 'Евгения Добролюбова')
+    elif 'экскурс' in c_low or 'пермь' in c_low:
+        return (1288, 'Экскурс Пермь', 'Евгения Добролюбова')
+    elif 'омода самара' in c_low or 'самара' in c_low:
+        return (1179, 'ГК Самара Авто', 'Евгения Добролюбова')
+    elif 'o&j екб' in c_low or 'екб' in c_low:
+        return (1180, 'O&J Екатеринбург', 'Евгения Добролюбова')
+    elif 'o&j казань' in c_low:
+        return (1082, 'O&J Казань', 'Алексей Чихарев')
+    elif 'o&j крд' in c_low:
+        return (1010, 'O&J Краснодар', 'Валерия Солдатова')
+    elif 'o&j мск' in c_low:
+        return (1070, 'O&J Москва', 'Алексей Чихарев')
+    elif 'tenet' in c_low:
+        return (1176, 'Башавтоком / Чанган Центр', 'Евгения Добролюбова')
+    return None
+
+
 def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
     """
     Build detailed breakdown of transferred and qualified leads by Region and Dealer.
@@ -1289,6 +1378,11 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
 
         reg = str(get_exact_val(r, 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОНКЛИЕНТА', 'РЕГИОНРЛ', 'РЕГИОН', 'ADDRESS', 'АДРЕС') or '').strip()
         partner = str(get_exact_val(r, 'ПАРТНЕР', 'ДИЛЕР', 'КОМПАНИЯ') or '').strip()
+        contact_name = str(get_exact_val(r, 'НАЗВАНИЕКОНТАКТА', 'КОНТАКТ') or '').strip()
+        sber_res = resolve_sberauto_lead_partner(contact_name, partner)
+        if sber_res:
+            partner = sber_res[1]
+
         raw_b = str(get_exact_val(r, 'БРЕНД', 'МАРКА') or '').strip()
         brand = normalize_brand(raw_b) or 'Другие'
         model = str(get_exact_val(r, 'МОДЕЛЬ') or '').strip()
@@ -1310,7 +1404,7 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             }
         else:
             if reg and not d12_client_map[cid]['region']: d12_client_map[cid]['region'] = reg
-            if partner and not d12_client_map[cid]['partner']: d12_client_map[cid]['partner'] = partner
+            if partner and (not d12_client_map[cid]['partner'] or 'сберавто' in d12_client_map[cid]['partner'].lower()): d12_client_map[cid]['partner'] = partner
             if brand and (not d12_client_map[cid]['brand'] or d12_client_map[cid]['brand'] == 'Другие'): d12_client_map[cid]['brand'] = brand
             if model and not d12_client_map[cid]['model']: d12_client_map[cid]['model'] = model
             if vin and not d12_client_map[cid]['vin']: d12_client_map[cid]['vin'] = vin
@@ -1351,7 +1445,11 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
         deal_info = deals_client_map.get(cid, {})
         
         dealer = d12_info.get('partner') or deal_info.get('partner') or str(get_exact_val(r, 'ПАРТНЕР', 'ДИЛЕР') or '').strip()
-        if not dealer:
+        contact_name = str(get_exact_val(r, 'НАЗВАНИЕКОНТАКТА', 'КОНТАКТ') or '').strip()
+        sber_res = resolve_sberauto_lead_partner(contact_name, dealer)
+        if sber_res:
+            dealer = sber_res[1]
+        elif not dealer or 'сберавто' in dealer.lower() or 'сбер авто' in dealer.lower():
             dealer = 'Пул СберАвто (ДЦ не назначен)'
         
         raw_reg = d12_info.get('region') or deal_info.get('region') or str(get_exact_val(r, 'РЕГИОНКЛИЕНТА', 'РЕГИОНРЛ', 'РЕГИОНКЛИЕНТАИЗSBERID', 'РЕГИОН', 'АДРЕС') or '').strip()
@@ -2068,6 +2166,20 @@ def run_pipeline():
                 pid, cname, kam_partner = (1076, 'ГК Автопрестиж', 'Алексей Чихарев')
             elif 'прагматика' in p_lower or 'прагматика' in c_lower:
                 pid, cname, kam_partner = (1022, 'Прагматика', 'Светлана Дариенко')
+            elif 'сигма' in p_lower or 'сигма' in c_lower:
+                pid, cname, kam_partner = (1011, 'ГК Сигма', 'Светлана Дариенко')
+            elif any(k in p_lower for k in ['премиум авто', 'авто премиум', 'автопремиум', 'союз-т']) or any(k in c_lower for k in ['премиум авто', 'авто премиум', 'автопремиум', 'союз-т']):
+                deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
+                if any(spb_k in deal_city for spb_k in ['санкт-петербург', 'спб']) or any(spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']) or (final_brand and 'geely' in str(final_brand).lower()):
+                    pid, cname, kam_partner = (632032, 'Премиум Авто ONLINE', 'Светлана Дариенко')
+                else:
+                    pid, cname, kam_partner = (1040, 'Авто Премиум Тверь', 'Алексей Чихарев')
+            elif 'авторитет' in p_lower or 'авторитет' in c_lower or deal_inn in ('2902039507', '9102001105') or 'автодель' in p_lower:
+                deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
+                if deal_inn == '9102001105' or any(k in deal_city for k in ['симферополь', 'крым']) or 'авторитет-м' in p_lower or 'автодель' in p_lower:
+                    pid, cname, kam_partner = (1286, 'Авторитет (Симферополь)', 'Валерия Солдатова')
+                else:
+                    pid, cname, kam_partner = (1138, 'Авторитет (Архангельск)', 'Светлана Дариенко')
             elif 'боравто' in p_lower or 'боравто' in c_lower:
                 pid, cname, kam_partner = (1094, 'ГК Боравто', 'Валерия Солдатова')
             elif ('диалог' in p_lower and 'авто' in p_lower) or ('диалог' in c_lower and 'авто' in c_lower):
@@ -2110,7 +2222,7 @@ def run_pipeline():
                         kam_partner = "Светлана Дариенко"
                     else:
                         kam_partner = "Алексей Чихарев"
-                elif 'премиум авто' in p_lower or 'премиум авто' in c_lower:
+                elif any(k in p_lower for k in ['премиум авто', 'авто премиум', 'автопремиум', 'союз-т']) or any(k in c_lower for k in ['премиум авто', 'авто премиум', 'автопремиум', 'союз-т']):
                     deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
                     if any(spb_k in deal_city for spb_k in ['санкт-петербург', 'спб']) or any(spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']) or (final_brand and 'geely' in str(final_brand).lower()):
                         kam_partner = "Светлана Дариенко"
@@ -2235,9 +2347,30 @@ def run_pipeline():
                     elif 'нижегородец' in p_lower or deal_inn == '5257164835':
                         cname = 'Нижегородец'
                         kam_partner = 'Евгения Добролюбова'
-                    # 7. Авторитет -> Дариенко
-                    elif 'авторитет' in p_lower:
-                        cname = 'Авторитет'
+                    # 7. Авторитет: Симферополь -> Солдатова, Архангельск -> Дариенко (только Лада)
+                    elif 'авторитет' in p_lower or deal_inn in ('2902039507', '9102001105') or 'автодель' in p_lower:
+                        if deal_inn == '9102001105' or any(k in deal_city.lower() for k in ['симферополь', 'крым']) or 'авторитет-м' in p_lower or 'автодель' in p_lower:
+                            pid = 1286
+                            cname = 'Авторитет (Симферополь)'
+                            kam_partner = 'Валерия Солдатова'
+                        else:
+                            pid = 1138
+                            cname = 'Авторитет (Архангельск)'
+                            kam_partner = 'Светлана Дариенко'
+                    # Автопремиум: Тверь -> Чихарев, СПб -> Дариенко
+                    elif any(k in p_lower for k in ['премиум авто', 'авто премиум', 'автопремиум', 'союз-т']):
+                        if any(spb_k in deal_city.lower() for spb_k in ['санкт-петербург', 'спб']) or (final_brand and 'geely' in str(final_brand).lower()):
+                            pid = 632032
+                            cname = 'Премиум Авто ONLINE'
+                            kam_partner = 'Светлана Дариенко'
+                        else:
+                            pid = 1040
+                            cname = 'Авто Премиум Тверь'
+                            kam_partner = 'Алексей Чихарев'
+                    # Сигма -> Дариенко
+                    elif 'сигма' in p_lower:
+                        pid = 1011
+                        cname = 'ГК Сигма'
                         kam_partner = 'Светлана Дариенко'
                     # 8. Сатурн 2 / Сатурн-Р
                     elif 'сатурн' in p_lower:
@@ -2512,7 +2645,10 @@ def run_pipeline():
 
             if "сберавто" in p_lower or "сбер авто" in p_lower:
                 contact_name = str(get_exact_val(row, 'НАЗВАНИЕКОНТАКТА', 'КОНТАКТ') or "").strip()
-                if contact_name:
+                sber_res = resolve_sberauto_lead_partner(contact_name, partner_raw)
+                if sber_res:
+                    pid, cname, kam = sber_res
+                elif contact_name:
                     c_low = contact_name.lower()
                     if c_low in pochta_map:
                         pid, cname, kam = pochta_map[c_low]
@@ -2521,91 +2657,6 @@ def run_pipeline():
                         kam = kam_dict_sber.get(c_low, "")
                     else:
                         cname = contact_name
-
-                    # Substring match known dealer queues
-                    if any(k in c_low for k in ['борисхоф', ' бх', 'бх ']):
-                        pid, cname, kam = (1070, 'БорисХоф', 'Алексей Чихарев')
-                    elif any(k in c_low for k in ['фреш', 'fresh']):
-                        pid, cname, kam = (1039, 'Fresh Auto', 'Андрей Кузнецов')
-                    elif any(k in c_low for k in ['тенет уфа', 'башавтоком']):
-                        pid, cname, kam = (1176, 'ГК Башавтоком', 'Евгения Добролюбова')
-                    elif 'форвард' in c_low:
-                        if 'тюмень' in c_low:
-                            pid, cname, kam = (1128, 'ГК Форвард-Авто', 'Алексей Чихарев')
-                        else:
-                            pid, cname, kam = (1128, 'ГК Форвард-Авто', 'Евгения Добролюбова')
-                    elif 'лунаавто' in c_low or 'чери нвск' in c_low or 'нск' in c_low:
-                        if 'o&j' in c_low:
-                            cname = 'O&J Новосибирск'
-                            kam = 'Светлана Дариенко'
-                        else:
-                            pid, cname, kam = (1029, 'ЛунаАвто', 'Светлана Дариенко')
-                    elif 'авто-континент' in c_low or 'иркутск' in c_low:
-                        pid, cname, kam = (1138, 'Авто-Континент', 'Светлана Дариенко')
-                    elif 'вип авто' in c_low:
-                        pid, cname, kam = (1139, 'ООО "ВИП АВТО САМАРА"', 'Евгения Добролюбова')
-                    elif 'арконт' in c_low:
-                        pid, cname, kam = (1112, 'ГК Арконт Холдинг', 'Евгения Добролюбова')
-                    elif 'темп авто' in c_low or 'авто дон' in c_low:
-                        pid, cname, kam = (1010, 'ЧЕРИ ЦЕНТР ТЕМП АВТО ДОН', 'Валерия Солдатова')
-                    elif 'сигма' in c_low:
-                        pid, cname, kam = (1028, 'Сигма', 'Светлана Дариенко')
-                    elif 'оптима' in c_low:
-                        pid, cname, kam = (1030, 'ГК Оптима', 'Валерия Солдатова')
-                    elif 'ай-би-эм' in c_low or 'би-эм' in c_low or 'кемерово' in c_low:
-                        pid, cname, kam = (1027, 'Ай-Би-Эм', 'Светлана Дариенко')
-                    elif 'диалог' in c_low:
-                        pid, cname, kam = (1082, 'ГК Диалог Авто', 'Алексей Чихарев')
-                    elif 'апельсин' in c_low:
-                        pid, cname, kam = (1053, 'ФДЦ Автосеть АМК РФ', 'Алексей Чихарев')
-                    elif 'твс' in c_low:
-                        pid, cname, kam = (1079, 'CHERY ТВС Моторс', 'Евгения Добролюбова')
-                    elif 'автогарантия' in c_low or 'челябинск' in c_low:
-                        pid, cname, kam = (1125, 'Автогарантия', 'Евгения Добролюбова')
-                    elif 'интерпартнер' in c_low or 'ижевск' in c_low:
-                        pid, cname, kam = (1123, 'Интерпартнер', 'Евгения Добролюбова')
-                    elif 'леон' in c_low:
-                        pid, cname, kam = (1023, 'Леон Авто', 'Валерия Солдатова')
-                    elif 'автокласс' in c_low or 'тула' in c_low:
-                        pid, cname, kam = (1103, 'ГК Автокласс', 'Алексей Чихарев')
-                    elif 'анкаравто' in c_low or 'калуга' in c_low:
-                        pid, cname, kam = (1119, 'АнкарАвто', 'Алексей Чихарев')
-                    elif 'автолюкс' in c_low or 'пятигорск' in c_low:
-                        pid, cname, kam = (1225, 'Автолюкс Пятигорск', 'Валерия Солдатова')
-                    elif 'таганрог' in c_low:
-                        cname = 'Таганрог Модус/Ринг'
-                        kam = 'Валерия Солдатова'
-                    elif 'автоград' in c_low or 'калининград' in c_low:
-                        pid, cname, kam = (1121, 'АВТОЦЕНТР АВТОГРАД', 'Светлана Дариенко')
-                    elif 'автостиль' in c_low or 'новгород' in c_low:
-                        pid, cname, kam = (1034, 'Автостиль', 'Светлана Дариенко')
-                    elif 'брянск' in c_low or 'бн-моторс' in c_low:
-                        pid, cname, kam = (1177, 'ГК БН-МОТОРС, БНМ', 'Евгения Добролюбова')
-                    elif 'архангельск' in c_low:
-                        cname = 'Архангельск Динамика'
-                        kam = 'Светлана Дариенко'
-                    elif 'нижегородец' in c_low or 'чери нн' in c_low:
-                        pid, cname, kam = (1071, 'CHERY/TENET Нижегородец', 'Евгения Добролюбова')
-                    elif 'экскурс' in c_low or 'пермь' in c_low:
-                        cname = 'Экскурс Пермь'
-                        kam = 'Евгения Добролюбова'
-                    elif 'омода самара' in c_low or 'самара' in c_low:
-                        pid, cname, kam = (1179, 'ГК Самара Авто', 'Евгения Добролюбова')
-                    elif 'o&j екб' in c_low or 'екб' in c_low:
-                        cname = 'O&J Екатеринбург'
-                        kam = 'Евгения Добролюбова'
-                    elif 'o&j казань' in c_low:
-                        cname = 'O&J Казань'
-                        kam = 'Алексей Чихарев'
-                    elif 'o&j крд' in c_low:
-                        cname = 'O&J Краснодар'
-                        kam = 'Валерия Солдатова'
-                    elif 'o&j мск' in c_low:
-                        cname = 'O&J Москва'
-                        kam = 'Алексей Чихарев'
-                    elif 'tenet' in c_low:
-                        cname = 'Tenet SberAuto'
-                        kam = 'Евгения Добролюбова'
                 elif p_lower in bi_map:
                     pid, cname, kam = bi_map[p_lower]
             elif p_lower in bi_map:
@@ -2622,6 +2673,20 @@ def run_pipeline():
                 pid, cname, kam = (1076, 'ГК Автопрестиж', 'Алексей Чихарев')
             elif 'прагматика' in p_lower:
                 pid, cname, kam = (1022, 'Прагматика', 'Светлана Дариенко')
+            elif 'сигма' in p_lower:
+                pid, cname, kam = (1011, 'ГК Сигма', 'Светлана Дариенко')
+            elif any(k in p_lower for k in ['премиум авто', 'авто премиум', 'автопремиум', 'союз-т']):
+                lead_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or "").strip().lower()
+                if any(spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']) or any(spb_k in lead_city for spb_k in ['санкт-петербург', 'спб']):
+                    pid, cname, kam = (632032, 'Премиум Авто ONLINE', 'Светлана Дариенко')
+                else:
+                    pid, cname, kam = (1040, 'Авто Премиум Тверь', 'Алексей Чихарев')
+            elif 'авторитет' in p_lower or 'автодель' in p_lower:
+                lead_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or "").strip().lower()
+                if any(k in p_lower or k in lead_city for k in ['симферополь', 'крым']) or 'авторитет-м' in p_lower or 'автодель' in p_lower:
+                    pid, cname, kam = (1286, 'Авторитет (Симферополь)', 'Валерия Солдатова')
+                else:
+                    pid, cname, kam = (1138, 'Авторитет (Архангельск)', 'Светлана Дариенко')
             elif 'боравто' in p_lower:
                 pid, cname, kam = (1094, 'ГК Боравто', 'Валерия Солдатова')
             elif 'диалог' in p_lower and 'авто' in p_lower:
