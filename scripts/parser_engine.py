@@ -1611,6 +1611,19 @@ def run_pipeline():
     except Exception as e:
         print(f"[!] OEM KAM sync to registry skipped/warning: {e}")
 
+    try:
+        if PROJECT_ROOT not in sys.path:
+            sys.path.insert(0, PROJECT_ROOT)
+        from scripts.merge_partner_splits import apply_merges_to_file
+        for rp in [
+            os.path.join(PROJECT_ROOT, 'partners_registry.json'),
+            os.path.join(SITE_DIR, 'partners_registry.json'),
+            os.path.join(DATA_DIR, 'partners_registry.json')
+        ]:
+            apply_merges_to_file(rp)
+    except Exception as e:
+        print(f"[!] Partner splits merger skipped/warning: {e}")
+
     # 1. Collect files from raw_data or root with MD5 hash deduplication
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
     deals_candidates = []
@@ -2051,7 +2064,17 @@ def run_pipeline():
             # Substring / Holding fallback if not matched or erroneously mapped:
             if 'рольф' in p_lower or 'рольф' in c_lower:
                 pid, cname, kam_partner = (1084, 'РОЛЬФ', 'Андрей Кузнецов')
-            elif not pid or pid == 1116:
+            elif 'автопрестиж' in p_lower or 'автопрестиж' in c_lower:
+                pid, cname, kam_partner = (1076, 'ГК Автопрестиж', 'Алексей Чихарев')
+            elif 'прагматика' in p_lower or 'прагматика' in c_lower:
+                pid, cname, kam_partner = (1022, 'Прагматика', 'Светлана Дариенко')
+            elif 'боравто' in p_lower or 'боравто' in c_lower:
+                pid, cname, kam_partner = (1094, 'ГК Боравто', 'Валерия Солдатова')
+            elif ('диалог' in p_lower and 'авто' in p_lower) or ('диалог' in c_lower and 'авто' in c_lower):
+                pid, cname, kam_partner = (1082, 'ГК Диалог Авто', 'Алексей Чихарев')
+            elif ('дав-авто' in p_lower or 'дав авто' in p_lower) or ('дав-авто' in c_lower or 'дав авто' in c_lower):
+                pid, cname, kam_partner = (1184, 'Дав-Авто', 'Андрей Кузнецов')
+            elif not pid or pid in (1116, 1045, 1198, 1127, 1193, 1205):
                 if any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'платинум']) or any(k in c_lower for k in ['агат', 'автопрофиль', 'аркада', 'платинум']):
                     pid, cname, kam_partner = (1049, 'ГК АГАТ', 'Андрей Кузнецов')
                 elif 'кунцево' in p_lower or 'кунцево' in c_lower:
@@ -2189,6 +2212,7 @@ def run_pipeline():
                             kam_partner = 'Андрей Кузнецов'
                     # 13. Эксперт авто Оренбург -> ГК Автопрестиж (Чихарев)
                     elif 'оренбург' in p_lower and 'эксперт' in p_lower:
+                        pid = 1076
                         cname = 'ГК Автопрестиж'
                         kam_partner = 'Алексей Чихарев'
                     # 12. Авто-моторс Сургут -> Чихарев
@@ -2237,6 +2261,7 @@ def run_pipeline():
                             cname = 'Эксперт Авто (Новосибирск)'
                             kam_partner = 'Светлана Дариенко'
                         elif any(k in p_lower or k in deal_city.lower() for k in ['оренбург']) or deal_inn in ('5638063829', '5638070618'):
+                            pid = 1076
                             cname = 'ГК Автопрестиж'
                             kam_partner = 'Алексей Чихарев'
                         else:
@@ -2499,11 +2524,11 @@ def run_pipeline():
 
                     # Substring match known dealer queues
                     if any(k in c_low for k in ['борисхоф', ' бх', 'бх ']):
-                        pid, cname, kam = (1205, 'БорисХоф', 'Алексей Чихарев')
+                        pid, cname, kam = (1070, 'БорисХоф', 'Алексей Чихарев')
                     elif any(k in c_low for k in ['фреш', 'fresh']):
-                        pid, cname, kam = (1073, 'Fresh Auto', 'Андрей Кузнецов')
+                        pid, cname, kam = (1039, 'Fresh Auto', 'Андрей Кузнецов')
                     elif any(k in c_low for k in ['тенет уфа', 'башавтоком']):
-                        pid, cname, kam = (1134, 'Башавтоком / Чанган Центр', 'Евгения Добролюбова')
+                        pid, cname, kam = (1176, 'ГК Башавтоком', 'Евгения Добролюбова')
                     elif 'форвард' in c_low:
                         if 'тюмень' in c_low:
                             pid, cname, kam = (1128, 'ГК Форвард-Авто', 'Алексей Чихарев')
@@ -2514,35 +2539,35 @@ def run_pipeline():
                             cname = 'O&J Новосибирск'
                             kam = 'Светлана Дариенко'
                         else:
-                            pid, cname, kam = (1232, 'ЛунаАвто', 'Светлана Дариенко')
+                            pid, cname, kam = (1029, 'ЛунаАвто', 'Светлана Дариенко')
                     elif 'авто-континент' in c_low or 'иркутск' in c_low:
                         pid, cname, kam = (1138, 'Авто-Континент', 'Светлана Дариенко')
                     elif 'вип авто' in c_low:
-                        pid, cname, kam = (1248, 'ООО "ВИП АВТО САМАРА"', 'Евгения Добролюбова')
+                        pid, cname, kam = (1139, 'ООО "ВИП АВТО САМАРА"', 'Евгения Добролюбова')
                     elif 'арконт' in c_low:
-                        pid, cname, kam = (1253, 'ГК Арконт', 'Евгения Добролюбова')
+                        pid, cname, kam = (1112, 'ГК Арконт Холдинг', 'Евгения Добролюбова')
                     elif 'темп авто' in c_low or 'авто дон' in c_low:
-                        pid, cname, kam = (1186, 'ЧЕРИ ЦЕНТР ТЕМП АВТО ДОН', 'Валерия Солдатова')
+                        pid, cname, kam = (1010, 'ЧЕРИ ЦЕНТР ТЕМП АВТО ДОН', 'Валерия Солдатова')
                     elif 'сигма' in c_low:
                         pid, cname, kam = (1028, 'Сигма', 'Светлана Дариенко')
                     elif 'оптима' in c_low:
-                        pid, cname, kam = (1281, 'ГК Оптима', 'Валерия Солдатова')
+                        pid, cname, kam = (1030, 'ГК Оптима', 'Валерия Солдатова')
                     elif 'ай-би-эм' in c_low or 'би-эм' in c_low or 'кемерово' in c_low:
-                        pid, cname, kam = (1265, 'Ай-Би-Эм Кемерово', 'Алексей Чихарев')
+                        pid, cname, kam = (1027, 'Ай-Би-Эм', 'Светлана Дариенко')
                     elif 'диалог' in c_low:
-                        pid, cname, kam = (1237, 'Диалог Авто', 'Алексей Чихарев')
+                        pid, cname, kam = (1082, 'ГК Диалог Авто', 'Алексей Чихарев')
                     elif 'апельсин' in c_low:
-                        pid, cname, kam = (1243, 'Апельсин (Автосеть РФ)', 'Алексей Чихарев')
+                        pid, cname, kam = (1053, 'ФДЦ Автосеть АМК РФ', 'Алексей Чихарев')
                     elif 'твс' in c_low:
-                        pid, cname, kam = (1259, 'ТВС Моторс', 'Евгения Добролюбова')
+                        pid, cname, kam = (1079, 'CHERY ТВС Моторс', 'Евгения Добролюбова')
                     elif 'автогарантия' in c_low or 'челябинск' in c_low:
                         pid, cname, kam = (1125, 'Автогарантия', 'Евгения Добролюбова')
                     elif 'интерпартнер' in c_low or 'ижевск' in c_low:
-                        pid, cname, kam = (1122, 'Интерпартнер', 'Евгения Добролюбова')
+                        pid, cname, kam = (1123, 'Интерпартнер', 'Евгения Добролюбова')
                     elif 'леон' in c_low:
-                        pid, cname, kam = (1246, 'Леон Авто КРД', 'Валерия Солдатова')
+                        pid, cname, kam = (1023, 'Леон Авто', 'Валерия Солдатова')
                     elif 'автокласс' in c_low or 'тула' in c_low:
-                        pid, cname, kam = (1118, 'Автокласс', 'Алексей Чихарев')
+                        pid, cname, kam = (1103, 'ГК Автокласс', 'Алексей Чихарев')
                     elif 'анкаравто' in c_low or 'калуга' in c_low:
                         pid, cname, kam = (1119, 'АнкарАвто', 'Алексей Чихарев')
                     elif 'автолюкс' in c_low or 'пятигорск' in c_low:
@@ -2551,21 +2576,21 @@ def run_pipeline():
                         cname = 'Таганрог Модус/Ринг'
                         kam = 'Валерия Солдатова'
                     elif 'автоград' in c_low or 'калининград' in c_low:
-                        pid, cname, kam = (1266, 'ONLINE АВТОЦЕНТР АВТОГРАД', 'Светлана Дариенко')
+                        pid, cname, kam = (1121, 'АВТОЦЕНТР АВТОГРАД', 'Светлана Дариенко')
                     elif 'автостиль' in c_low or 'новгород' in c_low:
                         pid, cname, kam = (1034, 'Автостиль', 'Светлана Дариенко')
                     elif 'брянск' in c_low or 'бн-моторс' in c_low:
-                        pid, cname, kam = (1260, 'ГК БН-Моторс', 'Евгения Добролюбова')
+                        pid, cname, kam = (1177, 'ГК БН-МОТОРС, БНМ', 'Евгения Добролюбова')
                     elif 'архангельск' in c_low:
                         cname = 'Архангельск Динамика'
                         kam = 'Светлана Дариенко'
                     elif 'нижегородец' in c_low or 'чери нн' in c_low:
-                        pid, cname, kam = (1048, 'Нижегородец', 'Евгения Добролюбова')
+                        pid, cname, kam = (1071, 'CHERY/TENET Нижегородец', 'Евгения Добролюбова')
                     elif 'экскурс' in c_low or 'пермь' in c_low:
                         cname = 'Экскурс Пермь'
                         kam = 'Евгения Добролюбова'
                     elif 'омода самара' in c_low or 'самара' in c_low:
-                        pid, cname, kam = (1106, 'ГК Самара-Авто', 'Евгения Добролюбова')
+                        pid, cname, kam = (1179, 'ГК Самара Авто', 'Евгения Добролюбова')
                     elif 'o&j екб' in c_low or 'екб' in c_low:
                         cname = 'O&J Екатеринбург'
                         kam = 'Евгения Добролюбова'
@@ -2593,7 +2618,17 @@ def run_pipeline():
             # Substring / Holding fallback if not matched or erroneously mapped:
             if 'рольф' in p_lower:
                 pid, cname, kam = (1084, 'РОЛЬФ', 'Андрей Кузнецов')
-            elif not pid or pid == 1116:
+            elif 'автопрестиж' in p_lower:
+                pid, cname, kam = (1076, 'ГК Автопрестиж', 'Алексей Чихарев')
+            elif 'прагматика' in p_lower:
+                pid, cname, kam = (1022, 'Прагматика', 'Светлана Дариенко')
+            elif 'боравто' in p_lower:
+                pid, cname, kam = (1094, 'ГК Боравто', 'Валерия Солдатова')
+            elif 'диалог' in p_lower and 'авто' in p_lower:
+                pid, cname, kam = (1082, 'ГК Диалог Авто', 'Алексей Чихарев')
+            elif 'дав-авто' in p_lower or 'дав авто' in p_lower:
+                pid, cname, kam = (1184, 'Дав-Авто', 'Андрей Кузнецов')
+            elif not pid or pid in (1116, 1045, 1198, 1127, 1193, 1205):
                 if any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'платинум']):
                     pid, cname, kam = (1049, 'ГК АГАТ', 'Андрей Кузнецов')
                 elif 'кунцево' in p_lower:
@@ -2695,13 +2730,14 @@ def run_pipeline():
                         cname = 'Эксперт Авто (Новосибирск)'
                         kam = 'Светлана Дариенко'
                     elif any(k in p_lower or k in lead_city.lower() for k in ['оренбург']):
+                        pid = 1076
                         cname = 'ГК Автопрестиж'
                         kam = 'Алексей Чихарев'
                     else:
                         cname = 'Эксперт Авто (Самара)'
                         kam = 'Евгения Добролюбова'
                 elif any(k in p_lower for k in ['мэйджор', 'major']):
-                    pid, cname, kam = (1078, 'ГК Major/Мэйджор', 'Алексей Чихарев')
+                    pid, cname, kam = (1044, 'ГК Major/Мэйджор', 'Алексей Чихарев')
                 elif 'dss' in p_lower:
                     cname = 'DSS Group'
                     kam = 'Алексей Чихарев'

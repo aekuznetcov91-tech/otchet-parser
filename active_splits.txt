@@ -1,0 +1,60 @@
+
+==================== ROOT: 'автосити' ====================
+  ID 1118: Canonical in registry: 'ООО "АВТО СИТИ'
+      Names in data: ['ООО "АВТО СИТИ']
+      KAM: Валерия Солдатова
+      Stats -> Deals: 5, Leads: 0, Prepays: 0
+      Raw sample: ['ООО "АВТО СИТИ" ONLINE']
+  ID 1175: Canonical in registry: 'ГК Авто Сити'
+      Names in data: ['ГК Авто Сити']
+      KAM: Не назначен
+      Stats -> Deals: 0, Leads: 12, Prepays: 0
+      Raw sample: ['ГК Авто Сити']
+
+==================== ROOT: 'бнмоторс' ====================
+  ID 1177: Canonical in registry: 'ГК БН-МОТОРС, БНМ'
+      Names in data: ['ГК БН-Моторс', 'ГК БН-МОТОРС, БНМ']
+      KAM: Андрей Кузнецов
+      Stats -> Deals: 0, Leads: 44, Prepays: 0
+      Raw sample: ['ГК БН-МОТОРС, БНМ']
+  ID 1186: Canonical in registry: 'Дебрянск Авто (Дебрянск Авто)'
+      Names in data: ['ГК БН-Моторс', 'Дебрянск Авто (Дебрянск Авто)']
+      KAM: Андрей Кузнецов
+      Stats -> Deals: 11, Leads: 3, Prepays: 8
+      Raw sample: ['Дебрянск Авто (Дебрянск Авто)', 'ООО "МБ-БРЯНСК" ONLINE', 'ООО "ДЕБРЯНСК АВТО" ONLINE']
+
+==================== ROOT: 'маконавто' ====================
+  ID 1040: Canonical in registry: 'ONLIN Авто Премиум Тверь'
+      Names in data: ['ONLIN Авто Премиум Тверь', 'Макон Авто']
+      KAM: Светлана Дариенко
+      Stats -> Deals: 30, Leads: 16, Prepays: 27
+      Raw sample: ['ONLIN Авто Премиум Тверь', 'ONLINE ООО "СОЮЗ-Т"']
+  ID P_OEM_6d48728e: Canonical in registry: 'Макон'
+      Names in data: ['Макон Авто']
+      KAM: Алексей Чихарев
+      Stats -> Deals: 0, Leads: 1, Prepays: 0
+      Raw sample: ['Макон Авто']
+
+==================== ROOT: 'чериавтофорум' ====================
+  ID 1085: Canonical in registry: 'CHERY Автофорум'
+      Names in data: ['CHERY Автофорум', 'Чери Автофорум']
+      KAM: Андрей Кузнецов
+      Stats -> Deals: 2, Leads: 0, Prepays: 2
+      Raw sample: ['ONLINE CHERY Автофорум (ООО "АВТОФОРУМ ЦЕНТР")']
+  ID 1134: Canonical in registry: 'ООО "АВТОФОРУМ'
+      Names in data: ['ООО "АВТОФОРУМ', 'Чери Автофорум']
+      KAM: Андрей Кузнецов
+      Stats -> Deals: 24, Leads: 0, Prepays: 25
+      Raw sample: ['ООО "АВТОФОРУМ" САРАТОВ ONLINE', 'ООО "АВТОФОРУМ" ONLINE']
+
+==================== ROOT: 'экспертавтосамара' ====================
+  ID 1035: Canonical in registry: 'Эксперт Авто (Новосибирск)'
+      Names in data: ['Эксперт Авто (Самара)', 'Эксперт Авто (Новосибирск)']
+      KAM: Андрей Кузнецов
+      Stats -> Deals: 13, Leads: 0, Prepays: 10
+      Raw sample: ['ONLINE ООО "ЭКСПЕРТ-АВТО"', 'ООО "ЭКСПЕРТ САМАРА" ONLINE', 'ONLINE ГК Эксперт Авто \\ ООО "ЭКСПЕРТ АВТО НСК"']
+  ID 1281: Canonical in registry: 'Эксперт Авто (Самара)'
+      Names in data: ['Эксперт Авто (Самара)']
+      KAM: Андрей Кузнецов
+      Stats -> Deals: 25, Leads: 88, Prepays: 25
+      Raw sample: ['Online Эксперт Авто', 'Online Эксперт Авто Самара']

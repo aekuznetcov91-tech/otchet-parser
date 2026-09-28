@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1810,
+  "total_master_partners": 1807,
   "partners": [
     {
       "partner_id": 1001,
@@ -260,14 +260,6 @@
           "brand": "SOLARIS"
         },
         {
-          "sheet": "SOLARIS",
-          "city": "Санкт-Петербург",
-          "name": "Аларм Моторс",
-          "legal_entity": "ООО Аларм Авто Юго-Запад",
-          "inn": "7807166046",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Санкт-Петербург",
           "name": "Аларм",
@@ -313,6 +305,14 @@
           "name": "Аларм-Моторс Сити Савушкина",
           "legal_entity": "ООО Аларм-моторс Юго-Запад",
           "inn": "7802383738",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Санкт-Петербург",
+          "name": "Аларм Моторс",
+          "legal_entity": "ООО Аларм Авто Юго-Запад",
+          "inn": "7807166046",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -413,11 +413,13 @@
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ONLINE Авто-Ревю",
-        "ФДЦ Авто-Ревю"
+        "ФДЦ Авто-Ревю",
+        "ONLINE пилот ФДЦ Авто-Ревю"
       ],
       "bi_aliases": [
         "ONLINE ФДЦ Авто-Ревю",
-        "ФДЦ Авто-Ревю"
+        "ФДЦ Авто-Ревю",
+        "ONLINE пилот ФДЦ Авто-Ревю"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -1259,7 +1261,7 @@
       "partner_id": 1018,
       "canonical_name": "Дактор",
       "holding": "Дактор",
-      "kam": "Валерия Солдатова",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО \"ДАКТОР КУБАНЬ\" online",
         "Online ДАКТОР УФА СЕЛЬСКАЯ"
@@ -1296,20 +1298,20 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Уфа",
-          "name": "ГК Дактор Уфа",
-          "legal_entity": "ООО Дактор Уфа Сельская",
-          "inn": "0276971419",
-          "responsible": "Евгения Добролюбова"
-        },
-        {
           "sheet": "HAVAL",
           "city": "Краснодар",
           "name": "Дактор (City)",
           "legal_entity": "ООО Дактор Кубань",
           "inn": "2312241421",
           "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Уфа",
+          "name": "ГК Дактор Уфа",
+          "legal_entity": "ООО Дактор Уфа Сельская",
+          "inn": "0276971419",
+          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -1462,16 +1464,29 @@
         "Прагматика (ООО \"Прагматика\") ONLINE",
         "Прагматика (ПЕТРОЗАВОДСК-ЛАДА)",
         "Прагматика Лада Великий Новгород (ООО \"НОВГОРОД-ЛАДА) ONLINE",
-        "Прагматика Парнас (ООО \"Автоцентр Парнас\" - ONLINE продажи LADA"
+        "Прагматика Парнас (ООО \"Автоцентр Парнас\" - ONLINE продажи LADA",
+        "Прагматика",
+        "Прагматика пилот (ФДЦ) новые",
+        "Приоритет_Прагматика пилот ФДЦ"
       ],
       "bi_aliases": [
         "ONLINE Пилот ФДЦ Прагматика СпБ В-НГРД ПСКВ",
-        "Пилот ФДЦ Прагматика СпБ В-НГРД ПСКВ"
+        "Пилот ФДЦ Прагматика СпБ В-НГРД ПСКВ",
+        "Прагматика",
+        "Прагматика пилот (ФДЦ) новые",
+        "Приоритет_Прагматика пилот ФДЦ"
       ],
       "pochta_aliases": [
         "Почта Ай-Би-Эм Чери Кемерово-2"
       ],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "LADA",
+          "city": "Петрозаводск, Заводская, д 13",
+          "name": "Прагматика пилот (ФДЦ) новые",
+          "brand": "LADA"
+        }
+      ],
       "status": "verified"
     },
     {
@@ -1680,12 +1695,13 @@
     },
     {
       "partner_id": 1027,
-      "canonical_name": "АЙ БИ ЭМ",
+      "canonical_name": "Ай-Би-Эм",
       "holding": "АЙ",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "АЙ БИ ЭМ",
-        "Online АЙ БИ ЭМ"
+        "Online АЙ БИ ЭМ",
+        "Ай-Би-Эм"
       ],
       "bi_aliases": [
         "СберАвто (Почта Ай-Би-Эм Чери Кемерово, Почта Ай-Би-Эм Чери Кемерово-2)",
@@ -1746,7 +1762,8 @@
       "bitrix_aliases": [
         "ООО \"ПЕТРОВСКИЙ СПБ\" ONLINE",
         "Петровский",
-        "ONLINE Петровский (ООО \"ПЕТРОВСКИЙ\")"
+        "ONLINE Петровский (ООО \"ПЕТРОВСКИЙ\")",
+        "Приоритет_Петровский"
       ],
       "bi_aliases": [
         "Петровский",
@@ -3255,19 +3272,19 @@
           "brand": "GAC"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Форсаж",
-          "legal_entity": "ООО Вираж",
-          "inn": "7816289598",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Санкт-Петербург",
           "name": "Форсаж",
           "legal_entity": "ООО Автопилот",
           "inn": "7810684545",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "name": "Форсаж",
+          "legal_entity": "ООО Вираж",
+          "inn": "7816289598",
           "responsible": "Светлана Дариенко"
         },
         {
@@ -3287,10 +3304,14 @@
       "holding": "ФДЦ",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
-        "ONLINE Прайм Липецк (ООО \"ПРАЙМ\")"
+        "ONLINE Прайм Липецк (ООО \"ПРАЙМ\")",
+        "ФДЦ Прайм Липецк",
+        "Прайм Липецк"
       ],
       "bi_aliases": [
-        "ONLINE ФДЦ Прайм Липецк"
+        "ONLINE ФДЦ Прайм Липецк",
+        "ФДЦ Прайм Липецк",
+        "Прайм Липецк"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -3646,22 +3667,6 @@
           "brand": "DEEPAL"
         },
         {
-          "sheet": "SOLARIS",
-          "city": "Липецк",
-          "name": "Ринг Авто",
-          "legal_entity": "ООО Ринг С",
-          "inn": "3661056907",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Липецк",
-          "name": "Ринг",
-          "legal_entity": "ООО Ринг С",
-          "inn": "3661056907",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Воронеж",
           "name": "Ринг",
@@ -3675,6 +3680,22 @@
           "name": "Ринг",
           "legal_entity": "ООО Ринг Сервис",
           "inn": "3664048710",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Воронеж",
+          "name": "Ринг Авто",
+          "legal_entity": "ООО Ринг Авто",
+          "inn": "3661048575",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Воронеж",
+          "name": "Ринг Авто",
+          "legal_entity": "ООО Ринг Авто",
+          "inn": "3661048575",
           "responsible": "Валерия Солдатова"
         },
         {
@@ -3800,6 +3821,22 @@
           "responsible": "Андрей Кузнецов"
         },
         {
+          "sheet": "HAVAL",
+          "city": "Минеральные Воды",
+          "name": "Fresh Haval мин воды",
+          "legal_entity": "ООО ФД",
+          "inn": "3443137377",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Ростов-на-Дону",
+          "name": "Fresh Haval Ростов",
+          "legal_entity": "ООО Фреш МБ",
+          "inn": "3443137377",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Воронеж",
           "name": "Фрэш Авто",
@@ -3917,19 +3954,19 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "Geely&Belgee",
-          "city": "Иваново",
-          "name": "Радар-авто",
-          "legal_entity": "ООО Радар-гарант",
-          "inn": "3700016851",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Иваново",
           "name": "Радар-авто",
           "legal_entity": "ООО Радар-Центр",
           "inn": "3700016869",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Иваново",
+          "name": "Радар-Авто",
+          "legal_entity": "ООО Радар-Запад",
+          "inn": "3702248424",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -3941,11 +3978,11 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "JETOUR",
+          "sheet": "Geely&Belgee",
           "city": "Иваново",
-          "name": "Радар-Авто",
-          "legal_entity": "ООО Радар-Запад",
-          "inn": "3702248424",
+          "name": "Радар-авто",
+          "legal_entity": "ООО Радар-гарант",
+          "inn": "3700016851",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -4275,10 +4312,14 @@
         "ГК Major/Мэйджор",
         "Major / ООО «Мэйджор Авто Комплекс»",
         "ООО \"АВТО СИТИ\" ONLINE",
-        "ООО \"МЭЙДЖОР АВТОМОБИЛИ\" ONLINE"
+        "ООО \"МЭЙДЖОР АВТОМОБИЛИ\" ONLINE",
+        "Приоритет_ГК Мэйджор\\Major",
+        "Major / ООО «Авто Сити»"
       ],
       "bi_aliases": [
-        "ГК Major/Мэйджор"
+        "ГК Major/Мэйджор",
+        "Приоритет_ГК Мэйджор\\Major",
+        "Major / ООО «Авто Сити»"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -4530,6 +4571,14 @@
           "brand": "JETTA"
         },
         {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "name": "ГК Major",
+          "legal_entity": "ООО Авто сити",
+          "inn": "5024107584",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "JETOUR",
           "city": "Москва",
           "name": "ГК Major",
@@ -4559,137 +4608,6 @@
           "name": "Major",
           "legal_entity": "Мэйджор Авто Комплекс",
           "inn": "7733622365",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Москва",
-          "name": "ГК Major",
-          "legal_entity": "ООО Авто сити",
-          "inn": "5024107584",
-          "responsible": "Алексей Чихарев"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1045,
-      "canonical_name": "ЭКСПЕРТ АВТО ОРЕНБУРГ",
-      "holding": "ЭКСПЕРТ",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [
-        "ЭКСПЕРТ АВТО ОРЕНБУРГ",
-        "ООО \"ЭКСПЕРТ СВ ОРЕНБУРГ\" Online",
-        "Online ЭКСПЕРТ АВТО ОРЕНБУРГ"
-      ],
-      "bi_aliases": [
-        "Приоритет_Автопрестиж"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/F646YviWiPlI82F-kvvmox0s7NvxPphHIMgNrOXUdqU",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
-          "inn": "5638070618",
-          "address": "Москва, ул. Прокатная, д.7",
-          "back_name": "ONLINE ФДЦ Автопрестиж",
-          "email": "leedsgac@autoprestige.ru naadamenko@autoprestige.ru marketing.autoprestige@mail.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Ставрополь",
-          "group_link": "https://max.ru/join/qEEfyksNJduH91LAzbfcSvNSMgTxtohbQwHRdhV_OfM",
-          "name": "Автопрестиж Haval City и PRO",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
-          "inn": "5638070618",
-          "address": "Ставрополь, пр. Кулакова, 16А",
-          "back_name": "ONLINE ФДЦ Автопрестиж",
-          "email": "DGJurahovskyi@autoprestige.ru naadamenko@autoprestige.ru naadamenko@autoprestige.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Ставрополь",
-          "group_link": "https://max.ru/join/qEEfyksNJduH91LAzbfcSvNSMgTxtohbQwHRdhV_OfM",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
-          "inn": "5640000000",
-          "address": "г. Ставрополь, пр. Кулакова, 16А",
-          "back_name": "ONLINE ФДЦ Автопрестиж",
-          "email": "DGJurahovskyi@autoprestige.ru naadamenko@autoprestige.ru naadamenko@autoprestige.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "CHANGAN"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/F646YviWiPlI82F-kvvmox0s7NvxPphHIMgNrOXUdqU",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО Эксперт авто оренбург",
-          "inn": "5638070618",
-          "address": "Москва, ул.Прокатная д 7",
-          "back_name": "ONLINE ФДЦ Автопрестиж",
-          "email": "a.teterlev@autoprestige.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "GAC"
-        },
-        {
-          "sheet": "DEEPAL",
-          "city": "Ставрополь",
-          "group_link": "https://max.ru/join/qEEfyksNJduH91LAzbfcSvNSMgTxtohbQwHRdhV_OfM",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
-          "inn": "5640000000",
-          "address": "г. Ставрополь, пр. Кулакова, 16А",
-          "back_name": "ONLINE ФДЦ Автопрестиж",
-          "email": "DGJurahovskyi@autoprestige.ru naadamenko@autoprestige.ru naadamenko@autoprestige.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "DEEPAL"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Ставрополь",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
-          "inn": "5640000000",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "DEEPAL",
-          "city": "Ставрополь",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
-          "inn": "5640000000",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
-          "inn": "5638070618",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Ставрополь",
-          "name": "Автопрестиж Haval City и PRO",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
-          "inn": "5638070618",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО Эксперт авто оренбург",
-          "inn": "5638070618",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -5043,11 +4961,19 @@
         },
         {
           "sheet": "JETOUR",
-          "city": "Волгоград",
-          "name": "ГК Агат",
-          "legal_entity": "ООО Квант",
-          "inn": "3443092790",
+          "city": "Нижний Новгород",
+          "name": "АГАТ",
+          "legal_entity": "ООО Спектр",
+          "inn": "5258089355",
           "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Казань",
+          "name": "Апельсин КАЗАНЬ",
+          "legal_entity": "ООО Спектр",
+          "inn": "1657225323",
+          "responsible": "Алексей Чихарев"
         },
         {
           "sheet": "CHERY&TENET",
@@ -5075,14 +5001,6 @@
         },
         {
           "sheet": "JETOUR",
-          "city": "Саранск",
-          "name": "АГАТ",
-          "legal_entity": "ООО Альтернатива",
-          "inn": "5257188836",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "JETOUR",
           "city": "Ярославль",
           "name": "ГК АГАТ",
           "legal_entity": "ООО Аркада",
@@ -5091,11 +5009,11 @@
         },
         {
           "sheet": "JETOUR",
-          "city": "Казань",
-          "name": "Апельсин КАЗАНЬ",
-          "legal_entity": "ООО Спектр",
-          "inn": "1657225323",
-          "responsible": "Алексей Чихарев"
+          "city": "Волгоград",
+          "name": "ГК Агат",
+          "legal_entity": "ООО Квант",
+          "inn": "3443092790",
+          "responsible": "Андрей Кузнецов"
         }
       ],
       "status": "verified"
@@ -5295,18 +5213,22 @@
     },
     {
       "partner_id": 1053,
-      "canonical_name": "пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ",
+      "canonical_name": "ФДЦ Автосеть АМК РФ",
       "holding": "пилот",
-      "kam": "Евгения Добролюбова",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE АМК Тольятти (ООО \"АМ Компани\")",
         "ONLINE АМК Самара ООО \"УРАЛ-ЛАДА\"",
-        "пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ"
+        "пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ",
+        "ФДЦ Автосеть АМК РФ",
+        "Урал Лада Красный Яр"
       ],
       "bi_aliases": [
         "ONLINE  пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ",
         "пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ",
-        "ONLINE пилот ФДЦ Автосеть РФ АМК Самара Тольятти"
+        "ONLINE пилот ФДЦ Автосеть РФ АМК Самара Тольятти",
+        "ФДЦ Автосеть АМК РФ",
+        "Урал Лада Красный Яр"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -5417,6 +5339,14 @@
           "responsible": "Алексей Чихарев"
         },
         {
+          "sheet": "SOLARIS",
+          "city": "Набережный Челны",
+          "name": "Апельсин",
+          "legal_entity": "ООО Апельсин Челны",
+          "inn": "1650392340",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "JETOUR",
           "city": "Набережные Челны",
           "name": "Апельсин",
@@ -5471,12 +5401,15 @@
         "ООО \"ИЮЛЬ АВТОЦЕНТР\" ONLINE",
         "ONLINE Июль (ООО \"УРАЛ БЭСТ СЕЛЕКТ\")",
         "ONLINE O&J Июль (ООО \"НАШИ МАШИНЫ\")",
-        "ТСАЦ Июль"
+        "ТСАЦ Июль",
+        "ONLINE пилот ФДЦ ТСАЦ Июль"
       ],
       "bi_aliases": [
         "ONLINE ТСАЦ Июль",
         "ТСАЦ Июль АСП",
-        "СберАвто (Почта O&J ЕКБ1, Почта O&J ЕКБ2)"
+        "СберАвто (Почта O&J ЕКБ1, Почта O&J ЕКБ2)",
+        "ТСАЦ Июль",
+        "ONLINE пилот ФДЦ ТСАЦ Июль"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -5717,10 +5650,10 @@
         },
         {
           "sheet": "CHERY&TENET",
-          "city": "Саратов",
-          "name": "Чери Центр Автофорум",
-          "legal_entity": "ООО Автофорум Центр",
-          "inn": "6452947574",
+          "city": "Орск",
+          "name": "Tenet Центр Ника Авто",
+          "legal_entity": "ООО Велес Авто",
+          "inn": "5638074027",
           "responsible": "Андрей Кузнецов"
         },
         {
@@ -5733,6 +5666,14 @@
         },
         {
           "sheet": "CHERY&TENET",
+          "city": "Саратов",
+          "name": "Чери Центр Автофорум",
+          "legal_entity": "ООО Автофорум Центр",
+          "inn": "6452947574",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "CHERY&TENET",
           "city": "Таганрог",
           "name": "Гедон-Юг",
           "legal_entity": "ООО Гедон-Юг",
@@ -5741,19 +5682,19 @@
         },
         {
           "sheet": "CHERY&TENET",
-          "city": "Орск",
-          "name": "Tenet Центр Ника Авто",
-          "legal_entity": "ООО Велес Авто",
-          "inn": "5638074027",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "CHERY&TENET",
           "city": "Челябинск",
           "name": "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
           "legal_entity": "ООО Автогарантия",
           "inn": "7447124619",
           "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Москва",
+          "name": "Чери Центр Измайлово",
+          "legal_entity": "ООО ИЗМАЙЛОВО-СЕРВИС",
+          "inn": "5001070659",
+          "responsible": "Алексей Чихарев"
         }
       ],
       "status": "verified"
@@ -5798,16 +5739,21 @@
     },
     {
       "partner_id": 1060,
-      "canonical_name": "Форвард  Ижевск/Сызрань",
+      "canonical_name": "Форвард Ижевск/Сызрань",
       "holding": "Форвард",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ONLINE ФОРВАРД Авто Ижевск (ООО \"ФОРВАРД-АВТО\")",
-        "Форвард  Ижевск/Сызрань"
+        "Форвард  Ижевск/Сызрань",
+        "Форвард Ижевск/Сызрань",
+        "ONLINE пилот ФДЦ Форвард Ижевск Сызрань",
+        "ONLINE Сызранская СТА (АО \"СЫЗРАНСКАЯ СТО\")"
       ],
       "bi_aliases": [
         "ONLINE Форвард  Ижевск/Сызрань",
-        "Форвард  Ижевск/Сызрань"
+        "Форвард  Ижевск/Сызрань",
+        "Форвард Ижевск/Сызрань",
+        "ONLINE пилот ФДЦ Форвард Ижевск Сызрань"
       ],
       "pochta_aliases": [],
       "oem_data": [],
@@ -5913,19 +5859,19 @@
           "brand": "OMODA & JAECOO"
         },
         {
-          "sheet": "OMODA&JAECOO",
-          "city": "Махачкала",
-          "name": "Автолюкс",
-          "legal_entity": "ООО Автолюкс",
-          "inn": "0546024330",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Пятигорск",
           "name": "ЧЕРИ ЦЕНТР АВТОЛЮКС ОНЛАЙН",
           "legal_entity": "ООО АВТОЛЮКС",
           "inn": "2630048453",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Махачкала",
+          "name": "Автолюкс",
+          "legal_entity": "ООО Автолюкс",
+          "inn": "0546024330",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -6195,6 +6141,22 @@
           "name": "Артекс",
           "legal_entity": "ООО РедКар",
           "inn": "6168719460",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Ростов-на-Дону",
+          "name": "Артекс",
+          "legal_entity": "ООО Арт-Моторс",
+          "inn": "6168057294",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Ростов-на-Дону",
+          "name": "Артекс",
+          "legal_entity": "ООО Арт-Моторс",
+          "inn": "6168057294",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -6525,13 +6487,14 @@
     },
     {
       "partner_id": 1072,
-      "canonical_name": "Сатурн-2",
+      "canonical_name": "ГК Сатурн 2",
       "holding": "Сатурн-2",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "Сатурн-2 (ООО \"АКЦЕНТ - АВТО М\") ONLINE",
         "Сатурн-2 (ООО \"Сатурн-2\") ONLINE",
-        "Сатурн-2"
+        "Сатурн-2",
+        "ГК Сатурн 2"
       ],
       "bi_aliases": [
         "ONLINE пилот ФДЦ Сатурн 2 Челябинск",
@@ -6615,90 +6578,8 @@
       "status": "verified"
     },
     {
-      "partner_id": 1074,
-      "canonical_name": "Автоимпорт",
-      "holding": "Автоимпорт",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [
-        "ONLINE Автоимпорт (ООО \"Кармен\") ONLINE",
-        "Автоимпорт",
-        "ГК Автоимпорт",
-        "Online ООО Компания Автоимпорт",
-        "ONLINE Автоимпорт / ООО Автоимпорт Центр"
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ Автоимпорт Рязань",
-        "Автоимпорт"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "LADA",
-          "city": "Куйбышевское шоссе , д.40 Г",
-          "name": "ONLINE пилот ФДЦ Автоимпорт Рязань",
-          "brand": "LADA"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Рязань",
-          "group_link": "https://max.ru/join/PBWMx1E_BqYMGgg6a4cef4ahLv7nk5UaSxk2_y1Khis",
-          "name": "Автоимпорт",
-          "legal_entity": "ООО Автоимпорт Центр",
-          "inn": "6234042906",
-          "address": "Рязань, Куйбышевское шоссе 40Б",
-          "back_name": "ONLINE пилот ФДЦ Автоимпорт Рязань",
-          "email": "eg.meleshin@jetour-autoimport.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Рязань",
-          "group_link": "https://max.ru/join/4QRZPpOrQGFSLIIzjlS10nK3lBwSzFIqky7MlkB2uDk",
-          "name": "Автоимпорт",
-          "legal_entity": "ООО Компания Автоимпорт",
-          "inn": "6234062209",
-          "address": "г.Рязань,Куйбышевское шоссе 51",
-          "back_name": "ONLINE пилот ФДЦ Автоимпорт Рязань",
-          "email": "sn.goryachev@moskvich-autoimport.ru yulv.karaseva@ai.ryazan.ru apalshin@ai.ryazan.ru \n yulv.karaseva@ai.ryazan.ru\n apalshin@ai.ryazan.ru \n ei.siskutov@region62.ru ei.siskutov@region62.ru ei.siskutov@region62.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "SOLARIS"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Рязань",
-          "group_link": "https://max.ru/join/4QRZPpOrQGFSLIIzjlS10nK3lBwSzFIqky7MlkB2uDk",
-          "name": "Автоимпорт",
-          "legal_entity": "ООО Ле-Ман",
-          "inn": "6234059829",
-          "address": "г.Рязань, Московское шоссе 22Б",
-          "back_name": "ONLINE пилот ФДЦ Автоимпорт Рязань",
-          "email": "sn.goryachev@moskvich-autoimport.ru yulv.karaseva@ai.ryazan.ru apalshin@ai.ryazan.ru \n yulv.karaseva@ai.ryazan.ru\n apalshin@ai.ryazan.ru\n ei.siskutov@region62.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "SOLARIS"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Рязань",
-          "name": "Автоимпорт",
-          "legal_entity": "ООО Ле-Ман",
-          "inn": "6234059829",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Рязань",
-          "name": "Автоимпорт",
-          "legal_entity": "ООО Автоимпорт Центр",
-          "inn": "6234042906",
-          "responsible": "Алексей Чихарев"
-        }
-      ],
-      "status": "verified"
-    },
-    {
       "partner_id": 1076,
-      "canonical_name": "ФДЦ Автопрестиж",
+      "canonical_name": "ГК Автопрестиж",
       "holding": "ФДЦ",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
@@ -6713,12 +6594,20 @@
         "ONLINE АВТОПРЕСТИЖ ВОЛГОГРАД (ООО \"АВТО-ВЛГ\")",
         "ФДЦ Автопрестиж",
         "ООО \"АВТОПРЕСТИЖ КМВ\" online",
-        "АВТО-СТВ ONLINE"
+        "АВТО-СТВ ONLINE",
+        "ГК Автопрестиж",
+        "ЭКСПЕРТ АВТО ОРЕНБУРГ",
+        "Online ЭКСПЕРТ АВТО ОРЕНБУРГ",
+        "Приоритет_Автопрестиж",
+        "ООО \"АВТОПРЕСТИЖ КМВ"
       ],
       "bi_aliases": [
         "ONLINE ФДЦ Автопрестиж",
         "ФДЦ Автопрестиж",
-        "Приоритет_Автопрестиж"
+        "Приоритет_Автопрестиж",
+        "ГК Автопрестиж",
+        "ЭКСПЕРТ АВТО ОРЕНБУРГ",
+        "ООО \"АВТОПРЕСТИЖ КМВ"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -6786,6 +6675,32 @@
           "brand": "LADA"
         },
         {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/F646YviWiPlI82F-kvvmox0s7NvxPphHIMgNrOXUdqU",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
+          "inn": "5638070618",
+          "address": "Москва, ул. Прокатная, д.7",
+          "back_name": "ONLINE ФДЦ Автопрестиж",
+          "email": "leedsgac@autoprestige.ru naadamenko@autoprestige.ru marketing.autoprestige@mail.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Ставрополь",
+          "group_link": "https://max.ru/join/qEEfyksNJduH91LAzbfcSvNSMgTxtohbQwHRdhV_OfM",
+          "name": "Автопрестиж Haval City и PRO",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
+          "inn": "5638070618",
+          "address": "Ставрополь, пр. Кулакова, 16А",
+          "back_name": "ONLINE ФДЦ Автопрестиж",
+          "email": "DGJurahovskyi@autoprestige.ru naadamenko@autoprestige.ru naadamenko@autoprestige.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "HAVAL"
+        },
+        {
           "sheet": "CHANGAN",
           "city": "Калуга",
           "group_link": "https://max.ru/join/STMkUVkiW31zi7HUqQykyEHCZsLIdyXHps2ZakaMNoI",
@@ -6821,6 +6736,19 @@
           "address": "г. Самара, 24км Московское шоссе 42 стр 1",
           "back_name": "",
           "email": "e.galiev@autoprestige.ru v.dolgopolov@autoprestige.ru naadamenko@autoprestige.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Ставрополь",
+          "group_link": "https://max.ru/join/qEEfyksNJduH91LAzbfcSvNSMgTxtohbQwHRdhV_OfM",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
+          "inn": "5640000000",
+          "address": "г. Ставрополь, пр. Кулакова, 16А",
+          "back_name": "ONLINE ФДЦ Автопрестиж",
+          "email": "DGJurahovskyi@autoprestige.ru naadamenko@autoprestige.ru naadamenko@autoprestige.ru",
           "responsible": "Алексей Чихарев",
           "brand": "CHANGAN"
         },
@@ -6891,6 +6819,19 @@
         },
         {
           "sheet": "GAC",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/F646YviWiPlI82F-kvvmox0s7NvxPphHIMgNrOXUdqU",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО Эксперт авто оренбург",
+          "inn": "5638070618",
+          "address": "Москва, ул.Прокатная д 7",
+          "back_name": "ONLINE ФДЦ Автопрестиж",
+          "email": "a.teterlev@autoprestige.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "GAC"
+        },
+        {
+          "sheet": "GAC",
           "city": "Пермь",
           "group_link": "https://max.ru/join/tGx8QKXREfQ2b8z1ZNoi76QwL8RTny2jveeiSdusn0U",
           "name": "Автопрестиж",
@@ -6903,19 +6844,48 @@
           "brand": "GAC"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Самара",
+          "sheet": "DEEPAL",
+          "city": "Ставрополь",
+          "group_link": "https://max.ru/join/qEEfyksNJduH91LAzbfcSvNSMgTxtohbQwHRdhV_OfM",
           "name": "Автопрестиж",
-          "legal_entity": "ООО Самарские автомобили - М Север",
-          "inn": "6313537179",
-          "responsible": "Алексей Чихарев"
+          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
+          "inn": "5640000000",
+          "address": "г. Ставрополь, пр. Кулакова, 16А",
+          "back_name": "ONLINE ФДЦ Автопрестиж",
+          "email": "DGJurahovskyi@autoprestige.ru naadamenko@autoprestige.ru naadamenko@autoprestige.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "DEEPAL"
         },
         {
           "sheet": "JETOUR",
+          "city": "Тольятти",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО Авто-СТВ",
+          "inn": "2635258750",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
           "city": "Пермь",
           "name": "Автопрестиж",
-          "legal_entity": "ООО Самарские автомобили - М Север",
-          "inn": "6313537179",
+          "legal_entity": "ООО Автопрестиж-Полюс",
+          "inn": "5908048045",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
+          "inn": "5638070618",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Ставрополь",
+          "name": "Автопрестиж Haval City и PRO",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
+          "inn": "5638070618",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -6935,11 +6905,19 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "OMODA&JAECOO",
-          "city": "Волгоград",
+          "sheet": "CHANGAN",
+          "city": "Калуга",
           "name": "Автопрестиж",
-          "legal_entity": "ООО Авто-ВЛГ",
-          "inn": "3443150956",
+          "legal_entity": "ООО Автосалон Престиж",
+          "inn": "4030000000",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Минеральные воды",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО Автопрестиж КМВ",
+          "inn": "2635251762",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -6949,79 +6927,14 @@
           "legal_entity": "ООО Автопрестиж КМВ",
           "inn": "2635251762",
           "responsible": "Алексей Чихарев"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1077,
-      "canonical_name": "Башавтоком",
-      "holding": "Башавтоком",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE Башавтоком (ООО \"БАШАВТОКОМ-В\")",
-        "Башавтоком",
-        "Online ГК Башавтоком, ООО \"СТРОЙМОСТИНВЕСТ\""
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
-        "Башавтоком"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "LADA",
-          "city": "ул. Уфимский тракт, 2",
-          "name": "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
-          "brand": "LADA"
-        },
-        {
-          "sheet": "LADA",
-          "city": "Уфа, улица, Рубежная, 166",
-          "name": "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
-          "brand": "LADA"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Уфа",
-          "group_link": "https://max.ru/join/pN6Q44c0CyNH2zRNXd-BWMed4S6aesna-KvC5AHgnI0",
-          "name": "Башавтоком",
-          "legal_entity": "ООО Автос",
-          "inn": "277063113",
-          "address": "г. Уфа, пр-кт Салавата Юлаева, 89",
-          "back_name": "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
-          "email": "e.pocherevina@bashauto.com",
-          "responsible": "Евгения Добролюбова",
-          "brand": "CHANGAN"
         },
         {
           "sheet": "DEEPAL",
-          "city": "Уфа",
-          "group_link": "https://max.ru/join/pN6Q44c0CyNH2zRNXd-BWMed4S6aesna-KvC5AHgnI0",
-          "name": "Башавтоком",
-          "legal_entity": "ООО Автос",
-          "inn": "277063113",
-          "address": "г. Уфа, пр-кт Салавата Юлаева, 89",
-          "back_name": "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
-          "email": "e.pocherevina@bashauto.com",
-          "responsible": "Евгения Добролюбова",
-          "brand": "DEEPAL"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Уфа",
-          "name": "Башавтоком",
-          "legal_entity": "ООО Автос",
-          "inn": "0277063113",
-          "responsible": "Евгения Добролюбова"
-        },
-        {
-          "sheet": "DEEPAL",
-          "city": "Уфа",
-          "name": "Башавтоком",
-          "legal_entity": "ООО Автос",
-          "inn": "0277063113",
-          "responsible": "Евгения Добролюбова"
+          "city": "Ставрополь",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
+          "inn": "5640000000",
+          "responsible": "Алексей Чихарев"
         }
       ],
       "status": "verified"
@@ -7167,7 +7080,7 @@
     },
     {
       "partner_id": 1082,
-      "canonical_name": "Диалог Авто КЗН АЛМТВСК НАБ.ЧЛН",
+      "canonical_name": "ГК Диалог Авто",
       "holding": "Диалог",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
@@ -7175,7 +7088,8 @@
         "Online ГК Диалог \\ ООО \"Управляющая компания Диалог\"",
         "ONLINE ДИАЛОГ А",
         "ONLINE ООО \"ДИАЛОГ АВТО\"",
-        "Диалог Авто КЗН АЛМТВСК НАБ.ЧЛН"
+        "Диалог Авто КЗН АЛМТВСК НАБ.ЧЛН",
+        "ГК Диалог Авто"
       ],
       "bi_aliases": [
         "ONLINE Диалог Авто КЗН АЛМТВСК НАБ.ЧЛН",
@@ -7368,14 +7282,6 @@
           "brand": "GAC"
         },
         {
-          "sheet": "GAC",
-          "city": "Набережные Челны",
-          "name": "Диалог",
-          "legal_entity": "ООО УК Диалог",
-          "inn": "1650207557",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Казань",
           "name": "Диалог Авто Онлайн",
@@ -7408,19 +7314,11 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "HAVAL",
-          "city": "Альметьевск",
-          "name": "Альметьевск haval",
-          "legal_entity": "ООО Диалог Авто",
-          "inn": "1644062657",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Альметьевск",
+          "sheet": "GAC",
+          "city": "Казань",
           "name": "Диалог",
-          "legal_entity": "ООО Диалог Авто",
-          "inn": "1644062657",
+          "legal_entity": "ООО Диалог А",
+          "inn": "1649021206",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -7437,6 +7335,22 @@
           "name": "Диалог Авто",
           "legal_entity": "ООО Управляющая компания Диалог",
           "inn": "1650207558",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Альметьевск",
+          "name": "Альметьевск haval",
+          "legal_entity": "ООО Диалог Авто",
+          "inn": "1644062657",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Альметьевск",
+          "name": "Диалог",
+          "legal_entity": "ООО Диалог Авто",
+          "inn": "1644062657",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -7507,31 +7421,19 @@
       "status": "verified"
     },
     {
-      "partner_id": 1085,
-      "canonical_name": "CHERY Автофорум",
-      "holding": "CHERY",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE CHERY Автофорум (ООО \"АВТОФОРУМ ЦЕНТР\")",
-        "CHERY Автофорум"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 1086,
       "canonical_name": "ЮНИКОР Дзержинск НН",
       "holding": "ЮНИКОР",
-      "kam": "Евгения Добролюбова",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
         "ONLINE ЮНИКОР (ООО \"ЮНИКОР\")",
-        "ЮНИКОР Дзержинск НН"
+        "ЮНИКОР Дзержинск НН",
+        "ONLINE пилот ФДЦ ЮНИКОР Дзержинск НН"
       ],
       "bi_aliases": [
         "ONLINE ЮНИКОР Дзержинск НН",
-        "ЮНИКОР Дзержинск НН"
+        "ЮНИКОР Дзержинск НН",
+        "ONLINE пилот ФДЦ ЮНИКОР Дзержинск НН"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -7552,103 +7454,79 @@
       "bitrix_aliases": [
         "Online ООО Компания Автоимпорт",
         "ONLINE Автоимпорт (ООО \"Кармен\") ONLINE",
-        "ONLINE Автоимпорт (ООО \"Кармен\")"
+        "ONLINE Автоимпорт (ООО \"Кармен\")",
+        "ГК Автоимпорт",
+        "Автоимпорт",
+        "ONLINE Автоимпорт / ООО Автоимпорт Центр"
       ],
       "bi_aliases": [
-        "Online ГК Автоимпорт"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1088,
-      "canonical_name": "Дав-Авто",
-      "holding": "Дав-Авто",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "Дав-Авто ONLINE",
-        "Дав-Авто"
-      ],
-      "bi_aliases": [
-        "ONLINE Дав-Авто"
+        "Online ГК Автоимпорт",
+        "ГК Автоимпорт",
+        "Автоимпорт",
+        "ONLINE пилот ФДЦ Автоимпорт Рязань"
       ],
       "pochta_aliases": [],
       "oem_data": [
         {
-          "sheet": "CHERY&TENET",
-          "city": "Новокузнецк",
-          "group_link": "https://max.ru/join/xb0nvuxZVBk95rvk-vDb4iEwWlglStDmY8YGF2JLHP8",
-          "name": "СВ-Авто",
-          "legal_entity": "ООО СВ-АВТО",
-          "inn": "4205206560",
-          "address": "гор.Новокузнецк , ул. Рудокопровая 10А",
-          "back_name": "Картель Авто",
-          "email": "v.petrov@cartelnvk.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Пермь, Бродовский тракт, д. 15",
-          "name": "ONLINE Дав-Авто",
-          "brand": "Geely & Belgee"
-        },
-        {
           "sheet": "LADA",
-          "city": "ул.Бродовский тракт, д. 15",
-          "name": "ONLINE Дав-Авто",
+          "city": "Куйбышевское шоссе , д.40 Г",
+          "name": "ONLINE пилот ФДЦ Автоимпорт Рязань",
           "brand": "LADA"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Пермь",
-          "group_link": "https://max.ru/join/ztEMi7eJ6tuXUy71j5Ghd-dN4I_ZpXQ5mq3DzwHEbLQ",
-          "name": "Дав-Авто",
-          "legal_entity": "ООО Дав-Авто Восток",
-          "inn": "5904329165",
-          "address": "г. Пермь, ул. Героев Хасана, 76",
-          "back_name": "ONLINE Дав-Авто",
-          "email": "viktor.girev@hyundai-dav-auto.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "CHANGAN"
+          "sheet": "JETOUR",
+          "city": "Рязань",
+          "group_link": "https://max.ru/join/PBWMx1E_BqYMGgg6a4cef4ahLv7nk5UaSxk2_y1Khis",
+          "name": "Автоимпорт",
+          "legal_entity": "ООО Автоимпорт Центр",
+          "inn": "6234042906",
+          "address": "Рязань, Куйбышевское шоссе 40Б",
+          "back_name": "ONLINE пилот ФДЦ Автоимпорт Рязань",
+          "email": "eg.meleshin@jetour-autoimport.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "JETOUR"
         },
         {
-          "sheet": "DEEPAL",
-          "city": "Пермь",
-          "group_link": "https://max.ru/join/ztEMi7eJ6tuXUy71j5Ghd-dN4I_ZpXQ5mq3DzwHEbLQ",
-          "name": "Дав-Авто",
-          "legal_entity": "ООО Дав-Авто Восток",
-          "inn": "5904329165",
-          "address": "г. Пермь, ул. Героев Хасана, 76",
-          "back_name": "ONLINE Дав-Авто",
-          "email": "viktor.girev@hyundai-dav-auto.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "DEEPAL"
+          "sheet": "SOLARIS",
+          "city": "Рязань",
+          "group_link": "https://max.ru/join/4QRZPpOrQGFSLIIzjlS10nK3lBwSzFIqky7MlkB2uDk",
+          "name": "Автоимпорт",
+          "legal_entity": "ООО Компания Автоимпорт",
+          "inn": "6234062209",
+          "address": "г.Рязань,Куйбышевское шоссе 51",
+          "back_name": "ONLINE пилот ФДЦ Автоимпорт Рязань",
+          "email": "sn.goryachev@moskvich-autoimport.ru yulv.karaseva@ai.ryazan.ru apalshin@ai.ryazan.ru \n yulv.karaseva@ai.ryazan.ru\n apalshin@ai.ryazan.ru \n ei.siskutov@region62.ru ei.siskutov@region62.ru ei.siskutov@region62.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "SOLARIS"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Пермь",
-          "name": "Дав-Авто",
-          "legal_entity": "ООО Дав-Авто Восток",
-          "inn": "5904329165",
-          "responsible": "Евгения Добролюбова"
+          "sheet": "SOLARIS",
+          "city": "Рязань",
+          "group_link": "https://max.ru/join/4QRZPpOrQGFSLIIzjlS10nK3lBwSzFIqky7MlkB2uDk",
+          "name": "Автоимпорт",
+          "legal_entity": "ООО Ле-Ман",
+          "inn": "6234059829",
+          "address": "г.Рязань, Московское шоссе 22Б",
+          "back_name": "ONLINE пилот ФДЦ Автоимпорт Рязань",
+          "email": "sn.goryachev@moskvich-autoimport.ru yulv.karaseva@ai.ryazan.ru apalshin@ai.ryazan.ru \n yulv.karaseva@ai.ryazan.ru\n apalshin@ai.ryazan.ru\n ei.siskutov@region62.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "SOLARIS"
         },
         {
-          "sheet": "DEEPAL",
-          "city": "Пермь",
-          "name": "Дав-Авто",
-          "legal_entity": "ООО Дав-Авто Восток",
-          "inn": "5904329165",
-          "responsible": "Евгения Добролюбова"
+          "sheet": "JETOUR",
+          "city": "Рязань",
+          "name": "Автоимпорт",
+          "legal_entity": "ООО Автоимпорт Центр",
+          "inn": "6234042906",
+          "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Новокузнецк",
-          "name": "СВ-Авто",
-          "legal_entity": "ООО СВ-АВТО",
-          "inn": "4205206560",
-          "responsible": "Светлана Дариенко"
+          "sheet": "SOLARIS",
+          "city": "Рязань",
+          "name": "Автоимпорт",
+          "legal_entity": "ООО Ле-Ман",
+          "inn": "6234059829",
+          "responsible": "Алексей Чихарев"
         }
       ],
       "status": "verified"
@@ -7847,15 +7725,25 @@
     },
     {
       "partner_id": 1094,
-      "canonical_name": "Боравто",
+      "canonical_name": "ГК Боравто",
       "holding": "Боравто",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ONLINE Боравто (ООО \"СКС+ПЛЮС\") ONLINE",
-        "Боравто"
+        "Боравто",
+        "ГК Боравто",
+        "ONLINE Боравто (ООО \"Липецк Викинги\")",
+        "ONLINE Боравто (ООО \"Русь-Авто\")",
+        "ONLINE БОРАВТО (ООО \"СКС-Лада\")",
+        "ФДЦ Боравто",
+        "Боравто пилот ФДЦ"
       ],
       "bi_aliases": [
-        "Боравто пилот ФДЦ"
+        "Боравто пилот ФДЦ",
+        "ГК Боравто",
+        "Боравто",
+        "ФДЦ Боравто",
+        "ONLINE ФДЦ Боравто"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -7887,12 +7775,15 @@
       "partner_id": 1095,
       "canonical_name": "КМ/Ч",
       "holding": "КМ/Ч",
-      "kam": "Алексей Чихарев",
+      "kam": "Валерия Солдатова",
       "bitrix_aliases": [
-        "КМ/Ч Авто (Changan)"
+        "КМ/Ч Авто (Changan)",
+        "КМ/Ч",
+        "Приоритет_КМ/ч АсП"
       ],
       "bi_aliases": [
-        "КМ/Ч"
+        "КМ/Ч",
+        "Приоритет_КМ/ч АсП"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -7931,19 +7822,6 @@
       "bi_aliases": [
         "ONLINE ГК Техинком-Авто, Акрос"
       ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1097,
-      "canonical_name": "Боравто",
-      "holding": "Боравто",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "ONLINE Боравто (ООО \"Липецк Викинги\")"
-      ],
-      "bi_aliases": [],
       "pochta_aliases": [],
       "oem_data": [],
       "status": "verified"
@@ -8308,18 +8186,21 @@
     },
     {
       "partner_id": 1103,
-      "canonical_name": "Автокласс",
+      "canonical_name": "ГК Автокласс",
       "holding": "Автокласс",
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ONLINE Автокласс (ООО \"АВТОКЛАСС НОРД\")",
         "online Чери Центр Автокласс (М-Авто)",
-        "ООО \"АВТОКЛАСС СП\" online"
+        "ООО \"АВТОКЛАСС СП\" online",
+        "ГК Автокласс",
+        "АВТОКЛАСС"
       ],
       "bi_aliases": [
         "ONLINE пилот ФДЦ Автокласс Тула",
         "Автокласс",
-        "Автокласс Новомосковск Online"
+        "Автокласс Новомосковск Online",
+        "ГК Автокласс"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -8418,11 +8299,11 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Новомосковск (Тульская область)",
-          "name": "Автоклас",
-          "legal_entity": "ООО Автокласс РДС",
-          "inn": "7116158430",
+          "sheet": "CHERY&TENET",
+          "city": "Тула",
+          "name": "Чери Центр Автокласс на Оборонной",
+          "legal_entity": "ООО М-АВТО",
+          "inn": "7106511456",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -8449,19 +8330,6 @@
           "brand": "LADA"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1105,
-      "canonical_name": "Боравто",
-      "holding": "Боравто",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "ONLINE Боравто (ООО \"Русь-Авто\")"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
       "status": "verified"
     },
     {
@@ -8513,19 +8381,6 @@
           "responsible": "Евгения Добролюбова"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1108,
-      "canonical_name": "БОРАВТО",
-      "holding": "БОРАВТО",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "ONLINE БОРАВТО (ООО \"СКС-Лада\")"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
       "status": "verified"
     },
     {
@@ -9202,13 +9057,18 @@
     },
     {
       "partner_id": 1118,
-      "canonical_name": "ООО \"АВТО СИТИ",
+      "canonical_name": "ООО \"АВТО СИТИ\"",
       "holding": "ООО",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
-        "ООО \"АВТО СИТИ\" ONLINE"
+        "ООО \"АВТО СИТИ\" ONLINE",
+        "ООО \"АВТО СИТИ\"",
+        "ГК Авто Сити"
       ],
-      "bi_aliases": [],
+      "bi_aliases": [
+        "ООО \"АВТО СИТИ\"",
+        "ГК Авто Сити"
+      ],
       "pochta_aliases": [],
       "oem_data": [
         {
@@ -9323,17 +9183,35 @@
       "status": "verified"
     },
     {
-      "partner_id": 1122,
-      "canonical_name": "ООО \"АМР",
-      "holding": "ООО",
+      "partner_id": 1123,
+      "canonical_name": "Интерпартнер",
+      "holding": "Интерпартнер",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
-        "ООО \"АМР\" online",
+        "ONLINE ИНТЕРПАРТНЕР (ООО ФИРМА \"ИНТЕРПАРТНЕР\")",
+        "Интерпартнер",
+        "ООО \"АМР",
+        "ООО \"АМР\" online"
+      ],
+      "bi_aliases": [
+        "Интерпартнер",
         "ООО \"АМР"
       ],
-      "bi_aliases": [],
       "pochta_aliases": [],
       "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Ижевск",
+          "group_link": "https://max.ru/join/l0YjpVi2ZWcRJ4zS1MG6TmaMcXC0d4gJ_jBZbF8rgpo",
+          "name": "Чери Центр Интерпартнер",
+          "legal_entity": "ООО Интерпартнер",
+          "inn": "1835035118",
+          "address": "г. Ижевск, ул. Лесозаводская д 29",
+          "back_name": "Интерпартнер",
+          "email": "vss@interpartner.ru\n ptv@interpartner.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "CHERY & TENET"
+        },
         {
           "sheet": "JETOUR",
           "city": "Саратов",
@@ -9354,36 +9232,6 @@
           "legal_entity": "ООО АМР",
           "inn": "9723110523",
           "responsible": "Евгения Добролюбова"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1123,
-      "canonical_name": "Интерпартнер",
-      "holding": "Интерпартнер",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE ИНТЕРПАРТНЕР (ООО ФИРМА \"ИНТЕРПАРТНЕР\")",
-        "Интерпартнер"
-      ],
-      "bi_aliases": [
-        "Интерпартнер"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Ижевск",
-          "group_link": "https://max.ru/join/l0YjpVi2ZWcRJ4zS1MG6TmaMcXC0d4gJ_jBZbF8rgpo",
-          "name": "Чери Центр Интерпартнер",
-          "legal_entity": "ООО Интерпартнер",
-          "inn": "1835035118",
-          "address": "г. Ижевск, ул. Лесозаводская д 29",
-          "back_name": "Интерпартнер",
-          "email": "vss@interpartner.ru\n ptv@interpartner.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "CHERY & TENET"
         },
         {
           "sheet": "CHERY&TENET",
@@ -9514,20 +9362,6 @@
           "brand": "LADA"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1127,
-      "canonical_name": "ООО \"АВТОПРЕСТИЖ КМВ",
-      "holding": "ООО",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [
-        "ООО \"АВТОПРЕСТИЖ КМВ\" online",
-        "ООО \"АВТОПРЕСТИЖ КМВ"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
       "status": "verified"
     },
     {
@@ -9858,15 +9692,21 @@
     },
     {
       "partner_id": 1134,
-      "canonical_name": "ООО \"АВТОФОРУМ",
+      "canonical_name": "Чери Автофорум",
       "holding": "ООО",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО \"АВТОФОРУМ\" ONLINE",
         "ООО \"АВТОФОРУМ\" САРАТОВ ONLINE",
-        "ООО \"АВТОФОРУМ"
+        "ООО \"АВТОФОРУМ",
+        "Чери Автофорум",
+        "CHERY Автофорум",
+        "ONLINE CHERY Автофорум (ООО \"АВТОФОРУМ ЦЕНТР\")"
       ],
-      "bi_aliases": [],
+      "bi_aliases": [
+        "Чери Автофорум",
+        "CHERY Автофорум"
+      ],
       "pochta_aliases": [],
       "oem_data": [
         {
@@ -10013,14 +9853,6 @@
           "brand": "Soueast"
         },
         {
-          "sheet": "LADA",
-          "city": "Архангельск",
-          "name": "Авторитет",
-          "legal_entity": "ООО Авторитет",
-          "inn": "2902039507",
-          "responsible": "Не назначен"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Симферополь",
           "name": "Автодель",
@@ -10035,6 +9867,14 @@
           "legal_entity": "ООО Авторитет-М",
           "inn": "9102001105",
           "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "LADA",
+          "city": "Архангельск",
+          "name": "Авторитет",
+          "legal_entity": "ООО Авторитет",
+          "inn": "2902039507",
+          "responsible": "Не назначен"
         }
       ],
       "status": "verified"
@@ -10227,13 +10067,16 @@
       "partner_id": 1147,
       "canonical_name": "Русская Ладья",
       "holding": "Русская",
-      "kam": "Евгения Добролюбова",
+      "kam": "Андрей Кузнецов",
       "bitrix_aliases": [
-        "ONLINE LADA Русская Ладья (ООО \"РУССКАЯ ЛАДЬЯ\")"
+        "ONLINE LADA Русская Ладья (ООО \"РУССКАЯ ЛАДЬЯ\")",
+        "Русская Ладья",
+        "ONLINE ФДЦ Русская Ладья"
       ],
       "bi_aliases": [
         "ONLINE Русская Ладья",
-        "Русская Ладья"
+        "Русская Ладья",
+        "ONLINE ФДЦ Русская Ладья"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -10301,19 +10144,6 @@
           "responsible": "Валерия Солдатова"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1150,
-      "canonical_name": "ФДЦ Боравто",
-      "holding": "ФДЦ",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "ONLINE ФДЦ Боравто"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
       "status": "verified"
     },
     {
@@ -10533,24 +10363,8 @@
           "sheet": "OMODA&JAECOO",
           "city": "Москва",
           "name": "Автодом",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Москва",
-          "name": "Автодом",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "name": "АВТОДОМ",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
+          "legal_entity": "АО АВТОДОМ",
+          "inn": "7714709349",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -10560,23 +10374,24 @@
           "legal_entity": "ООО АВТОДОМ",
           "inn": "7714709349",
           "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Москва",
+          "name": "АВТОДОМ",
+          "legal_entity": "ООО Автодом",
+          "inn": "7714709349",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "name": "Автодом",
+          "legal_entity": "ООО ДЦА",
+          "inn": "5029236551",
+          "responsible": "Алексей Чихарев"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1155,
-      "canonical_name": "АВТОКЛАСС",
-      "holding": "АВТОКЛАСС",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [
-        "ONLINE Автокласс (ООО \"АВТОКЛАСС НОРД\")"
-      ],
-      "bi_aliases": [
-        "АВТОКЛАСС"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
       "status": "verified"
     },
     {
@@ -10839,19 +10654,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1164,
-      "canonical_name": "Ай-Би-Эм",
-      "holding": "Ай-Би-Эм",
-      "kam": "Светлана Дариенко",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Ай-Би-Эм"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 1165,
       "canonical_name": "Аксель Мурманск",
       "holding": "Аксель",
@@ -10998,19 +10800,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1170,
-      "canonical_name": "Боравто пилот ФДЦ",
-      "holding": "Боравто",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Боравто пилот ФДЦ"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 1172,
       "canonical_name": "Брайт Парк",
       "holding": "Брайт",
@@ -11050,235 +10839,98 @@
       "status": "verified"
     },
     {
-      "partner_id": 1175,
-      "canonical_name": "ГК Авто Сити",
-      "holding": "ГК",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "ГК Авто Сити"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 1176,
-      "canonical_name": "ГК БАШАВТОКОМ (New)",
+      "canonical_name": "ГК Башавтоком",
       "holding": "ГК",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
-        "ONLINE Башавтоком (ООО \"БАШАВТОКОМ-В\")"
+        "ONLINE Башавтоком (ООО \"БАШАВТОКОМ-В\")",
+        "ГК Башавтоком",
+        "Башавтоком",
+        "Online ГК Башавтоком, ООО \"СТРОЙМОСТИНВЕСТ\"",
+        "Приоритет_ГК БАШАВТОКОМ (Used)",
+        "ГК Башавтоком, ООО \"СТРОЙМОСТИНВЕСТ\""
       ],
       "bi_aliases": [
-        "ГК БАШАВТОКОМ (New)"
+        "ГК БАШАВТОКОМ (New)",
+        "ГК Башавтоком",
+        "Башавтоком",
+        "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
+        "Приоритет_ГК БАШАВТОКОМ (Used)"
       ],
       "pochta_aliases": [],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "LADA",
+          "city": "ул. Уфимский тракт, 2",
+          "name": "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
+          "brand": "LADA"
+        },
+        {
+          "sheet": "LADA",
+          "city": "Уфа, улица, Рубежная, 166",
+          "name": "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
+          "brand": "LADA"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Уфа",
+          "group_link": "https://max.ru/join/pN6Q44c0CyNH2zRNXd-BWMed4S6aesna-KvC5AHgnI0",
+          "name": "Башавтоком",
+          "legal_entity": "ООО Автос",
+          "inn": "277063113",
+          "address": "г. Уфа, пр-кт Салавата Юлаева, 89",
+          "back_name": "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
+          "email": "e.pocherevina@bashauto.com",
+          "responsible": "Евгения Добролюбова",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Уфа",
+          "group_link": "https://max.ru/join/pN6Q44c0CyNH2zRNXd-BWMed4S6aesna-KvC5AHgnI0",
+          "name": "Башавтоком",
+          "legal_entity": "ООО Автос",
+          "inn": "277063113",
+          "address": "г. Уфа, пр-кт Салавата Юлаева, 89",
+          "back_name": "ONLINE пилот ФДЦ ГК Башавтоком Changan LADA Уфа",
+          "email": "e.pocherevina@bashauto.com",
+          "responsible": "Евгения Добролюбова",
+          "brand": "DEEPAL"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Уфа",
+          "name": "Башавтоком",
+          "legal_entity": "ООО Автос",
+          "inn": "0277063113",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Уфа",
+          "name": "Башавтоком",
+          "legal_entity": "ООО Автос",
+          "inn": "0277063113",
+          "responsible": "Евгения Добролюбова"
+        }
+      ],
       "status": "verified"
     },
     {
       "partner_id": 1177,
-      "canonical_name": "ГК БН-МОТОРС, БНМ",
-      "holding": "ГК",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "ГК БН-МОТОРС, БНМ"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1178,
-      "canonical_name": "ГК Диалог Авто",
-      "holding": "ГК",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "ГК Диалог Авто"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1179,
-      "canonical_name": "ГК Самара Авто",
-      "holding": "ГК",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "ГК Самара Авто"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1180,
-      "canonical_name": "ГК Сатурн",
+      "canonical_name": "ГК БН-МОТОРС",
       "holding": "ГК",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
-        "Сатурн-Л Липецк"
-      ],
-      "bi_aliases": [
-        "ГК Сатурн",
-        "ГК Сатурн 2"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Липецк",
-          "group_link": "https://t.me/+impgvx1GWZQ0MmFi",
-          "name": "Сатурн",
-          "legal_entity": "ООО Сатурн-Л",
-          "inn": "4826051045",
-          "address": "Липецк, Липецкая обл ул. Неделина, 2-в",
-          "back_name": "Online Сатурн-Л",
-          "email": "ya.nenahova@saturn-l.ru, geely@saturn-l.ru, yu.siromyatnikov@saturn-l.ru, marketing@saturn-l.ru. belgee@saturn-l.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "Geely & Belgee"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Липецк",
-          "name": "Сатурн",
-          "legal_entity": "ООО Сатурн-Л",
-          "inn": "4826051045",
-          "responsible": "Валерия Солдатова"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1181,
-      "canonical_name": "ГК Сатурн 2",
-      "holding": "ГК",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "Сатурн-2 (ООО \"АКЦЕНТ - АВТО М\") ONLINE"
-      ],
-      "bi_aliases": [
-        "ГК Сатурн 2"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1182,
-      "canonical_name": "Глобус",
-      "holding": "Глобус",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Глобус"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Тамбов",
-          "group_link": "https://max.ru/join/W5yL5v9HfPPOQyagEm6DZke64ia6xcYZeotu-CnFVBA",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосалон Глобус",
-          "inn": "6829083521",
-          "address": "г. Тамбов, ул. Бастионная, д. 29",
-          "back_name": "",
-          "email": "nikolay.sdobnikov@tenet-globus.ru, alexandr.kolesnikov@tenet-globus.ru,",
-          "responsible": "Валерия Солдатова",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Тамбов",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосалон Глобус",
-          "inn": "6829083521",
-          "responsible": "Валерия Солдатова"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1183,
-      "canonical_name": "ГУД КАР",
-      "holding": "ГУД",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "ГУД КАР"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1184,
-      "canonical_name": "Дав-Авто",
-      "holding": "Дав-Авто",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "Дав-Авто ONLINE"
-      ],
-      "bi_aliases": [
-        "Дав-Авто"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1185,
-      "canonical_name": "Д-АВТО (Смоленск)",
-      "holding": "Д-АВТО",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [
-        "ООО \"ПРЕМЬЕР АВТО ЗАПАД\" ONLINE"
-      ],
-      "bi_aliases": [
-        "Д-АВТО (Смоленск)"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Смоленск",
-          "group_link": "https://max.ru/join/4HzUbL0tz8PR9IB7ChgL9Ml4phHOl0jcC_ryf9bCwPg",
-          "name": "Премьер Авто Запад Смоленск",
-          "legal_entity": "ООО Премьер Авто Запад",
-          "inn": "6732074435",
-          "address": "г. Смоленск, Краснинское шоссе, д.40.",
-          "back_name": "",
-          "email": "y.loseva@jetour-smolensk.ru i.mulintsev@premier-avto.cominfo@jetour-smolensk.rum.kirpichenkov@jetour-smolensk.run.skvortsov@jetour-smolensk.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Смоленск",
-          "name": "Премьер Авто Запад Смоленск",
-          "legal_entity": "ООО Премьер Авто Запад",
-          "inn": "6732074435",
-          "responsible": "Алексей Чихарев"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1186,
-      "canonical_name": "Дебрянск Авто (Дебрянск Авто)",
-      "holding": "Дебрянск",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
+        "ГК БН-МОТОРС",
+        "Дебрянск Авто (Дебрянск Авто)",
         "ООО \"ДЕБРЯНСК АВТО\" ONLINE",
         "ООО \"МБ-БРЯНСК\" ONLINE"
       ],
       "bi_aliases": [
+        "ГК БН-МОТОРС, БНМ",
+        "ГК БН-МОТОРС",
         "Дебрянск Авто (Дебрянск Авто)"
       ],
       "pochta_aliases": [],
@@ -11362,6 +11014,22 @@
           "brand": "Soueast"
         },
         {
+          "sheet": "OMODA&JAECOO",
+          "city": "Брянск",
+          "name": "Дебрянск Авто",
+          "legal_entity": "ООО БНМ-1",
+          "inn": "3257002460",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Брянск",
+          "name": "Дебрянск Авто",
+          "legal_entity": "ООО Дебрянск Авто",
+          "inn": "3250521481",
+          "responsible": "Валерия Солдатова"
+        },
+        {
           "sheet": "HAVAL",
           "city": "Брянск",
           "name": "Дебрянск Авто (Pro)",
@@ -11408,6 +11076,235 @@
           "legal_entity": "ООО БНМ-1",
           "inn": "3257002460",
           "responsible": "Валерия Солдатова"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1179,
+      "canonical_name": "ГК Самара Авто",
+      "holding": "ГК",
+      "kam": "Евгения Добролюбова",
+      "bitrix_aliases": [],
+      "bi_aliases": [
+        "ГК Самара Авто"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1180,
+      "canonical_name": "ГК Сатурн",
+      "holding": "ГК",
+      "kam": "Евгения Добролюбова",
+      "bitrix_aliases": [
+        "Сатурн-Л Липецк"
+      ],
+      "bi_aliases": [
+        "ГК Сатурн",
+        "ГК Сатурн 2"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Липецк",
+          "group_link": "https://t.me/+impgvx1GWZQ0MmFi",
+          "name": "Сатурн",
+          "legal_entity": "ООО Сатурн-Л",
+          "inn": "4826051045",
+          "address": "Липецк, Липецкая обл ул. Неделина, 2-в",
+          "back_name": "Online Сатурн-Л",
+          "email": "ya.nenahova@saturn-l.ru, geely@saturn-l.ru, yu.siromyatnikov@saturn-l.ru, marketing@saturn-l.ru. belgee@saturn-l.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Липецк",
+          "name": "Сатурн",
+          "legal_entity": "ООО Сатурн-Л",
+          "inn": "4826051045",
+          "responsible": "Валерия Солдатова"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1182,
+      "canonical_name": "Глобус",
+      "holding": "Глобус",
+      "kam": "Валерия Солдатова",
+      "bitrix_aliases": [],
+      "bi_aliases": [
+        "Глобус"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тамбов",
+          "group_link": "https://max.ru/join/W5yL5v9HfPPOQyagEm6DZke64ia6xcYZeotu-CnFVBA",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосалон Глобус",
+          "inn": "6829083521",
+          "address": "г. Тамбов, ул. Бастионная, д. 29",
+          "back_name": "",
+          "email": "nikolay.sdobnikov@tenet-globus.ru, alexandr.kolesnikov@tenet-globus.ru,",
+          "responsible": "Валерия Солдатова",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тамбов",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосалон Глобус",
+          "inn": "6829083521",
+          "responsible": "Валерия Солдатова"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1183,
+      "canonical_name": "ГУД КАР",
+      "holding": "ГУД",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [
+        "ГУД КАР"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1184,
+      "canonical_name": "Дав-Авто",
+      "holding": "Дав-Авто",
+      "kam": "Андрей Кузнецов",
+      "bitrix_aliases": [
+        "Дав-Авто ONLINE",
+        "Дав-Авто"
+      ],
+      "bi_aliases": [
+        "Дав-Авто",
+        "ONLINE Дав-Авто"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Новокузнецк",
+          "group_link": "https://max.ru/join/xb0nvuxZVBk95rvk-vDb4iEwWlglStDmY8YGF2JLHP8",
+          "name": "СВ-Авто",
+          "legal_entity": "ООО СВ-АВТО",
+          "inn": "4205206560",
+          "address": "гор.Новокузнецк , ул. Рудокопровая 10А",
+          "back_name": "Картель Авто",
+          "email": "v.petrov@cartelnvk.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Пермь, Бродовский тракт, д. 15",
+          "name": "ONLINE Дав-Авто",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "LADA",
+          "city": "ул.Бродовский тракт, д. 15",
+          "name": "ONLINE Дав-Авто",
+          "brand": "LADA"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Пермь",
+          "group_link": "https://max.ru/join/ztEMi7eJ6tuXUy71j5Ghd-dN4I_ZpXQ5mq3DzwHEbLQ",
+          "name": "Дав-Авто",
+          "legal_entity": "ООО Дав-Авто Восток",
+          "inn": "5904329165",
+          "address": "г. Пермь, ул. Героев Хасана, 76",
+          "back_name": "ONLINE Дав-Авто",
+          "email": "viktor.girev@hyundai-dav-auto.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Пермь",
+          "group_link": "https://max.ru/join/ztEMi7eJ6tuXUy71j5Ghd-dN4I_ZpXQ5mq3DzwHEbLQ",
+          "name": "Дав-Авто",
+          "legal_entity": "ООО Дав-Авто Восток",
+          "inn": "5904329165",
+          "address": "г. Пермь, ул. Героев Хасана, 76",
+          "back_name": "ONLINE Дав-Авто",
+          "email": "viktor.girev@hyundai-dav-auto.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "DEEPAL"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Пермь",
+          "name": "Дав-Авто",
+          "legal_entity": "ООО Дав-Авто Восток",
+          "inn": "5904329165",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Пермь",
+          "name": "Дав-Авто",
+          "legal_entity": "ООО Дав-Авто Восток",
+          "inn": "5904329165",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Новокузнецк",
+          "name": "СВ-Авто",
+          "legal_entity": "ООО СВ-АВТО",
+          "inn": "4205206560",
+          "responsible": "Светлана Дариенко"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1185,
+      "canonical_name": "Д-АВТО (Смоленск)",
+      "holding": "Д-АВТО",
+      "kam": "Алексей Чихарев",
+      "bitrix_aliases": [
+        "ООО \"ПРЕМЬЕР АВТО ЗАПАД\" ONLINE"
+      ],
+      "bi_aliases": [
+        "Д-АВТО (Смоленск)"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Смоленск",
+          "group_link": "https://max.ru/join/4HzUbL0tz8PR9IB7ChgL9Ml4phHOl0jcC_ryf9bCwPg",
+          "name": "Премьер Авто Запад Смоленск",
+          "legal_entity": "ООО Премьер Авто Запад",
+          "inn": "6732074435",
+          "address": "г. Смоленск, Краснинское шоссе, д.40.",
+          "back_name": "",
+          "email": "y.loseva@jetour-smolensk.ru i.mulintsev@premier-avto.cominfo@jetour-smolensk.rum.kirpichenkov@jetour-smolensk.run.skvortsov@jetour-smolensk.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Смоленск",
+          "name": "Премьер Авто Запад Смоленск",
+          "legal_entity": "ООО Премьер Авто Запад",
+          "inn": "6732074435",
+          "responsible": "Алексей Чихарев"
         }
       ],
       "status": "verified"
@@ -11587,28 +11484,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1193,
-      "canonical_name": "Прагматика пилот (ФДЦ) новые",
-      "holding": "Прагматика",
-      "kam": "Светлана Дариенко",
-      "bitrix_aliases": [
-        "Прагматика (ПЕТРОЗАВОДСК-ЛАДА)"
-      ],
-      "bi_aliases": [
-        "Прагматика пилот (ФДЦ) новые"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "LADA",
-          "city": "Петрозаводск, Заводская, д 13",
-          "name": "Прагматика пилот (ФДЦ) новые",
-          "brand": "LADA"
-        }
-      ],
-      "status": "verified"
-    },
-    {
       "partner_id": 1194,
       "canonical_name": "Прайм Авто PRIME AUTO Новосибирск",
       "holding": "Прайм",
@@ -11622,47 +11497,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1195,
-      "canonical_name": "Прайм Липецк",
-      "holding": "Прайм",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Прайм Липецк"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1197,
-      "canonical_name": "Приоритет_Автобан",
-      "holding": "Приоритет_Автобан",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Приоритет_Автобан"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1198,
-      "canonical_name": "Приоритет_Автопрестиж",
-      "holding": "Приоритет_Автопрестиж",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [
-        "ООО \"ЭКСПЕРТ СВ ОРЕНБУРГ\" Online"
-      ],
-      "bi_aliases": [
-        "Приоритет_Автопрестиж"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 1199,
       "canonical_name": "Приоритет_Вагнер",
       "holding": "Приоритет_Вагнер",
@@ -11670,22 +11504,6 @@
       "bitrix_aliases": [],
       "bi_aliases": [
         "Приоритет_Вагнер"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1200,
-      "canonical_name": "Приоритет_ГК БАШАВТОКОМ (Used)",
-      "holding": "Приоритет_ГК",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "Online ГК Башавтоком, ООО \"СТРОЙМОСТИНВЕСТ\"",
-        "ГК Башавтоком, ООО \"СТРОЙМОСТИНВЕСТ\""
-      ],
-      "bi_aliases": [
-        "Приоритет_ГК БАШАВТОКОМ (Used)"
       ],
       "pochta_aliases": [],
       "oem_data": [],
@@ -11887,11 +11705,11 @@
           "brand": "Voyah"
         },
         {
-          "sheet": "OMODA&JAECOO",
+          "sheet": "Москвич",
           "city": "Казань",
-          "name": "КАН Авто",
-          "legal_entity": "ООО КАН АВТО - 7",
-          "inn": "1657196270",
+          "name": "КАН АВТО",
+          "legal_entity": "ООО КАН АВТО - 6",
+          "inn": "1657126393",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -11919,19 +11737,19 @@
           "responsible": "Алексей Чихарев"
         },
         {
+          "sheet": "CHANGAN",
+          "city": "Казань",
+          "name": "Кан Авто",
+          "legal_entity": "ООО КАН АВТО - 2",
+          "inn": "1657088067",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Казань",
           "name": "КАН АВТО",
           "legal_entity": "ООО КАН АВТО - 4",
           "inn": "1657120962",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "Москвич",
-          "city": "Казань",
-          "name": "КАН АВТО",
-          "legal_entity": "ООО КАН АВТО - 6",
-          "inn": "1657126393",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -11941,60 +11759,24 @@
           "legal_entity": "ООО КАН АВТО - 5",
           "inn": "1657190695",
           "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Казань",
+          "name": "КАН Авто",
+          "legal_entity": "ООО КАН АВТО - 7",
+          "inn": "1657196270",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "Voyah",
+          "city": "Казань",
+          "name": "КАН АВТО",
+          "legal_entity": "ООО КАН АВТО - 19",
+          "inn": "1657075276",
+          "responsible": "Алексей Чихарев"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1202,
-      "canonical_name": "Приоритет_ГК Мэйджор\\Major",
-      "holding": "Приоритет_ГК",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Приоритет_ГК Мэйджор\\Major"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1203,
-      "canonical_name": "Приоритет_КМ/ч АсП",
-      "holding": "Приоритет_КМ/ч",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Приоритет_КМ/ч АсП"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1204,
-      "canonical_name": "Приоритет_Петровский",
-      "holding": "Приоритет_Петровский",
-      "kam": "Не назначен",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Приоритет_Петровский"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1205,
-      "canonical_name": "Приоритет_Прагматика пилот ФДЦ",
-      "holding": "Приоритет_Прагматика",
-      "kam": "Светлана Дариенко",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Приоритет_Прагматика пилот ФДЦ"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
       "status": "verified"
     },
     {
@@ -12183,21 +11965,6 @@
       "bitrix_aliases": [],
       "bi_aliases": [
         "ТВОЁ АВТО"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1214,
-      "canonical_name": "ТСАЦ Июль",
-      "holding": "ТСАЦ",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE ООО \"ТСАЦ \"ИЮЛЬ\""
-      ],
-      "bi_aliases": [
-        "ТСАЦ Июль"
       ],
       "pochta_aliases": [],
       "oem_data": [],
@@ -12470,22 +12237,6 @@
           "brand": "CHANGAN"
         },
         {
-          "sheet": "HAVAL",
-          "city": "Санк-Петербург",
-          "name": "Автопортрет Сити",
-          "legal_entity": "ООО Автопортрет Лахта",
-          "inn": "7814693364",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "name": "Автопортрет",
-          "legal_entity": "ООО Автопорттрет Лахта",
-          "inn": "7814693364",
-          "responsible": "Не назначен"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Санкт-Петербург",
           "name": "Автопортрет",
@@ -12496,10 +12247,26 @@
         {
           "sheet": "HAVAL",
           "city": "Санк-Петербург",
+          "name": "Автопортрет Сити",
+          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
+          "inn": "7810337380",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Санк-Петербург",
           "name": "Автопортрет Про",
           "legal_entity": "ООО Автопортрет СПБ-ЮГ",
           "inn": "7810337380",
           "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "name": "Автопортрет",
+          "legal_entity": "ООО Автопорттрет Лахта",
+          "inn": "7814693364",
+          "responsible": "Не назначен"
         }
       ],
       "status": "verified"
@@ -13301,27 +13068,35 @@
           "responsible": "Валерия Солдатова"
         },
         {
+          "sheet": "CHERY&TENET",
+          "city": "Ставрополь",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО Ставрополь Автоюг",
+          "inn": "2635233876",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Ставрополь",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО Ставрополь Автоюг",
+          "inn": "2635233876",
+          "responsible": "Валерия Солдатова"
+        },
+        {
           "sheet": "JETOUR",
-          "city": "Краснодар",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО АК Юг-Авто",
-          "inn": "2310079830",
+          "city": "Пятигорск",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО АвтоЮг-Пятигорск",
+          "inn": "2635255478",
           "responsible": "Валерия Солдатова"
         },
         {
           "sheet": "Soueast",
-          "city": "Краснодар",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО АК Юг-Авто",
-          "inn": "2310079830",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Ставрополь",
+          "city": "Пятигорск",
           "name": "АвтоЮг",
-          "legal_entity": "ООО АвтоЮг Ставрополь",
-          "inn": "2635255012",
+          "legal_entity": "ООО АвтоЮг-Пятигорск",
+          "inn": "2635255478",
           "responsible": "Валерия Солдатова"
         },
         {
@@ -13341,27 +13116,19 @@
           "responsible": "Валерия Солдатова"
         },
         {
+          "sheet": "JETOUR",
+          "city": "Краснодар",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО АК Юг-Авто",
+          "inn": "2310079830",
+          "responsible": "Валерия Солдатова"
+        },
+        {
           "sheet": "Soueast",
-          "city": "Пятигорск",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО АвтоЮг-Пятигорск",
-          "inn": "2635255478",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Ставрополь",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО Ставрополь Автоюг",
-          "inn": "2635233876",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Ставрополь",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО Ставрополь Автоюг",
-          "inn": "2635233876",
+          "city": "Краснодар",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО АК Юг-Авто",
+          "inn": "2310079830",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -13985,15 +13752,19 @@
     },
     {
       "partner_id": 1243,
-      "canonical_name": "ГК Автобан Джетур",
+      "canonical_name": "ГК Автобан",
       "holding": "ГК",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ООО «Автобан Восток»",
-        "ONLINE ООО \"АВТОБАН-ВОСТОК\""
+        "ONLINE ООО \"АВТОБАН-ВОСТОК\"",
+        "ГК Автобан",
+        "Приоритет_Автобан"
       ],
       "bi_aliases": [
-        "ГК Автобан Джетур"
+        "ГК Автобан Джетур",
+        "ГК Автобан",
+        "Приоритет_Автобан"
       ],
       "pochta_aliases": [
         "e.k.arhipkin@avtoban.biz"
@@ -17380,36 +17151,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 632014,
-      "canonical_name": "ONLINE пилот ФДЦ ЮНИКОР Дзержинск НН",
-      "holding": "",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE ЮНИКОР (ООО \"ЮНИКОР\")"
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ ЮНИКОР Дзержинск НН"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632015,
-      "canonical_name": "ONLINE ФДЦ Русская Ладья",
-      "holding": "",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE LADA Русская Ладья (ООО \"РУССКАЯ ЛАДЬЯ\")"
-      ],
-      "bi_aliases": [
-        "ONLINE ФДЦ Русская Ладья"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 632016,
       "canonical_name": "ONLINE пилот ФДЦ Техно-Темп Краснодар",
       "holding": "",
@@ -17439,21 +17180,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 632018,
-      "canonical_name": "Урал Лада Красный Яр",
-      "holding": "",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE АМК Самара ООО \"УРАЛ-ЛАДА\""
-      ],
-      "bi_aliases": [
-        "Урал Лада Красный Яр"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 632019,
       "canonical_name": "ONLINE АГРОЛАДАСЕРВИС",
       "holding": "",
@@ -17461,21 +17187,6 @@
       "bitrix_aliases": [],
       "bi_aliases": [
         "ONLINE АГРОЛАДАСЕРВИС"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632020,
-      "canonical_name": "ONLINE пилот ФДЦ Форвард Ижевск Сызрань",
-      "holding": "",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE Сызранская СТА (АО \"СЫЗРАНСКАЯ СТО\")"
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ Форвард Ижевск Сызрань"
       ],
       "pochta_aliases": [],
       "oem_data": [],
@@ -17491,36 +17202,6 @@
       ],
       "bi_aliases": [
         "ONLINE пилот ФДЦ Трансфор г. Краснодар"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632022,
-      "canonical_name": "ONLINE пилот ФДЦ Авто-Ревю",
-      "holding": "",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "ONLINE Авто-Ревю"
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ Авто-Ревю"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632023,
-      "canonical_name": "ONLINE пилот ФДЦ ТСАЦ Июль",
-      "holding": "",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ONLINE Июль Лада Челябинск (ООО \"УРАЛ БЭСТ-ИНВЕСТ\")"
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ ТСАЦ Июль"
       ],
       "pochta_aliases": [],
       "oem_data": [],
@@ -17726,19 +17407,6 @@
       "kam": "Не назначен",
       "bitrix_aliases": [
         "Аксель Аутлет Авто Вилладж (ООО АУТЛЕТ АВТО ВИЛЛЕДЖ)"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632040,
-      "canonical_name": "Major / ООО «Авто Сити»",
-      "holding": "",
-      "kam": "Не назначен",
-      "bitrix_aliases": [
-        "Major / ООО «Авто Сити»"
       ],
       "bi_aliases": [],
       "pochta_aliases": [],
@@ -26971,6 +26639,294 @@
           "brand": "GAC"
         }
       ]
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
     },
     {
       "partner_id": "P_OEM_621324b8",
