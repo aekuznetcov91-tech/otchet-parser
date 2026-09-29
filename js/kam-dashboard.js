@@ -1426,14 +1426,6 @@ function getKamAggregatedData(filterCfg) {
             ps.brands[brand].total_deals += (r.Qty || 1);
             if (cityBrandEntry) cityBrandEntry.total_deals += (r.Qty || 1);
 
-            // Item 4: Deals from lead transfer (IsLeadSaleNoPrepay == 1 or B2C == 'Передача лида')
-            const isTransDeal = (r.IsLeadSaleNoPrepay === 1) || b2c.includes('ПЕРЕДАЧАЛИДА') || b2c.includes('ПЕРЕДАЧА');
-            if (isTransDeal) {
-                ps.trans_deals += (r.Qty || 1);
-                ps.brands[brand].trans_deals += (r.Qty || 1);
-                if (cityBrandEntry) cityBrandEntry.trans_deals += (r.Qty || 1);
-            }
-
             // Item 5: MP Deals (MP1, MP2, MP3)
             const isMp = (r.IsMpSale === 1) || b2c.includes('МП1') || b2c.includes('МП2') || b2c.includes('МП3') || b2c.includes('MP');
             if (isMp) {
@@ -1448,6 +1440,14 @@ function getKamAggregatedData(filterCfg) {
                 ps.fdc_online_deals += (r.Qty || 1);
                 ps.brands[brand].fdc_online_deals += (r.Qty || 1);
                 if (cityBrandEntry) cityBrandEntry.fdc_online_deals += (r.Qty || 1);
+            }
+
+            // Item 4: Deals from lead transfer (Чистые: если сделка не закрыта как МП или ФДЦ/Online)
+            const isTransDeal = (!isMp && !isFdcOnline) && ((r.IsLeadSaleNoPrepay === 1) || b2c.includes('ПЕРЕДАЧАЛИДА') || b2c.includes('ПЕРЕДАЧА'));
+            if (isTransDeal) {
+                ps.trans_deals += (r.Qty || 1);
+                ps.brands[brand].trans_deals += (r.Qty || 1);
+                if (cityBrandEntry) cityBrandEntry.trans_deals += (r.Qty || 1);
             }
         }
     });
@@ -2258,7 +2258,7 @@ function renderKamTable(partners) {
                 <th style="width: 120px; text-align: center;">План сделок</th>
                 <th style="width: 100px; text-align: center;">% плана</th>
                 <th style="width: 110px; text-align: center;">Передано лидов</th>
-                <th style="width: 130px; text-align: center;" title="Сделки, пришедшие из переданных лидов (входят в состав сделок МП/ФДЦ)">
+                <th style="width: 130px; text-align: center;" title="Чистые сделки с передачи лидов (без сделок, закрытых через МП или ФДЦ/Online)">
                     Сделки с передачи <span class="text-[10px] text-purple-600 block">(из переданных)</span>
                 </th>
                 <th style="width: 110px; text-align: center;" title="Конверсия: Сделки с передачи / Передано лидов">CR (Передача)</th>

@@ -571,10 +571,13 @@ function renderPartnersTable(filterCfg) {
             if (r.RawPartner) pStats[key].rawBi.add(r.RawPartner);
         } else if (r.Type === 'Сделка') {
             pStats[key].deals += (r.Qty || 1);
-            if (r.IsLeadSaleNoPrepay === 1) {
+            const b2c = (r.B2C || '').toUpperCase();
+            const isMp = (r.IsMpSale === 1) || b2c.includes('МП1') || b2c.includes('МП2') || b2c.includes('МП3') || b2c.includes('MP');
+            const isFdcOnline = b2c.includes('ФДЦ') || b2c.includes('ONLINE') || b2c.includes('ОНЛАЙН');
+            if (!isMp && !isFdcOnline && ((r.IsLeadSaleNoPrepay === 1) || b2c.includes('ПЕРЕДАЧАЛИДА') || b2c.includes('ПЕРЕДАЧА'))) {
                 pStats[key].leadDirectDeals += (r.Qty || 1);
             }
-            if (r.IsMpSale === 1) {
+            if (isMp) {
                 pStats[key].mpDeals += (r.Qty || 1);
             }
             if (r.RawPartner) pStats[key].rawBitrix.add(r.RawPartner);
