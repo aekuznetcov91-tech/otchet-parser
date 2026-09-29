@@ -96,8 +96,62 @@ function getFilteredDebtors(filterCfg) {
     });
 }
 
+let currentDebtorKamFilter = 'all';
+
+function applyDebtorKamFilter(kam) {
+    currentDebtorKamFilter = kam || 'all';
+    renderDebtorsTable(currentFilterConfig);
+}
+
+function returnToKamDashboard() {
+    const kamBtn = document.querySelector("button[onclick*='tab-kam']");
+    if (typeof switchTab === 'function') {
+        switchTab('tab-kam', kamBtn);
+    }
+    const q = window.lastKamPartnerQuery;
+    if (q) {
+        setTimeout(() => {
+            const rows = document.querySelectorAll('#kamTableContainer tr');
+            for (let r of rows) {
+                if (r.innerText.toLowerCase().includes(q.toLowerCase())) {
+                    r.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    r.classList.add('bg-amber-100');
+                    setTimeout(() => r.classList.remove('bg-amber-100'), 2500);
+                    break;
+                }
+            }
+        }, 150);
+    }
+}
+
+function toggleDebtorCompany(cIdx) {
+    const rows = document.querySelectorAll(`.debtor-car-row-${cIdx}`);
+    const arrow = document.getElementById(`debtor-arrow-${cIdx}`);
+    let isExpanding = false;
+    rows.forEach(r => {
+        if (r.classList.contains('hidden')) {
+            r.classList.remove('hidden');
+            isExpanding = true;
+        } else {
+            r.classList.add('hidden');
+        }
+    });
+    if (arrow) {
+        arrow.textContent = isExpanding ? '▼' : '▶';
+    }
+}
+
 function renderDebtorsTable(filterCfg) {
     let filtered = getFilteredDebtors(filterCfg);
+
+    // Apply KAM filter if active
+    if (currentDebtorKamFilter && currentDebtorKamFilter !== 'all') {
+        const normFilter = (typeof normalizeKamName === 'function') ? normalizeKamName(currentDebtorKamFilter) : currentDebtorKamFilter.trim();
+        filtered = filtered.filter(d => {
+            const dKam = (typeof normalizeKamName === 'function') ? normalizeKamName(d.kam) : (d.kam || '').trim();
+            return dKam === normFilter;
+        });
+    }
 
     // Group by company
     let compMap = {};
@@ -181,55 +235,93 @@ function renderDebtorsTable(filterCfg) {
         container.innerHTML = `
             <div class="text-center py-10 text-gray-400">
                 <div class="text-3xl mb-2">🎉</div>
-                <p class="font-bold text-gray-700">Нет незакрытых сделок по выбранному периоду</p>
+                <p class="font-bold text-gray-700">Нет незакрытых сделок по выбранному фильтру</p>
                 <p class="text-xs text-gray-400 mt-1">Все предоплаты успешно закрыты и реализованы в ДКП</p>
             </div>
         `;
         return;
     }
 
-    let html = `<table id="tableDebtors" class="min-w-full">
-        <thead>
+    let html = `<table id="tableDebtors" class="min-w-full text-xs">
+        <thead class="bg-slate-800 text-white font-bold sticky top-0 z-10">
             <tr>
-                <th class="!bg-slate-800">Компания / КАМ</th>
-                <th class="!bg-slate-800">Дата предоплаты</th>
-                <th class="!bg-slate-800">Канал</th>
-                <th class="!bg-slate-800">Марка</th>
-                <th class="!bg-slate-800">Модель</th>
-                <th class="!bg-slate-800">ВИН</th>
-                <th class="!bg-slate-800">Менеджер</th>
-                <th class="!bg-slate-800">Стадия</th>
+                <th class="py-2.5 px-3 text-left">Компания / ДЦ</th>
+                <th class="py-2.5 px-3 text-center">КАМ</th>
+                <th class="py-2.5 px-3 text-left">Дата аванса</th>
+                <th class="py-2.5 px-3 text-center">Канал</th>
+                <th class="py-2.5 px-3 text-left">Марка</th>
+                <th class="py-2.5 px-3 text-left">Модель</th>
+                <th class="py-2.5 px-3 text-left">ВИН</th>
+                <th class="py-2.5 px-3 text-center">Стадия</th>
             </tr>
         </thead>
-        <tbody>`;
+        <tbody class="divide-y divide-gray-200">`;
 
     sortedCompanies.forEach((comp, cIdx) => {
-        let rowClass = (cIdx % 2 === 0) ? "bg-white" : "bg-slate-50/70";
         let safeCompName = (comp.name || '').replace(/"/g, '&quot;');
         let safeKamName = (comp.kam || '').replace(/"/g, '&quot;');
+        let brandsList = Array.from(new Set(comp.cars.map(c => c.brand).filter(Boolean))).slice(0, 3).join(', ');
+        let channelsList = Array.from(new Set(comp.cars.map(c => c.b2c).filter(Boolean))).slice(0, 2).join(', ');
+
+        // Header Row (Collapsed by default!)
+        html += `
+        <tr id="debtor-comp-row-${cIdx}" 
+            data-company="${safeCompName}" 
+            data-kam="${safeKamName}" 
+            data-comp-idx="${cIdx}"
+            onclick="toggleDebtorCompany('${cIdx}')"
+            class="company-header-row bg-white hover:bg-amber-50/60 transition cursor-pointer font-semibold border-b border-gray-200 select-none">
+            <td class="py-2.5 px-3">
+                <div class="flex items-center gap-2">
+                    <span id="debtor-arrow-${cIdx}" class="text-xs text-blue-600 font-bold transition-transform transform">▶</span>
+                    <span class="font-bold text-slate-900 text-xs hover:text-blue-700">${comp.name}</span>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold border border-amber-200 shrink-0">
+                        ${comp.cars.length} авто
+                    </span>
+                </div>
+            </td>
+            <td class="text-center text-xs font-semibold text-slate-700">${comp.kam || "Не назначен"}</td>
+            <td class="text-xs text-slate-500 whitespace-nowrap">—</td>
+            <td class="text-center text-xs text-slate-600">${channelsList || '—'}</td>
+            <td class="font-bold text-xs text-blue-900">${brandsList || '—'}</td>
+            <td class="text-xs text-slate-400 italic">Нажмите, чтобы раскрыть</td>
+            <td class="text-xs text-slate-400">—</td>
+            <td class="text-center">
+                <button type="button" class="text-blue-600 hover:text-blue-800 text-[11px] font-bold">
+                    Список (${comp.cars.length}) ▾
+                </button>
+            </td>
+        </tr>
+        `;
+
+        // Child Car Rows (Hidden by default!)
         comp.cars.forEach((car, carIdx) => {
-            html += `<tr data-company="${safeCompName}" data-kam="${safeKamName}" data-car-idx="${carIdx}" class="${rowClass} hover:bg-amber-50/50 transition debtor-row">`;
-            if (carIdx === 0) {
-                html += `<td rowspan="${comp.cars.length}" class="font-bold text-gray-900 align-top border-r border-gray-200 bg-white">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <span class="font-semibold text-slate-800">${comp.name}</span>
-                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold border border-amber-200 shrink-0">
-                            ${comp.cars.length} авто
-                        </span>
-                    </div>
-                    <div class="text-[11px] text-gray-500 font-normal mt-1 flex items-center gap-1">
-                        <span class="text-slate-400">КАМ:</span> <b class="text-slate-700">${comp.kam || "Не назначен"}</b>
-                    </div>
-                </td>`;
-            }
+            let rowClass = (carIdx % 2 === 0) ? "bg-slate-50/80" : "bg-white";
+            let did = car.deal_id || '—';
+            let didLink = (did !== '—') 
+                ? `<a href="https://back.sberauto.com/crm/leads/${did}" target="_blank" class="text-blue-600 hover:underline font-bold">${did}</a>` 
+                : '—';
+
             html += `
+            <tr class="debtor-car-row-${cIdx} hidden ${rowClass} hover:bg-blue-50/50 transition border-b border-gray-100 text-xs debtor-row" 
+                data-company="${safeCompName}" 
+                data-kam="${safeKamName}" 
+                data-car-idx="${carIdx}">
+                <td class="py-1.5 pl-9 pr-3 text-slate-600 text-[11px]">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-amber-500 font-bold">↳</span>
+                        <span class="text-gray-400 font-medium">#${carIdx + 1}</span>
+                        <span class="font-medium text-slate-700">${car.manager ? `Менеджер: ${car.manager}` : ''}</span>
+                        ${did !== '—' ? `<span class="text-gray-400 text-[10px]">(${didLink})</span>` : ''}
+                    </div>
+                </td>
+                <td class="text-center text-slate-400 text-[11px]">${comp.kam || '—'}</td>
                 <td class="whitespace-nowrap font-medium text-slate-700">${car.prepay_date || "—"}${getDebtorAgingBadge(car.prepay_date, car)}</td>
-                <td>${getDebtorChannelBadge(car.b2c)}</td>
+                <td class="text-center">${getDebtorChannelBadge(car.b2c)}</td>
                 <td class="font-bold text-blue-900">${car.brand}</td>
                 <td class="text-slate-700 font-medium">${car.model || car.brand}</td>
-                <td class="font-mono text-xs text-slate-600 select-all font-semibold">${car.vin || "—"}</td>
-                <td class="text-xs text-slate-600">${car.manager || "—"}</td>
-                <td><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100/70 text-amber-900 border border-amber-300/60 whitespace-nowrap">${car.stage || "В ожидании ДКП"}</span></td>
+                <td class="font-mono text-[11px] text-slate-600 select-all font-semibold">${car.vin || "—"}</td>
+                <td class="text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100/70 text-amber-900 border border-amber-300/60 whitespace-nowrap">${car.stage || "В ожидании ДКП"}</span></td>
             </tr>`;
         });
     });
@@ -243,33 +335,49 @@ function filterDebtorsTable(query) {
     let q = (query || "").toLowerCase().trim();
     let table = document.getElementById('tableDebtors');
     if (!table) return;
-    let rows = table.querySelectorAll('tbody tr.debtor-row');
-    if (rows.length === 0) {
-        rows = table.querySelectorAll('tbody tr');
-    }
+    
+    let headerRows = table.querySelectorAll('tbody tr.company-header-row');
     if (!q) {
-        rows.forEach(r => r.style.display = "");
+        headerRows.forEach(hr => {
+            hr.style.display = "";
+            let cIdx = hr.getAttribute('data-comp-idx');
+            let carRows = table.querySelectorAll(`.debtor-car-row-${cIdx}`);
+            carRows.forEach(cr => {
+                cr.style.display = "";
+                cr.classList.add('hidden'); // collapse back by default when search cleared
+            });
+            let arrow = document.getElementById(`debtor-arrow-${cIdx}`);
+            if (arrow) arrow.textContent = '▶';
+        });
         return;
     }
 
-    // Step 1: find which companies match query directly by company name or KAM
-    let compMatches = new Set();
-    rows.forEach(r => {
-        let comp = (r.getAttribute('data-company') || '').toLowerCase();
-        let kam = (r.getAttribute('data-kam') || '').toLowerCase();
-        if (comp.includes(q) || kam.includes(q)) {
-            compMatches.add(comp);
-        }
-    });
+    headerRows.forEach(hr => {
+        let comp = (hr.getAttribute('data-company') || '').toLowerCase();
+        let kam = (hr.getAttribute('data-kam') || '').toLowerCase();
+        let cIdx = hr.getAttribute('data-comp-idx');
+        let carRows = table.querySelectorAll(`.debtor-car-row-${cIdx}`);
+        let arrow = document.getElementById(`debtor-arrow-${cIdx}`);
 
-    // Step 2: show all rows of matching companies, or rows that match query by car fields
-    rows.forEach(r => {
-        let comp = (r.getAttribute('data-company') || '').toLowerCase();
-        let txt = r.innerText.toLowerCase();
-        if (compMatches.has(comp) || txt.includes(q)) {
-            r.style.display = "";
+        let compMatches = comp.includes(q) || kam.includes(q);
+        let anyCarMatches = false;
+
+        carRows.forEach(cr => {
+            let txt = cr.innerText.toLowerCase();
+            if (compMatches || txt.includes(q)) {
+                cr.style.display = "";
+                cr.classList.remove('hidden'); // auto-expand matched records!
+                anyCarMatches = true;
+            } else {
+                cr.style.display = "none";
+            }
+        });
+
+        if (compMatches || anyCarMatches) {
+            hr.style.display = "";
+            if (arrow) arrow.textContent = '▼';
         } else {
-            r.style.display = "none";
+            hr.style.display = "none";
         }
     });
 }
@@ -534,3 +642,79 @@ function executeStaleDebtorsExcelExport() {
     XLSX.writeFile(wb, fileName);
     alert(`✅ Успешно выгружен реестр зависших долгов (${staleDebtors.length} авто) в файл «${fileName}» для передачи координаторам и КАМам!`);
 }
+
+function executeAging20DebtorsExcelExport() {
+    if (typeof XLSX === 'undefined') {
+        alert("Библиотека экспорта в Excel еще загружается, повторите попытку через секунду.");
+        return;
+    }
+    let staleDebtors = rawDebtorsList.filter(d => getDebtorAgeDays(d) >= 20);
+    if (staleDebtors.length === 0) {
+        alert("Нет зависших авансов со сроком от 20 дней.");
+        return;
+    }
+
+    staleDebtors.sort((a, b) => getDebtorAgeDays(b) - getDebtorAgeDays(a));
+
+    let wsData = [
+        ["№", "ID Сделки", "ID Клиента", "Партнер / ДЦ", "Юрлицо в CRM", "КАМ", "Дата аванса", "Срок зависания (дн.)", "Марка", "Модель", "ВИН", "Канал", "Менеджер", "Стадия", "Цена авто (руб.)", "Ссылка на CRM BackOffice", "Рекомендация для координатора"]
+    ];
+
+    staleDebtors.forEach((d, idx) => {
+        const days = getDebtorAgeDays(d);
+        const did = d.deal_id || '—';
+        const cid = d.client_id || '—';
+        const backofficeUrl = (did !== '—') ? `https://back.sberauto.com/crm/leads/${did}` : ((cid !== '—') ? `https://back.sberauto.com/crm/clients/${cid}` : '—');
+
+        wsData.push([
+            idx + 1,
+            did,
+            cid,
+            d.company || "—",
+            d.raw_company || d.company || "—",
+            d.kam || "Не назначен",
+            d.prepay_date || "—",
+            days,
+            d.brand || "—",
+            d.model || d.brand || "—",
+            d.vin || "—",
+            d.b2c || "—",
+            d.manager || "—",
+            d.stage || "В ожидании ДКП",
+            d.price || 0,
+            backofficeUrl,
+            "Сверить с ДЦ / Закрыть в CRM (Выдача ДКП либо возврат аванса)"
+        ]);
+    });
+
+    let ws = XLSX.utils.aoa_to_sheet(wsData);
+    ws['!cols'] = [
+        { wch: 6 },
+        { wch: 14 },
+        { wch: 14 },
+        { wch: 30 },
+        { wch: 30 },
+        { wch: 22 },
+        { wch: 14 },
+        { wch: 22 },
+        { wch: 16 },
+        { wch: 20 },
+        { wch: 24 },
+        { wch: 12 },
+        { wch: 20 },
+        { wch: 20 },
+        { wch: 16 },
+        { wch: 45 },
+        { wch: 45 }
+    ];
+
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Зависшие_авансы_от_20дней");
+
+    let todayStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '_');
+    let fileName = `Зависшие_авансы_от_20_дней_${todayStr}.xlsx`;
+
+    XLSX.writeFile(wb, fileName);
+    alert(`✅ Успешно сформирован и выгружен реестр (${staleDebtors.length} авто со сроком от 20 дней) в файл «${fileName}» для координаторов и КАМов!`);
+}
+

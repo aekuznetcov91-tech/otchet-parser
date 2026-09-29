@@ -83,7 +83,7 @@ MERGERS = [
     {
         'target_id': 1095,
         'target_name': 'КМ/Ч',
-        'target_kam': 'Валерия Солдатова',
+        'target_kam': 'Алексей Чихарев',
         'donor_ids': [1203]
     },
     # 12. Петровский: merge 1204 into 1028
@@ -233,12 +233,12 @@ MERGERS = [
         'target_kam': 'Валерия Солдатова',
         'donor_ids': [632021]
     },
-    # 33. ГК Глобус: merge 1182, 632045, P_OEM_43cba4f4 into 1013
+    # 33. ГК Глобус: merge 1182, 632045, P_OEM_43cba4f4, 1115 into 1013
     {
         'target_id': 1013,
         'target_name': 'ГК Глобус',
         'target_kam': 'Валерия Солдатова',
-        'donor_ids': [1182, 632045, 'P_OEM_43cba4f4']
+        'donor_ids': [1182, 632045, 'P_OEM_43cba4f4', 1115]
     },
     # 34. ФДЦ Техно-Темп: merge 632016 into 1004
     {
@@ -394,6 +394,8 @@ def apply_merges_to_file(filepath):
         p1095['canonical_name'] = 'КМ/Ч'
         p1095['holding'] = 'КМ/Ч'
         p1095['kam'] = 'Алексей Чихарев'
+        for oem in p1095.get('oem_data', []):
+            oem['responsible'] = 'Алексей Чихарев'
 
     # General cleanup of corrupted/truncated holdings like 'ONLIN', 'ONLINE', 'ООО', 'ИП'
     for p in partners:
@@ -651,8 +653,16 @@ def apply_merges_to_data_json(filepath):
             r['KAM'] = 'Светлана Дариенко'
             modified = True
 
-        # Globus allocation
-        if r.get('PartnerId') == 1013:
+        # KM/Ch allocation: strictly Alexei Chikharev
+        if r.get('PartnerId') in [1095, 1203] or 'км/ч' in raw_p or 'км/ч' in p_name or 'км-ч' in raw_p:
+            r['PartnerId'] = 1095
+            r['Partner'] = 'КМ/Ч'
+            r['KAM'] = 'Алексей Чихарев'
+            modified = True
+
+        # Globus allocation (including Tambov-Auto 1115)
+        if r.get('PartnerId') in [1013, 1115] or 'глобус' in p_name or 'тамбов-авто' in raw_p or 'тамбов-авто' in p_name or 'тамбов авто' in raw_p:
+            r['PartnerId'] = 1013
             r['Partner'] = 'ГК Глобус'
             r['KAM'] = 'Валерия Солдатова'
             modified = True
@@ -729,7 +739,16 @@ def apply_merges_to_data_json(filepath):
             r['KAM'] = 'Светлана Дариенко'
             modified = True
 
-        if r.get('PartnerId') == 1013:
+        # KM/Ch: strictly Alexei Chikharev
+        if r.get('PartnerId') in [1095, 1203] or 'км/ч' in raw_p or 'км/ч' in p_name or 'км-ч' in raw_p:
+            r['PartnerId'] = 1095
+            r['PartnerName'] = 'КМ/Ч'
+            r['KAM'] = 'Алексей Чихарев'
+            modified = True
+
+        # Globus allocation (including Tambov-Auto 1115)
+        if r.get('PartnerId') in [1013, 1115] or 'глобус' in p_name or 'тамбов-авто' in raw_p or 'тамбов-авто' in p_name or 'тамбов авто' in raw_p:
+            r['PartnerId'] = 1013
             r['PartnerName'] = 'ГК Глобус'
             r['KAM'] = 'Валерия Солдатова'
             modified = True

@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1826,
+  "total_master_partners": 1825,
   "partners": [
     {
       "partner_id": 1001,
@@ -799,13 +799,16 @@
         "ГК Глобус",
         "Глобус",
         "ООО \"ГЛОБУС-МОТОРС",
-        "Online ООО \"ГЛОБУС-МОТОРС\""
+        "Online ООО \"ГЛОБУС-МОТОРС\"",
+        "ООО \"ТАМБОВ-АВТО",
+        "Online ООО \"ТАМБОВ-АВТО\""
       ],
       "bi_aliases": [
         "Глобус Автосфера",
         "ГК Глобус",
         "Глобус",
-        "ООО \"ГЛОБУС-МОТОРС"
+        "ООО \"ГЛОБУС-МОТОРС",
+        "ООО \"ТАМБОВ-АВТО"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -883,6 +886,27 @@
           "city": "г. Тамбов, ул. Киквидзе, д. 83",
           "name": "ГК Глобус",
           "brand": "GAC"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Тамбов",
+          "group_link": "https://max.ru/join/3XGSLNJPQvwMlug5w2-D0oxwteE86LCAwXhBdjDqwyo",
+          "name": "Тамбов Авто",
+          "legal_entity": "ООО Тамбов Авто",
+          "inn": "6829082542",
+          "address": "г. Тамбов, ул. Киквидзе,85В",
+          "back_name": "",
+          "email": "denis.kocheulov@hyundai-tambovavto.ru, denis.shvyryaev@hyundai-tambovavto.ru, viacheslav.tcarev@hyundai-tambovavto.ru, evgenii.rybkin@hyundai-tambovavto.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "SOLARIS"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Тамбов",
+          "name": "Тамбов Авто",
+          "legal_entity": "ООО Тамбов Авто",
+          "inn": "6829082542",
+          "responsible": "Валерия Солдатова"
         }
       ],
       "status": "verified"
@@ -8876,41 +8900,6 @@
       "bi_aliases": [],
       "pochta_aliases": [],
       "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1115,
-      "canonical_name": "ООО \"ТАМБОВ-АВТО",
-      "holding": "ООО \"ТАМБОВ-АВТО",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "Online ООО \"ТАМБОВ-АВТО\""
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "SOLARIS",
-          "city": "Тамбов",
-          "group_link": "https://max.ru/join/3XGSLNJPQvwMlug5w2-D0oxwteE86LCAwXhBdjDqwyo",
-          "name": "Тамбов Авто",
-          "legal_entity": "ООО Тамбов Авто",
-          "inn": "6829082542",
-          "address": "г. Тамбов, ул. Киквидзе,85В",
-          "back_name": "",
-          "email": "denis.kocheulov@hyundai-tambovavto.ru, denis.shvyryaev@hyundai-tambovavto.ru, viacheslav.tcarev@hyundai-tambovavto.ru, evgenii.rybkin@hyundai-tambovavto.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "SOLARIS"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Тамбов",
-          "name": "Тамбов Авто",
-          "legal_entity": "ООО Тамбов Авто",
-          "inn": "6829082542",
-          "responsible": "Валерия Солдатова"
-        }
-      ],
       "status": "verified"
     },
     {

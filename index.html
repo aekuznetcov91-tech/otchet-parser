@@ -966,6 +966,25 @@
                     <input id="searchDebtors" type="text" class="bg-slate-800 border border-slate-700 text-white text-xs rounded-xl pl-9 pr-3 py-2 w-52 placeholder-slate-400 focus:ring-1 focus:ring-amber-500 outline-none" placeholder="Поиск по компании, КАМ, VIN..." oninput="filterDebtorsTable(this.value)">
                 </div>
 
+                <select id="filterDebtorsKam" class="bg-slate-800 border border-slate-700 text-white text-xs rounded-xl px-2.5 py-2 font-semibold outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer" onchange="applyDebtorKamFilter(this.value)" title="Фильтр компаний по закрепленному КАМ">
+                    <option value="all">Все КАМы</option>
+                    <option value="Алексей Чихарев">Алексей Чихарев</option>
+                    <option value="Андрей Кузнецов">Андрей Кузнецов</option>
+                    <option value="Светлана Дариенко">Светлана Дариенко</option>
+                    <option value="Валерия Солдатова">Валерия Солдатова</option>
+                    <option value="Евгения Добролюбова">Евгения Добролюбова</option>
+                </select>
+
+                <button id="btnReturnToKam" onclick="returnToKamDashboard()" class="hidden bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold px-3 py-2 rounded-xl text-xs border border-amber-500/40 shadow-sm transition flex items-center gap-1.5 cursor-pointer" title="Вернуться к партнеру в дашборде КАМ">
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    <span id="btnReturnToKamText">Назад в КАМ</span>
+                </button>
+
+                <button onclick="executeAging20DebtorsExcelExport()" class="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold px-3 py-2 rounded-xl text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer" title="Сформировать файл зависших авансов от 20 дней для координаторов и КАМ">
+                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Зависшие (≥ 20 дн.)
+                </button>
+
                 <button onclick="executeStaleDebtorsExcelExport()" class="bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 hover:to-rose-400 text-white font-bold px-3 py-2 rounded-xl text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer" title="Выгрузить реестр зависших долгов более 60 дней для координаторов и КАМов">
                     <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"></path></svg>
                     Зависшие (> 60 дн.)
@@ -1216,6 +1235,61 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- MODAL: TRANSFERRED LEADS DRILLDOWN -->
+    <div id="modalTransferredLeads" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] flex flex-col overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
+            <!-- Modal Header -->
+            <div class="bg-slate-900 text-white p-5 flex items-center justify-between border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center border border-blue-500/30">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base text-white flex items-center gap-2">
+                            <span>Переданные лиды:</span>
+                            <span id="transLeadsModalPartnerName" class="text-blue-400 font-extrabold">—</span>
+                            <span id="transLeadsModalCountBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-black border border-blue-500/30">0 шт.</span>
+                        </h3>
+                        <p id="transLeadsModalSubtitle" class="text-xs text-slate-400 mt-0.5">Реестр отправленных лидов дилеру из CRM</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="exportTransferredLeadsToExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-sm transition flex items-center gap-1.5 cursor-pointer" title="Выгрузить в Excel">
+                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Excel
+                    </button>
+                    <button type="button" onclick="closeTransferredLeadsModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition cursor-pointer">
+                        ✕
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Search & Filter Bar -->
+            <div class="p-3 bg-slate-50 border-b border-gray-200 flex items-center justify-between gap-3 flex-wrap">
+                <div class="relative flex-1 min-w-[240px]">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" class="text-gray-400 absolute left-3 top-2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input id="searchTransLeadsInput" type="text" oninput="filterTransferredLeadsModalTable(this.value)" placeholder="Поиск по ClientId, LeadId, марке, модели, email..." class="w-full pl-9 pr-3 py-1.5 bg-white border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                </div>
+                <div class="text-xs text-gray-500 font-medium" id="transLeadsRowsCounter">
+                    Отображено: 0 из 0
+                </div>
+            </div>
+
+            <!-- Modal Table Container -->
+            <div class="p-4 overflow-y-auto flex-1 max-h-[60vh]" id="transLeadsTableContainer">
+                <!-- Dynamically rendered table -->
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="p-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
+                <span>💡 При нажатии на <b>ID Лида</b> открывается карточка в Бэк-офисе SberAuto CRM</span>
+                <button type="button" onclick="closeTransferredLeadsModal()" class="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg font-bold text-xs transition cursor-pointer">
+                    Закрыть
+                </button>
+            </div>
         </div>
     </div>
 

@@ -2822,8 +2822,7 @@ def run_pipeline():
                     cname = 'Единый центр Trade-In Тверь' if 'trade-in' in p_lower else 'Макон Авто'
                     kam = 'Алексей Чихарев'
                 elif 'км/ч' in p_lower or 'км-ч' in p_lower:
-                    cname = 'Приоритет_КМ/ч АсП'
-                    kam = 'Валерия Солдатова'
+                    pid, cname, kam = (1095, 'КМ/Ч', 'Алексей Чихарев')
                 elif 'yes auto' in p_lower or 'иркутск' in p_lower:
                     cname = 'Yes Auto Иркутск'
                     kam = 'Светлана Дариенко'
@@ -2842,9 +2841,8 @@ def run_pipeline():
                 elif 'тауэр' in p_lower:
                     cname = 'Тауэр Авто Jetour'
                     kam = 'Алексей Чихарев'
-                elif 'глобус' in p_lower or 'автосфера' in p_lower:
-                    cname = 'Глобус Автосфера'
-                    kam = 'Валерия Солдатова'
+                elif 'глобус' in p_lower or 'автосфера' in p_lower or 'тамбов-авто' in p_lower or 'тамбов авто' in p_lower:
+                    pid, cname, kam = (1013, 'ГК Глобус', 'Валерия Солдатова')
                 else:
                     res_kam = oem_resolver.resolve(partner_name=partner_raw or cname, city=lead_city, fallback_kam=kam)
                     if res_kam and res_kam != "Не назначен":

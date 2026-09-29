@@ -1294,6 +1294,14 @@ function getKamAggregatedData(filterCfg) {
 
             if (oemGeo && oemGeo.length > 0) {
                 oemGeo.forEach(oem => {
+                    // Filter OEM by responsible KAM if partner has territory split across multiple KAMs
+                    if (finalKam && finalKam !== 'Не назначен' && oem.responsible) {
+                        const oemKam = normalizeKamName(oem.responsible);
+                        if (oemKam !== finalKam) {
+                            return;
+                        }
+                    }
+
                     const city = oem.city || 'Город не указан';
                     const br = normalizeBrandName(oem.brand);
 
@@ -1364,7 +1372,17 @@ function getKamAggregatedData(filterCfg) {
         if (activeMonth <= '2026-08' && normKam === 'Евгения Добролюбова') {
             normKam = 'Андрей Кузнецов';
         }
-        getPartnerStats(p.partner_id, p.canonical_name, normKam);
+        const distinctKams = new Set();
+        if (p.oem_data && p.oem_data.length > 0) {
+            p.oem_data.forEach(o => {
+                if (o.responsible) distinctKams.add(normalizeKamName(o.responsible));
+            });
+        }
+        if (distinctKams.size > 1) {
+            distinctKams.forEach(k => getPartnerStats(p.partner_id, p.canonical_name, k));
+        } else {
+            getPartnerStats(p.partner_id, p.canonical_name, normKam);
+        }
     });
 
     // 2. Process transactions from sys_db_partners (deals, prepays, BI leads)
@@ -1388,12 +1406,21 @@ function getKamAggregatedData(filterCfg) {
 
         // Distribute to matching OEM city/brand
         const recordCityMatch = () => {
+            const txCity = String(r.City || '').trim();
+            // 1. Direct match on transaction City if present in ps.cities
+            if (txCity && ps.cities[txCity]) {
+                if (!ps.cities[txCity].brands[brand]) {
+                    ps.cities[txCity].brands[brand] = { name: brand, dealer_name: '', trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
+                }
+                return ps.cities[txCity].brands[brand];
+            }
+            // 2. Search for brand across existing cities in ps.cities
             for (let cName in ps.cities) {
                 if (ps.cities[cName].brands && ps.cities[cName].brands[brand]) {
                     return ps.cities[cName].brands[brand];
                 }
             }
-            // fallback: first city in OEM or default
+            // 3. Fallback: first city in OEM or default
             const firstCity = Object.values(ps.cities)[0];
             if (firstCity) {
                 if (!firstCity.brands[brand]) {
@@ -1401,15 +1428,15 @@ function getKamAggregatedData(filterCfg) {
                 }
                 return firstCity.brands[brand];
             }
-            // fallback: create city dynamically if ps.cities has no cities
-            const txCity = String(r.City || '').trim() || 'Город не указан';
-            if (!ps.cities[txCity]) {
-                ps.cities[txCity] = { name: txCity, brands: {} };
+            // 4. Fallback: create city dynamically if ps.cities has no cities
+            const defCity = txCity || 'Город не указан';
+            if (!ps.cities[defCity]) {
+                ps.cities[defCity] = { name: defCity, brands: {} };
             }
-            if (!ps.cities[txCity].brands[brand]) {
-                ps.cities[txCity].brands[brand] = { name: brand, dealer_name: '', trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
+            if (!ps.cities[defCity].brands[brand]) {
+                ps.cities[defCity].brands[brand] = { name: brand, dealer_name: '', trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
             }
-            return ps.cities[txCity].brands[brand];
+            return ps.cities[defCity].brands[brand];
         };
 
         const cityBrandEntry = recordCityMatch();
@@ -1685,7 +1712,12 @@ function getKamAggregatedData(filterCfg) {
         const bKeys = Object.keys(p.brands || {});
         if (bKeys.length > 0) {
             if (cKeys.length === 0) {
-                const defCity = (p.oem_data && p.oem_data[0] && p.oem_data[0].city) ? p.oem_data[0].city : 'Город не указан';
+                let defCity = 'Город не указан';
+                if (p.oem_data && p.oem_data.length > 0) {
+                    const matchingOem = p.oem_data.find(o => !o.responsible || normalizeKamName(o.responsible) === p.kam);
+                    if (matchingOem && matchingOem.city) defCity = matchingOem.city;
+                    else if (p.oem_data[0].city) defCity = p.oem_data[0].city;
+                }
                 p.cities[defCity] = { name: defCity, brands: {} };
                 bKeys.forEach(bk => {
                     p.cities[defCity].brands[bk] = { ...p.brands[bk] };
@@ -2204,10 +2236,23 @@ function getBrandDebtsHtml(debtsCount, partnerName, brandName) {
  * Opens Debtors tab with pre-filled search query for this partner
  */
 function openDebtorsTabForPartner(partnerQuery) {
+    window.lastKamPartnerQuery = partnerQuery;
     const btn = document.querySelector("button[onclick*='tab-details']");
     if (typeof switchTab === 'function') {
         switchTab('tab-details', btn);
     }
+    
+    // Show return button in debtors tab
+    const returnBtn = document.getElementById('btnReturnToKam');
+    const returnText = document.getElementById('btnReturnToKamText');
+    if (returnBtn) {
+        returnBtn.classList.remove('hidden');
+        if (returnText) {
+            const shortQ = (partnerQuery && partnerQuery.length > 20) ? (partnerQuery.slice(0, 18) + '...') : (partnerQuery || 'партнеру');
+            returnText.innerText = `Назад в КАМ (${shortQ})`;
+        }
+    }
+
     setTimeout(() => {
         const searchInput = document.getElementById('searchDebtors');
         if (searchInput) {
@@ -2357,7 +2402,11 @@ function renderKamTable(partners) {
             </td>
             
             <td class="text-center ${planBadge} kam-plan-pct">${p.plan > 0 ? `${p.plan_pct.toFixed(0)}%` : '—'}</td>
-            <td class="text-center font-bold text-gray-700">${fmt(p.trans_leads)}</td>
+            <td class="text-center font-bold text-gray-700">
+                ${p.trans_leads > 0 
+                    ? `<button type="button" onclick="event.stopPropagation(); openTransferredLeadsModal(${p.id || 'null'}, '${(p.name || '').replace(/'/g, "\\'")}')" class="px-2 py-0.5 rounded font-bold text-blue-600 hover:text-blue-900 hover:bg-blue-100 transition underline decoration-dotted cursor-pointer" title="Посмотреть переданные лиды (${p.trans_leads} шт.)">${fmt(p.trans_leads)}</button>`
+                    : `<span class="text-gray-400">0</span>`}
+            </td>
             <td class="text-center font-black text-purple-700 bg-purple-50/40">${fmt(p.trans_deals)}</td>
             <td class="text-center ${crColor}">${crFormatted}</td>
             <td class="text-center font-bold text-amber-700">${fmt(p.mp_deals)}</td>
@@ -2421,7 +2470,11 @@ function renderKamTable(partners) {
                         <td class="text-center text-gray-400">—</td>
                         <td class="text-center text-gray-400">—</td>
                         <td class="text-center text-gray-400">—</td>
-                        <td class="text-center text-gray-600">${fmt(bStats.trans_leads)}</td>
+                        <td class="text-center text-gray-600">
+                            ${bStats.trans_leads > 0 
+                                ? `<button type="button" onclick="event.stopPropagation(); openTransferredLeadsModal(${p.id || 'null'}, '${(p.name || '').replace(/'/g, "\\'")}', '${brandName.replace(/'/g, "\\'")}')" class="px-1.5 py-0.5 rounded font-semibold text-blue-600 hover:text-blue-900 hover:bg-blue-100 transition underline decoration-dotted cursor-pointer" title="Посмотреть переданные лиды по марке ${brandName}">${fmt(bStats.trans_leads)}</button>`
+                                : `<span class="text-gray-400">0</span>`}
+                        </td>
                         <td class="text-center text-purple-700 font-semibold">${fmt(bStats.trans_deals)}</td>
                         <td class="text-center ${bCrColor}">${bCr}</td>
                         <td class="text-center text-amber-700">${fmt(bStats.mp_deals)}</td>
@@ -2890,3 +2943,283 @@ function renderKamLegalEntitiesModalTable() {
         cont.innerHTML = html;
     }
 }
+
+/* ====================================================================
+ * Transferred Leads Modal & Excel Export Functionality
+ * ====================================================================*/
+let currentTransferredLeadsList = [];
+
+function openTransferredLeadsModal(pid, partnerName, brandFilter) {
+    const modal = document.getElementById('modalTransferredLeads');
+    if (!modal) return;
+
+    const titleEl = document.getElementById('transLeadsModalPartnerName');
+    const badgeEl = document.getElementById('transLeadsModalCountBadge');
+    const subEl = document.getElementById('transLeadsModalSubtitle');
+    const searchInput = document.getElementById('searchTransLeadsInput');
+    if (searchInput) searchInput.value = '';
+
+    const safePName = partnerName || 'Партнер';
+    let displayName = safePName;
+    if (brandFilter) displayName += ` (${brandFilter})`;
+    if (titleEl) titleEl.innerText = displayName;
+
+    // Get active month
+    const curMonth = (typeof activeMonth !== 'undefined' && activeMonth) ? activeMonth : '2026-09';
+    if (subEl) subEl.innerText = `Реестр отправленных лидов дилеру из CRM за период: ${curMonth}`;
+
+    // Registry lookup for emails & aliases
+    let regPartner = null;
+    if (pid && typeof partnerLookup !== 'undefined' && partnerLookup[`ID_${pid}`]) {
+        regPartner = partnerLookup[`ID_${pid}`];
+    } else if (typeof matchDealerToPartner === 'function') {
+        regPartner = matchDealerToPartner(safePName);
+    }
+
+    // Build client-to-deal map for models
+    const clientDealMap = {};
+    if (payload && payload.sys_db) {
+        payload.sys_db.forEach(d => {
+            if (d.ClientId) clientDealMap[String(d.ClientId).trim()] = d;
+            if (d.LeadId) clientDealMap[String(d.LeadId).trim()] = d;
+        });
+    }
+
+    // Filter leads from payload.sys_db_partners
+    const allLeads = (payload && payload.sys_db_partners) ? payload.sys_db_partners : [];
+    const matchedLeads = [];
+
+    const normPName = safePName.toLowerCase();
+    const normBrand = brandFilter ? normalizeBrandName(brandFilter) : null;
+
+    allLeads.forEach(r => {
+        if (r.Type !== 'Лид') return;
+        const rMonth = (r.Month || '').replace("'", "");
+        if (rMonth !== curMonth) return;
+        if (r.HasPrepay && r.HasPrepay !== 0) return; // Transferred leads are clean leads without prepay
+
+        // Match partner
+        let match = false;
+        if (pid && r.PartnerId === pid) match = true;
+        else if (r.Partner && r.Partner.toLowerCase() === normPName) match = true;
+        else if (r.RawPartner && r.RawPartner.toLowerCase().includes(normPName)) match = true;
+        else if (regPartner && r.PartnerId === regPartner.id) match = true;
+        
+        if (!match) return;
+
+        // Match brand if provided
+        if (normBrand) {
+            const b = normalizeBrandName(r.Brand);
+            if (b !== normBrand) return;
+        }
+
+        // Resolve model from deals if not present in lead
+        let model = r.Model || '';
+        const deal = (r.ClientId && clientDealMap[String(r.ClientId).trim()]) || (r.LeadId && clientDealMap[String(r.LeadId).trim()]);
+        if (deal && deal.Model) {
+            model = deal.Model;
+        }
+
+        // Resolve recipient email from OEM data or pochta_aliases
+        let recipientEmail = '';
+        if (regPartner) {
+            if (regPartner.oem_data && regPartner.oem_data.length > 0) {
+                const leadBrand = normalizeBrandName(r.Brand);
+                const matchingOem = regPartner.oem_data.find(o => normalizeBrandName(o.brand) === leadBrand && o.email) || regPartner.oem_data.find(o => o.email);
+                if (matchingOem && matchingOem.email) {
+                    recipientEmail = matchingOem.email;
+                }
+            }
+            if (!recipientEmail && regPartner.pochta_aliases && regPartner.pochta_aliases.length > 0) {
+                recipientEmail = regPartner.pochta_aliases.join(', ');
+            }
+        }
+
+        matchedLeads.push({
+            lead_id: r.LeadId || '',
+            client_id: r.ClientId || '',
+            date_serial: r.Date,
+            brand: r.Brand || '—',
+            model: model || '—',
+            partner_name: r.Partner || safePName,
+            recipient_email: recipientEmail || '—',
+            has_prepay: r.HasPrepay || 0
+        });
+    });
+
+    // Sort by date descending
+    matchedLeads.sort((a, b) => (b.date_serial || 0) - (a.date_serial || 0));
+
+    currentTransferredLeadsList = matchedLeads;
+
+    if (badgeEl) badgeEl.innerText = `${matchedLeads.length} шт.`;
+
+    renderTransferredLeadsModalTable(matchedLeads);
+
+    modal.classList.remove('hidden');
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function closeTransferredLeadsModal() {
+    const modal = document.getElementById('modalTransferredLeads');
+    if (modal) modal.classList.add('hidden');
+}
+
+function renderTransferredLeadsModalTable(leads) {
+    const container = document.getElementById('transLeadsTableContainer');
+    const counterEl = document.getElementById('transLeadsRowsCounter');
+    if (!container) return;
+
+    if (counterEl) {
+        counterEl.innerText = `Отображено: ${leads.length} из ${currentTransferredLeadsList.length}`;
+    }
+
+    if (leads.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-12 text-gray-400">
+                <div class="text-3xl mb-2">📭</div>
+                <p class="font-bold text-gray-700">Лиды не найдены</p>
+                <p class="text-xs text-gray-400 mt-1">По данному партнеру отсутствуют переданные лиды за указанный период</p>
+            </div>
+        `;
+        return;
+    }
+
+    let html = `
+    <table class="min-w-full text-xs">
+        <thead class="bg-slate-800 text-white font-bold sticky top-0 z-10">
+            <tr>
+                <th class="py-2.5 px-3 text-center w-12">№</th>
+                <th class="py-2.5 px-3 text-left w-24">Дата</th>
+                <th class="py-2.5 px-3 text-left w-36">ID Лида (CRM)</th>
+                <th class="py-2.5 px-3 text-left w-32">Client ID</th>
+                <th class="py-2.5 px-3 text-left w-32">Марка</th>
+                <th class="py-2.5 px-3 text-left">Модель</th>
+                <th class="py-2.5 px-3 text-left">Email получателя (ДЦ)</th>
+                <th class="py-2.5 px-3 text-center w-28">Статус аванса</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+    `;
+
+    leads.forEach((l, idx) => {
+        const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60';
+        
+        let dateStr = '—';
+        if (l.date_serial && typeof excelToJSDate === 'function') {
+            const d = excelToJSDate(l.date_serial);
+            if (d) dateStr = d.toLocaleDateString('ru-RU');
+        }
+
+        const leadLink = l.lead_id 
+            ? `<a href="https://back.sberauto.com/crm/leads/${l.lead_id}" target="_blank" class="inline-flex items-center gap-1 font-bold text-blue-600 hover:text-blue-800 hover:underline">
+                ${l.lead_id}
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+               </a>`
+            : '<span class="text-gray-400">—</span>';
+
+        const clientLink = l.client_id
+            ? `<a href="https://back.sberauto.com/crm/clients/${l.client_id}" target="_blank" class="font-mono text-slate-700 hover:text-blue-600 font-semibold">
+                ${l.client_id}
+               </a>`
+            : '<span class="text-gray-400">—</span>';
+
+        const prepayBadge = l.has_prepay === 1
+            ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Есть аванс</span>`
+            : `<span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-600">Без аванса</span>`;
+
+        html += `
+        <tr class="${rowBg} hover:bg-blue-50/50 transition">
+            <td class="py-2 px-3 text-center text-gray-400 font-medium">${idx + 1}</td>
+            <td class="py-2 px-3 text-gray-700 whitespace-nowrap">${dateStr}</td>
+            <td class="py-2 px-3 whitespace-nowrap">${leadLink}</td>
+            <td class="py-2 px-3 whitespace-nowrap">${clientLink}</td>
+            <td class="py-2 px-3 font-bold text-gray-900">${l.brand}</td>
+            <td class="py-2 px-3 text-gray-700 font-medium">${l.model}</td>
+            <td class="py-2 px-3 text-gray-600 font-mono text-[11px] truncate max-w-xs" title="${l.recipient_email}">${l.recipient_email}</td>
+            <td class="py-2 px-3 text-center">${prepayBadge}</td>
+        </tr>
+        `;
+    });
+
+    html += `</tbody></table>`;
+    container.innerHTML = html;
+}
+
+function filterTransferredLeadsModalTable(q) {
+    const query = (q || '').toLowerCase().trim();
+    if (!query) {
+        renderTransferredLeadsModalTable(currentTransferredLeadsList);
+        return;
+    }
+    const filtered = currentTransferredLeadsList.filter(l => {
+        return (l.lead_id && l.lead_id.toLowerCase().includes(query)) ||
+               (l.client_id && l.client_id.toLowerCase().includes(query)) ||
+               (l.brand && l.brand.toLowerCase().includes(query)) ||
+               (l.model && l.model.toLowerCase().includes(query)) ||
+               (l.recipient_email && l.recipient_email.toLowerCase().includes(query));
+    });
+    renderTransferredLeadsModalTable(filtered);
+}
+
+function exportTransferredLeadsToExcel() {
+    if (typeof XLSX === 'undefined') {
+        alert("Библиотека экспорта в Excel еще загружается. Повторите попытку через секунду.");
+        return;
+    }
+    if (!currentTransferredLeadsList || currentTransferredLeadsList.length === 0) {
+        alert("Нет лидов для экспорта.");
+        return;
+    }
+
+    const wsData = [
+        ["№", "ID Лида", "Client ID", "Партнер", "Дата передачи", "Марка", "Модель", "Email получателя (ДЦ)", "Статус аванса", "Ссылка на CRM BackOffice"]
+    ];
+
+    currentTransferredLeadsList.forEach((l, idx) => {
+        let dateStr = '—';
+        if (l.date_serial && typeof excelToJSDate === 'function') {
+            const d = excelToJSDate(l.date_serial);
+            if (d) dateStr = d.toLocaleDateString('ru-RU');
+        }
+        const backofficeUrl = l.lead_id ? `https://back.sberauto.com/crm/leads/${l.lead_id}` : (l.client_id ? `https://back.sberauto.com/crm/clients/${l.client_id}` : '—');
+
+        wsData.push([
+            idx + 1,
+            l.lead_id || '—',
+            l.client_id || '—',
+            l.partner_name || '—',
+            dateStr,
+            l.brand || '—',
+            l.model || '—',
+            l.recipient_email || '—',
+            l.has_prepay === 1 ? 'Есть аванс' : 'Без аванса',
+            backofficeUrl
+        ]);
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    ws['!cols'] = [
+        { wch: 6 },
+        { wch: 14 },
+        { wch: 16 },
+        { wch: 28 },
+        { wch: 14 },
+        { wch: 16 },
+        { wch: 20 },
+        { wch: 35 },
+        { wch: 15 },
+        { wch: 45 }
+    ];
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Переданные_лиды");
+
+    const pName = (currentTransferredLeadsList[0] && currentTransferredLeadsList[0].partner_name) || 'Партнер';
+    const cleanName = pName.replace(/["*\\/?:<>|]/g, '').replace(/\s+/g, '_').slice(0, 30);
+    const todayStr = new Date().toLocaleDateString('ru-RU').replace(/\./g, '_');
+    const fileName = `Переданные_лиды_${cleanName}_${todayStr}.xlsx`;
+
+    XLSX.writeFile(wb, fileName);
+}
+
