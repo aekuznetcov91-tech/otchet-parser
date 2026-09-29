@@ -205,8 +205,10 @@ function renderDebtorsTable(filterCfg) {
 
     sortedCompanies.forEach((comp, cIdx) => {
         let rowClass = (cIdx % 2 === 0) ? "bg-white" : "bg-slate-50/70";
+        let safeCompName = (comp.name || '').replace(/"/g, '&quot;');
+        let safeKamName = (comp.kam || '').replace(/"/g, '&quot;');
         comp.cars.forEach((car, carIdx) => {
-            html += `<tr class="${rowClass} hover:bg-amber-50/50 transition">`;
+            html += `<tr data-company="${safeCompName}" data-kam="${safeKamName}" data-car-idx="${carIdx}" class="${rowClass} hover:bg-amber-50/50 transition debtor-row">`;
             if (carIdx === 0) {
                 html += `<td rowspan="${comp.cars.length}" class="font-bold text-gray-900 align-top border-r border-gray-200 bg-white">
                     <div class="flex items-center gap-1.5 flex-wrap">
@@ -241,10 +243,34 @@ function filterDebtorsTable(query) {
     let q = (query || "").toLowerCase().trim();
     let table = document.getElementById('tableDebtors');
     if (!table) return;
-    let rows = table.querySelectorAll('tbody tr');
+    let rows = table.querySelectorAll('tbody tr.debtor-row');
+    if (rows.length === 0) {
+        rows = table.querySelectorAll('tbody tr');
+    }
+    if (!q) {
+        rows.forEach(r => r.style.display = "");
+        return;
+    }
+
+    // Step 1: find which companies match query directly by company name or KAM
+    let compMatches = new Set();
     rows.forEach(r => {
+        let comp = (r.getAttribute('data-company') || '').toLowerCase();
+        let kam = (r.getAttribute('data-kam') || '').toLowerCase();
+        if (comp.includes(q) || kam.includes(q)) {
+            compMatches.add(comp);
+        }
+    });
+
+    // Step 2: show all rows of matching companies, or rows that match query by car fields
+    rows.forEach(r => {
+        let comp = (r.getAttribute('data-company') || '').toLowerCase();
         let txt = r.innerText.toLowerCase();
-        r.style.display = txt.includes(q) ? "" : "none";
+        if (compMatches.has(comp) || txt.includes(q)) {
+            r.style.display = "";
+        } else {
+            r.style.display = "none";
+        }
     });
 }
 

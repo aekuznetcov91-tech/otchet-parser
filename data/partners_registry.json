@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1835,
+  "total_master_partners": 1826,
   "partners": [
     {
       "partner_id": 1001,
@@ -142,10 +142,13 @@
         "ООО \"АЛАРМ АВТО ЮГО-ЗАПАД\" online",
         "ООО \"АЛАРМ-КОМТРАНС\" online",
         "ООО \"АЛАРМ-МОТОРС ЛАХТА\" ONLINE",
-        "ООО \"АЛАРМ-МОТОРС ЮГО-ЗАПАД\" ONLINE"
+        "ООО \"АЛАРМ-МОТОРС ЮГО-ЗАПАД\" ONLINE",
+        "ООО \"АЛАРМ-МОТОРС ОЗЕРКИ",
+        "Online ООО \"АЛАРМ-МОТОРС ОЗЕРКИ\""
       ],
       "bi_aliases": [
-        "Аларм-Моторс ГК"
+        "Аларм-Моторс ГК",
+        "ООО \"АЛАРМ-МОТОРС ОЗЕРКИ"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -321,15 +324,17 @@
     {
       "partner_id": 1003,
       "canonical_name": "ФДЦ Трансфор",
-      "holding": "ФДЦ",
+      "holding": "ФДЦ Трансфор",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ООО \"ТРАНСФОР Г. КРАСНОДАР\" ONLINE",
-        "ФДЦ Трансфор"
+        "ФДЦ Трансфор",
+        "ONLINE пилот ФДЦ Трансфор г. Краснодар"
       ],
       "bi_aliases": [
         "ONLINE ФДЦ Трансфор",
-        "ФДЦ Трансфор"
+        "ФДЦ Трансфор",
+        "ONLINE пилот ФДЦ Трансфор г. Краснодар"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -345,16 +350,18 @@
     {
       "partner_id": 1004,
       "canonical_name": "ФДЦ Техно-Темп",
-      "holding": "ФДЦ",
+      "holding": "ФДЦ Техно-Темп",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ONLINE Техно-Темп (ООО \"Техно-Темп\")",
         "ФДЦ Техно-Темп",
-        "Техно-темп Лада Краснодар ONLINE"
+        "Техно-темп Лада Краснодар ONLINE",
+        "ONLINE пилот ФДЦ Техно-Темп Краснодар"
       ],
       "bi_aliases": [
         "ONLINE ФДЦ Техно-Темп",
-        "ФДЦ Техно-Темп"
+        "ФДЦ Техно-Темп",
+        "ONLINE пилот ФДЦ Техно-Темп Краснодар"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -428,76 +435,6 @@
           "city": "Октябрьский р-н, ул.Таганрогская, 211",
           "name": "ONLINE ФДЦ Авто-Ревю",
           "brand": "LADA"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1007,
-      "canonical_name": "O&J ОПТИМА КУБАНЬ",
-      "holding": "O&J",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "O&J ОПТИМА КУБАНЬ",
-        "ONLINE O&J (ООО \"ОПТИМА КУБАНЬ\")",
-        "ГК Автодом / (ООО \"ДЦ АЛТУФЬЕВО\")",
-        "ГК Автодом / (ООО \"ДЦ Алтуфьево\")",
-        "ООО \"ДЦ АЛТУФЬЕВО\"",
-        "ООО \"ДЦ Алтуфьево\"",
-        "ДЦ АЛТУФЬЕВО",
-        "ДЦ Алтуфьево",
-        "Автодом JAECOO Алтуфьево ДЦА Москва, 85-й км МКАД, вл. 5, с. 1",
-        "Автодом Алтуфьево"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [
-        "Почта O&J КРД-2"
-      ],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1008,
-      "canonical_name": "ООО Р-МОТОРС ЛАДА (Тюмень)",
-      "holding": "ООО Р-МОТОРС ЛАДА (Тюмень)",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "ООО Р-МОТОРС ЛАДА (Тюмень)",
-        "ONLINE Р-Моторс Лада (ОП Кемерово)",
-        "Р-МОТОРС ЛАДА (ОП Новосибирск)",
-        "ONLINE Р-Моторс Лада (ОП Омск)",
-        "ONLINE Р-Моторс Лада (ОП Новокузнецк)",
-        "ONLINE Р-Моторс Лада (ОП Курган)",
-        "ООО \"Р-МОТОРС\" ONLINE"
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
-        "ООО Р-МОТОРС ЛАДА (Тюмень)"
-      ],
-      "pochta_aliases": [
-        "Почта Ай-Би-Эм Чери Кемерово-2"
-      ],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Новороссийск",
-          "group_link": "https://max.ru/join/g5nNcROKTjrc6P096YIB6fIAfDKbjm_Klb1iy0iplUM",
-          "name": "Р-Моторс",
-          "legal_entity": "ООО Р-Моторс",
-          "inn": "2315166123",
-          "address": "Новороссийск, с. Цемдолина, ул. Ленина, д. 7-И",
-          "back_name": "",
-          "email": "b.zemka@mb-rmotors.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Новороссийск",
-          "name": "Р-Моторс",
-          "legal_entity": "ООО Р-Моторс",
-          "inn": "2315166123",
-          "responsible": "Валерия Солдатова"
         }
       ],
       "status": "verified"
@@ -853,15 +790,22 @@
     },
     {
       "partner_id": 1013,
-      "canonical_name": "Глобус Автосфера",
-      "holding": "Глобус",
+      "canonical_name": "ГК Глобус",
+      "holding": "ГК Глобус",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ONLINE ООО \"АВТОСФЕРА\"",
-        "Глобус Автосфера"
+        "Глобус Автосфера",
+        "ГК Глобус",
+        "Глобус",
+        "ООО \"ГЛОБУС-МОТОРС",
+        "Online ООО \"ГЛОБУС-МОТОРС\""
       ],
       "bi_aliases": [
-        "Глобус Автосфера"
+        "Глобус Автосфера",
+        "ГК Глобус",
+        "Глобус",
+        "ООО \"ГЛОБУС-МОТОРС"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -912,6 +856,33 @@
           "legal_entity": "ООО Автосфера",
           "inn": "6829089019",
           "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тамбов",
+          "group_link": "https://max.ru/join/W5yL5v9HfPPOQyagEm6DZke64ia6xcYZeotu-CnFVBA",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосалон Глобус",
+          "inn": "6829083521",
+          "address": "г. Тамбов, ул. Бастионная, д. 29",
+          "back_name": "",
+          "email": "nikolay.sdobnikov@tenet-globus.ru, alexandr.kolesnikov@tenet-globus.ru,",
+          "responsible": "Валерия Солдатова",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тамбов",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосалон Глобус",
+          "inn": "6829083521",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "GAC",
+          "city": "г. Тамбов, ул. Киквидзе, д. 83",
+          "name": "ГК Глобус",
+          "brand": "GAC"
         }
       ],
       "status": "verified"
@@ -1001,16 +972,34 @@
     },
     {
       "partner_id": 1016,
-      "canonical_name": "ЛЕОН-АВТО (ООО \"ДМ-АВТО\" СЕВЕР\")",
-      "holding": "ЛЕОН-АВТО",
-      "kam": "Валерия Солдатова",
+      "canonical_name": "Леон Авто (Йошкар-Ола)",
+      "holding": "Леон Авто",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
-        "Online ЛЕОН-АВТО (ООО \"ДМ-АВТО\" СЕВЕР\")",
-        "Online ООО \"ЛЕОН\""
+        "Online ООО \"ЛЕОН\"",
+        "Леон Авто (Йошкар-Ола)",
+        "ООО Леон",
+        "Леон Авто Йошкар-Ола"
       ],
-      "bi_aliases": [],
+      "bi_aliases": [
+        "Леон Авто (Йошкар-Ола)"
+      ],
       "pochta_aliases": [],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Йошкар-Ола",
+          "group_link": "https://max.ru/join/MhIQluReOMyTsqTqX1FM17Zu9hT1YQNLRsXWeuQud3U",
+          "name": "Леон Авто",
+          "legal_entity": "ООО Леон",
+          "inn": "1207901941",
+          "address": "Республика Марий Эл пгт. Медведево,ул. Чехова, д. 16, корп. А",
+          "back_name": "",
+          "email": "ksapego@avto-yola.ru",
+          "responsible": "Евгения Добролюбова",
+          "brand": "JETOUR"
+        }
+      ],
       "status": "verified"
     },
     {
@@ -1345,11 +1334,10 @@
     {
       "partner_id": 1023,
       "canonical_name": "Леон Авто",
-      "holding": "Леон",
+      "holding": "Леон Авто",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ONLINE ООО \"ЛЕОН-АВТО\"",
-        "Online ООО \"ЛЕОН\"",
         "Online ЛЕОН-АВТО (ООО \"ДМ-АВТО\" СЕВЕР\")"
       ],
       "bi_aliases": [
@@ -1371,19 +1359,6 @@
           "brand": "CHERY & TENET"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Йошкар-Ола",
-          "group_link": "https://max.ru/join/MhIQluReOMyTsqTqX1FM17Zu9hT1YQNLRsXWeuQud3U",
-          "name": "Леон Авто",
-          "legal_entity": "ООО Леон",
-          "inn": "1207901941",
-          "address": "Республика Марий Эл пгт. Медведево,ул. Чехова, д. 16, корп. А",
-          "back_name": "",
-          "email": "ksapego@avto-yola.ru",
-          "responsible": "Евгения Добролюбова",
-          "brand": "JETOUR"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Краснодар",
           "group_link": "https://max.ru/join/5zJCrRDv-e5NGR1jYrcDSRo9xyKWSLrpz7ri1F5N828",
@@ -1395,14 +1370,6 @@
           "email": "v.zadvornov@leon-avto.com",
           "responsible": "Валерия Солдатова",
           "brand": "SOLARIS"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Йошкар-Ола",
-          "name": "Леон Авто",
-          "legal_entity": "ООО Леон",
-          "inn": "1207901941",
-          "responsible": "Евгения Добролюбова"
         },
         {
           "sheet": "SOLARIS",
@@ -1434,13 +1401,22 @@
         "ООО Р-МОТОРС ЛАДА (Тюмень)",
         "Р-МОТОРС ЛАДА (ОП Новосибирск)",
         "ONLINE Р-Моторс Лада (ОП Кемерово)",
-        "ONLINE Р-Моторс Лада (ОП Омск)"
+        "ONLINE Р-Моторс Лада (ОП Омск)",
+        "ONLINE Р-Моторс Лада (ОП Новокузнецк)",
+        "ONLINE Р-Моторс Лада (ОП Курган)",
+        "ООО \"Р-МОТОРС\" ONLINE",
+        "Р-Моторс Лада (ОП Барнаул)",
+        "ONLINE Р-Моторс Лада (ОП Барнаул)"
       ],
       "bi_aliases": [
         "Р-Моторс ЛАДА",
-        "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк"
+        "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
+        "ООО Р-МОТОРС ЛАДА (Тюмень)",
+        "Р-Моторс Лада (ОП Барнаул)"
       ],
-      "pochta_aliases": [],
+      "pochta_aliases": [
+        "Почта Ай-Би-Эм Чери Кемерово-2"
+      ],
       "oem_data": [
         {
           "sheet": "LADA",
@@ -1459,43 +1435,50 @@
           "sheet": "LADA",
           "city": "ул.Терешковой, д.62",
           "name": "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "LADA",
           "city": "проспект Машиностроителей, 40",
           "name": "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "LADA",
           "city": "г. Новосибирск, ул.Аэропорт, д.51/1",
           "name": "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "LADA",
           "city": "г. Новосибирск, улица, Хилокская, 9локская 9",
           "name": "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "LADA",
           "city": "ул.Новороссийская, д.2",
           "name": "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "LADA",
           "city": "ул.Пулковское шоссе, д.70, литер Е",
           "name": "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "LADA",
           "city": "ул.Федюнинского,д.2 а",
           "name": "ONLINE пилот ФДЦ Р-Моторс НВСБРСК Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "LADA",
@@ -1503,6 +1486,27 @@
           "name": "Р-моторс Лада Барнаул",
           "legal_entity": "ООО Р-Моторс ЛАДА",
           "inn": "7807073673",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Новороссийск",
+          "group_link": "https://max.ru/join/g5nNcROKTjrc6P096YIB6fIAfDKbjm_Klb1iy0iplUM",
+          "name": "Р-Моторс",
+          "legal_entity": "ООО Р-Моторс",
+          "inn": "2315166123",
+          "address": "Новороссийск, с. Цемдолина, ул. Ленина, д. 7-И",
+          "back_name": "",
+          "email": "b.zemka@mb-rmotors.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Новороссийск",
+          "name": "Р-Моторс",
+          "legal_entity": "ООО Р-Моторс",
+          "inn": "2315166123",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -1712,21 +1716,29 @@
     {
       "partner_id": 1030,
       "canonical_name": "ГК Оптима",
-      "holding": "ГК",
+      "holding": "ГК Оптима",
       "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ONLINE Оптима Кубань Лиды (ООО \"ОПТИМА КУБАНЬ\")",
         "ONLINE CHERY Оптима (ООО \"ОПТИМА ЛАЙН\")",
         "ООО \"ОПТИМА САЛГИР\" online",
         "ГК Оптима",
-        "ONLINE O&J (ООО \"ОПТИМА КУБАНЬ\")"
+        "ONLINE O&J (ООО \"ОПТИМА КУБАНЬ\")",
+        "O&J ОПТИМА КУБАНЬ",
+        "ГК Автодом / (ООО \"ДЦ АЛТУФЬЕВО\")",
+        "ООО \"ДЦ АЛТУФЬЕВО\"",
+        "ДЦ АЛТУФЬЕВО",
+        "Автодом JAECOO Алтуфьево ДЦА Москва, 85-й км МКАД, вл. 5, с. 1",
+        "Автодом Алтуфьево"
       ],
       "bi_aliases": [
         "Online ГК Оптима",
-        "ГК Оптима"
+        "ГК Оптима",
+        "O&J ОПТИМА КУБАНЬ"
       ],
       "pochta_aliases": [
-        "Почта Ай-Би-Эм Чери Кемерово-3"
+        "Почта Ай-Би-Эм Чери Кемерово-3",
+        "Почта O&J КРД-2"
       ],
       "oem_data": [
         {
@@ -9529,19 +9541,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1131,
-      "canonical_name": "Р-Моторс Лада (ОП Барнаул)",
-      "holding": "Р-Моторс",
-      "kam": "Светлана Дариенко",
-      "bitrix_aliases": [
-        "ONLINE Р-Моторс Лада (ОП Барнаул)"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 1132,
       "canonical_name": "Динамика Вологда",
       "holding": "Динамика Вологда",
@@ -11005,41 +11004,6 @@
           "name": "Сатурн",
           "legal_entity": "ООО Сатурн-Л",
           "inn": "4826051045",
-          "responsible": "Валерия Солдатова"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1182,
-      "canonical_name": "Глобус",
-      "holding": "Глобус",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Глобус"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Тамбов",
-          "group_link": "https://max.ru/join/W5yL5v9HfPPOQyagEm6DZke64ia6xcYZeotu-CnFVBA",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосалон Глобус",
-          "inn": "6829083521",
-          "address": "г. Тамбов, ул. Бастионная, д. 29",
-          "back_name": "",
-          "email": "nikolay.sdobnikov@tenet-globus.ru, alexandr.kolesnikov@tenet-globus.ru,",
-          "responsible": "Валерия Солдатова",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Тамбов",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосалон Глобус",
-          "inn": "6829083521",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -16827,22 +16791,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 632016,
-      "canonical_name": "ONLINE пилот ФДЦ Техно-Темп Краснодар",
-      "holding": "",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "ONLINE Техно-Темп (ООО \"Техно-Темп\")",
-        "Техно-темп Лада Краснодар ONLINE"
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ Техно-Темп Краснодар"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
       "partner_id": 632017,
       "canonical_name": "СберАвто (Почта Форвард Чери Севастополь)",
       "holding": "",
@@ -16863,21 +16811,6 @@
       "bitrix_aliases": [],
       "bi_aliases": [
         "ONLINE АГРОЛАДАСЕРВИС"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632021,
-      "canonical_name": "ONLINE пилот ФДЦ Трансфор г. Краснодар",
-      "holding": "",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "ООО \"ТРАНСФОР Г. КРАСНОДАР\" ONLINE"
-      ],
-      "bi_aliases": [
-        "ONLINE пилот ФДЦ Трансфор г. Краснодар"
       ],
       "pochta_aliases": [],
       "oem_data": [],
@@ -25671,17 +25604,6 @@
       "oem_data": []
     },
     {
-      "partner_id": 632045,
-      "canonical_name": "ООО \"ГЛОБУС-МОТОРС",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "Online ООО \"ГЛОБУС-МОТОРС\""
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": []
-    },
-    {
       "partner_id": 632046,
       "canonical_name": "АВИЛОН АГ",
       "kam": "Алексей Чихарев",
@@ -25899,17 +25821,6 @@
       "bitrix_aliases": [
         "ПНД ONLINE",
         "ПНД"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": []
-    },
-    {
-      "partner_id": 632048,
-      "canonical_name": "ООО \"АЛАРМ-МОТОРС ОЗЕРКИ",
-      "kam": "Светлана Дариенко",
-      "bitrix_aliases": [
-        "Online ООО \"АЛАРМ-МОТОРС ОЗЕРКИ\""
       ],
       "bi_aliases": [],
       "pochta_aliases": [],
@@ -26438,22 +26349,6 @@
           "legal_entity": "ООО РГС",
           "inn": "2904030348",
           "responsible": "Светлана Дариенко"
-        }
-      ]
-    },
-    {
-      "partner_id": "P_OEM_43cba4f4",
-      "canonical_name": "ГК Глобус",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "GAC",
-          "city": "г. Тамбов, ул. Киквидзе, д. 83",
-          "name": "ГК Глобус",
-          "brand": "GAC"
         }
       ]
     },

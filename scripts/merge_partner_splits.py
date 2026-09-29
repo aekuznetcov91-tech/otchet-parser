@@ -218,6 +218,48 @@ MERGERS = [
         'target_name': 'Автопортрет (Нева Авто)',
         'target_kam': 'Светлана Дариенко',
         'donor_ids': [1222]
+    },
+    # 31. ГК Оптима и O&J Оптима кубань: merge 1007 into 1030
+    {
+        'target_id': 1030,
+        'target_name': 'ГК Оптима',
+        'target_kam': 'Валерия Солдатова',
+        'donor_ids': [1007]
+    },
+    # 32. ФДЦ Трансфор: merge 632021 into 1003
+    {
+        'target_id': 1003,
+        'target_name': 'ФДЦ Трансфор',
+        'target_kam': 'Валерия Солдатова',
+        'donor_ids': [632021]
+    },
+    # 33. ГК Глобус: merge 1182, 632045, P_OEM_43cba4f4 into 1013
+    {
+        'target_id': 1013,
+        'target_name': 'ГК Глобус',
+        'target_kam': 'Валерия Солдатова',
+        'donor_ids': [1182, 632045, 'P_OEM_43cba4f4']
+    },
+    # 34. ФДЦ Техно-Темп: merge 632016 into 1004
+    {
+        'target_id': 1004,
+        'target_name': 'ФДЦ Техно-Темп',
+        'target_kam': 'Валерия Солдатова',
+        'donor_ids': [632016]
+    },
+    # 35. Р-Моторс: merge 1008, 1131 into 1025
+    {
+        'target_id': 1025,
+        'target_name': 'Р-Моторс ЛАДА',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [1008, 1131]
+    },
+    # 36. Аларм-Моторс Озерки: merge 632048 into 1002
+    {
+        'target_id': 1002,
+        'target_name': 'Аларм-Моторс ГК',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [632048]
     }
 ]
 
@@ -440,6 +482,83 @@ def apply_merges_to_file(filepath):
         p1285['holding'] = 'Авторитэйл'
         p1285['kam'] = 'Светлана Дариенко'
 
+    # 7. Леон Авто: Йошкар-Ола (1016) -> Евгения Добролюбова, Краснодар (1023) -> Валерия Солдатова
+    p1016 = partners_by_id.get(1016)
+    if p1016:
+        p1016['canonical_name'] = 'Леон Авто (Йошкар-Ола)'
+        p1016['holding'] = 'Леон Авто'
+        p1016['kam'] = 'Евгения Добролюбова'
+        p1016['bitrix_aliases'] = clean_list(['Online ООО "ЛЕОН"', 'Леон Авто (Йошкар-Ола)', 'ООО Леон', 'Леон Авто Йошкар-Ола'])
+        p1016['bi_aliases'] = clean_list(['Леон Авто (Йошкар-Ола)'])
+        p1016['oem_data'] = [
+            {
+                'sheet': 'JETOUR',
+                'city': 'Йошкар-Ола',
+                'group_link': 'https://max.ru/join/MhIQluReOMyTsqTqX1FM17Zu9hT1YQNLRsXWeuQud3U',
+                'name': 'Леон Авто',
+                'legal_entity': 'ООО Леон',
+                'inn': '1207901941',
+                'address': 'Республика Марий Эл пгт. Медведево,ул. Чехова, д. 16, корп. А',
+                'back_name': '',
+                'email': 'ksapego@avto-yola.ru',
+                'responsible': 'Евгения Добролюбова',
+                'brand': 'JETOUR'
+            }
+        ]
+
+    p1023 = partners_by_id.get(1023)
+    if p1023:
+        p1023['canonical_name'] = 'Леон Авто'
+        p1023['holding'] = 'Леон Авто'
+        p1023['kam'] = 'Валерия Солдатова'
+        p1023['bitrix_aliases'] = [a for a in p1023.get('bitrix_aliases', []) if a.strip().lower() != 'online ооо "леон"' and 'йошкар' not in a.lower()]
+        p1023['oem_data'] = [oem for oem in p1023.get('oem_data', []) if (oem.get('city') or '').lower() != 'йошкар-ола']
+
+    # 8. Р-Моторс: 1025 -> Светлана Дариенко (все города)
+    p1025 = partners_by_id.get(1025)
+    if p1025:
+        p1025['canonical_name'] = 'Р-Моторс ЛАДА'
+        p1025['holding'] = 'Р-Моторс'
+        p1025['kam'] = 'Светлана Дариенко'
+        if p1025.get('oem_data'):
+            for oem in p1025['oem_data']:
+                oem['responsible'] = 'Светлана Дариенко'
+
+    # 9. ГК Глобус: 1013 -> Валерия Солдатова
+    p1013 = partners_by_id.get(1013)
+    if p1013:
+        p1013['canonical_name'] = 'ГК Глобус'
+        p1013['holding'] = 'ГК Глобус'
+        p1013['kam'] = 'Валерия Солдатова'
+
+    # 10. ГК Оптима: 1030 -> Валерия Солдатова
+    p1030 = partners_by_id.get(1030)
+    if p1030:
+        p1030['canonical_name'] = 'ГК Оптима'
+        p1030['holding'] = 'ГК Оптима'
+        p1030['kam'] = 'Валерия Солдатова'
+
+    # 11. ФДЦ Трансфор: 1003 -> Валерия Солдатова
+    p1003 = partners_by_id.get(1003)
+    if p1003:
+        p1003['canonical_name'] = 'ФДЦ Трансфор'
+        p1003['holding'] = 'ФДЦ Трансфор'
+        p1003['kam'] = 'Валерия Солдатова'
+
+    # 12. ФДЦ Техно-Темп: 1004 -> Валерия Солдатова
+    p1004 = partners_by_id.get(1004)
+    if p1004:
+        p1004['canonical_name'] = 'ФДЦ Техно-Темп'
+        p1004['holding'] = 'ФДЦ Техно-Темп'
+        p1004['kam'] = 'Валерия Солдатова'
+
+    # 13. Аларм-Моторс ГК: 1002 -> Светлана Дариенко
+    p1002 = partners_by_id.get(1002)
+    if p1002:
+        p1002['canonical_name'] = 'Аларм-Моторс ГК'
+        p1002['holding'] = 'Аларм-Моторс'
+        p1002['kam'] = 'Светлана Дариенко'
+
     # Filter out removed donor partners
     new_partners = [p for p in partners if (p.get('partner_id') or p.get('id')) not in removed_pids]
     data['partners'] = new_partners
@@ -500,13 +619,42 @@ def apply_merges_to_data_json(filepath):
         if r.get('PartnerId') == 1285 or 'ВАГНЕР' in raw_p or 'АВТОРИТЭЙЛ' in raw_p:
             city_str = str(r.get('City') or '').lower()
             raw_str = raw_p.lower()
-            p_str = p_name.lower()
             r['PartnerId'] = 1285
             r['Partner'] = 'Вагнер Авто / Авторитэйл'
-            if any(k in city_str or k in raw_str or k in p_str for k in ['спб', 'санкт-петербург', 'петербург', 'вагнер']):
-                r['KAM'] = 'Светлана Дариенко'
-            elif any(k in city_str or k in raw_str or k in p_str for k in ['краснодар', 'юг', 'кубань']):
+            if any(k in city_str or k in raw_str for k in ['краснодар', 'юг', 'кубань']):
                 r['KAM'] = 'Валерия Солдатова'
+            elif any(k in city_str or k in raw_str for k in ['спб', 'санкт-петербург', 'петербург', 'вагнер']):
+                r['KAM'] = 'Светлана Дариенко'
+            else:
+                r['KAM'] = 'Светлана Дариенко'
+            modified = True
+
+        # Leon Auto allocation: Yoshkar-Ola -> Evgenia Dobrolyubova, Krasnodar -> Valeria Soldatova
+        if r.get('PartnerId') in [1016, 1023] or 'ЛЕОН' in raw_p or 'ДМ-АВТО' in raw_p:
+            city_str = str(r.get('City') or '').lower()
+            raw_str = raw_p.lower()
+            if 'йошкар' in city_str or 'йошкар' in raw_str or raw_str == 'online ооо "леон"' or raw_p == 'ONLINE ООО "ЛЕОН"':
+                r['PartnerId'] = 1016
+                r['Partner'] = 'Леон Авто (Йошкар-Ола)'
+                r['KAM'] = 'Евгения Добролюбова'
+                modified = True
+            elif 'краснодар' in city_str or 'дм-авто' in raw_str or 'леон-авто' in raw_str or 'леон авто' in raw_str:
+                r['PartnerId'] = 1023
+                r['Partner'] = 'Леон Авто'
+                r['KAM'] = 'Валерия Солдатова'
+                modified = True
+
+        # R-Motors allocation: all cities -> Svetlana Darienko
+        if r.get('PartnerId') in [1008, 1025, 1131] or 'Р-МОТОРС' in raw_p or 'Р МОТОРС' in raw_p or 'Р-МОТОРС' in p_name:
+            r['PartnerId'] = 1025
+            r['Partner'] = 'Р-Моторс ЛАДА'
+            r['KAM'] = 'Светлана Дариенко'
+            modified = True
+
+        # Globus allocation
+        if r.get('PartnerId') == 1013:
+            r['Partner'] = 'ГК Глобус'
+            r['KAM'] = 'Валерия Солдатова'
             modified = True
 
         # Motorland / Sokrat allocation:
@@ -551,13 +699,39 @@ def apply_merges_to_data_json(filepath):
         if r.get('PartnerId') == 1285 or 'ВАГНЕР' in raw_p or 'АВТОРИТЭЙЛ' in raw_p:
             city_str = str(r.get('City') or '').lower()
             raw_str = raw_p.lower()
-            p_str = p_name.lower()
             r['PartnerId'] = 1285
             r['PartnerName'] = 'Вагнер Авто / Авторитэйл'
-            if any(k in city_str or k in raw_str or k in p_str for k in ['спб', 'санкт-петербург', 'петербург', 'вагнер']):
-                r['KAM'] = 'Светлана Дариенко'
-            elif any(k in city_str or k in raw_str or k in p_str for k in ['краснодар', 'юг', 'кубань']):
+            if any(k in city_str or k in raw_str for k in ['краснодар', 'юг', 'кубань']):
                 r['KAM'] = 'Валерия Солдатова'
+            elif any(k in city_str or k in raw_str for k in ['спб', 'санкт-петербург', 'петербург', 'вагнер']):
+                r['KAM'] = 'Светлана Дариенко'
+            else:
+                r['KAM'] = 'Светлана Дариенко'
+            modified = True
+
+        if r.get('PartnerId') in [1016, 1023] or 'ЛЕОН' in raw_p or 'ДМ-АВТО' in raw_p:
+            city_str = str(r.get('City') or '').lower()
+            raw_str = raw_p.lower()
+            if 'йошкар' in city_str or 'йошкар' in raw_str or raw_str == 'online ооо "леон"' or raw_p == 'ONLINE ООО "ЛЕОН"':
+                r['PartnerId'] = 1016
+                r['PartnerName'] = 'Леон Авто (Йошкар-Ола)'
+                r['KAM'] = 'Евгения Добролюбова'
+                modified = True
+            elif 'краснодар' in city_str or 'дм-авто' in raw_str or 'леон-авто' in raw_str or 'леон авто' in raw_str:
+                r['PartnerId'] = 1023
+                r['PartnerName'] = 'Леон Авто'
+                r['KAM'] = 'Валерия Солдатова'
+                modified = True
+
+        if r.get('PartnerId') in [1008, 1025, 1131] or 'Р-МОТОРС' in raw_p or 'Р МОТОРС' in raw_p or 'Р-МОТОРС' in p_name:
+            r['PartnerId'] = 1025
+            r['PartnerName'] = 'Р-Моторс ЛАДА'
+            r['KAM'] = 'Светлана Дариенко'
+            modified = True
+
+        if r.get('PartnerId') == 1013:
+            r['PartnerName'] = 'ГК Глобус'
+            r['KAM'] = 'Валерия Солдатова'
             modified = True
 
         if r.get('PartnerId') == 1014 or r.get('PartnerId') == 1280 or 'МОТОРЛЕНД' in raw_p or 'СОКРАТ' in raw_p:
