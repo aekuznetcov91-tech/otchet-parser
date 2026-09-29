@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1825,
+  "total_master_partners": 1828,
   "partners": [
     {
       "partner_id": 1001,
@@ -5339,70 +5339,17 @@
     {
       "partner_id": 1058,
       "canonical_name": "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
-      "holding": "ЧЕРИ",
+      "holding": "Планета Авто",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ONLINE ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК (ООО \"АВТОГАРАНТИЯ\")",
         "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК"
       ],
       "bi_aliases": [
-        "СберАвто (Почта Автогарантия Чери Челябинск)",
-        "АВТОФОРУМ"
+        "СберАвто (Почта Автогарантия Чери Челябинск)"
       ],
       "pochta_aliases": [],
       "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/SqbSBuOWWzILQDW7IASOR9-FsHnlYUhaUawz12D4hRs",
-          "name": "Чери Центр Измайлово",
-          "legal_entity": "ООО ИЗМАЙЛОВО-СЕРВИС",
-          "inn": "5001070659",
-          "address": "МО, г.Балашиха, шоссе Энтузиастов (Западная коммунальная зона ), д. 2",
-          "back_name": "Нет",
-          "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
-          "responsible": "Алексей Чихарев",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Орск",
-          "group_link": "https://t.me/+6qti3RHuZbxkZWYy",
-          "name": "Tenet Центр Ника Авто",
-          "legal_entity": "ООО Велес Авто",
-          "inn": "5638074027",
-          "address": "г. Орск, ул. Жуковского, 17А",
-          "back_name": "Нет",
-          "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
-          "responsible": "Андрей Кузнецов",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Саратов",
-          "group_link": "https://max.ru/join/MVpqZJ1vJ1kJu84d2RHJP-odcRNv3Fclt4XfhxGmmDk",
-          "name": "Чери Центр Автофорум",
-          "legal_entity": "ООО Автофорум Центр",
-          "inn": "6452947574",
-          "address": "г. Саратов ул. имени А.П. Шехурдина, 2/4",
-          "back_name": "Нет",
-          "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
-          "responsible": "Андрей Кузнецов",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Таганрог",
-          "group_link": "https://t.me/+jhmuSnom4WxjM2My",
-          "name": "Гедон-Юг",
-          "legal_entity": "ООО Гедон-Юг",
-          "inn": "6154112410",
-          "address": "г.Таганрог, Ростовское шоссе, 10",
-          "back_name": "Нет",
-          "email": "a.pogosjan@chery-gedon.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "CHERY & TENET"
-        },
         {
           "sheet": "CHERY&TENET",
           "city": "Челябинск",
@@ -5456,27 +5403,6 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "SOLARIS",
-          "city": "Махачкала",
-          "group_link": "https://t.me/+bjGeqy85mbE4ZDMy",
-          "name": "Автолюкс Кар",
-          "legal_entity": "ООО Автолюкс Кар",
-          "inn": "546024274",
-          "address": "г. Махачкала, пгт. Ленинкент, ул. Кизилюртовская д.88",
-          "back_name": "Нет",
-          "email": "Magomed.magomedov@solaris-autoluxecar.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "SOLARIS"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Саратов",
-          "name": "Чери Центр Автофорум",
-          "legal_entity": "ООО Автофорум Центр",
-          "inn": "6452947574",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Челябинск",
           "name": "Планета Авто",
@@ -5499,38 +5425,6 @@
           "legal_entity": "ООО Автоцентр Гольфстрим",
           "inn": "7452048272",
           "responsible": "Евгения Добролюбова"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Махачкала",
-          "name": "Автолюкс Кар",
-          "legal_entity": "ООО Автолюкс Кар",
-          "inn": "0546024274",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Орск",
-          "name": "Tenet Центр Ника Авто",
-          "legal_entity": "ООО Велес Авто",
-          "inn": "5638074027",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Таганрог",
-          "name": "Гедон-Юг",
-          "legal_entity": "ООО Гедон-Юг",
-          "inn": "6154112410",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Москва",
-          "name": "Чери Центр Измайлово",
-          "legal_entity": "ООО ИЗМАЙЛОВО-СЕРВИС",
-          "inn": "5001070659",
-          "responsible": "Алексей Чихарев"
         },
         {
           "sheet": "CHERY&TENET",
@@ -12866,19 +12760,6 @@
           "brand": "CHERY & TENET"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Псков",
-          "group_link": "https://max.ru/join/6JtNvKQLgJw-GCm79lebzoibiiRPZAvaLWjISr32xRw",
-          "name": "Автосалон № 1",
-          "legal_entity": "ООО Автосалон 1",
-          "inn": "6000005056",
-          "address": "г. Псков,  Труда ул, 26 д., офис 3",
-          "back_name": "нет",
-          "email": "aipetrov@chery-autosalon1.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "CHERY & TENET"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Армавир",
           "group_link": "https://max.ru/join/53rQXaDsYXrF_aQCu8_a0e4wDjS7Af1k4FxXol5JPt8",
@@ -12890,12 +12771,6 @@
           "email": "novikova.v@krd-auto.ru, faskhutdinov@krd-auto.ru",
           "responsible": "Валерия Солдатова",
           "brand": "OMODA & JAECOO"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Geely - Смоленск, пр. Гагарина, 53; Belgee - Смоленск, ул. Николаева, д. 74",
-          "name": "Нет",
-          "brand": "Geely & Belgee"
         },
         {
           "sheet": "CHERY&TENET",
@@ -12912,14 +12787,6 @@
           "legal_entity": "ООО Авто для Вас Премиум",
           "inn": "2312310273",
           "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Псков",
-          "name": "Автосалон № 1",
-          "legal_entity": "ООО Автосалон 1",
-          "inn": "6000005056",
-          "responsible": "Светлана Дариенко"
         }
       ],
       "status": "verified"
@@ -30421,6 +30288,102 @@
           "brand": "GAC"
         }
       ]
+    },
+    {
+      "partner_id": 1287,
+      "canonical_name": "Автолюкс Кар",
+      "holding": "Автолюкс Кар",
+      "kam": "Валерия Солдатова",
+      "bitrix_aliases": [
+        "Автолюкс Кар",
+        "ООО \"АВТОЛЮКС КАР\"",
+        "ООО Автолюкс Кар"
+      ],
+      "bi_aliases": [
+        "Автолюкс Кар",
+        "Автолюкс Кар Махачкала"
+      ],
+      "pochta_aliases": [
+        "Magomed.magomedov@solaris-autoluxecar.ru"
+      ],
+      "oem_data": [
+        {
+          "sheet": "SOLARIS",
+          "city": "Махачкала",
+          "group_link": "https://t.me/+bjGeqy85mbE4ZDMy",
+          "name": "Автолюкс Кар",
+          "legal_entity": "ООО Автолюкс Кар",
+          "inn": "0546024274",
+          "address": "г. Махачкала, пгт. Ленинкент, ул. Кизилюртовская д.88",
+          "back_name": "Нет",
+          "email": "Magomed.magomedov@solaris-autoluxecar.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "SOLARIS"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1288,
+      "canonical_name": "Гедон-Юг",
+      "holding": "Гедон-Юг",
+      "kam": "Валерия Солдатова",
+      "bitrix_aliases": [
+        "Гедон-Юг",
+        "ООО \"ГЕДОН-ЮГ\"",
+        "ООО Гедон-Юг",
+        "Гедон Юг"
+      ],
+      "bi_aliases": [
+        "Гедон-Юг",
+        "Гедон-Юг Таганрог"
+      ],
+      "pochta_aliases": [
+        "a.pogosjan@chery-gedon.ru"
+      ],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Таганрог",
+          "group_link": "https://t.me/+jhmuSnom4WxjM2My",
+          "name": "Гедон-Юг",
+          "legal_entity": "ООО Гедон-Юг",
+          "inn": "6154112410",
+          "address": "г.Таганрог, Ростовское шоссе, 10",
+          "back_name": "Нет",
+          "email": "a.pogosjan@chery-gedon.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "CHERY & TENET"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1289,
+      "canonical_name": "Автосалон № 1",
+      "holding": "Автосалон № 1",
+      "kam": "Светлана Дариенко",
+      "bitrix_aliases": [
+        "Автосалон № 1",
+        "ООО \"АВТОСАЛОН 1\"",
+        "ООО Автосалон 1"
+      ],
+      "bi_aliases": [
+        "Автосалон № 1 Псков"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Псков",
+          "name": "Автосалон № 1",
+          "legal_entity": "ООО Автосалон 1",
+          "inn": "6000005056",
+          "responsible": "Светлана Дариенко",
+          "brand": "CHERY & TENET"
+        }
+      ],
+      "status": "verified"
     }
   ],
   "auto_matched_deals": [

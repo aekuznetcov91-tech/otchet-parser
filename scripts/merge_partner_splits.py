@@ -561,6 +561,128 @@ def apply_merges_to_file(filepath):
         p1002['holding'] = 'Аларм-Моторс'
         p1002['kam'] = 'Светлана Дариенко'
 
+    # 14. ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК: 1058 -> Евгения Добролюбова (строго Челябинск и Миасс, Планета Авто)
+    p1058 = partners_by_id.get(1058)
+    if p1058:
+        p1058['canonical_name'] = 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК'
+        p1058['holding'] = 'Планета Авто'
+        p1058['kam'] = 'Евгения Добролюбова'
+        p1058['bi_aliases'] = [a for a in p1058.get('bi_aliases', []) if 'автофорум' not in a.lower()]
+        p1058['oem_data'] = [
+            oem for oem in p1058.get('oem_data', [])
+            if any(c in (oem.get('city') or '').lower() for c in ['челябинск', 'миасс'])
+            and any(inn in str(oem.get('inn') or '') for inn in ['7447124619', '7452048272'])
+        ]
+
+    # 15. Автолюкс Кар (Махачкала, Solaris): 1287 -> Валерия Солдатова
+    p1287 = partners_by_id.get(1287)
+    if not p1287:
+        p1287 = {
+            'partner_id': 1287,
+            'canonical_name': 'Автолюкс Кар',
+            'holding': 'Автолюкс Кар',
+            'kam': 'Валерия Солдатова',
+            'bitrix_aliases': ['Автолюкс Кар', 'ООО "АВТОЛЮКС КАР"', 'ООО Автолюкс Кар'],
+            'bi_aliases': ['Автолюкс Кар', 'Автолюкс Кар Махачкала'],
+            'pochta_aliases': ['Magomed.magomedov@solaris-autoluxecar.ru'],
+            'oem_data': [
+                {
+                    'sheet': 'SOLARIS',
+                    'city': 'Махачкала',
+                    'group_link': 'https://t.me/+bjGeqy85mbE4ZDMy',
+                    'name': 'Автолюкс Кар',
+                    'legal_entity': 'ООО Автолюкс Кар',
+                    'inn': '0546024274',
+                    'address': 'г. Махачкала, пгт. Ленинкент, ул. Кизилюртовская д.88',
+                    'back_name': 'Нет',
+                    'email': 'Magomed.magomedov@solaris-autoluxecar.ru',
+                    'responsible': 'Валерия Солдатова',
+                    'brand': 'SOLARIS'
+                }
+            ],
+            'status': 'verified'
+        }
+        partners.append(p1287)
+        partners_by_id[1287] = p1287
+    else:
+        p1287['canonical_name'] = 'Автолюкс Кар'
+        p1287['holding'] = 'Автолюкс Кар'
+        p1287['kam'] = 'Валерия Солдатова'
+
+    # 16. Гедон-Юг (Таганрог, Chery & Tenet): 1288 -> Валерия Солдатова
+    p1288 = partners_by_id.get(1288)
+    if not p1288:
+        p1288 = {
+            'partner_id': 1288,
+            'canonical_name': 'Гедон-Юг',
+            'holding': 'Гедон-Юг',
+            'kam': 'Валерия Солдатова',
+            'bitrix_aliases': ['Гедон-Юг', 'ООО "ГЕДОН-ЮГ"', 'ООО Гедон-Юг', 'Гедон Юг'],
+            'bi_aliases': ['Гедон-Юг', 'Гедон-Юг Таганрог'],
+            'pochta_aliases': ['a.pogosjan@chery-gedon.ru'],
+            'oem_data': [
+                {
+                    'sheet': 'CHERY&TENET',
+                    'city': 'Таганрог',
+                    'group_link': 'https://t.me/+jhmuSnom4WxjM2My',
+                    'name': 'Гедон-Юг',
+                    'legal_entity': 'ООО Гедон-Юг',
+                    'inn': '6154112410',
+                    'address': 'г.Таганрог, Ростовское шоссе, 10',
+                    'back_name': 'Нет',
+                    'email': 'a.pogosjan@chery-gedon.ru',
+                    'responsible': 'Валерия Солдатова',
+                    'brand': 'CHERY & TENET'
+                }
+            ],
+            'status': 'verified'
+        }
+        partners.append(p1288)
+        partners_by_id[1288] = p1288
+    else:
+        p1288['canonical_name'] = 'Гедон-Юг'
+        p1288['holding'] = 'Гедон-Юг'
+        p1288['kam'] = 'Валерия Солдатова'
+
+    # 17. Авто для Вас Премиум: 1229 -> Валерия Солдатова (строго Армавир, убрать Смоленск и Псков)
+    p1229 = partners_by_id.get(1229)
+    if p1229:
+        p1229['canonical_name'] = 'Авто для Вас Премиум'
+        p1229['holding'] = 'Авто для Вас Премиум'
+        p1229['kam'] = 'Валерия Солдатова'
+        p1229['oem_data'] = [
+            oem for oem in p1229.get('oem_data', [])
+            if (oem.get('city') or '').lower() == 'армавир'
+            or '2312310273' in str(oem.get('inn') or '')
+        ]
+
+    # 18. Автосалон № 1: 1289 -> Светлана Дариенко (Псков, Chery & Tenet)
+    p1289 = partners_by_id.get(1289)
+    if not p1289:
+        p1289 = {
+            'partner_id': 1289,
+            'canonical_name': 'Автосалон № 1',
+            'holding': 'Автосалон № 1',
+            'kam': 'Светлана Дариенко',
+            'bitrix_aliases': ['Автосалон № 1', 'ООО "АВТОСАЛОН 1"', 'ООО Автосалон 1'],
+            'bi_aliases': ['Автосалон № 1 Псков'],
+            'pochta_aliases': [],
+            'oem_data': [
+                {
+                    'sheet': 'CHERY&TENET',
+                    'city': 'Псков',
+                    'name': 'Автосалон № 1',
+                    'legal_entity': 'ООО Автосалон 1',
+                    'inn': '6000005056',
+                    'responsible': 'Светлана Дариенко',
+                    'brand': 'CHERY & TENET'
+                }
+            ],
+            'status': 'verified'
+        }
+        partners.append(p1289)
+        partners_by_id[1289] = p1289
+
     # Filter out removed donor partners
     new_partners = [p for p in partners if (p.get('partner_id') or p.get('id')) not in removed_pids]
     data['partners'] = new_partners
@@ -682,6 +804,20 @@ def apply_merges_to_data_json(filepath):
                 r['KAM'] = 'Валерия Солдатова'
                 modified = True
 
+        # Autolux Car (Makhachkala): 1287 -> Valeria Soldatova
+        if 'автолюкс кар' in raw_p or 'автолюкс кар' in p_name:
+            r['PartnerId'] = 1287
+            r['Partner'] = 'Автолюкс Кар'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # Gedon-Yug (Taganrog): 1288 -> Valeria Soldatova
+        if 'гедон-юг' in raw_p or 'гедон юг' in raw_p:
+            r['PartnerId'] = 1288
+            r['Partner'] = 'Гедон-Юг'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
     for r in data.get('deals', []):
         pid = r.get('PartnerId')
         if pid in donor_to_target:
@@ -766,6 +902,20 @@ def apply_merges_to_data_json(filepath):
                 r['PartnerName'] = 'Моторленд (Воронеж)'
                 r['KAM'] = 'Валерия Солдатова'
                 modified = True
+
+        # Autolux Car (Makhachkala): 1287 -> Valeria Soldatova
+        if 'автолюкс кар' in raw_p or 'автолюкс кар' in p_name:
+            r['PartnerId'] = 1287
+            r['PartnerName'] = 'Автолюкс Кар'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # Gedon-Yug (Taganrog): 1288 -> Valeria Soldatova
+        if 'гедон-юг' in raw_p or 'гедон юг' in raw_p:
+            r['PartnerId'] = 1288
+            r['PartnerName'] = 'Гедон-Юг'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
 
     if modified:
         with open(filepath, 'w', encoding='utf-8') as f:
