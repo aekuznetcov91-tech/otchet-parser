@@ -551,42 +551,42 @@
     "month": "2026-09"
   },
   {
-    "offer_show": 832,
-    "offer_success": 529,
-    "car_card_show": 8301,
+    "offer_show": 1837,
+    "offer_success": 1154,
+    "car_card_show": 16452,
     "fileName": "Джейку сент.png",
     "brand": "JAECOO",
     "steps": [
-      206732,
-      8301,
-      853,
-      832,
-      547,
-      529
+      423027,
+      16452,
+      1879,
+      1837,
+      1191,
+      1154
     ],
-    "offer_click": 547,
-    "page_view": 206732,
+    "offer_click": 1191,
+    "page_view": 423027,
     "month": "2026-09",
-    "car_card_click": 853
+    "car_card_click": 1879
   },
   {
-    "offer_success": 1713,
-    "offer_click": 1739,
-    "page_view": 206426,
+    "offer_success": 5203,
+    "offer_click": 5308,
+    "page_view": 423013,
     "brand": "JELAND",
     "steps": [
-      206426,
-      20385,
-      3057,
-      3001,
-      1739,
-      1713
+      423013,
+      56218,
+      9028,
+      8863,
+      5308,
+      5203
     ],
     "month": "2026-09",
     "fileName": "Джейленд сент.png",
-    "car_card_show": 20385,
-    "offer_show": 3001,
-    "car_card_click": 3057
+    "car_card_show": 56218,
+    "offer_show": 8863,
+    "car_card_click": 9028
   },
   {
     "fileName": "Джетур сент.png",
@@ -665,23 +665,23 @@
     "car_card_click": 319
   },
   {
-    "offer_success": 394,
-    "offer_click": 404,
-    "offer_show": 646,
+    "offer_success": 865,
+    "offer_click": 890,
+    "offer_show": 1434,
     "brand": "OMODA",
-    "page_view": 206745,
-    "car_card_show": 6186,
+    "page_view": 423022,
+    "car_card_show": 12485,
     "month": "2026-09",
     "fileName": "Омода сент.png",
     "steps": [
-      206745,
-      6186,
-      668,
-      646,
-      404,
-      394
+      423022,
+      12485,
+      1474,
+      1434,
+      890,
+      865
     ],
-    "car_card_click": 668
+    "car_card_click": 1474
   },
   {
     "page_view": 206479,
@@ -722,23 +722,23 @@
     "car_card_click": 1682
   },
   {
-    "offer_show": 5189,
-    "car_card_click": 5307,
+    "offer_show": 13517,
+    "car_card_click": 13843,
     "fileName": "Тенет сент.png",
-    "offer_click": 3040,
-    "page_view": 206388,
+    "offer_click": 7962,
+    "page_view": 423003,
     "steps": [
-      206388,
-      36437,
-      5307,
-      5189,
-      3040,
-      2959
+      423003,
+      88310,
+      13843,
+      13517,
+      7962,
+      7779
     ],
-    "car_card_show": 36437,
+    "car_card_show": 88310,
     "brand": "TENET",
     "month": "2026-09",
-    "offer_success": 2959
+    "offer_success": 7779
   },
   {
     "page_view": 206604,

@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1828,
+  "total_master_partners": 1847,
   "partners": [
     {
       "partner_id": 1001,
@@ -29,6 +29,7 @@
           "back_name": "СберАвто",
           "email": "arkhipov.pa@as-s.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "810/1380",
           "brand": "CHERY & TENET"
         },
         {
@@ -38,10 +39,11 @@
           "name": "Автостиль Чери СПБ",
           "legal_entity": "ООО Автостиль",
           "inn": "7805752165",
-          "address": "г. Санкт-Петербург, ул. Краснопутиловская, 65А",
+          "address": "г. Санкт-Птербург, Софийская, 2, литера Щ",
           "back_name": "СберАвто",
           "email": "khanin.dm@as-s.ru postnikov.ar@as-s.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "272",
           "brand": "CHERY & TENET"
         },
         {
@@ -163,6 +165,7 @@
           "back_name": "Аларм Моторс ГК",
           "email": "dgebgart@alarm-motors.ru pzakharov@alarm-motors.ru slipatenkova@alarm-motors.ru apershina@alarm-motors.ru Apimkin@alarm-motors.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "800",
           "brand": "CHERY & TENET"
         },
         {
@@ -176,6 +179,7 @@
           "back_name": "Аларм Моторс ГК",
           "email": "online@alarm-motors.ru slipatenkova@alarm-motors.ru vfedotova@alarm-motors.ru alexts@alarm-motors.ru asavchenko@alarm-motors.ru vkuranov@alarm-motors.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "1168",
           "brand": "CHERY & TENET"
         },
         {
@@ -189,6 +193,7 @@
           "back_name": "Аларм-Моторс ГК",
           "email": "online@alarm-motors.ru alexts@alarm-motors.ru yaivanova@alarm-motors.ru slipatenkova@alarm-motors.ru asavchenko@alarm-motors.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "919",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -263,30 +268,6 @@
           "brand": "SOLARIS"
         },
         {
-          "sheet": "OMODA&JAECOO",
-          "city": "Санкт-Петербург",
-          "name": "Аларм",
-          "legal_entity": "ООО Аларм-моторс Озерки",
-          "inn": "7841380152",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Аларм",
-          "legal_entity": "ООО Аларм-Комтранс",
-          "inn": "7841380152",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Санкт-Петербург",
-          "name": "Аларм Моторс",
-          "legal_entity": "ООО Аларм Авто Юго-Запад",
-          "inn": "7807166046",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Санкт-Петербург",
           "name": "Аларм Моторс",
@@ -316,6 +297,30 @@
           "name": "Аларм-Моторс Сити Савушкина",
           "legal_entity": "ООО Аларм-моторс Юго-Запад",
           "inn": "7802383738",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Санкт-Петербург",
+          "name": "Аларм Моторс",
+          "legal_entity": "ООО Аларм Авто Юго-Запад",
+          "inn": "7807166046",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Санкт-Петербург",
+          "name": "Аларм",
+          "legal_entity": "ООО Аларм-моторс Озерки",
+          "inn": "7841380152",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "name": "Аларм",
+          "legal_entity": "ООО Аларм-Комтранс",
+          "inn": "7841380152",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -502,7 +507,7 @@
           "inn": "2311052326",
           "address": "г. Краснодар, ул. Ростовское шоссе, д. 12/6",
           "back_name": "-",
-          "email": "m.lisnianskii@tempavto-k.ru , manager2@tempavto-changanauto.ru , manager@tempavto-changanauto.ru",
+          "email": "manager2@tempavto-changanauto.ru, manager@tempavto-changanauto.ru",
           "responsible": "Валерия Солдатова",
           "brand": "Москвич"
         },
@@ -590,6 +595,7 @@
           "back_name": "СберАвто",
           "email": "Salesmanager@chery-tempauto.ru, sales7@chery-tempauto.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "751/1294",
           "brand": "CHERY & TENET"
         },
         {
@@ -638,6 +644,7 @@
           "back_name": "СберАвто",
           "email": "Samohin.Artem@sigma.spb.ru Vysokoumov.Anton@sigma.spb.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "531/1249",
           "brand": "CHERY & TENET"
         },
         {
@@ -651,6 +658,7 @@
           "back_name": "СберАвто",
           "email": "Samohin.Artem@sigma.spb.ru Vysokoumov.Anton@sigma.spb.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "828",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -667,14 +675,6 @@
           "brand": "GAC"
         },
         {
-          "sheet": "GAC",
-          "city": "Санкт-Петебург",
-          "name": "Сигма Моторс ГМБх",
-          "legal_entity": "ООО Сигма Моторс ГМБх",
-          "inn": "7825507813",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Санкт-Петербург",
           "name": "ЧЕРИ ЦЕНТР СИГМА ОНЛАЙН",
@@ -688,6 +688,14 @@
           "name": "СИГМА",
           "legal_entity": "ООО Сигма Авто",
           "inn": "7813649997",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Санкт-Петебург",
+          "name": "Сигма Моторс ГМБх",
+          "legal_entity": "ООО Сигма Моторс ГМБх",
+          "inn": "7825507813",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -813,6 +821,20 @@
       "pochta_aliases": [],
       "oem_data": [
         {
+          "sheet": "CHERY&TENET",
+          "city": "Тамбов",
+          "group_link": "https://max.ru/join/W5yL5v9HfPPOQyagEm6DZke64ia6xcYZeotu-CnFVBA",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосалон Глобус",
+          "inn": "6829083521",
+          "address": "г. Тамбов, ул. Бастионная, д. 29",
+          "back_name": "",
+          "email": "nikolay.sdobnikov@tenet-globus.ru, alexandr.kolesnikov@tenet-globus.ru,",
+          "responsible": "Валерия Солдатова",
+          "fdc_code": "499",
+          "brand": "CHERY & TENET"
+        },
+        {
           "sheet": "Geely&Belgee",
           "city": "Тамбов, улица Киквидзе, 85А",
           "name": "Автосфера Глобус",
@@ -845,49 +867,6 @@
           "brand": "Soueast"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Тамбов",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосфера",
-          "inn": "6829089019",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Тамбов",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосфера",
-          "inn": "6829089019",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Тамбов",
-          "group_link": "https://max.ru/join/W5yL5v9HfPPOQyagEm6DZke64ia6xcYZeotu-CnFVBA",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосалон Глобус",
-          "inn": "6829083521",
-          "address": "г. Тамбов, ул. Бастионная, д. 29",
-          "back_name": "",
-          "email": "nikolay.sdobnikov@tenet-globus.ru, alexandr.kolesnikov@tenet-globus.ru,",
-          "responsible": "Валерия Солдатова",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Тамбов",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосалон Глобус",
-          "inn": "6829083521",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "GAC",
-          "city": "г. Тамбов, ул. Киквидзе, д. 83",
-          "name": "ГК Глобус",
-          "brand": "GAC"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Тамбов",
           "group_link": "https://max.ru/join/3XGSLNJPQvwMlug5w2-D0oxwteE86LCAwXhBdjDqwyo",
@@ -901,11 +880,41 @@
           "brand": "SOLARIS"
         },
         {
+          "sheet": "GAC",
+          "city": "г. Тамбов, ул. Киквидзе, д. 83",
+          "name": "ГК Глобус",
+          "brand": "GAC"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тамбов",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосалон Глобус",
+          "inn": "6829083521",
+          "responsible": "Валерия Солдатова"
+        },
+        {
           "sheet": "SOLARIS",
           "city": "Тамбов",
           "name": "Тамбов Авто",
           "legal_entity": "ООО Тамбов Авто",
           "inn": "6829082542",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Тамбов",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосфера",
+          "inn": "6829089019",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Тамбов",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосфера",
+          "inn": "6829089019",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -939,6 +948,7 @@
           "back_name": "",
           "email": "Karih@omoda-motorland.ru, Hostes@omoda-motorland.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "883",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -963,7 +973,7 @@
           "inn": "3662267900",
           "address": "г. Воронеж, ул. Шишкова, д.75Б",
           "back_name": "Online Моторленд",
-          "email": "hostes@jetour-motorland.ru, v.dyakova@jetour-motorland.ru, a.malevaniy@jetour-motorland.ru, spodakin@jetour-motorland.ru",
+          "email": "hostes@jetour-motorland.ru, v.dyakova@jetour-motorland.ru, kkovalenko@mlgcorp.ru, spodakin@jetour-motorland.ru",
           "responsible": "Валерия Солдатова",
           "brand": "JETOUR"
         },
@@ -1100,8 +1110,8 @@
           "sheet": "JETOUR",
           "city": "Санкт-Петербург",
           "name": "Автопродикс",
-          "legal_entity": "ООО Продикс ЮГ",
-          "inn": "7810862011",
+          "legal_entity": "ООО АВТОТРИУМФ СЕВЕР",
+          "inn": "7814540061",
           "responsible": "Светлана Дариенко"
         },
         {
@@ -1283,6 +1293,7 @@
           "back_name": "Нет",
           "email": "popova.t@elan-motors.ru linev.a@elan-motors.ru tankova.u@elan-motors.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "292/1499",
           "brand": "CHERY & TENET"
         },
         {
@@ -1380,6 +1391,7 @@
           "back_name": "СберАвто",
           "email": "a.pogosyan@leon-avto-chery.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "243",
           "brand": "CHERY & TENET"
         },
         {
@@ -1396,19 +1408,19 @@
           "brand": "SOLARIS"
         },
         {
-          "sheet": "SOLARIS",
-          "city": "Краснодар",
-          "name": "Леон Авто",
-          "legal_entity": "ООО Леон Авто",
-          "inn": "2311359935",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Краснодар",
           "name": "ЛЕОН АВТО Онлайн",
           "legal_entity": "ООО ДМ-авто Север",
           "inn": "2311179820",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Краснодар",
+          "name": "Леон Авто",
+          "legal_entity": "ООО Леон Авто",
+          "inn": "2311359935",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -1505,14 +1517,6 @@
           "responsible": "Светлана Дариенко"
         },
         {
-          "sheet": "LADA",
-          "city": "Барнаул",
-          "name": "Р-моторс Лада Барнаул",
-          "legal_entity": "ООО Р-Моторс ЛАДА",
-          "inn": "7807073673",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Новороссийск",
           "group_link": "https://max.ru/join/g5nNcROKTjrc6P096YIB6fIAfDKbjm_Klb1iy0iplUM",
@@ -1524,6 +1528,14 @@
           "email": "b.zemka@mb-rmotors.ru",
           "responsible": "Светлана Дариенко",
           "brand": "JETOUR"
+        },
+        {
+          "sheet": "LADA",
+          "city": "Барнаул",
+          "name": "Р-моторс Лада Барнаул",
+          "legal_entity": "ООО Р-Моторс ЛАДА",
+          "inn": "7807073673",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "JETOUR",
@@ -1586,6 +1598,7 @@
           "back_name": "СберАвто",
           "email": "r.shamilov@tenet-abm.ru r.valeev@tenet-abm.ru  in@chery42.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "525/1379",
           "brand": "CHERY & TENET"
         },
         {
@@ -1651,6 +1664,7 @@
           "back_name": "Петровский",
           "email": "ivanov.iliya@petrovskiy.ru asistmark@petrovskiy.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "912",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -1724,6 +1738,7 @@
           "back_name": "СберАвто",
           "email": "mavetisyan@lunaavto.ru dnegodov@tenet-lunaauto.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "270/1227",
           "brand": "CHERY & TENET"
         },
         {
@@ -1776,6 +1791,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1789,6 +1805,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1802,6 +1819,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1815,6 +1833,7 @@
           "back_name": "СберАвто",
           "email": "m.makarov @optima-car.ru, o.kosheev@optima-chery.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "400",
           "brand": "CHERY & TENET"
         },
         {
@@ -1828,6 +1847,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1841,6 +1861,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1854,6 +1875,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1867,6 +1889,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1880,6 +1903,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1893,6 +1917,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1906,6 +1931,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1919,6 +1945,7 @@
           "back_name": "СберАвто",
           "email": "d.semencov@optima-car.ru, b.dovlatyan@tenet-optima.ru, g.gasparyan@optima-chery.ru, ya.salnikov@tenet-optima.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1932,6 +1959,7 @@
           "back_name": "",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1945,6 +1973,7 @@
           "back_name": "",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1399",
           "brand": "CHERY & TENET"
         },
         {
@@ -1958,6 +1987,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -1971,6 +2001,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -1984,6 +2015,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -1997,6 +2029,7 @@
           "back_name": "СберАвто",
           "email": "d.lonskoy@omoda-optima.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "878????",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2010,6 +2043,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2023,6 +2057,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2036,6 +2071,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2049,6 +2085,7 @@
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2062,6 +2099,7 @@
           "back_name": "Online ГК Оптима",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2075,6 +2113,7 @@
           "back_name": "Online ГК Оптима",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2088,6 +2127,7 @@
           "back_name": "Online ГК Оптима",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2101,6 +2141,7 @@
           "back_name": "",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2114,6 +2155,7 @@
           "back_name": "",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -2600,8 +2642,8 @@
           "city": "Анапа",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "г. Анапа, ул. Симферопольское шоссе, д.7",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2613,8 +2655,8 @@
           "city": "Белореченск",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "г. Белореченск, ул. Первомайская улица, 174",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2626,8 +2668,8 @@
           "city": "Геленджик",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "Геленджик, ул. Южная промзона д.32",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2639,8 +2681,8 @@
           "city": "Кропоткин",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "Кропоткин ул. Губернская д.1В",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2652,8 +2694,8 @@
           "city": "Крымск",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "Крымск, ул. Одесская д.1А",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2665,8 +2707,8 @@
           "city": "Лабинск",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "Лабинск, садовое товарищество Экология, ул. Дорожная улица, 77",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2704,8 +2746,8 @@
           "city": "Ставропольский край",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "Ставропольский край, Зеленокумск, улица, 50 лет Октября, 51",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2717,8 +2759,8 @@
           "city": "Ставропольский край",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "Ставропольский край, Будённовск, улица, Розы Люксенбург, 58",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2730,8 +2772,8 @@
           "city": "Ставропольский край",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "Ставропольский край, Георгиевск, станица, Незлобная, улица, Ленина, 499А",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2743,8 +2785,8 @@
           "city": "Ставропольский край",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
+          "legal_entity": "ООО Оптима Салгир/ООО Оптима Лайн/ООО Оптима Кубань",
+          "inn": "231132283/2311336656/2312205455",
           "address": "Ставропольский край, г. Невинномысск, шоссе Пятигорское, строение 6 корпус 2",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2795,8 +2837,8 @@
           "city": "Анапа",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Кубань",
-          "inn": "2312205455",
+          "legal_entity": "ООО Оптима Лайн",
+          "inn": "2311336656",
           "address": "Анапа, ул. Симферопольское шоссе, д.7",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2808,8 +2850,8 @@
           "city": "Белореченск",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Кубань",
-          "inn": "2312205455",
+          "legal_entity": "ООО Оптима Лайн",
+          "inn": "2311336656",
           "address": "Белореченск, ул. Первомайская улица, 174",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2821,8 +2863,8 @@
           "city": "Геленджик",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Кубань",
-          "inn": "2312205455",
+          "legal_entity": "ООО Оптима Лайн",
+          "inn": "2311336656",
           "address": "Геленджик, ул. Южная промзона д.32",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2834,8 +2876,8 @@
           "city": "Кропоткин",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Кубань",
-          "inn": "2312205455",
+          "legal_entity": "ООО Оптима Лайн",
+          "inn": "2311336656",
           "address": "Кропоткин ул. Губернская д.1В",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2847,8 +2889,8 @@
           "city": "Крымск",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Кубань",
-          "inn": "2312205455",
+          "legal_entity": "ООО Оптима Лайн",
+          "inn": "2311336656",
           "address": "Крымск, ул. Одесская д.1А",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -2860,8 +2902,8 @@
           "city": "Лабинск",
           "group_link": "https://max.ru/join/0A49BrYaMZX7u8tSJCaG9mO-pu9ByyCZ-mu2PRNKR7I",
           "name": "О2",
-          "legal_entity": "ООО Оптима Кубань",
-          "inn": "2312205455",
+          "legal_entity": "ООО Оптима Лайн",
+          "inn": "2311336656",
           "address": "Лабинск, садовое товарищество Экология, ул. Дорожная улица, 77",
           "back_name": "О2",
           "email": "i.kokoulina@optima-car.ru, e.kapenkin@optima-car.ru",
@@ -3050,6 +3092,7 @@
           "back_name": "СберАвто",
           "email": "lead-chery@dynamica.ru alena.smirnova@dynamica.su",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "550",
           "brand": "CHERY & TENET"
         },
         {
@@ -3066,20 +3109,20 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Архангельск",
-          "name": "ЧЕРИ ЦЕНТР ДИНАМИКА АРХАНГЕЛЬСК ОНЛАЙН",
-          "legal_entity": "ООО Динамика Архангельск РР",
-          "inn": "1101096766",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Архангельск",
           "name": "Динамика",
           "legal_entity": "ООО Динамика",
           "inn": "2902058926",
           "responsible": ""
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Архангельск",
+          "name": "ЧЕРИ ЦЕНТР ДИНАМИКА АРХАНГЕЛЬСК ОНЛАЙН",
+          "legal_entity": "ООО Динамика Архангельск РР",
+          "inn": "1101096766",
+          "responsible": "Светлана Дариенко"
         }
       ],
       "status": "verified"
@@ -3146,14 +3189,6 @@
           "brand": "GAC"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Форсаж",
-          "legal_entity": "ООО Вираж",
-          "inn": "7816289598",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Санкт-Петербург",
           "name": "Форсаж",
@@ -3167,6 +3202,14 @@
           "name": "Форсаж",
           "legal_entity": "ООО Форсаж",
           "inn": "7810368525",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "name": "Форсаж",
+          "legal_entity": "ООО Вираж",
+          "inn": "7816289598",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -3245,13 +3288,14 @@
           "sheet": "CHERY&TENET",
           "city": "Уфа",
           "group_link": "https://max.ru/join/4mr64hBZg_dBPH4WuvymtzEuXDxG1z24nzGweQowbbc",
-          "name": "",
+          "name": "VERRA ЗУБОВО",
           "legal_entity": "ООО Альфа-Сервис Восток",
           "inn": "245968960",
           "address": "450525, РБ, г. Уфа, ул. Электрозаводская, д.18/2",
           "back_name": "нет фида",
           "email": "dmorozov@tenet-verra.ru; dmasyagutov@tenet-verra.ru;",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "579/1560",
           "brand": "CHERY & TENET"
         },
         {
@@ -3263,8 +3307,9 @@
           "inn": "5410097027",
           "address": "г. Новосибирск, ул. Богдана Хмельницкого, 75/1",
           "back_name": "СберАвто",
-          "email": "aleksandr.mamontov@omoda-expertauto-nsk.ru vitalii.lesnikov@omoda-expertauto-nsk.ru",
-          "responsible": "Светлана Дариенко",
+          "email": "info@jaecoo-expertauto-nsk.ru",
+          "responsible": "Евгения Добролюбова",
+          "fdc_code": "900",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -3294,22 +3339,6 @@
           "brand": "CHANGAN"
         },
         {
-          "sheet": "OMODA&JAECOO",
-          "city": "Новосибирск",
-          "name": "ЭКСПЕРТ АВТО",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО НСК",
-          "inn": "5410097027",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Уфа",
-          "name": "",
-          "legal_entity": "ООО Альфа-Сервис Восток",
-          "inn": "0245968960",
-          "responsible": "Евгения Добролюбова"
-        },
-        {
           "sheet": "Geely&Belgee",
           "city": "Новосибирск",
           "name": "Эксперт Авто",
@@ -3323,6 +3352,22 @@
           "name": "Эксперт Авто",
           "legal_entity": "ООО Эксперт Авто",
           "inn": "5410052266",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Уфа",
+          "name": "",
+          "legal_entity": "ООО Альфа-Сервис Восток",
+          "inn": "0245968960",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Новосибирск",
+          "name": "ЭКСПЕРТ АВТО",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО НСК",
+          "inn": "5410097027",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -3395,19 +3440,7 @@
           "back_name": "",
           "email": "a.bulavintsev@omoda-ring.ru chukin.dmitrij@omoda-ring.ru a.krasikov@omoda-ring.ru v.krahmalev@omoda-ring.ru sergei.chursanov@Omoda-ring.ru zaborev.maksim@omoda-ring.ru",
           "responsible": "Валерия Солдатова",
-          "brand": "OMODA & JAECOO"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Курск",
-          "group_link": "https://max.ru/join/v0jg4k91dIQBUKHIswDUANhN_jCFHB467E1rmJoWO5U",
-          "name": "Ринг",
-          "legal_entity": "ООО Ринг Сервис",
-          "inn": "3664048710",
-          "address": "Курск, улица Карла Маркса, 118",
-          "back_name": "",
-          "email": "evgeny.goryainov@omoda-ring-kursk.ru, evgeny.sachuk@omoda-ring-kursk.ru, maksim_manohin@omoda-ring-kursk.ru",
-          "responsible": "Валерия Солдатова",
+          "fdc_code": "874",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -3419,7 +3452,7 @@
           "inn": "3661048575",
           "address": "г. Воронеж, ул. Изыскателей, 39/2",
           "back_name": "Online Ринг Авто",
-          "email": "adel.burzhi@ring-changanauto.ru, kirill.rodionov@ring-changanauto.ru",
+          "email": "adel.burzhi@ring-changanauto.ru, kirill.rodionov@ring-changanauto.ru, vladislav.kochev@ring-changanauto.ru",
           "responsible": "Валерия Солдатова",
           "brand": "CHANGAN"
         },
@@ -3541,6 +3574,22 @@
           "brand": "DEEPAL"
         },
         {
+          "sheet": "SOLARIS",
+          "city": "Липецк",
+          "name": "Ринг Авто",
+          "legal_entity": "ООО Ринг С",
+          "inn": "3661056907",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Липецк",
+          "name": "Ринг",
+          "legal_entity": "ООО Ринг С",
+          "inn": "3661056907",
+          "responsible": "Валерия Солдатова"
+        },
+        {
           "sheet": "OMODA&JAECOO",
           "city": "Воронеж",
           "name": "Ринг",
@@ -3552,14 +3601,6 @@
           "sheet": "JETOUR",
           "city": "Воронеж",
           "name": "Ринг",
-          "legal_entity": "ООО Ринг Сервис",
-          "inn": "3664048710",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Воронеж",
-          "name": "Ринг Авто",
           "legal_entity": "ООО Ринг Сервис",
           "inn": "3664048710",
           "responsible": "Валерия Солдатова"
@@ -3578,14 +3619,6 @@
           "name": "Ринг Авто",
           "legal_entity": "ООО Ринг Авто",
           "inn": "3661048575",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Липецк",
-          "name": "Ринг",
-          "legal_entity": "ООО Ринг С",
-          "inn": "3661056907",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -3632,6 +3665,7 @@
           "back_name": "СберАвто",
           "email": "n.baybolotov@freshauto.ru, yu.snopkovskaya@freshauto.ru",
           "responsible": "Андрей Кузнецов",
+          "fdc_code": "339/1303",
           "brand": "CHERY & TENET"
         },
         {
@@ -3687,11 +3721,11 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "JETOUR",
+          "sheet": "CHERY&TENET",
           "city": "Воронеж",
-          "name": "Фреш",
-          "legal_entity": "ООО Фреш К",
-          "inn": "9723038901",
+          "name": "Фрэш Авто",
+          "legal_entity": "ООО ФРЕШ АВТО ГАЗ",
+          "inn": "7724423589",
           "responsible": "Андрей Кузнецов"
         },
         {
@@ -3711,11 +3745,11 @@
           "responsible": "Андрей Кузнецов"
         },
         {
-          "sheet": "CHERY&TENET",
+          "sheet": "JETOUR",
           "city": "Воронеж",
-          "name": "Фрэш Авто",
-          "legal_entity": "ООО ФРЕШ АВТО ГАЗ",
-          "inn": "7724423589",
+          "name": "Фреш",
+          "legal_entity": "ООО Фреш К",
+          "inn": "9723038901",
           "responsible": "Андрей Кузнецов"
         }
       ],
@@ -3766,6 +3800,7 @@
           "back_name": "ONLINE Радар-Авто",
           "email": "Fnb@radar-avto.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1406",
           "brand": "CHERY & TENET"
         },
         {
@@ -3912,7 +3947,7 @@
           "address": "г. Химки, Ленинградское ш., вл.18",
           "back_name": "",
           "email": "promo@avtomir.ru",
-          "responsible": "Андрей Кузнецов",
+          "responsible": "",
           "brand": "Geely & Belgee"
         },
         {
@@ -3938,7 +3973,7 @@
           "address": "г. Москва, Иркутская ул., д.5/6, стр.1",
           "back_name": "",
           "email": "promo@avtomir.ru",
-          "responsible": "Андрей Кузнецов",
+          "responsible": "",
           "brand": "Geely & Belgee"
         },
         {
@@ -4431,14 +4466,6 @@
           "brand": "JETTA"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "name": "ГК Major",
-          "legal_entity": "ООО Мэйджор Автомобили",
-          "inn": "7734504981",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Москва",
           "name": "Major",
@@ -4468,6 +4495,14 @@
           "name": "ГК Major",
           "legal_entity": "ООО Авто сити",
           "inn": "5024107584",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "name": "ГК Major",
+          "legal_entity": "ООО Мэйджор Автомобили",
+          "inn": "7734504981",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -4557,6 +4592,7 @@
           "back_name": "СберАвто",
           "email": "Administrator@exkurs.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "734/1302",
           "brand": "CHERY & TENET"
         },
         {
@@ -4686,8 +4722,9 @@
           "inn": "3804048079",
           "address": "г. Иркутск, Трактовая, 22 а",
           "back_name": "СберАвто",
-          "email": "baturina@agatauto.ru v_usoltsev@agatauto.ru",
+          "email": "baturina@agatauto.ru v_usoltsev@agatauto.ru, callcenter@kia.agatauto.ru",
           "responsible": "Андрей Кузнецов",
+          "fdc_code": "1167/1296",
           "brand": "CHERY & TENET"
         },
         {
@@ -4701,6 +4738,7 @@
           "back_name": "СберАвто",
           "email": "baturina@agatauto.ru v_usoltsev@agatauto.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "925",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -4731,13 +4769,13 @@
         {
           "sheet": "CHANGAN",
           "city": "Братск",
-          "group_link": "",
+          "group_link": "https://max.ru/join/mp5lyJaDwHuJMVt92n5gKwN1GmGxAExanowPTpOwnOE",
           "name": "Агат-Авто",
           "legal_entity": "ООО Авто-Континент",
           "inn": "3804048079",
           "address": "г. Братск, ул. Коммунальная, д.9, с.1",
           "back_name": "",
-          "email": "",
+          "email": "kuryanova@bratsk.agatauto.ru",
           "responsible": "Светлана Дариенко",
           "brand": "CHANGAN"
         },
@@ -4765,6 +4803,19 @@
           "back_name": "Апельсин КАЗАНЬ Online",
           "email": "d.o.galimov@cartat.ru m.ivanov@cartat.ru",
           "responsible": "Алексей Чихарев",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Минеральные воды",
+          "group_link": "",
+          "name": "ГК Агат",
+          "legal_entity": "ООО Максима Авто",
+          "inn": "5257188829",
+          "address": "Ставрапольский край,Минераловодский муниципальный округ, Р-217, 345-й километр, 1, стр. 1,",
+          "back_name": "",
+          "email": "",
+          "responsible": "",
           "brand": "JETOUR"
         },
         {
@@ -4820,11 +4871,32 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "JETOUR",
+          "sheet": "Soueast",
           "city": "Ярославль",
+          "group_link": "https://max.ru/join/PfWq7FSYsYxDUJOsX8y9Fx1V6QZkf3pUu0RA0FyrLEY",
           "name": "ГК АГАТ",
           "legal_entity": "ООО Аркада",
           "inn": "5257208916",
+          "address": "Ярославль,Промышленное ш., 53",
+          "back_name": "",
+          "email": "i.urazov@agatgroup.com",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Soueast"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Волгоград",
+          "name": "ГК Агат",
+          "legal_entity": "ООО Квант",
+          "inn": "3443092790",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Саранск",
+          "name": "АГАТ",
+          "legal_entity": "ООО Альтернатива",
+          "inn": "5257188836",
           "responsible": "Андрей Кузнецов"
         },
         {
@@ -4834,6 +4906,14 @@
           "legal_entity": "ООО Спектр",
           "inn": "1657225323",
           "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Ярославль",
+          "name": "ГК АГАТ",
+          "legal_entity": "ООО Аркада",
+          "inn": "5257208916",
+          "responsible": "Андрей Кузнецов"
         },
         {
           "sheet": "CHERY&TENET",
@@ -4858,22 +4938,6 @@
           "legal_entity": "ООО Авто-Континент",
           "inn": "3804048079",
           "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Нижний Новгород",
-          "name": "АГАТ",
-          "legal_entity": "ООО Спектр",
-          "inn": "5258089355",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Волгоград",
-          "name": "ГК Агат",
-          "legal_entity": "ООО Квант",
-          "inn": "3443092790",
-          "responsible": "Андрей Кузнецов"
         }
       ],
       "status": "verified"
@@ -4902,6 +4966,7 @@
           "back_name": "Нет",
           "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "708/1384",
           "brand": "CHERY & TENET"
         },
         {
@@ -4965,6 +5030,7 @@
           "back_name": "",
           "email": "azamanov@forward59.ru, t.suleymanov@forward59.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "237/1307",
           "brand": "CHERY & TENET"
         },
         {
@@ -5016,6 +5082,7 @@
           "back_name": "СберАвто",
           "email": "r.fazleev@kvazarmotors.ru m.ziganshin@kvazarmotors.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "959",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -5130,6 +5197,7 @@
           "back_name": "СберАвто",
           "email": "a.gilyazov@chery-apelsin.ru a.stepanenko@chery-apelsin.ru r.lukmanov@cartat.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "386/1382",
           "brand": "CHERY & TENET"
         },
         {
@@ -5276,6 +5344,7 @@
           "back_name": "ONLINE ТСАЦ Июль",
           "email": "v.maht@julyauto.ru\n n.kudrin@tenet-july.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "369/1786",
           "brand": "CHERY & TENET"
         },
         {
@@ -5289,6 +5358,7 @@
           "back_name": "ONLINE ТСАЦ Июль",
           "email": "v.maht@julyauto.ru\n n.kudrin@tenet-july.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "1293",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -5361,6 +5431,7 @@
           "back_name": "СберАвто",
           "email": "rkulmanov@planeta-avto.ru",
           "responsible": "Андрей Кузнецов",
+          "fdc_code": "316/1312",
           "brand": "CHERY & TENET"
         },
         {
@@ -5374,6 +5445,7 @@
           "back_name": "Планета Авто",
           "email": "skosarev@planeta-avto.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "1101",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -5403,6 +5475,14 @@
           "brand": "JETOUR"
         },
         {
+          "sheet": "CHERY&TENET",
+          "city": "Челябинск",
+          "name": "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
+          "legal_entity": "ООО Автогарантия",
+          "inn": "7447124619",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
           "sheet": "OMODA&JAECOO",
           "city": "Челябинск",
           "name": "Планета Авто",
@@ -5425,14 +5505,6 @@
           "legal_entity": "ООО Автоцентр Гольфстрим",
           "inn": "7452048272",
           "responsible": "Евгения Добролюбова"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Челябинск",
-          "name": "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
-          "legal_entity": "ООО Автогарантия",
-          "inn": "7447124619",
-          "responsible": "Андрей Кузнецов"
         }
       ],
       "status": "verified"
@@ -5581,6 +5653,7 @@
           "back_name": "СберАвто",
           "email": "melikyan.g@autoluxe05.ru, bratchenko.v@autoluxe05.ru, kmv@autoluxe05.ru, gromov.a@autoluxe05.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "197/1291",
           "brand": "CHERY & TENET"
         },
         {
@@ -5594,15 +5667,8 @@
           "back_name": "",
           "email": "magomed.magomedov@omoda-autoluxe.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "995",
           "brand": "OMODA & JAECOO"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Пятигорск",
-          "name": "ЧЕРИ ЦЕНТР АВТОЛЮКС ОНЛАЙН",
-          "legal_entity": "ООО АВТОЛЮКС",
-          "inn": "2630048453",
-          "responsible": "Валерия Солдатова"
         },
         {
           "sheet": "OMODA&JAECOO",
@@ -5610,6 +5676,14 @@
           "name": "Автолюкс",
           "legal_entity": "ООО Автолюкс",
           "inn": "0546024330",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Пятигорск",
+          "name": "ЧЕРИ ЦЕНТР АВТОЛЮКС ОНЛАЙН",
+          "legal_entity": "ООО АВТОЛЮКС",
+          "inn": "2630048453",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -6042,6 +6116,7 @@
           "back_name": "СберАвто",
           "email": "robot@borishof.ru oleg.gorin@borishof.ru online_partners@borishof.ru \n irina.galaktionova@oting-borishof.ru robot_sherpa_1@borishof.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "399/1329",
           "brand": "CHERY & TENET"
         },
         {
@@ -6157,9 +6232,10 @@
           "legal_entity": "ООО Нижегородец Восток",
           "inn": "5257164835",
           "address": "г. Арзамас, ул. 9 Мая, 17А",
-          "back_name": "Тенет Нижегородец",
+          "back_name": "Нижегородец",
           "email": "Selekhov.Y.A@nnmotors.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "1244",
           "brand": "CHERY & TENET"
         },
         {
@@ -6173,6 +6249,7 @@
           "back_name": "Нижегородец",
           "email": "Pavlov.P.E@nnmotors.ru, krasenkov.a.a@haval.nnmotors.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "998",
           "brand": "CHERY & TENET"
         },
         {
@@ -6186,6 +6263,7 @@
           "back_name": "СберАвто",
           "email": "Surovcev.r.a@nnmotors.ru",
           "responsible": "Андрей Кузнецов",
+          "fdc_code": "382/1299",
           "brand": "CHERY & TENET"
         },
         {
@@ -6237,7 +6315,22 @@
           "back_name": "",
           "email": "a.nazhimov@bmsystem74.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "555/1491",
           "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Челябинск",
+          "group_link": "https://max.ru/join/LMovialuMrn5lKmD2RRnutoV4ZWkSTwD1OcQHuP9Jg0",
+          "name": "Омода Сатурн-2",
+          "legal_entity": "ООО Сатурн-2",
+          "inn": "7449019666",
+          "address": "Челябинск, Молодогвардейцев, 2",
+          "back_name": "Сатурн 2",
+          "email": "a.nazhimov@bmsystem74.ru",
+          "responsible": "Евгения Добролюбова",
+          "fdc_code": "",
+          "brand": "OMODA & JAECOO"
         },
         {
           "sheet": "LADA",
@@ -6344,6 +6437,7 @@
           "back_name": "ONLINE ФДЦ Автопрестиж",
           "email": "aamikhailov@autoprestige-vlg.ru AASerebryakov@autoprestige-vlg.ru vrromanov@autoprestige-vlg.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "8000",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -6357,6 +6451,7 @@
           "back_name": "ONLINE ФДЦ Автопрестиж",
           "email": "",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "8001",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -6579,27 +6674,27 @@
           "brand": "DEEPAL"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Калуга",
+          "sheet": "JETOUR",
+          "city": "Тольятти",
           "name": "Автопрестиж",
-          "legal_entity": "ООО Автосалон Престиж",
-          "inn": "4030000000",
+          "legal_entity": "ООО Авто-СТВ",
+          "inn": "2635258750",
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "JETOUR",
+          "sheet": "CHANGAN",
+          "city": "Самара",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО Самарские автомобили - М Север",
+          "inn": "6313537179",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
           "city": "Пермь",
           "name": "Автопрестиж",
-          "legal_entity": "ООО Авто-СМР",
-          "inn": "6313562489",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Волгоград",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО Авто-ВЛГ",
-          "inn": "3443150956",
+          "legal_entity": "ООО Автопрестиж-Полюс",
+          "inn": "5908048045",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -6611,11 +6706,27 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "GAC",
-          "city": "Пермь",
+          "sheet": "OMODA&JAECOO",
+          "city": "Волгоград",
           "name": "Автопрестиж",
-          "legal_entity": "ООО Автопрестиж-Полюс",
-          "inn": "5908048045",
+          "legal_entity": "ООО Авто-ВЛГ",
+          "inn": "3443150956",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Мин. воды",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО Автопрестиж КМВ",
+          "inn": "2635251762",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Волгоград",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО А-моторс",
+          "inn": "3443088070",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -6632,22 +6743,6 @@
           "name": "Автопрестиж Haval City и PRO",
           "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
           "inn": "5638070618",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Волгоград",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО А-моторс",
-          "inn": "3443088070",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Мин. воды",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО Автопрестиж КМВ",
-          "inn": "2635251762",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -6681,6 +6776,7 @@
           "back_name": "СберАвто",
           "email": "v.bulutskova@chery-forward.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "530/1317",
           "brand": "CHERY & TENET"
         },
         {
@@ -6721,6 +6817,7 @@
           "back_name": "СберАвто",
           "email": "d.zhuravlev@tvsmotors.ru, a.lobastova@tvsmotors.ru",
           "responsible": "Андрей Кузнецов",
+          "fdc_code": "165/1315",
           "brand": "CHERY & TENET"
         },
         {
@@ -6773,6 +6870,7 @@
           "back_name": "",
           "email": "damirezepov@gmail.com",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1843",
           "brand": "CHERY & TENET"
         },
         {
@@ -6824,6 +6922,7 @@
           "back_name": "СберАвто",
           "email": "onlinesale@dialog-auto.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "178/1196",
           "brand": "CHERY & TENET"
         },
         {
@@ -6837,6 +6936,7 @@
           "back_name": "СберАвто",
           "email": "onlinesale@dialog-auto.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "8348",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -6850,6 +6950,7 @@
           "back_name": "СберАвто",
           "email": "elabugasales@dialog-auto.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -6996,25 +7097,49 @@
           "brand": "GAC"
         },
         {
+          "sheet": "CHERY&TENET",
+          "city": "Казань",
+          "name": "Диалог Авто Онлайн",
+          "legal_entity": "ООО Диалог А",
+          "inn": "1649021206",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "Geely&Belgee",
-          "city": "Альметьевск",
+          "city": "Казань",
           "name": "Диалог",
-          "legal_entity": "ООО Диалог Авто",
-          "inn": "1644062657",
+          "legal_entity": "ООО Диалог А",
+          "inn": "1649021206",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Казань",
+          "name": "Диалог",
+          "legal_entity": "ООО Диалог А",
+          "inn": "1649021206",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Казань",
+          "name": "Диалог",
+          "legal_entity": "ООО Диалог А",
+          "inn": "1649021206",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Казань",
+          "name": "Диалог",
+          "legal_entity": "ООО Диалог А",
+          "inn": "1649021206",
           "responsible": "Алексей Чихарев"
         },
         {
           "sheet": "HAVAL",
           "city": "Альметьевск",
           "name": "Альметьевск haval",
-          "legal_entity": "ООО Диалог Авто",
-          "inn": "1644062657",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Альметьевск",
-          "name": "Диалог",
           "legal_entity": "ООО Диалог Авто",
           "inn": "1644062657",
           "responsible": "Алексей Чихарев"
@@ -7042,30 +7167,6 @@
           "legal_entity": "ООО Управляющая компания Диалог",
           "inn": "1650207558",
           "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Набережные Челны",
-          "name": "Диалог",
-          "legal_entity": "ООО УК Диалог",
-          "inn": "1650207558",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Казань",
-          "name": "Диалог Авто Онлайн",
-          "legal_entity": "ООО Диалог А",
-          "inn": "1649021206",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Казань",
-          "name": "Диалог",
-          "legal_entity": "ООО Диалог А",
-          "inn": "1649021206",
-          "responsible": "Алексей Чихарев"
         }
       ],
       "status": "verified"
@@ -7089,27 +7190,6 @@
       "pochta_aliases": [],
       "oem_data": [
         {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/ohChynFZnahDBxLZSUDzH_nvLRpURd2rnr__nxEOtjU",
-          "name": "Автопортрет",
-          "legal_entity": "ООО НеваАвто",
-          "inn": "7816740073",
-          "address": "г. Санкт-Петербург, Салова 68Б",
-          "back_name": "Автопортрет",
-          "email": "a.ankudinov@jetour-spb.ru a.utkin@jetour-spb.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Автопортрет",
-          "legal_entity": "ООО НеваАвто",
-          "inn": "7816740073",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Санкт-Петербург",
           "group_link": "https://max.ru/join/a_UAdghyK5Agr3P_6mMyXGJP5L8PD3iCp52ZFAm1rb8",
@@ -7120,6 +7200,7 @@
           "back_name": "Автопортрет",
           "email": "v.baidevich@avtoportret-tenetplus.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "",
           "brand": "CHERY & TENET"
         },
         {
@@ -7175,6 +7256,43 @@
           "brand": "CHANGAN"
         },
         {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/ohChynFZnahDBxLZSUDzH_nvLRpURd2rnr__nxEOtjU",
+          "name": "Автопортрет",
+          "legal_entity": "ООО НеваАвто",
+          "inn": "7816740073",
+          "address": "г. Санкт-Петербург, Салова 68Б",
+          "back_name": "Автопортрет",
+          "email": "a.ankudinov@jetour-spb.ru a.utkin@jetour-spb.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Санк-Петербург",
+          "name": "Автопортрет Сити",
+          "legal_entity": "ООО Автопортрет Лахта",
+          "inn": "7814693364",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "name": "Автопортрет",
+          "legal_entity": "ООО Автопорттрет Лахта",
+          "inn": "7814693364",
+          "responsible": "Не назначен"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "name": "Автопортрет",
+          "legal_entity": "ООО НеваАвто",
+          "inn": "7816740073",
+          "responsible": "Светлана Дариенко"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Санкт-Петербург",
           "name": "Автопортрет",
@@ -7185,26 +7303,10 @@
         {
           "sheet": "HAVAL",
           "city": "Санк-Петербург",
-          "name": "Автопортрет Сити",
-          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
-          "inn": "7810337380",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Санк-Петербург",
           "name": "Автопортрет Про",
           "legal_entity": "ООО Автопортрет СПБ-ЮГ",
           "inn": "7810337380",
           "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "name": "Автопортрет",
-          "legal_entity": "ООО Автопорттрет Лахта",
-          "inn": "7814693364",
-          "responsible": "Не назначен"
         }
       ],
       "status": "verified"
@@ -7341,8 +7443,8 @@
           "sheet": "SOLARIS",
           "city": "Рязань",
           "name": "Автоимпорт",
-          "legal_entity": "ООО Компания Автоимпорт",
-          "inn": "6234062209",
+          "legal_entity": "ООО Ле-Ман",
+          "inn": "6234059829",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -7397,6 +7499,7 @@
           "back_name": "не передавать",
           "email": "avto_bas@mail.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1970",
           "brand": "CHERY & TENET"
         },
         {
@@ -7447,57 +7550,8 @@
           "back_name": "ONLINE Кунцево",
           "email": "ABaburin@kuntsevo-exeed.ru Oleg.Bagmut@kuntsevo.com",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1327",
           "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/oyc82XuELApjZhALMYDKNRRQ7yBGzcup11fPFK-_hc4",
-          "name": "Кунцево",
-          "legal_entity": "ООО Кунцево АТ",
-          "inn": "5032271860",
-          "address": "Москва,  Московская д.61",
-          "back_name": "ONLINE Кунцево",
-          "email": "DBusarov@kuntsevo.com PKireev@kuntsevo.com IGorshkov@hyundai-kuntsevo.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "Geely & Belgee"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/-5_c1guYwuZq0_fRz8bpeULzZf-3V42d0uHDY9Y_iQ0",
-          "name": "Кунцево",
-          "legal_entity": "ООО Кунцево АТ",
-          "inn": "5032271860",
-          "address": "г. Москва, ул. Горбунова 14",
-          "back_name": "ONLINE Кунцево",
-          "email": "Info_changan@kuntsevo.com",
-          "responsible": "Алексей Чихарев",
-          "brand": "CHANGAN"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО Кунцево АТ",
-          "inn": "5032271860",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО Кунцево АТ",
-          "inn": "5032271860",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО Кунцево АТ",
-          "inn": "5032271860",
-          "responsible": "Алексей Чихарев"
         },
         {
           "sheet": "OMODA&JAECOO",
@@ -7510,6 +7564,7 @@
           "back_name": "",
           "email": "NAZAHARENKO@rolf.ru  DRAHMIDEEVA1@rolf.ru",
           "responsible": "Андрей Кузнецов",
+          "fdc_code": "1011",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -7523,6 +7578,7 @@
           "back_name": "",
           "email": "IATerentev@rolf.ru IVStihov@rolf.ru",
           "responsible": "Андрей Кузнецов",
+          "fdc_code": "1011",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -7536,6 +7592,7 @@
           "back_name": "",
           "email": "ASShevyakov@rolf.ru SSRAGIMOV1@rolf.ru",
           "responsible": "Андрей Кузнецов",
+          "fdc_code": "1351",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -7562,6 +7619,19 @@
           "back_name": "",
           "email": "mrkochiashvili@geely-rolf.ru",
           "responsible": "",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/oyc82XuELApjZhALMYDKNRRQ7yBGzcup11fPFK-_hc4",
+          "name": "Кунцево",
+          "legal_entity": "ООО Кунцево АТ",
+          "inn": "5032271860",
+          "address": "Москва,  Московская д.61",
+          "back_name": "ONLINE Кунцево",
+          "email": "DBusarov@kuntsevo.com PKireev@kuntsevo.com IGorshkov@hyundai-kuntsevo.ru",
+          "responsible": "Алексей Чихарев",
           "brand": "Geely & Belgee"
         },
         {
@@ -7602,6 +7672,19 @@
           "email": "veegorov@rolf.ru\nVVDEREVYANKO@rolf.ru",
           "responsible": "Андрей Кузнецов",
           "brand": "HAVAL"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/-5_c1guYwuZq0_fRz8bpeULzZf-3V42d0uHDY9Y_iQ0",
+          "name": "Кунцево",
+          "legal_entity": "ООО Кунцево АТ",
+          "inn": "5032271860",
+          "address": "г. Москва, ул. Горбунова 14",
+          "back_name": "ONLINE Кунцево",
+          "email": "Info_changan@kuntsevo.com",
+          "responsible": "Алексей Чихарев",
+          "brand": "CHANGAN"
         },
         {
           "sheet": "JETOUR",
@@ -7773,38 +7856,6 @@
           "brand": "Рольф Импорт"
         },
         {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "name": "Кунцево (City)",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Не назначен"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "name": "Кунцево (PRO)",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Не назначен"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Москва",
           "name": "ГК Рольф",
@@ -7923,6 +7974,62 @@
           "legal_entity": "АО Рольф",
           "inn": "5047254063",
           "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "name": "Кунцево (City)",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Не назначен"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "name": "Кунцево (PRO)",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Не назначен"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО Кунцево АТ",
+          "inn": "5032271860",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО Кунцево АТ",
+          "inn": "5032271860",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО Кунцево АТ",
+          "inn": "5032271860",
+          "responsible": "Алексей Чихарев"
         }
       ],
       "status": "verified"
@@ -8289,6 +8396,7 @@
           "back_name": "СберАвто",
           "email": "b.bugera@deliverycar-online.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "807",
           "brand": "CHERY & TENET"
         },
         {
@@ -8302,6 +8410,7 @@
           "back_name": "СберАвто",
           "email": "b.bugera@deliverycar-online.ru  d.alisov@deliverycar-online.ru a.osipyan@deliverycar-online.ru k.semenov@deliverycar-online.ru a.shilyaev@deliverycar-online.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "987",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -8465,6 +8574,7 @@
           "back_name": "",
           "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1316",
           "brand": "CHERY & TENET"
         },
         {
@@ -8525,22 +8635,6 @@
           "brand": "SOLARIS"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Тула",
-          "name": "Чери Центр Автокласс на Оборонной",
-          "legal_entity": "ООО М-АВТО",
-          "inn": "7106511456",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Новомосковск (Тульская область)",
-          "name": "Автоклас",
-          "legal_entity": "ООО Автокласс РДС",
-          "inn": "7116158430",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Тула",
           "name": "Автокласс",
@@ -8554,6 +8648,22 @@
           "name": "Автокласс",
           "legal_entity": "ООО Автокласс",
           "inn": "7106002120",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тула",
+          "name": "Чери Центр Автокласс на Оборонной",
+          "legal_entity": "ООО М-АВТО",
+          "inn": "7106511456",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Новомосковск (Тульская область)",
+          "name": "Автоклас",
+          "legal_entity": "ООО Автокласс РДС",
+          "inn": "7116158430",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -8755,7 +8865,7 @@
           "address": "г. Волгоград ул. Еременко, 7Б",
           "back_name": "",
           "email": "onufrienko@arkont.ru",
-          "responsible": "Андрей Кузнецов",
+          "responsible": "Евгения Добролюбова",
           "brand": "JETOUR"
         },
         {
@@ -9043,6 +9153,7 @@
           "back_name": "Интерпартнер",
           "email": "vss@interpartner.ru\n ptv@interpartner.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "408/1325",
           "brand": "CHERY & TENET"
         },
         {
@@ -9232,7 +9343,7 @@
           "inn": "7327075832",
           "address": "Ульяноск, Урицкого 39",
           "back_name": "",
-          "email": "",
+          "email": "Ирина Худякова <ihudyakova@armada73.ru>",
           "responsible": "Евгения Добролюбова",
           "brand": "JETOUR"
         },
@@ -9292,6 +9403,7 @@
           "back_name": "АВТОДОМ ONLINE",
           "email": "передача строго по кнопки в Бек, на адрес необходимой локации",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "407",
           "brand": "CHERY & TENET"
         },
         {
@@ -9556,19 +9668,19 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Саратов",
-          "name": "Чанган Центр АВТОФОРУМ ВОСТОК",
-          "legal_entity": "ООО АВТОФОРУМ-ВОСТОК",
-          "inn": "6453163950",
-          "responsible": "Евгения Добролюбова"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Саратов",
           "name": "Автофорум",
           "legal_entity": "ООО Автофорум",
           "inn": "6452093700",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Саратов",
+          "name": "Чанган Центр АВТОФОРУМ ВОСТОК",
+          "legal_entity": "ООО АВТОФОРУМ-ВОСТОК",
+          "inn": "6453163950",
           "responsible": "Евгения Добролюбова"
         }
       ],
@@ -9642,7 +9754,7 @@
           "address": "ул. Октябрят, 31, Архангельск",
           "back_name": "",
           "email": "",
-          "responsible": "",
+          "responsible": "Светлана Дариенко",
           "brand": "LADA"
         },
         {
@@ -9685,6 +9797,7 @@
           "back_name": "СберАвто",
           "email": "sales.online@chery-vipavto.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "779/1275",
           "brand": "CHERY & TENET"
         },
         {
@@ -9698,6 +9811,7 @@
           "back_name": "СберАвто",
           "email": "iabubakirov@omoda-vipavto.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "871",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -9975,6 +10089,7 @@
           "back_name": "",
           "email": "info-cherykmv@hermescorp.ru, kaziev@hermescorp.ru, batagov@hermescorp.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "771",
           "brand": "CHERY & TENET"
         },
         {
@@ -10056,6 +10171,7 @@
           "back_name": "АВТОДОМ ONLINE",
           "email": "передача строго по кнопки в Бек, на адрес необходимой локации",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -10069,6 +10185,7 @@
           "back_name": "АВТОДОМ ONLINE",
           "email": "передача строго по кнопки в Бек, на адрес необходимой локации",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1183",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -10140,24 +10257,8 @@
           "sheet": "OMODA&JAECOO",
           "city": "Москва",
           "name": "Автодом",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Москва",
-          "name": "Автодом",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "name": "АВТОДОМ",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
+          "legal_entity": "АО АВТОДОМ",
+          "inn": "7714709349",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -10166,6 +10267,22 @@
           "name": "Автодом",
           "legal_entity": "ООО АВТОДОМ",
           "inn": "7714709349",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Москва",
+          "name": "АВТОДОМ",
+          "legal_entity": "ООО Автодом",
+          "inn": "7714709349",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "name": "Автодом",
+          "legal_entity": "ООО ДЦА",
+          "inn": "5029236551",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -10312,6 +10429,7 @@
           "back_name": "Максимум",
           "email": "kirill.rutto@haval-maximum.ru\nnikita.smolik@tenet-maximum.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "1398/1298",
           "brand": "CHERY & TENET"
         },
         {
@@ -10325,6 +10443,7 @@
           "back_name": "Максимум",
           "email": "maksim.pagin@maximum.auto rvkozhenov@maximum.auto vadim.volodkevich@jetour-maximum.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "1179",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -10380,6 +10499,14 @@
           "brand": "Soueast"
         },
         {
+          "sheet": "JETOUR",
+          "city": "Екатеринбург",
+          "name": "ГК Лаки Моторс Джетур",
+          "legal_entity": "ЗАО Автохолдинг",
+          "inn": "6664044905",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Санкт-Петербург",
           "name": "Максимум",
@@ -10418,14 +10545,6 @@
           "legal_entity": "ООО Максимум Кредит",
           "inn": "7804540104",
           "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Екатеринбург",
-          "name": "ГК Лаки Моторс Джетур",
-          "legal_entity": "ЗАО Автохолдинг",
-          "inn": "6664044905",
-          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -10723,6 +10842,7 @@
           "back_name": "",
           "email": "ivan.ivanushkin@debryansk-auto.ru, semen.schyolokov@debryansk-auto.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "743/1393",
           "brand": "CHERY & TENET"
         },
         {
@@ -10736,6 +10856,7 @@
           "back_name": "",
           "email": "gleb.usov@krona-auto.ru, anton.vereschagin@omoda-pion.ru\nvladislav.pulukchu@debryansk-auto.ru\ndenis.chigray@debryansk-auto.ru\nmikhail.frolov@debryansk-auto.ru\noj@debryansk-auto.ru, semen.schyolokov@debryansk-auto.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "927",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -10791,19 +10912,19 @@
           "brand": "Soueast"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Брянск",
-          "name": "Дебрянск Авто",
-          "legal_entity": "ООО Дебрянск Авто",
-          "inn": "3250521481",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Брянск",
           "name": "Дебрянск Авто",
           "legal_entity": "ООО БНМ-1",
           "inn": "3257002460",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Брянск",
+          "name": "Дебрянск Авто",
+          "legal_entity": "ООО Дебрянск Авто",
+          "inn": "3250521481",
           "responsible": "Валерия Солдатова"
         },
         {
@@ -10931,6 +11052,7 @@
           "back_name": "Картель Авто",
           "email": "v.petrov@cartelnvk.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "77",
           "brand": "CHERY & TENET"
         },
         {
@@ -10972,14 +11094,6 @@
           "brand": "DEEPAL"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Новокузнецк",
-          "name": "СВ-Авто",
-          "legal_entity": "ООО СВ-АВТО",
-          "inn": "4205206560",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "CHANGAN",
           "city": "Пермь",
           "name": "Дав-Авто",
@@ -10994,6 +11108,14 @@
           "legal_entity": "ООО Дав-Авто Восток",
           "inn": "5904329165",
           "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Новокузнецк",
+          "name": "СВ-Авто",
+          "legal_entity": "ООО СВ-АВТО",
+          "inn": "4205206560",
+          "responsible": "Светлана Дариенко"
         }
       ],
       "status": "verified"
@@ -11154,6 +11276,7 @@
           "back_name": "СберАвто",
           "email": "achasovskikh@iat.ru",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "319",
           "brand": "CHERY & TENET"
         },
         {
@@ -11262,6 +11385,7 @@
           "back_name": "",
           "email": "shop@kanavto.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1234",
           "brand": "CHERY & TENET"
         },
         {
@@ -11275,6 +11399,7 @@
           "back_name": "Приоритет_ГК_КАН Авто",
           "email": "-",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1003",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -11288,6 +11413,7 @@
           "back_name": "Приоритет_ГК КАН Авто",
           "email": "shop@kanavto.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "8066",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -11431,11 +11557,27 @@
           "brand": "Voyah"
         },
         {
-          "sheet": "Geely&Belgee",
+          "sheet": "OMODA&JAECOO",
+          "city": "Казань",
+          "name": "КАН Авто",
+          "legal_entity": "ООО КАН АВТО - 7",
+          "inn": "1657196270",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Казань",
+          "name": "Кан Авто",
+          "legal_entity": "ООО КАН АВТО - 5",
+          "inn": "1657190695",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
           "city": "Казань",
           "name": "КАН АВТО",
-          "legal_entity": "ООО КАН АВТО - 21",
-          "inn": "1685007616",
+          "legal_entity": "ООО КАН АВТО - 5",
+          "inn": "1657190695",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -11447,22 +11589,6 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Казань",
-          "name": "Кан Авто",
-          "legal_entity": "ООО КАН АВТО - 2",
-          "inn": "1657088067",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Казань",
-          "name": "КАН Авто",
-          "legal_entity": "ООО КАН АВТО - 16",
-          "inn": "1685004580",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "Voyah",
           "city": "Казань",
           "name": "КАН АВТО",
@@ -11471,19 +11597,19 @@
           "responsible": "Алексей Чихарев"
         },
         {
+          "sheet": "Geely&Belgee",
+          "city": "Казань",
+          "name": "КАН АВТО",
+          "legal_entity": "ООО КАН АВТО - 14",
+          "inn": "1657244365",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Казань",
           "name": "КАН АВТО",
           "legal_entity": "ООО КАН АВТО - 4",
           "inn": "1657120962",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Казань",
-          "name": "КАН АВТО",
-          "legal_entity": "ООО КАН АВТО - 5",
-          "inn": "1657190695",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -11895,6 +12021,7 @@
           "back_name": "СберАвто",
           "email": "a.ovcharov@arkont.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "342/1311",
           "brand": "CHERY & TENET"
         },
         {
@@ -11935,6 +12062,7 @@
           "back_name": "Только лиды",
           "email": "shikova@avto-trakt.ru, subacheva@avto-trakt.ru, info@chery-avtotrakt.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1117/1451",
           "brand": "CHERY & TENET"
         },
         {
@@ -11948,6 +12076,7 @@
           "back_name": "",
           "email": "",
           "responsible": "",
+          "fdc_code": "1332",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -11996,6 +12125,22 @@
           "brand": "GAC"
         },
         {
+          "sheet": "JETOUR",
+          "city": "Владимир",
+          "name": "АВТОТРАКТ JETOUR",
+          "legal_entity": "ООО МБ-Владимир",
+          "inn": "3328438619",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Владимир",
+          "name": "АВТОТРАКТ",
+          "legal_entity": "ООО Автотракт-Владимир",
+          "inn": "3328445119",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Владимир",
           "name": "АВТОТРАКТ",
@@ -12017,22 +12162,6 @@
           "name": "АВТОТРАКТ",
           "legal_entity": "ООО ТФК",
           "inn": "3328437679",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Владимир",
-          "name": "АВТОТРАКТ JETOUR",
-          "legal_entity": "ООО МБ-Владимир",
-          "inn": "3328438619",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Владимир",
-          "name": "АВТОТРАКТ",
-          "legal_entity": "ООО Автотракт-Владимир",
-          "inn": "3328445119",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -12067,6 +12196,7 @@
           "back_name": "Бакра",
           "email": "radivilov.ei@bakra-auto.ru, sklyar.so@bakra-auto.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "нет",
           "brand": "CHERY & TENET"
         },
         {
@@ -12080,6 +12210,7 @@
           "back_name": "Бакра",
           "email": "nikita.grishchenko@belgee-bakra.ru, makarova.nv@bakra-auto.ru, novozhilov.iv@bakra-auto.ru, karlov.ss@bakra-auto.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "CHERY & TENET"
         },
         {
@@ -12093,6 +12224,7 @@
           "back_name": "Бакра",
           "email": "demidenko.vm@bakra-auto.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "CHERY & TENET"
         },
         {
@@ -12106,12 +12238,26 @@
           "back_name": "Бакра",
           "email": "turochek.nm@bakra-auto.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "",
           "brand": "CHERY & TENET"
         },
         {
           "sheet": "Geely&Belgee",
-          "city": "Краснодар",
+          "city": "Донецк",
           "group_link": "https://max.ru/join/4EHQ_vS9rVgCYvxz39DZkTHxp96RdJstkR6O33VLIYQ",
+          "name": "Бакра",
+          "legal_entity": "ООО Бакра 2.0",
+          "inn": "2312330449",
+          "address": "г. Донецк, ул. Магистральная, 41",
+          "back_name": "Бакра",
+          "email": "sklyar.so@bakra-auto.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Краснодар",
+          "group_link": "https://max.ru/join/CZPZXj0QnBxNhmofDb13J8EUBcVMix2RUS_qdfbYZVA",
           "name": "Бакра",
           "legal_entity": "ООО Бакра 2.0",
           "inn": "2312330449",
@@ -12284,16 +12430,16 @@
           "brand": "CHANGAN"
         },
         {
-          "sheet": "Geely&Belgee",
-          "city": "Краснодар",
+          "sheet": "CHERY&TENET",
+          "city": "Донецк",
           "name": "Бакра",
-          "legal_entity": "ООО Бакра",
-          "inn": "2310041882",
+          "legal_entity": "ООО Бакра 2.0",
+          "inn": "2312330449",
           "responsible": "Валерия Солдатова"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Донецк",
+          "sheet": "Geely&Belgee",
+          "city": "Краснодар",
           "name": "Бакра",
           "legal_entity": "ООО Бакра 2.0",
           "inn": "2312330449",
@@ -12344,6 +12490,7 @@
           "back_name": "СОНГ",
           "email": "d.volinshikov@songmotors.ru   sales@songmotors.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1949",
           "brand": "CHERY & TENET"
         },
         {
@@ -12357,6 +12504,7 @@
           "back_name": "СОНГ",
           "email": "d.volinshikov@songmotors.ru   sales@songmotors.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "8378",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -12406,6 +12554,7 @@
           "back_name": "Фаворит Моторс",
           "email": "timokhin.k@favorit-motors.ru Saramok.a@favorit-motors.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1514",
           "brand": "CHERY & TENET"
         },
         {
@@ -12490,6 +12639,7 @@
           "back_name": "",
           "email": "k.kitaev@tenet-autoug.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1023",
           "brand": "CHERY & TENET"
         },
         {
@@ -12503,6 +12653,7 @@
           "back_name": "",
           "email": "a.ivanov@omoda-autoug.ru, a.alaverdyan@omoda-autoug.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "977",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -12516,6 +12667,7 @@
           "back_name": "",
           "email": "info@jeland-autoug-stavropol.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1226",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -12649,6 +12801,38 @@
           "brand": "GAC"
         },
         {
+          "sheet": "OMODA&JAECOO",
+          "city": "Пятигорск",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО АвтоЮГ Пятигорск",
+          "inn": "2635243909",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Пятигорск",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО АвтоЮг Пятигорск",
+          "inn": "2635243909",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Краснодар",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО АК Юг-Авто",
+          "inn": "2310079830",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Краснодар",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО АК Юг-Авто",
+          "inn": "2310079830",
+          "responsible": "Валерия Солдатова"
+        },
+        {
           "sheet": "SOLARIS",
           "city": "Краснодар",
           "name": "Юг-Авто",
@@ -12673,19 +12857,11 @@
           "responsible": "Валерия Солдатова"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Краснодар",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО АК Юг-Авто",
-          "inn": "2310079830",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "Soueast",
-          "city": "Краснодар",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО АК Юг-Авто",
-          "inn": "2310079830",
+          "city": "Пятигорск",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО АвтоЮг-Пятигорск",
+          "inn": "2635255478",
           "responsible": "Валерия Солдатова"
         },
         {
@@ -12702,30 +12878,6 @@
           "name": "АвтоЮг",
           "legal_entity": "ООО Ставрополь Автоюг",
           "inn": "2635233876",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Пятигорск",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО АвтоЮг-Пятигорск",
-          "inn": "2635255478",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Пятигорск",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО АвтоЮГ Пятигорск",
-          "inn": "2635243909",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Пятигорск",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО АвтоЮг Пятигорск",
-          "inn": "2635243909",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -12757,6 +12909,7 @@
           "back_name": "Нет",
           "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1389/1525",
           "brand": "CHERY & TENET"
         },
         {
@@ -12770,6 +12923,7 @@
           "back_name": "",
           "email": "novikova.v@krd-auto.ru, faskhutdinov@krd-auto.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1095",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -12817,6 +12971,7 @@
           "back_name": "",
           "email": "s.stadnikov@omoda-gedon.ru, v.kosmin@Omoda-gedon.ru, i.obrazcova@omoda-gedon.ru, e.kornilova@omoda-gedon.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1192",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -12856,6 +13011,7 @@
           "back_name": "",
           "email": "biriukov.i@oj-skrmotors.ru, koliagin.d@oj-skrmotors.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "1213",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -12963,19 +13119,19 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Казань",
-          "name": "Барс Авто",
-          "legal_entity": "АО Барс Авто",
-          "inn": "1660075318",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "Geely&Belgee",
           "city": "Казань",
           "name": "Барс Авто",
           "legal_entity": "ООО Дат Р",
           "inn": "1660106816",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Казань",
+          "name": "Барс Авто",
+          "legal_entity": "АО Барс Авто",
+          "inn": "1660075318",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -13509,18 +13665,18 @@
         },
         {
           "sheet": "JETOUR",
-          "city": "Новокузнецк",
-          "name": "Картель-Авто",
-          "legal_entity": "ООО Картель АВТО",
-          "inn": "4205236413",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "JETOUR",
           "city": "Кемерово",
           "name": "Картель",
           "legal_entity": "ООО КАРТЕЛЬ",
           "inn": "4205155965",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Новокузнецк",
+          "name": "Картель-Авто",
+          "legal_entity": "ООО Картель АВТО",
+          "inn": "4205236413",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -13612,7 +13768,7 @@
           "inn": "2465285024",
           "address": "ул. Партизана Железняка, 46Д",
           "back_name": "Арсенал",
-          "email": "melnichuk@jetour-arsenal.ru, iskandirov@jetour-arsenal.ru, rovkov@jetour-arsenal.ru, disponent@jetour-arsenal.ru.",
+          "email": "melnichuk@jetour-arsenal.ru, iskandirov@jetour-arsenal.ru, rovkov@jetour-arsenal.ru, disponent@jetour-arsenal.ru, atakishiev.r@jetour-arsenal.ru",
           "responsible": "Светлана Дариенко",
           "brand": "JETOUR"
         },
@@ -14162,19 +14318,19 @@
           "brand": "SOLARIS"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Тверь",
-          "name": "Важная персона",
-          "legal_entity": "ООО ВАЖНАЯ ПЕРСОНА-АВТО",
-          "inn": "6901084230",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Тверь",
           "name": "Важная персона Тверь",
           "legal_entity": "ООО Важная персона – Авто М",
           "inn": "6950108660",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Тверь",
+          "name": "Важная персона",
+          "legal_entity": "ООО ВАЖНАЯ ПЕРСОНА-АВТО",
+          "inn": "6901084230",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -14446,6 +14602,7 @@
           "back_name": "Апельсин КАЗАНЬ Online",
           "email": "n.nashatirkin@cartat.ru   reception.ulyanovsk@cartat.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1419",
           "brand": "CHERY & TENET"
         },
         {
@@ -14614,6 +14771,7 @@
           "back_name": "Макон Авто",
           "email": "Info@omoda-makonauto.ru info@jaecoo-makonauto.ru Andrey.Gusev@omoda-makonauto.ru Natalya.hrenova@omoda-makonauto.ru Denis.Ratnikov@omoda-makonauto.ru anton.pisarev@omoda-makonauto.ru",
           "responsible": "",
+          "fdc_code": "1129",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -15409,29 +15567,7 @@
         "Сократ"
       ],
       "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/UYyazrw2aZgYM4mIwE1iyLcHOGg_2faU78aEX48aSAY",
-          "name": "Моторленд",
-          "legal_entity": "ООО Сократ СПБ",
-          "inn": "3662259794",
-          "address": "Ириновский пр. 10",
-          "back_name": "Online Моторленд",
-          "email": "d.ionova@belgee-motorland78.ru hostes@belgee-motorland78.ru hostes@jetour-motorland78.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Моторленд",
-          "legal_entity": "ООО Сократ СПБ",
-          "inn": "3662259794",
-          "responsible": "Светлана Дариенко"
-        }
-      ],
+      "oem_data": [],
       "holding": "Моторленд"
     },
     {
@@ -23070,6 +23206,7 @@
           "back_name": "Пелетон",
           "email": "Sales33online@peleton.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "1440",
           "brand": "CHERY & TENET"
         },
         {
@@ -23083,6 +23220,7 @@
           "back_name": "Пелетон",
           "email": "Sales33online@peleton.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "8320",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -23185,6 +23323,7 @@
           "back_name": "",
           "email": "",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "236",
           "brand": "CHERY & TENET"
         }
       ]
@@ -23410,7 +23549,7 @@
           "name": "Аллер-Авто",
           "legal_entity": "ООО Аллер-Авто",
           "inn": "5835074668",
-          "address": "ул. Проспект Победы, 121",
+          "address": "Пенза, ул. Проспект Победы, 121",
           "back_name": "Аллер-Авто",
           "email": "alexandra.shitova@aller-avto.ru",
           "responsible": "Валерия Солдатова",
@@ -25480,6 +25619,7 @@
           "back_name": "Авилон АГ",
           "email": "tenet_bd_leeds@avilon.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "",
           "brand": "CHERY & TENET"
         },
         {
@@ -25493,6 +25633,7 @@
           "back_name": "Авилон АГ",
           "email": "tenet_vlg_leeds@avilon.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "505/1782",
           "brand": "CHERY & TENET"
         },
         {
@@ -25506,6 +25647,7 @@
           "back_name": "Авилон АГ",
           "email": "omoda_bd_leeds@avilon.ru jaecoo_bd_leeds@avilon.ru jeland_bd_leeds@avilon.ru",
           "responsible": "Алексей Чихарев",
+          "fdc_code": "8329",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -25693,26 +25835,27 @@
         {
           "sheet": "CHERY&TENET",
           "city": "Брянск",
-          "group_link": "",
+          "group_link": "https://max.ru/join/RrbsQMejELApsOmfchoeuEzQspUe9lFm8YH1YYI5UR0",
           "name": "Брянскзапчасть",
           "legal_entity": "ООО Брянскзапчасть",
           "inn": "3232022024",
           "address": "г. Брянск, ул. Литейная, д. 3/5",
           "back_name": "Брянскзапчасть",
-          "email": "",
+          "email": "e.savostenok@bryansk-chery.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "25/1783",
           "brand": "CHERY & TENET"
         },
         {
           "sheet": "CHANGAN",
           "city": "Брянск",
-          "group_link": "",
+          "group_link": "https://max.ru/join/mOLyxB76xRfNNvot-FJUBxUOi6dk0XwoEy_n4wMSgJg",
           "name": "Брянскзапчасть",
           "legal_entity": "ООО Брянскзапчасть",
           "inn": "3232022024",
           "address": "Брянск, пр. Станке Димитрова, д. 45",
           "back_name": "Брянскзапчасть",
-          "email": "",
+          "email": "p.savkin@bryansk-changan.ru",
           "responsible": "Валерия Солдатова",
           "brand": "CHANGAN"
         },
@@ -25753,6 +25896,7 @@
           "back_name": "",
           "email": "office@tenet-unicum.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "574",
           "brand": "CHERY & TENET"
         },
         {
@@ -25782,8 +25926,9 @@
           "inn": "5835071931",
           "address": "г. Пенза, ул. Беляева, д. 2В",
           "back_name": "",
-          "email": "",
+          "email": "r-shutov@sura-motors.ru",
           "responsible": "Валерия Солдатова",
+          "fdc_code": "344",
           "brand": "CHERY & TENET"
         },
         {
@@ -25811,10 +25956,11 @@
           "name": "Шувалово",
           "legal_entity": "ООО Шувалово-КАД",
           "inn": "7802951187",
-          "address": "г. Санкт-Петербург, Выборгское шоссе, 31А, литер А",
+          "address": "Ленинградская область, Всеволожский, б/н, Деревня, Порошкино, б/н, б/н, территория КАД (внутреннее кольцо), б/н, 25й километр, стр. 6",
           "back_name": "",
           "email": "",
           "responsible": "Светлана Дариенко",
+          "fdc_code": "1135",
           "brand": "CHERY & TENET"
         },
         {
@@ -25846,6 +25992,7 @@
           "back_name": "",
           "email": "sale@tenet-avtopremier.ru",
           "responsible": "",
+          "fdc_code": "1147",
           "brand": "CHERY & TENET"
         },
         {
@@ -25873,10 +26020,11 @@
           "name": "Сатурн Р",
           "legal_entity": "ООО Сатурн Р",
           "inn": "5902809279",
-          "address": "614015, г. Пермь, ул. Куйбышева, д. 37, офис 708",
+          "address": "г. Пермь ул. Спешилова 104а,",
           "back_name": "",
           "email": "evgeniy.mezentsev@omoda-saturn-r.ru",
           "responsible": "Евгения Добролюбова",
+          "fdc_code": "915",
           "brand": "OMODA & JAECOO"
         },
         {
@@ -30040,6 +30188,397 @@
       "bitrix_aliases": [],
       "bi_aliases": [],
       "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": 1287,
+      "canonical_name": "Автолюкс Кар",
+      "holding": "Автолюкс Кар",
+      "kam": "Валерия Солдатова",
+      "bitrix_aliases": [
+        "Автолюкс Кар",
+        "ООО \"АВТОЛЮКС КАР\"",
+        "ООО Автолюкс Кар"
+      ],
+      "bi_aliases": [
+        "Автолюкс Кар",
+        "Автолюкс Кар Махачкала"
+      ],
+      "pochta_aliases": [
+        "Magomed.magomedov@solaris-autoluxecar.ru"
+      ],
+      "oem_data": [
+        {
+          "sheet": "SOLARIS",
+          "city": "Махачкала",
+          "group_link": "https://t.me/+bjGeqy85mbE4ZDMy",
+          "name": "Автолюкс Кар",
+          "legal_entity": "ООО Автолюкс Кар",
+          "inn": "546024274",
+          "address": "г. Махачкала, пгт. Ленинкент, ул. Кизилюртовская д.88",
+          "back_name": "Нет",
+          "email": "Magomed.magomedov@solaris-autoluxecar.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "SOLARIS"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Махачкала",
+          "name": "Автолюкс Кар",
+          "legal_entity": "ООО Автолюкс Кар",
+          "inn": "0546024274",
+          "responsible": "Валерия Солдатова"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1288,
+      "canonical_name": "Гедон-Юг",
+      "holding": "Гедон-Юг",
+      "kam": "Валерия Солдатова",
+      "bitrix_aliases": [
+        "Гедон-Юг",
+        "ООО \"ГЕДОН-ЮГ\"",
+        "ООО Гедон-Юг",
+        "Гедон Юг"
+      ],
+      "bi_aliases": [
+        "Гедон-Юг",
+        "Гедон-Юг Таганрог",
+        "АВТОФОРУМ"
+      ],
+      "pochta_aliases": [
+        "a.pogosjan@chery-gedon.ru"
+      ],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/SqbSBuOWWzILQDW7IASOR9-FsHnlYUhaUawz12D4hRs",
+          "name": "Чери Центр Измайлово",
+          "legal_entity": "ООО ИЗМАЙЛОВО-СЕРВИС",
+          "inn": "5001070659",
+          "address": "МО, г.Балашиха, шоссе Энтузиастов (Западная коммунальная зона ), д. 2",
+          "back_name": "Нет",
+          "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
+          "responsible": "Алексей Чихарев",
+          "fdc_code": "845",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Орск",
+          "group_link": "https://t.me/+6qti3RHuZbxkZWYy",
+          "name": "Tenet Центр Ника Авто",
+          "legal_entity": "ООО Велес Авто",
+          "inn": "5638074027",
+          "address": "г. Орск, ул. Жуковского, 17А",
+          "back_name": "Нет",
+          "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
+          "responsible": "Андрей Кузнецов",
+          "fdc_code": "543/1472",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Саратов",
+          "group_link": "https://max.ru/join/MVpqZJ1vJ1kJu84d2RHJP-odcRNv3Fclt4XfhxGmmDk",
+          "name": "Чери Центр Автофорум",
+          "legal_entity": "ООО Автофорум Центр",
+          "inn": "6452947574",
+          "address": "г. Саратов ул. имени А.П. Шехурдина, 2/4",
+          "back_name": "Нет",
+          "email": "ЛИДЫ НЕ ПЕРЕДАЕМ, ТОЛЬКО ОНЛАЙН",
+          "responsible": "Андрей Кузнецов",
+          "fdc_code": "1145/1333",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Таганрог",
+          "group_link": "https://t.me/+jhmuSnom4WxjM2My",
+          "name": "Гедон-Юг",
+          "legal_entity": "ООО Гедон-Юг",
+          "inn": "6154112410",
+          "address": "г.Таганрог, Ростовское шоссе, 10",
+          "back_name": "Нет",
+          "email": "a.pogosjan@chery-gedon.ru",
+          "responsible": "Валерия Солдатова",
+          "fdc_code": "781/1381",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Geely - Смоленск, пр. Гагарина, 53; Belgee - Смоленск, ул. Николаева, д. 74",
+          "name": "Нет",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Саратов",
+          "name": "Чери Центр Автофорум",
+          "legal_entity": "ООО Автофорум Центр",
+          "inn": "6452947574",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Орск",
+          "name": "Tenet Центр Ника Авто",
+          "legal_entity": "ООО Велес Авто",
+          "inn": "5638074027",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Москва",
+          "name": "Чери Центр Измайлово",
+          "legal_entity": "ООО ИЗМАЙЛОВО-СЕРВИС",
+          "inn": "5001070659",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Таганрог",
+          "name": "Гедон-Юг",
+          "legal_entity": "ООО Гедон-Юг",
+          "inn": "6154112410",
+          "responsible": "Валерия Солдатова"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1289,
+      "canonical_name": "Автосалон № 1",
+      "holding": "Автосалон № 1",
+      "kam": "Светлана Дариенко",
+      "bitrix_aliases": [
+        "Автосалон № 1",
+        "ООО \"АВТОСАЛОН 1\"",
+        "ООО Автосалон 1"
+      ],
+      "bi_aliases": [
+        "Автосалон № 1 Псков"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Псков",
+          "group_link": "https://max.ru/join/6JtNvKQLgJw-GCm79lebzoibiiRPZAvaLWjISr32xRw",
+          "name": "Автосалон № 1",
+          "legal_entity": "ООО Автосалон 1",
+          "inn": "6000005056",
+          "address": "г. Псков,  Труда ул, 26 д., офис 3",
+          "back_name": "нет",
+          "email": "aipetrov@chery-autosalon1.ru",
+          "responsible": "Светлана Дариенко",
+          "fdc_code": "1082",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Псков",
+          "name": "Автосалон № 1",
+          "legal_entity": "ООО Автосалон 1",
+          "inn": "6000005056",
+          "responsible": "Светлана Дариенко"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": "P_OEM_943c0828",
+      "canonical_name": "АсАвто на Алмаатинской",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Самара",
+          "group_link": "https://max.ru/join/cuJZ6kWx3foqo9CQ0LngRwL3WxGpRlfR_iDoxq0WdIU",
+          "name": "АсАвто на Алмаатинской",
+          "legal_entity": "ООО \"АсАвто на Алма-Атинской\"",
+          "inn": "6312180864",
+          "address": "443106, Самарская область, г. Самара, ул. Алма-Атинская, зд. 87",
+          "back_name": "",
+          "email": "MShoshnev@asavtomotors.ru",
+          "responsible": "Евгения Добролюбова",
+          "fdc_code": "847",
+          "brand": "OMODA & JAECOO"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_9d82aab9",
+      "canonical_name": "АзиаМоторс",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Якутск",
+          "group_link": "https://max.ru/join/j093N2BswBTlwnBlPKsL16e7Ud3-MC8V-DGLa83N_cg",
+          "name": "АзиаМоторс",
+          "legal_entity": "ООО АзиаМоторс",
+          "inn": "1400034863",
+          "address": "Якутск, Покровский тракт 5 км, д. 34",
+          "back_name": "",
+          "email": "vasiliy.buzhin@omodajaecooykt.ru",
+          "responsible": "Светлана Дариенко",
+          "fdc_code": "",
+          "brand": "OMODA & JAECOO"
+        }
+      ]
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
       "oem_data": [
         {
           "sheet": "Geely&Belgee",
@@ -30187,7 +30726,7 @@
       "oem_data": [
         {
           "sheet": "LADA",
-          "city": "",
+          "city": "Нижний Новгород,Комсомольское шоссе 7в",
           "name": "",
           "brand": "LADA"
         }
@@ -30203,7 +30742,7 @@
       "oem_data": [
         {
           "sheet": "LADA",
-          "city": "",
+          "city": "Нижний Новгород,Родионова 203",
           "name": "",
           "brand": "LADA"
         }
@@ -30258,6 +30797,29 @@
       ]
     },
     {
+      "partner_id": "P_OEM_ae51d9c1",
+      "canonical_name": "ООО \"Асмото\"",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Нижний Тагил",
+          "group_link": "https://max.ru/join/dWQToGrIHSA7PqGu-RyTS2n6UAWQ4txuQ_ytXclwGV8",
+          "name": "",
+          "legal_entity": "ООО \"Асмото\"",
+          "inn": "6623092836",
+          "address": "г. Нижний Тагил, Свердловское шоссе, 43",
+          "back_name": "",
+          "email": "",
+          "responsible": "Евгения Добролюбова",
+          "brand": "JETOUR"
+        }
+      ]
+    },
+    {
       "partner_id": "P_OEM_621324b8",
       "canonical_name": "OEM Партнер",
       "kam": "Не назначен",
@@ -30288,102 +30850,6 @@
           "brand": "GAC"
         }
       ]
-    },
-    {
-      "partner_id": 1287,
-      "canonical_name": "Автолюкс Кар",
-      "holding": "Автолюкс Кар",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "Автолюкс Кар",
-        "ООО \"АВТОЛЮКС КАР\"",
-        "ООО Автолюкс Кар"
-      ],
-      "bi_aliases": [
-        "Автолюкс Кар",
-        "Автолюкс Кар Махачкала"
-      ],
-      "pochta_aliases": [
-        "Magomed.magomedov@solaris-autoluxecar.ru"
-      ],
-      "oem_data": [
-        {
-          "sheet": "SOLARIS",
-          "city": "Махачкала",
-          "group_link": "https://t.me/+bjGeqy85mbE4ZDMy",
-          "name": "Автолюкс Кар",
-          "legal_entity": "ООО Автолюкс Кар",
-          "inn": "0546024274",
-          "address": "г. Махачкала, пгт. Ленинкент, ул. Кизилюртовская д.88",
-          "back_name": "Нет",
-          "email": "Magomed.magomedov@solaris-autoluxecar.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "SOLARIS"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1288,
-      "canonical_name": "Гедон-Юг",
-      "holding": "Гедон-Юг",
-      "kam": "Валерия Солдатова",
-      "bitrix_aliases": [
-        "Гедон-Юг",
-        "ООО \"ГЕДОН-ЮГ\"",
-        "ООО Гедон-Юг",
-        "Гедон Юг"
-      ],
-      "bi_aliases": [
-        "Гедон-Юг",
-        "Гедон-Юг Таганрог"
-      ],
-      "pochta_aliases": [
-        "a.pogosjan@chery-gedon.ru"
-      ],
-      "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Таганрог",
-          "group_link": "https://t.me/+jhmuSnom4WxjM2My",
-          "name": "Гедон-Юг",
-          "legal_entity": "ООО Гедон-Юг",
-          "inn": "6154112410",
-          "address": "г.Таганрог, Ростовское шоссе, 10",
-          "back_name": "Нет",
-          "email": "a.pogosjan@chery-gedon.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "CHERY & TENET"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1289,
-      "canonical_name": "Автосалон № 1",
-      "holding": "Автосалон № 1",
-      "kam": "Светлана Дариенко",
-      "bitrix_aliases": [
-        "Автосалон № 1",
-        "ООО \"АВТОСАЛОН 1\"",
-        "ООО Автосалон 1"
-      ],
-      "bi_aliases": [
-        "Автосалон № 1 Псков"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Псков",
-          "name": "Автосалон № 1",
-          "legal_entity": "ООО Автосалон 1",
-          "inn": "6000005056",
-          "responsible": "Светлана Дариенко",
-          "brand": "CHERY & TENET"
-        }
-      ],
-      "status": "verified"
     }
   ],
   "auto_matched_deals": [
