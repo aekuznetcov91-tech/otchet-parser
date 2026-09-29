@@ -313,12 +313,16 @@ class OemKamResolver:
         if 'нижегородец' in p_lower or c_inn == '5257164835':
             return 'Евгения Добролюбова'
 
-        # 10. Планета Авто -> Добролюбова
-        if 'планета авто' in p_lower or c_inn == '7453298640':
+        # 10. Планета Авто -> все города, кроме Махачкалы, Таганрога и Москвы относятся к Добролюбовой
+        if 'планета авто' in p_lower or 'планета-авто' in p_lower or 'чери центр планета авто восток' in p_lower or c_inn == '7453298640':
+            if 'махачкала' in c_lower or 'таганрог' in c_lower:
+                return 'Валерия Солдатова'
+            if 'москва' in c_lower or 'мск' in c_lower:
+                return 'Алексей Чихарев'
             return 'Евгения Добролюбова'
 
         # 9. Автосеть АМК -> Добролюбова
-        if any(k in p_lower for k in ['амк', 'автосеть амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
+        if any(k in p_lower for k in ['амк', 'автосеть амк', 'автосеть рф амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал', 'апельсин', 'автомир']):
             return 'Евгения Добролюбова'
 
         # 5-6. Fresh -> Кузнецов
@@ -356,6 +360,12 @@ class OemKamResolver:
                     if any(spb_k in p_lower or spb_k in c_lower for spb_k in ['спб', 'санкт-петербург']) or 'geely' in b_clean.lower():
                         return 'Светлана Дариенко'
                     return 'Алексей Чихарев'
+                if 'планета авто' in p_lower or 'планета-авто' in p_lower:
+                    if 'махачкала' in c_lower or 'таганрог' in c_lower:
+                        return 'Валерия Солдатова'
+                    if 'москва' in c_lower or 'мск' in c_lower:
+                        return 'Алексей Чихарев'
+                    return 'Евгения Добролюбова'
                 return kam
 
         # 4. Fallback to existing registry / bitrix directory

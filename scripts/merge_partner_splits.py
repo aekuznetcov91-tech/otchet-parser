@@ -142,12 +142,12 @@ MERGERS = [
         'target_kam': 'Андрей Кузнецов',
         'donor_ids': [632014]
     },
-    # 20. Автосеть РФ АМК: merge 632018 into 1053
+    # 20. Автосеть РФ АМК: merge 632018, 1236 into 1053
     {
         'target_id': 1053,
         'target_name': 'ФДЦ Автосеть АМК РФ',
-        'target_kam': 'Андрей Кузнецов',
-        'donor_ids': [632018]
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': [632018, 1236]
     },
     # 21. Major: merge 1202, 632040 into 1044
     {
@@ -260,6 +260,13 @@ MERGERS = [
         'target_name': 'Аларм-Моторс ГК',
         'target_kam': 'Светлана Дариенко',
         'donor_ids': [632048]
+    },
+    # 37. Чери Арконт: merge 1223 into 1112
+    {
+        'target_id': 1112,
+        'target_name': 'ГК Арконт Холдинг',
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': [1223]
     }
 ]
 
@@ -561,18 +568,22 @@ def apply_merges_to_file(filepath):
         p1002['holding'] = 'Аларм-Моторс'
         p1002['kam'] = 'Светлана Дариенко'
 
-    # 14. ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК: 1058 -> Евгения Добролюбова (строго Челябинск и Миасс, Планета Авто)
+    # 14. ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК: 1058 -> Евгения Добролюбова (все города, кроме Махачкалы, Таганрога и Москвы относятся к Добролюбовой)
     p1058 = partners_by_id.get(1058)
     if p1058:
         p1058['canonical_name'] = 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК'
         p1058['holding'] = 'Планета Авто'
         p1058['kam'] = 'Евгения Добролюбова'
-        p1058['bi_aliases'] = [a for a in p1058.get('bi_aliases', []) if 'автофорум' not in a.lower()]
-        p1058['oem_data'] = [
-            oem for oem in p1058.get('oem_data', [])
-            if any(c in (oem.get('city') or '').lower() for c in ['челябинск', 'миасс'])
-            and any(inn in str(oem.get('inn') or '') for inn in ['7447124619', '7452048272'])
-        ]
+        p1058['bi_aliases'] = clean_list((p1058.get('bi_aliases', []) or []) + ['Планета Авто', 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК', 'Гольфстрим'])
+        p1058['bi_aliases'] = [a for a in p1058['bi_aliases'] if 'автофорум' not in a.lower()]
+        for oem in p1058.get('oem_data', []):
+            city_str = (oem.get('city') or '').lower()
+            if 'махачкала' in city_str or 'таганрог' in city_str:
+                oem['responsible'] = 'Валерия Солдатова'
+            elif 'москва' in city_str or 'мск' in city_str:
+                oem['responsible'] = 'Алексей Чихарев'
+            else:
+                oem['responsible'] = 'Евгения Добролюбова'
 
     # 15. Автолюкс Кар (Махачкала, Solaris): 1287 -> Валерия Солдатова
     p1287 = partners_by_id.get(1287)
@@ -683,6 +694,59 @@ def apply_merges_to_file(filepath):
         partners.append(p1289)
         partners_by_id[1289] = p1289
 
+    # 19. ГК Арконт Холдинг: 1112 -> Евгения Добролюбова (объединен с Чери Арконт 1223)
+    p1112 = partners_by_id.get(1112)
+    if p1112:
+        p1112['canonical_name'] = 'ГК Арконт Холдинг'
+        p1112['holding'] = 'ГК Арконт Холдинг'
+        p1112['kam'] = 'Евгения Добролюбова'
+        p1112['bitrix_aliases'] = clean_list((p1112.get('bitrix_aliases', []) or []) + ['Чери Арконт', 'ГК Арконт', 'ГК Арконт Холдинг', 'ООО Арконт ЯЛР Филиал №1', 'Арконт'])
+        p1112['bi_aliases'] = clean_list((p1112.get('bi_aliases', []) or []) + ['Чери Арконт', 'ГК Арконт', 'ГК Арконт Холдинг', 'Арконт'])
+        for oem in p1112.get('oem_data', []):
+            oem['responsible'] = 'Евгения Добролюбова'
+
+    # 20. ФДЦ Автосеть АМК РФ: 1053 -> Евгения Добролюбова (все объединено и закреплено за Добролюбовой)
+    p1053 = partners_by_id.get(1053)
+    if p1053:
+        p1053['canonical_name'] = 'ФДЦ Автосеть АМК РФ'
+        p1053['holding'] = 'ФДЦ Автосеть АМК РФ'
+        p1053['kam'] = 'Евгения Добролюбова'
+        p1053['bitrix_aliases'] = clean_list((p1053.get('bitrix_aliases', []) or []) + [
+            'ФДЦ Автосеть АМК РФ',
+            'ONLINE АМК Тольятти (ООО "АМ Компани")',
+            'ONLINE АМК Самара ООО "УРАЛ-ЛАДА"',
+            'пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ',
+            'Online АМК-ЕКАТЕРИНБУРГ',
+            'ООО АМК-ЕКАТЕРИНБУРГ',
+            'АМК-Екатеринбург'
+        ])
+        p1053['bi_aliases'] = clean_list((p1053.get('bi_aliases', []) or []) + [
+            'ФДЦ Автосеть АМК РФ',
+            'ONLINE  пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ',
+            'пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ',
+            'ONLINE пилот ФДЦ Автосеть РФ АМК Самара Тольятти',
+            'АМК-Екатеринбург'
+        ])
+        for oem in p1053.get('oem_data', []):
+            oem['responsible'] = 'Евгения Добролюбова'
+
+    # 21. Эксперт Авто (Новосибирск): 1035 -> Евгения Добролюбова (закреплен за Добролюбовой)
+    p1035 = partners_by_id.get(1035)
+    if p1035:
+        p1035['canonical_name'] = 'Эксперт Авто (Новосибирск)'
+        p1035['holding'] = 'Эксперт Авто'
+        p1035['kam'] = 'Евгения Добролюбова'
+        p1035['bitrix_aliases'] = clean_list((p1035.get('bitrix_aliases', []) or []) + [
+            'Эксперт Авто (Новосибирск)',
+            'ONLINE ГК Эксперт Авто \\ ООО "ЭКСПЕРТ АВТО НСК"',
+            'ООО "ЭКСПЕРТ АВТО НСК"',
+            'Эксперт Авто Новосибирск'
+        ])
+        p1035['oem_data'] = [oem for oem in p1035.get('oem_data', []) if 'уфа' not in (oem.get('city') or '').lower() and 'верра' not in (oem.get('name') or '').lower()]
+        for oem in p1035['oem_data']:
+            oem['responsible'] = 'Евгения Добролюбова'
+
+
     # Filter out removed donor partners
     new_partners = [p for p in partners if (p.get('partner_id') or p.get('id')) not in removed_pids]
     data['partners'] = new_partners
@@ -725,6 +789,8 @@ def apply_merges_to_data_json(filepath):
         # Fix Spektr / Apelsin (ООО "СПЕКТР" ONLINE АВТОСЕТЬ РФ/Апельсин) -> 1054 Апельсин-Челны (Чихарев)
         raw_p = (r.get('RawPartner') or '').upper()
         p_name = (r.get('Partner') or '').upper()
+        raw_p_low = (r.get('RawPartner') or '').lower()
+        p_name_low = (r.get('Partner') or '').lower()
         if ('СПЕКТР' in raw_p and 'АПЕЛЬСИН' in raw_p) or ('АПЕЛЬСИН' in p_name):
             if r.get('PartnerId') == 1049:
                 r['PartnerId'] = 1054
@@ -818,6 +884,56 @@ def apply_merges_to_data_json(filepath):
             r['KAM'] = 'Валерия Солдатова'
             modified = True
 
+        # 1. Чери арконт и ГК Арконт холдинг - объединить (ID 1112, ГК Арконт Холдинг, KAM: Евгения Добролюбова)
+        if r.get('PartnerId') in [1112, 1223] or 'арконт' in raw_p_low or 'арконт' in p_name_low:
+            r['PartnerId'] = 1112
+            r['Partner'] = 'ГК Арконт Холдинг'
+            if r.get('Month', '') >= '2026-09':
+                r['KAM'] = 'Евгения Добролюбова'
+            elif r.get('KAM') != 'Андрей Кузнецов':
+                r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 2. Чери Центр Планета АВто восток, все города, кроме Махачкалы, Таганрога и Москвы Относятся к Добролюбовой
+        if r.get('PartnerId') == 1058 or 'планета авто' in raw_p_low or 'планета авто' in p_name_low or 'планета-авто' in raw_p_low or 'планета-авто' in p_name_low or 'автогарантия' in raw_p_low:
+            r['PartnerId'] = 1058
+            r['Partner'] = 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК'
+            city_str = (str(r.get('City') or '') + ' ' + raw_p_low + ' ' + p_name_low).lower()
+            if 'махачкала' in city_str or 'таганрог' in city_str:
+                r['KAM'] = 'Валерия Солдатова'
+            elif 'москва' in city_str or 'мск' in city_str:
+                r['KAM'] = 'Алексей Чихарев'
+            else:
+                if r.get('Month', '') >= '2026-09':
+                    r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 3. ФДЦ Автосеть АМК РФ объединить в одно и закрепить все за Добролюбовой (ID 1053)
+        if (r.get('PartnerId') in [1053, 1236, 632018] or
+            'автосеть амк' in raw_p_low or 'автосеть амк' in p_name_low or
+            'автосеть рф амк' in raw_p_low or 'автосеть рф амк' in p_name_low or
+            'амк-екатеринбург' in raw_p_low or 'амк-екатеринбург' in p_name_low or
+            'амк екатеринбург' in raw_p_low or 'амк екатеринбург' in p_name_low or
+            (('амк' in raw_p_low or 'амк' in p_name_low) and not any(ex in raw_p_low for ex in ['амкапитал', 'ам капитал', 'апельсин', 'автомир']))):
+            r['PartnerId'] = 1053
+            r['Partner'] = 'ФДЦ Автосеть АМК РФ'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 4. Эксперт авто Новосибирск - Закрепить за Добролюбовой (сделки в сентябре на Дариенко, с октября на Добролюбовой)
+        if (r.get('PartnerId') == 1035 or
+            any(k in raw_p_low for k in ['эксперт авто нск', 'эксперт авто \\ ооо "эксперт авто нск"', 'эксперт авто новосибирск']) or
+            (('эксперт авто' in raw_p_low or 'эксперт авто' in p_name_low or 'эксперт-авто' in raw_p_low) and
+             any(c in (str(r.get('City') or '') + ' ' + raw_p_low).lower() for c in ['новосибирск', 'нск']))):
+            r['PartnerId'] = 1035
+            r['Partner'] = 'Эксперт Авто (Новосибирск)'
+            m = r.get('Month') or ''
+            if m == '2026-09':
+                r['KAM'] = 'Светлана Дариенко'
+            elif m >= '2026-10':
+                r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
     for r in data.get('deals', []):
         pid = r.get('PartnerId')
         if pid in donor_to_target:
@@ -829,6 +945,8 @@ def apply_merges_to_data_json(filepath):
 
         raw_p = (r.get('RawPartner') or '').upper()
         p_name = (r.get('PartnerName') or '').upper()
+        raw_p_low = (r.get('RawPartner') or '').lower()
+        p_name_low = (r.get('PartnerName') or '').lower()
         if ('СПЕКТР' in raw_p and 'АПЕЛЬСИН' in raw_p) or ('АПЕЛЬСИН' in p_name):
             if r.get('PartnerId') == 1049:
                 r['PartnerId'] = 1054
@@ -917,6 +1035,56 @@ def apply_merges_to_data_json(filepath):
             r['KAM'] = 'Валерия Солдатова'
             modified = True
 
+        # 1. Чери арконт и ГК Арконт холдинг - объединить (ID 1112, ГК Арконт Холдинг, KAM: Евгения Добролюбова)
+        if r.get('PartnerId') in [1112, 1223] or 'арконт' in raw_p_low or 'арконт' in p_name_low:
+            r['PartnerId'] = 1112
+            r['PartnerName'] = 'ГК Арконт Холдинг'
+            if r.get('Month', '') >= '2026-09':
+                r['KAM'] = 'Евгения Добролюбова'
+            elif r.get('KAM') != 'Андрей Кузнецов':
+                r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 2. Чери Центр Планета АВто восток, все города, кроме Махачкалы, Таганрога и Москвы Относятся к Добролюбовой
+        if r.get('PartnerId') == 1058 or 'планета авто' in raw_p_low or 'планета авто' in p_name_low or 'планета-авто' in raw_p_low or 'планета-авто' in p_name_low or 'автогарантия' in raw_p_low:
+            r['PartnerId'] = 1058
+            r['PartnerName'] = 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК'
+            city_str = (str(r.get('City') or '') + ' ' + raw_p_low + ' ' + p_name_low).lower()
+            if 'махачкала' in city_str or 'таганрог' in city_str:
+                r['KAM'] = 'Валерия Солдатова'
+            elif 'москва' in city_str or 'мск' in city_str:
+                r['KAM'] = 'Алексей Чихарев'
+            else:
+                if r.get('Month', '') >= '2026-09':
+                    r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 3. ФДЦ Автосеть АМК РФ объединить в одно и закрепить все за Добролюбовой (ID 1053)
+        if (r.get('PartnerId') in [1053, 1236, 632018] or
+            'автосеть амк' in raw_p_low or 'автосеть амк' in p_name_low or
+            'автосеть рф амк' in raw_p_low or 'автосеть рф амк' in p_name_low or
+            'амк-екатеринбург' in raw_p_low or 'амк-екатеринбург' in p_name_low or
+            'амк екатеринбург' in raw_p_low or 'амк екатеринбург' in p_name_low or
+            (('амк' in raw_p_low or 'амк' in p_name_low) and not any(ex in raw_p_low for ex in ['амкапитал', 'ам капитал', 'апельсин', 'автомир']))):
+            r['PartnerId'] = 1053
+            r['PartnerName'] = 'ФДЦ Автосеть АМК РФ'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 4. Эксперт авто Новосибирск - Закрепить за Добролюбовой (сделки в сентябре на Дариенко, с октября на Добролюбовой)
+        if (r.get('PartnerId') == 1035 or
+            any(k in raw_p_low for k in ['эксперт авто нск', 'эксперт авто \\ ооо "эксперт авто нск"', 'эксперт авто новосибирск']) or
+            (('эксперт авто' in raw_p_low or 'эксперт авто' in p_name_low or 'эксперт-авто' in raw_p_low) and
+             any(c in (str(r.get('City') or '') + ' ' + raw_p_low).lower() for c in ['новосибирск', 'нск']))):
+            r['PartnerId'] = 1035
+            r['PartnerName'] = 'Эксперт Авто (Новосибирск)'
+            m = r.get('Month') or ''
+            if m == '2026-09':
+                r['KAM'] = 'Светлана Дариенко'
+            elif m >= '2026-10':
+                r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
     if modified:
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
@@ -933,7 +1101,9 @@ if __name__ == '__main__':
 
     data_paths = [
         os.path.join(PROJECT_ROOT, 'data.json'),
-        os.path.join(SITE_DIR, 'data.json')
+        os.path.join(SITE_DIR, 'data.json'),
+        os.path.join(os.path.dirname(PROJECT_ROOT), 'data.json')
     ]
     for dp in data_paths:
-        apply_merges_to_data_json(dp)
+        if os.path.exists(dp):
+            apply_merges_to_data_json(dp)

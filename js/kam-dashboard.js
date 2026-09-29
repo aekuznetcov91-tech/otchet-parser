@@ -159,6 +159,7 @@ const DEFAULT_KAM_PLANS = {
         "1018": 2,
         "1019": 10,
         "1034": 1,
+        "1035": 1,
         "1036": 1,
         "1038": 18,
         "1039": 25,
@@ -256,6 +257,10 @@ const DEFAULT_KAM_PLANS = {
         "ID_1019__Валерия Солдатова": 10,
         "ID_1034": 1,
         "ID_1034__Валерия Солдатова": 1,
+        "ID_1035": 1,
+        "ID_1035__Светлана Дариенко": 1,
+        "ID_1035__Евгения Добролюбова": 1,
+        "Эксперт Авто (Новосибирск)": 1,
         "ID_1036": 1,
         "ID_1036__Евгения Добролюбова": 1,
         "ID_1038": 18,
@@ -1369,13 +1374,19 @@ function getKamAggregatedData(filterCfg) {
             return;
         }
         let normKam = normalizeKamName(p.kam);
-        if (activeMonth <= '2026-08' && normKam === 'Евгения Добролюбова') {
+        if (p.partner_id === 1035) {
+            normKam = (activeMonth === '2026-09') ? 'Светлана Дариенко' : 'Евгения Добролюбова';
+        } else if (activeMonth <= '2026-08' && normKam === 'Евгения Добролюбова') {
             normKam = 'Андрей Кузнецов';
         }
         const distinctKams = new Set();
         if (p.oem_data && p.oem_data.length > 0) {
             p.oem_data.forEach(o => {
-                if (o.responsible) distinctKams.add(normalizeKamName(o.responsible));
+                let resp = o.responsible ? normalizeKamName(o.responsible) : normKam;
+                if (p.partner_id === 1035) {
+                    resp = (activeMonth === '2026-09') ? 'Светлана Дариенко' : 'Евгения Добролюбова';
+                }
+                distinctKams.add(resp);
             });
         }
         if (distinctKams.size > 1) {
@@ -1812,7 +1823,11 @@ function getKamAggregatedData(filterCfg) {
     registry.forEach(p => {
         if (p.partner_id === 1210 || (p.canonical_name && p.canonical_name.toLowerCase().includes('сберавто'))) return;
         let pKam = normalizeKamName(p.kam);
-        if (activeMonth <= '2026-08' && pKam === 'Евгения Добролюбова') pKam = 'Андрей Кузнецов';
+        if (p.partner_id === 1035) {
+            pKam = (activeMonth === '2026-09') ? 'Светлана Дариенко' : 'Евгения Добролюбова';
+        } else if (activeMonth <= '2026-08' && pKam === 'Евгения Добролюбова') {
+            pKam = 'Андрей Кузнецов';
+        }
         if (currentKamFilter === 'all' || pKam === normalizeKamName(currentKamFilter)) {
             assignedPartnersCount++;
             assignedMasterPartners.push(p);
@@ -1827,7 +1842,11 @@ function getKamAggregatedData(filterCfg) {
     registry.forEach(p => {
         if (p.partner_id === 1210 || (p.canonical_name && p.canonical_name.toLowerCase().includes('сберавто'))) return;
         let pKam = normalizeKamName(p.kam);
-        if (activeMonth <= '2026-08' && pKam === 'Евгения Добролюбова') pKam = 'Андрей Кузнецов';
+        if (p.partner_id === 1035) {
+            pKam = (activeMonth === '2026-09') ? 'Светлана Дариенко' : 'Евгения Добролюбова';
+        } else if (activeMonth <= '2026-08' && pKam === 'Евгения Добролюбова') {
+            pKam = 'Андрей Кузнецов';
+        }
         if (currentKamFilter !== 'all' && pKam !== normalizeKamName(currentKamFilter)) return;
 
         const pid = p.partner_id;

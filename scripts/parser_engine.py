@@ -1279,8 +1279,19 @@ def resolve_sberauto_lead_partner(contact_name, raw_partner=""):
         return (1027, 'Ай-Би-Эм', 'Светлана Дариенко')
     elif 'диалог' in c_low:
         return (1082, 'ГК Диалог Авто', 'Алексей Чихарев')
+    elif any(k in c_low for k in ['автосеть амк', 'автосеть рф амк', 'амк самара', 'амк тольятти', 'амк екб', 'амк-екатеринбург', 'амк']) and not any(ex in c_low for ex in ['амкапитал', 'ам капитал', 'апельсин', 'автомир']):
+        return (1053, 'ФДЦ Автосеть АМК РФ', 'Евгения Добролюбова')
     elif 'апельсин' in c_low:
-        return (1053, 'ФДЦ Автосеть АМК РФ', 'Алексей Чихарев')
+        return (1054, 'Апельсин-Челны', 'Алексей Чихарев')
+    elif 'планета авто' in c_low or 'планета-авто' in c_low or 'чери центр планета авто восток' in c_low:
+        if 'махачкала' in c_low or 'таганрог' in c_low:
+            return (1058, 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК', 'Валерия Солдатова')
+        elif 'москва' in c_low or 'мск' in c_low:
+            return (1058, 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК', 'Алексей Чихарев')
+        else:
+            return (1058, 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК', 'Евгения Добролюбова')
+    elif 'эксперт' in c_low and any(k in c_low for k in ['новосибирск', 'нск']):
+        return (1035, 'Эксперт Авто (Новосибирск)', 'Евгения Добролюбова')
     elif 'твс' in c_low:
         return (1079, 'CHERY ТВС Моторс', 'Евгения Добролюбова')
     elif 'автогарантия' in c_low or 'челябинск' in c_low:
@@ -2333,7 +2344,8 @@ def run_pipeline():
                         kam_partner = 'Алексей Чихарев'
                     # 1. Арконт -> Добролюбова
                     elif 'арконт' in p_lower or deal_inn == '3443113810':
-                        cname = 'ГК Арконт'
+                        pid = 1112
+                        cname = 'ГК Арконт Холдинг'
                         kam_partner = 'Евгения Добролюбова'
                     # 2. Сильвер-авто -> Добролюбова
                     elif 'сильвер' in p_lower:
@@ -2381,18 +2393,32 @@ def run_pipeline():
                             cname = 'ГК Сатурн 2' if '2' in p_lower else 'Сатурн-Р'
                             kam_partner = 'Евгения Добролюбова'
                     # 9. Автосеть АМК РФ -> Добролюбова
-                    elif any(k in p_lower for k in ['амк', 'автосеть амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
+                    elif (any(k in p_lower for k in ['амк', 'автосеть амк', 'автосеть рф амк']) or deal_inn == '6320070000') and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал', 'апельсин', 'автомир']):
+                        pid = 1053
                         cname = 'ФДЦ Автосеть АМК РФ'
                         kam_partner = 'Евгения Добролюбова'
-                    # 10. Планета Авто -> Добролюбова
-                    elif 'планета авто' in p_lower or deal_inn == '7453298640':
-                        cname = 'Планета Авто'
-                        kam_partner = 'Евгения Добролюбова'
-                    # 11. Эксперт Авто: Самара -> Добролюбова, Новосибирск -> Дариенко
+                    # 10. Планета Авто -> все города, кроме Махачкалы, Таганрога и Москвы относятся к Добролюбовой
+                    elif 'планета авто' in p_lower or 'планета-авто' in p_lower or 'чери центр планета авто восток' in p_lower or deal_inn == '7453298640':
+                        pid = 1058
+                        cname = 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК'
+                        d_city_low = (deal_city or '').lower()
+                        if 'махачкала' in d_city_low or 'таганрог' in d_city_low:
+                            kam_partner = 'Валерия Солдатова'
+                        elif 'москва' in d_city_low or 'мск' in d_city_low:
+                            kam_partner = 'Алексей Чихарев'
+                        else:
+                            kam_partner = 'Евгения Добролюбова'
+                    # 11. Эксперт Авто: Самара -> Добролюбова, Новосибирск -> в сентябре Дариенко, с октября Добролюбова
                     elif 'эксперт' in p_lower:
                         if any(k in p_lower or k in deal_city.lower() for k in ['новосибирск', 'нск']):
+                            pid = 1035
                             cname = 'Эксперт Авто (Новосибирск)'
-                            kam_partner = 'Светлана Дариенко'
+                            if deal_month_str == '2026-09':
+                                kam_partner = 'Светлана Дариенко'
+                            elif deal_month_str and deal_month_str >= '2026-10':
+                                kam_partner = 'Евгения Добролюбова'
+                            else:
+                                kam_partner = 'Светлана Дариенко'
                         elif any(k in p_lower or k in deal_city.lower() for k in ['оренбург']) or deal_inn in ('5638063829', '5638070618'):
                             pid = 1076
                             cname = 'ГК Автопрестиж'
@@ -2456,7 +2482,17 @@ def run_pipeline():
                         kam_prepay = 'Алексей Чихарев'
                     elif any(k in p_lower for k in ['сургут', 'авто-моторс', 'автомоторс']):
                         kam_prepay = 'Алексей Чихарев'
-                    elif any(k in p_lower for k in ['арконт', 'сильвер', 'твс', 'нижегородец', 'планета авто', 'амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
+                    elif 'планета авто' in p_lower or 'планета-авто' in p_lower or 'чери центр планета авто восток' in p_lower:
+                        d_city_low = (deal_city or '').lower()
+                        if 'махачкала' in d_city_low or 'таганрог' in d_city_low:
+                            kam_prepay = 'Валерия Солдатова'
+                        elif 'москва' in d_city_low or 'мск' in d_city_low:
+                            kam_prepay = 'Алексей Чихарев'
+                        else:
+                            kam_prepay = 'Евгения Добролюбова'
+                    elif (any(k in p_lower for k in ['амк', 'автосеть амк', 'автосеть рф амк']) or deal_inn == '6320070000') and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал', 'апельсин', 'автомир']):
+                        kam_prepay = 'Евгения Добролюбова'
+                    elif any(k in p_lower for k in ['арконт', 'сильвер', 'твс', 'нижегородец']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
                         kam_prepay = 'Евгения Добролюбова'
                     elif 'авторитет' in p_lower:
                         kam_prepay = 'Светлана Дариенко'
@@ -2467,7 +2503,12 @@ def run_pipeline():
                             kam_prepay = 'Евгения Добролюбова'
                     elif 'эксперт' in p_lower:
                         if any(k in p_lower or k in deal_city.lower() for k in ['новосибирск', 'нск']):
-                            kam_prepay = 'Светлана Дариенко'
+                            if prepay_month_str == '2026-09':
+                                kam_prepay = 'Светлана Дариенко'
+                            elif prepay_month_str and prepay_month_str >= '2026-10':
+                                kam_prepay = 'Евгения Добролюбова'
+                            else:
+                                kam_prepay = 'Светлана Дариенко'
                         elif any(k in p_lower or k in deal_city.lower() for k in ['оренбург']) or deal_inn in ('5638063829', '5638070618'):
                             kam_prepay = 'Алексей Чихарев'
                         else:
@@ -2788,12 +2829,36 @@ def run_pipeline():
                 elif 'автофорум' in p_lower:
                     cname = 'Чери Автофорум'
                     kam = 'Евгения Добролюбова'
-                elif any(k in p_lower for k in ['арконт', 'сильвер', 'твс', 'нижегородец', 'планета авто', 'амк']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
+                elif 'планета авто' in p_lower or 'планета-авто' in p_lower or 'чери центр планета авто восток' in p_lower:
+                    pid = 1058
+                    cname = 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК'
+                    l_city_low = (lead_city or '').lower()
+                    if 'махачкала' in l_city_low or 'таганрог' in l_city_low:
+                        kam = 'Валерия Солдатова'
+                    elif 'москва' in l_city_low or 'мск' in l_city_low:
+                        kam = 'Алексей Чихарев'
+                    else:
+                        kam = 'Евгения Добролюбова'
+                elif 'арконт' in p_lower:
+                    pid = 1112
+                    cname = 'ГК Арконт Холдинг'
+                    kam = 'Евгения Добролюбова'
+                elif (any(k in p_lower for k in ['амк', 'автосеть амк', 'автосеть рф амк'])) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал', 'апельсин', 'автомир']):
+                    pid = 1053
+                    cname = 'ФДЦ Автосеть АМК РФ'
+                    kam = 'Евгения Добролюбова'
+                elif any(k in p_lower for k in ['сильвер', 'твс', 'нижегородец']) and not any(ex in p_lower for ex in ['амкапитал', 'ам капитал']):
                     kam = 'Евгения Добролюбова'
                 elif 'эксперт' in p_lower:
                     if any(k in p_lower or k in lead_city.lower() for k in ['новосибирск', 'нск']):
+                        pid = 1035
                         cname = 'Эксперт Авто (Новосибирск)'
-                        kam = 'Светлана Дариенко'
+                        if lead_month_str == '2026-09':
+                            kam = 'Светлана Дариенко'
+                        elif lead_month_str and lead_month_str >= '2026-10':
+                            kam = 'Евгения Добролюбова'
+                        else:
+                            kam = 'Светлана Дариенко'
                     elif any(k in p_lower or k in lead_city.lower() for k in ['оренбург']):
                         pid = 1076
                         cname = 'ГК Автопрестиж'

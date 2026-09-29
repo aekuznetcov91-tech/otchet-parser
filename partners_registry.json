@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1863,
+  "total_master_partners": 1861,
   "partners": [
     {
       "partner_id": 1001,
@@ -3268,15 +3268,18 @@
     {
       "partner_id": 1035,
       "canonical_name": "Эксперт Авто (Новосибирск)",
-      "holding": "Эксперт",
-      "kam": "Светлана Дариенко",
+      "holding": "Эксперт Авто",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ONLINE ООО \"ЭКСПЕРТ-АВТО\"",
         "Online Эксперт Авто Самара",
         "Эксперт Авто",
         "ООО \"ЭКСПЕРТ САМАРА\" ONLINE",
         "ONLINE ГК Эксперт Авто \\ ООО \"ЭКСПЕРТ АВТО НСК\"",
-        "ЭКСПЕРТ АВТО ОРЕНБУРГ"
+        "ЭКСПЕРТ АВТО ОРЕНБУРГ",
+        "Эксперт Авто (Новосибирск)",
+        "ООО \"ЭКСПЕРТ АВТО НСК\"",
+        "Эксперт Авто Новосибирск"
       ],
       "bi_aliases": [
         "Online Эксперт Авто",
@@ -3284,20 +3287,6 @@
       ],
       "pochta_aliases": [],
       "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Уфа",
-          "group_link": "https://max.ru/join/4mr64hBZg_dBPH4WuvymtzEuXDxG1z24nzGweQowbbc",
-          "name": "VERRA ЗУБОВО",
-          "legal_entity": "ООО Альфа-Сервис Восток",
-          "inn": "245968960",
-          "address": "450525, РБ, г. Уфа, ул. Электрозаводская, д.18/2",
-          "back_name": "нет фида",
-          "email": "dmorozov@tenet-verra.ru; dmasyagutov@tenet-verra.ru;",
-          "responsible": "Евгения Добролюбова",
-          "fdc_code": "579/1560",
-          "brand": "CHERY & TENET"
-        },
         {
           "sheet": "OMODA&JAECOO",
           "city": "Новосибирск",
@@ -3322,7 +3311,7 @@
           "address": "г. Новосибирск ул. Богдана Хмельницкого 75/1",
           "back_name": "Online Эксперт Авто",
           "email": "aabramov@geely-expertauto-nsk.ru asusoeva@geely-expertauto-nsk.ru",
-          "responsible": "Светлана Дариенко",
+          "responsible": "Евгения Добролюбова",
           "brand": "Geely & Belgee"
         },
         {
@@ -3335,16 +3324,8 @@
           "address": "г. Новосибирск, ул. Богдана Хмельницкого, д. 75/1",
           "back_name": "",
           "email": "asusoeva@expertauto-changanauto.ru\ninfo@expertauto-changanauto.ru\nezarynova@expertauto-changanauto.ru, aabramov@expertauto-changanauto.ru",
-          "responsible": "Светлана Дариенко",
+          "responsible": "Евгения Добролюбова",
           "brand": "CHANGAN"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Уфа",
-          "name": "",
-          "legal_entity": "ООО Альфа-Сервис Восток",
-          "inn": "0245968960",
-          "responsible": "Евгения Добролюбова"
         },
         {
           "sheet": "OMODA&JAECOO",
@@ -3352,7 +3333,7 @@
           "name": "ЭКСПЕРТ АВТО",
           "legal_entity": "ООО ЭКСПЕРТ АВТО НСК",
           "inn": "5410097027",
-          "responsible": "Светлана Дариенко"
+          "responsible": "Евгения Добролюбова"
         },
         {
           "sheet": "Geely&Belgee",
@@ -3360,7 +3341,7 @@
           "name": "Эксперт Авто",
           "legal_entity": "ООО Эксперт Авто НСК",
           "inn": "5410052266",
-          "responsible": "Светлана Дариенко"
+          "responsible": "Евгения Добролюбова"
         },
         {
           "sheet": "CHANGAN",
@@ -3368,7 +3349,7 @@
           "name": "Эксперт Авто",
           "legal_entity": "ООО Эксперт Авто",
           "inn": "5410052266",
-          "responsible": "Светлана Дариенко"
+          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -5141,29 +5122,36 @@
     {
       "partner_id": 1053,
       "canonical_name": "ФДЦ Автосеть АМК РФ",
-      "holding": "пилот",
-      "kam": "Андрей Кузнецов",
+      "holding": "ФДЦ Автосеть АМК РФ",
+      "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ONLINE АМК Тольятти (ООО \"АМ Компани\")",
         "ONLINE АМК Самара ООО \"УРАЛ-ЛАДА\"",
         "пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ",
         "ФДЦ Автосеть АМК РФ",
-        "Урал Лада Красный Яр"
+        "Урал Лада Красный Яр",
+        "АМК-Екатеринбург",
+        "ООО АМК-ЕКАТЕРИНБУРГ",
+        "Online АМК-ЕКАТЕРИНБУРГ"
       ],
       "bi_aliases": [
         "ONLINE  пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ",
         "пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ",
         "ONLINE пилот ФДЦ Автосеть РФ АМК Самара Тольятти",
         "ФДЦ Автосеть АМК РФ",
-        "Урал Лада Красный Яр"
+        "Урал Лада Красный Яр",
+        "АМК-Екатеринбург"
       ],
-      "pochta_aliases": [],
+      "pochta_aliases": [
+        "reception@lada-am-company.ru\n m.murashko@lada-am-company.ru"
+      ],
       "oem_data": [
         {
           "sheet": "LADA",
           "city": "Крутые Ключи мкр., ул.Мира , здание 1",
           "name": "ONLINE пилот ФДЦ Автосеть РФ АМК Самара Тольятти",
-          "brand": "LADA"
+          "brand": "LADA",
+          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -5416,7 +5404,10 @@
         "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК"
       ],
       "bi_aliases": [
-        "СберАвто (Почта Автогарантия Чери Челябинск)"
+        "СберАвто (Почта Автогарантия Чери Челябинск)",
+        "Планета Авто",
+        "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
+        "Гольфстрим"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -5430,7 +5421,7 @@
           "address": "г. Челябинск, Копейское шоссе 84",
           "back_name": "СберАвто",
           "email": "rkulmanov@planeta-avto.ru",
-          "responsible": "Андрей Кузнецов",
+          "responsible": "Евгения Добролюбова",
           "fdc_code": "316/1312",
           "brand": "CHERY & TENET"
         },
@@ -5504,7 +5495,7 @@
           "name": "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
           "legal_entity": "ООО Автогарантия",
           "inn": "7447124619",
-          "responsible": "Андрей Кузнецов"
+          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -8844,16 +8835,26 @@
     {
       "partner_id": 1112,
       "canonical_name": "ГК Арконт Холдинг",
-      "holding": "ГК",
+      "holding": "ГК Арконт Холдинг",
       "kam": "Евгения Добролюбова",
       "bitrix_aliases": [
         "ONLINE CHERY Арконт (ООО \"АРКОНТ ЯЛР\")",
-        "Online ООО \"АРКОНТ В\""
+        "Online ООО \"АРКОНТ В\"",
+        "ГК Арконт Холдинг",
+        "Чери Арконт",
+        "ООО Арконт ЯЛР Филиал №1",
+        "ГК Арконт",
+        "Арконт"
       ],
       "bi_aliases": [
-        "ГК Арконт Холдинг"
+        "ГК Арконт Холдинг",
+        "Чери Арконт",
+        "ГК Арконт",
+        "Арконт"
       ],
-      "pochta_aliases": [],
+      "pochta_aliases": [
+        "dubin@arkont.ru"
+      ],
       "oem_data": [
         {
           "sheet": "JETOUR",
@@ -8874,7 +8875,29 @@
           "name": "ГК Арконт",
           "legal_entity": "ООО Арконт В",
           "inn": "3443113810",
-          "responsible": "Андрей Кузнецов"
+          "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Волгоград",
+          "group_link": "https://max.ru/join/NIu4xnLBhpv5yRzmXN59dPtAxLO0T6RlGemgJQWkhCM",
+          "name": "Чери Арконт",
+          "legal_entity": "ООО Арконт ЯЛР Филиал №1",
+          "inn": "3443089821",
+          "address": "г. Волгоград, ул. Землячки, 19Г",
+          "back_name": "СберАвто",
+          "email": "a.ovcharov@arkont.ru",
+          "responsible": "Евгения Добролюбова",
+          "fdc_code": "342/1311",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Волгоград",
+          "name": "Чери Арконт",
+          "legal_entity": "ООО Арконт ЯЛР Филиал №1",
+          "inn": "3443089821",
+          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -11995,47 +12018,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1223,
-      "canonical_name": "Чери Арконт",
-      "holding": "Чери",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ООО Арконт ЯЛР Филиал №1"
-      ],
-      "bi_aliases": [
-        "Чери Арконт",
-        "ГК Арконт Холдинг"
-      ],
-      "pochta_aliases": [
-        "dubin@arkont.ru"
-      ],
-      "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Волгоград",
-          "group_link": "https://max.ru/join/NIu4xnLBhpv5yRzmXN59dPtAxLO0T6RlGemgJQWkhCM",
-          "name": "Чери Арконт",
-          "legal_entity": "ООО Арконт ЯЛР Филиал №1",
-          "inn": "3443089821",
-          "address": "г. Волгоград, ул. Землячки, 19Г",
-          "back_name": "СберАвто",
-          "email": "a.ovcharov@arkont.ru",
-          "responsible": "Евгения Добролюбова",
-          "fdc_code": "342/1311",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Волгоград",
-          "name": "Чери Арконт",
-          "legal_entity": "ООО Арконт ЯЛР Филиал №1",
-          "inn": "3443089821",
-          "responsible": "Евгения Добролюбова"
-        }
-      ],
-      "status": "verified"
-    },
-    {
       "partner_id": 1224,
       "canonical_name": "АВТОТРАКТ",
       "holding": "АВТОТРАКТ",
@@ -13231,23 +13213,6 @@
           "brand": "Geely & Belgee"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1236,
-      "canonical_name": "АМК-Екатеринбург",
-      "holding": "АМК-Екатеринбург",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "ООО АМК-ЕКАТЕРИНБУРГ"
-      ],
-      "bi_aliases": [
-        "АМК-Екатеринбург"
-      ],
-      "pochta_aliases": [
-        "reception@lada-am-company.ru\n m.murashko@lada-am-company.ru"
-      ],
-      "oem_data": [],
       "status": "verified"
     },
     {
