@@ -2215,7 +2215,15 @@ def run_pipeline():
                 elif ('вагнер' in p_lower or 'вагнер' in c_lower) and 'авторитэйл' not in p_lower:
                     pid, cname, kam_partner = (1015, 'Вагнер Авто (СПб)', 'Светлана Дариенко')
                 elif 'авторитэйл м' in p_lower or 'авторитэйл' in p_lower or 'авторитэйл' in c_lower:
-                    pid, cname, kam_partner = (1285, 'ГК Авторитэйл М', 'Валерия Солдатова')
+                    deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
+                    if any(spb_k in deal_city or spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']):
+                        pid, cname, kam_partner = (1285, 'Вагнер Авто / Авторитэйл', 'Светлана Дариенко')
+                    else:
+                        pid, cname, kam_partner = (1285, 'ГК Авторитэйл М', 'Валерия Солдатова')
+                elif 'р-моторс' in p_lower or 'р моторс' in p_lower or pid == 1025 or 'р-моторс' in c_lower:
+                    pid, cname, kam_partner = (1025, 'Р-Моторс ЛАДА', 'Светлана Дариенко')
+                elif pid == 1016 or 'online ооо "леон"' in p_lower or 'леон авто (йошкар-ола)' in c_lower:
+                    pid, cname, kam_partner = (1016, 'Леон Авто (Йошкар-Ола)', 'Евгения Добролюбова')
 
             # Explicit KAM reallocations (strictly for August 2026 and earlier):
             if deal_month_str <= "2026-08" or not deal_month_str:
@@ -2251,15 +2259,15 @@ def run_pipeline():
                     kam_partner = "Алексей Чихарев"
                 elif 'спектр' in p_lower and 'апельсин' in p_lower:
                     kam_partner = "Алексей Чихарев"
-                elif 'авторитэйл м' in p_lower or 'авторитэйл м' in c_lower:
+                elif 'авторитэйл' in p_lower or 'авторитэйл' in c_lower:
                     deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip().lower()
-                    if any(spb_k in deal_city for spb_k in ['санкт-петербург', 'спб']):
+                    if any(spb_k in deal_city or spb_k in p_lower for spb_k in ['санкт-петербург', 'спб']):
                         kam_partner = "Светлана Дариенко"
                     else:
                         kam_partner = "Валерия Солдатова"
                 elif 'олимп' in p_lower or 'темп авто кубань' in p_lower or 'олимп' in c_lower:
                     kam_partner = "Андрей Кузнецов"
-                elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']) or any(k in c_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']):
+                elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'темп авто к', 'темп авто дон']) or any(k in c_lower for k in ['техно-темп', 'трансфор', 'темп авто к', 'темп авто дон']):
                     kam_partner = "Валерия Солдатова"
 
             k_low = (kam_partner or "").lower()
@@ -2274,12 +2282,20 @@ def run_pipeline():
             elif 'добролюбова' in k_low:
                 kam_partner = "Евгения Добролюбова"
 
-            # Portfolio handover rule: in August 2026 and earlier, deals of Dobrolyubova's portfolio are attributed to Kuznetsov
-            if kam_partner == "Евгения Добролюбова" and (deal_month_str <= "2026-08" or not deal_month_str):
+            # Explicit overrides that supersede all fallbacks:
+            if pid == 1025 or 'р-моторс' in p_lower or 'р моторс' in p_lower:
+                pid, cname, kam_partner = (1025, 'Р-Моторс ЛАДА', 'Светлана Дариенко')
+            elif pid == 1016 or 'online ооо "леон"' in p_lower:
+                pid, cname, kam_partner = (1016, 'Леон Авто (Йошкар-Ола)', 'Евгения Добролюбова')
+            elif pid == 1285 and any(spb_k in p_lower or spb_k in c_lower for spb_k in ['санкт-петербург', 'спб']):
+                pid, cname, kam_partner = (1285, 'Вагнер Авто / Авторитэйл', 'Светлана Дариенко')
+
+            # Portfolio handover rule: in August 2026 and earlier, deals of Dobrolyubova's portfolio are attributed to Kuznetsov (excluding Leon Yoshkar-Ola)
+            if kam_partner == "Евгения Добролюбова" and (deal_month_str <= "2026-08" or not deal_month_str) and pid != 1016:
                 kam_partner = "Андрей Кузнецов"
 
             kam_prepay = kam_partner
-            if kam_prepay == "Евгения Добролюбова" and (prepay_month_str <= "2026-08" or not prepay_month_str):
+            if kam_prepay == "Евгения Добролюбова" and (prepay_month_str <= "2026-08" or not prepay_month_str) and pid != 1016:
                 kam_prepay = "Андрей Кузнецов"
 
             # Priority OEM (15) routing and user-verified overrides for September 2026 and later:
@@ -2445,6 +2461,30 @@ def run_pipeline():
                         else:
                             cname = 'Эксперт Авто (Самара)'
                             kam_partner = 'Евгения Добролюбова'
+                    # Р-Моторс -> Дариенко (во всех городах)
+                    elif 'р-моторс' in p_lower or 'р моторс' in p_lower or pid == 1025:
+                        pid = 1025
+                        cname = 'Р-Моторс ЛАДА'
+                        kam_partner = 'Светлана Дариенко'
+                    # Авторитэйл М: СПб -> Дариенко, иначе -> Солдатова
+                    elif 'авторитэйл' in p_lower:
+                        pid = 1285
+                        if any(spb_k in p_lower or spb_k in deal_city.lower() for spb_k in ['санкт-петербург', 'спб']):
+                            cname = 'Вагнер Авто / Авторитэйл'
+                            kam_partner = 'Светлана Дариенко'
+                        else:
+                            cname = 'ГК Авторитэйл М'
+                            kam_partner = 'Валерия Солдатова'
+                    # Леон Авто: Йошкар-Ола -> Добролюбова, иначе -> Солдатова
+                    elif 'леон' in p_lower or pid in (1016, 1023):
+                        if pid == 1016 or 'online ооо "леон"' in p_lower or 'йошкар' in deal_city.lower():
+                            pid = 1016
+                            cname = 'Леон Авто (Йошкар-Ола)'
+                            kam_partner = 'Евгения Добролюбова'
+                        else:
+                            pid = 1023
+                            cname = 'Леон Авто'
+                            kam_partner = 'Валерия Солдатова'
                     else:
                         resolved_deal_kam = oem_resolver.resolve(
                             inn=deal_inn,
@@ -2538,6 +2578,21 @@ def run_pipeline():
                             kam_prepay = 'Алексей Чихарев'
                         else:
                             kam_prepay = 'Евгения Добролюбова'
+                    # Р-Моторс -> Дариенко (во всех городах)
+                    elif 'р-моторс' in p_lower or 'р моторс' in p_lower or pid == 1025:
+                        kam_prepay = 'Светлана Дариенко'
+                    # Авторитэйл М: СПб -> Дариенко, иначе -> Солдатова
+                    elif 'авторитэйл' in p_lower:
+                        if any(spb_k in p_lower or spb_k in deal_city.lower() for spb_k in ['санкт-петербург', 'спб']):
+                            kam_prepay = 'Светлана Дариенко'
+                        else:
+                            kam_prepay = 'Валерия Солдатова'
+                    # Леон Авто: Йошкар-Ола -> Добролюбова, иначе -> Солдатова
+                    elif 'леон' in p_lower or pid in (1016, 1023):
+                        if pid == 1016 or 'online ооо "леон"' in p_lower or 'йошкар' in deal_city.lower():
+                            kam_prepay = 'Евгения Добролюбова'
+                        else:
+                            kam_prepay = 'Валерия Солдатова'
                     else:
                         resolved_prepay_kam = oem_resolver.resolve(
                             inn=deal_inn,

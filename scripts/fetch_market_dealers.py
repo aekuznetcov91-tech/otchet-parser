@@ -3,7 +3,7 @@ import sys
 import json
 from collections import defaultdict
 
-PROJECT_ROOT = r"c:\Users\pc\OneDrive\Desktop\otchet — тест2"
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE_DIR = os.path.join(PROJECT_ROOT, 'site')
 DATA_DIR = os.path.join(PROJECT_ROOT, 'data')
 SCRIPTS_DIR = os.path.join(PROJECT_ROOT, 'scripts')

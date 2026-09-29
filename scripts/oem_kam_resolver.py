@@ -274,6 +274,22 @@ class OemKamResolver:
         if 'автофорум' in p_lower or c_inn in ('7718240330', '0278184650'):
             return 'Евгения Добролюбова'
 
+        # Р-Моторс -> Светлана Дариенко (во всех городах)
+        if 'р-моторс' in p_lower or 'р моторс' in p_lower:
+            return 'Светлана Дариенко'
+
+        # Авторитэйл М: если СПб -> Дариенко, иначе -> Солдатова
+        if 'авторитэйл' in p_lower:
+            if any(spb_k in p_lower or spb_k in c_lower for spb_k in ['санкт-петербург', 'спб']):
+                return 'Светлана Дариенко'
+            return 'Валерия Солдатова'
+
+        # Леон Авто: если Йошкар-Ола -> Добролюбова, иначе -> Солдатова
+        if 'леон' in p_lower:
+            if 'йошкар' in c_lower or 'online ооо "леон"' in p_lower:
+                return 'Евгения Добролюбова'
+            return 'Валерия Солдатова'
+
         # 14. Спектр (Агат vs Апельсин)
         if 'спектр' in p_lower:
             if c_inn == '1657225323' or any(k in p_lower for k in ['апельсин', 'автосеть']):
