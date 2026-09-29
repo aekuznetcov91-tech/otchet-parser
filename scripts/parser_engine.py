@@ -715,6 +715,10 @@ def calculate_brand_funnel(sys_db, leads_data=None):
                     'offer_click': v_sep.get('offer_click', 0) + v_aug.get('offer_click', 0) + v_jul.get('offer_click', 0),
                     'offer_success': v_sep.get('offer_success', 0) + v_aug.get('offer_success', 0) + v_jul.get('offer_success', 0)
                 }
+                v_stat['steps'] = [
+                    v_stat['page_view'], v_stat['car_card_show'], v_stat['car_card_click'],
+                    v_stat['offer_show'], v_stat['offer_click'], v_stat['offer_success']
+                ]
             else:
                 v_stat = vitrina_map.get((m, b), {
                     'page_view': 0, 'car_card_show': 0, 'car_card_click': 0,

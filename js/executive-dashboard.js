@@ -35,9 +35,12 @@ function canonicalPartnerName(name) {
     // Башавтоком / Чанган Центр
     if (low.includes('башавтоком') || low.includes('чанган центр') || low.includes('changan центр')) return 'Башавтоком / Чанган Центр';
     
-    // ГК Арконт
-    if (low.includes('арконт')) return 'ГК Арконт';
+    // ГК Арконт Холдинг
+    if (low.includes('арконт')) return 'ГК Арконт Холдинг';
     
+    // Планета Авто
+    if (low.includes('планета авто') || low.includes('планета-авто') || low.includes('чери центр планета авто восток')) return 'ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК';
+
     // ГК Сильвер
     if (low.includes('сильвер')) return 'ГК Сильвер';
     
@@ -50,16 +53,28 @@ function canonicalPartnerName(name) {
     // Олимп (Темп Авто Кубань)
     if (low.includes('олимп')) return 'Олимп (Кубань)';
     
+    // ФДЦ Автосеть АМК РФ
+    if ((low.includes('автосеть') && (low.includes('амк') || low.includes('пилот'))) || (low.includes('амк') && !low.includes('амкапитал') && !low.includes('ам капитал') && !low.includes('автомир'))) return 'ФДЦ Автосеть АМК РФ';
+
     // Автосеть РФ / Апельсин
-    if (low.includes('апельсин') || (low.includes('автосеть рф') && (low.includes('пилот') || low.includes('амк')))) return 'Апельсин (Автосеть РФ)';
+    if (low.includes('апельсин')) return 'Апельсин (Автосеть РФ)';
     
-    // БН-Моторс
-    if (low.includes('бн-моторс') || low.includes('бн моторс') || low.includes('дебрянск') || low.includes('бнм')) return 'ГК БН-Моторс';
+    // Дебрянск Авто (БН-Моторс)
+    if (low.includes('дебрянск') || low.includes('бн-моторс') || low.includes('бн моторс') || low.includes('бнм')) return 'Дебрянск Авто';
+
+    // Юг-Авто (Краснодар) vs АвтоЮг (Ставрополь)
+    if (low.includes('юг-авто') || low.includes('юг авто') || low.includes('ак «юг-авто»') || low.includes('дц юг-авто')) return 'Юг-Авто';
+    if (low.includes('автоюг')) return 'АвтоЮг';
+
+    // ААА Моторс (Ростов-на-Дону) vs Артекс
+    if (low.includes('ааа моторс') || low.includes('ааа-моторс') || low.includes('формула-н') || low.includes('формула н')) return 'ААА Моторс';
+    if (low.includes('артекс')) return 'Артекс';
     
     // Восток Моторс
     if (low.includes('восток моторс') || low.includes('восток-моторс')) return 'ООО "ВОСТОК МОТОРС" ONLINE';
     
-    // Эксперт Авто Оренбург
+    // Эксперт Авто (Новосибирск vs Оренбург vs Самара)
+    if (low.includes('эксперт') && (low.includes('новосибирск') || low.includes('нск'))) return 'Эксперт Авто (Новосибирск)';
     if (low.includes('эксперт') && (low.includes('оренбург') || low.includes('эксперт св'))) return 'Эксперт Авто (Оренбург)';
     
     // Автопрестиж
