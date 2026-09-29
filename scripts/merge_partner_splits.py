@@ -204,6 +204,20 @@ MERGERS = [
         'target_name': 'ООО "МАРКАР ГРУПП',
         'target_kam': 'Алексей Чихарев',
         'donor_ids': ['P_OEM_a7faf70c']
+    },
+    # 29. Вагнер Авто и Авторитэйл М: merge 1015 into 1285
+    {
+        'target_id': 1285,
+        'target_name': 'Вагнер Авто / Авторитэйл',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [1015]
+    },
+    # 30. Автопортрет и НеваАвто: merge 1222 into 1083
+    {
+        'target_id': 1083,
+        'target_name': 'Автопортрет (Нева Авто)',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [1222]
     }
 ]
 
@@ -402,6 +416,30 @@ def apply_merges_to_file(filepath):
         p1286['canonical_name'] = 'Авторитет (Симферополь)'
         p1286['kam'] = 'Валерия Солдатова'
 
+    # 5. Моторленд: Воронеж (1014) -> Валерия Солдатова, СПб / Сократ (1280) -> Светлана Дариенко
+    p1014 = partners_by_id.get(1014)
+    if p1014:
+        p1014['canonical_name'] = 'Моторленд (Воронеж)'
+        p1014['kam'] = 'Валерия Солдатова'
+        p1014['bitrix_aliases'] = [a for a in p1014.get('bitrix_aliases', []) if 'сократ' not in a.lower()]
+
+    p1280 = partners_by_id.get(1280)
+    if p1280:
+        p1280['canonical_name'] = 'Сократ (Моторленд СПб)'
+        p1280['holding'] = 'Моторленд'
+        p1280['kam'] = 'Светлана Дариенко'
+        if 'bitrix_aliases' not in p1280 or not p1280['bitrix_aliases']:
+            p1280['bitrix_aliases'] = []
+        p1280['bitrix_aliases'].extend(['ONLINE ООО "СОКРАТ СПБ"', 'Моторленд СПб', 'Сократ'])
+        p1280['bitrix_aliases'] = clean_list(p1280['bitrix_aliases'])
+
+    # 6. Вагнер Авто и Авторитэйл М: 1285 -> Вагнер Авто / Авторитэйл (СПб -> Дариенко)
+    p1285 = partners_by_id.get(1285)
+    if p1285:
+        p1285['canonical_name'] = 'Вагнер Авто / Авторитэйл'
+        p1285['holding'] = 'Авторитэйл'
+        p1285['kam'] = 'Светлана Дариенко'
+
     # Filter out removed donor partners
     new_partners = [p for p in partners if (p.get('partner_id') or p.get('id')) not in removed_pids]
     data['partners'] = new_partners
@@ -458,6 +496,34 @@ def apply_merges_to_data_json(filepath):
             r['KAM'] = 'Алексей Чихарев'
             modified = True
 
+        # Wagner / Autoretail allocation: SPb -> Svetlana Darienko, Krasnodar -> Valeria Soldatova
+        if r.get('PartnerId') == 1285 or 'ВАГНЕР' in raw_p or 'АВТОРИТЭЙЛ' in raw_p:
+            city_str = str(r.get('City') or '').lower()
+            raw_str = raw_p.lower()
+            p_str = p_name.lower()
+            r['PartnerId'] = 1285
+            r['Partner'] = 'Вагнер Авто / Авторитэйл'
+            if any(k in city_str or k in raw_str or k in p_str for k in ['спб', 'санкт-петербург', 'петербург', 'вагнер']):
+                r['KAM'] = 'Светлана Дариенко'
+            elif any(k in city_str or k in raw_str or k in p_str for k in ['краснодар', 'юг', 'кубань']):
+                r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # Motorland / Sokrat allocation:
+        if r.get('PartnerId') == 1014 or r.get('PartnerId') == 1280 or 'МОТОРЛЕНД' in raw_p or 'СОКРАТ' in raw_p:
+            city_str = str(r.get('City') or '').lower()
+            raw_str = raw_p.lower()
+            if 'сократ' in raw_str or any(k in city_str for k in ['спб', 'санкт-петербург']):
+                r['PartnerId'] = 1280
+                r['Partner'] = 'Сократ (Моторленд СПб)'
+                r['KAM'] = 'Светлана Дариенко'
+                modified = True
+            else:
+                r['PartnerId'] = 1014
+                r['Partner'] = 'Моторленд (Воронеж)'
+                r['KAM'] = 'Валерия Солдатова'
+                modified = True
+
     for r in data.get('deals', []):
         pid = r.get('PartnerId')
         if pid in donor_to_target:
@@ -481,6 +547,32 @@ def apply_merges_to_data_json(filepath):
             r['PartnerName'] = 'Анкар Калуга'
             r['KAM'] = 'Алексей Чихарев'
             modified = True
+
+        if r.get('PartnerId') == 1285 or 'ВАГНЕР' in raw_p or 'АВТОРИТЭЙЛ' in raw_p:
+            city_str = str(r.get('City') or '').lower()
+            raw_str = raw_p.lower()
+            p_str = p_name.lower()
+            r['PartnerId'] = 1285
+            r['PartnerName'] = 'Вагнер Авто / Авторитэйл'
+            if any(k in city_str or k in raw_str or k in p_str for k in ['спб', 'санкт-петербург', 'петербург', 'вагнер']):
+                r['KAM'] = 'Светлана Дариенко'
+            elif any(k in city_str or k in raw_str or k in p_str for k in ['краснодар', 'юг', 'кубань']):
+                r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        if r.get('PartnerId') == 1014 or r.get('PartnerId') == 1280 or 'МОТОРЛЕНД' in raw_p or 'СОКРАТ' in raw_p:
+            city_str = str(r.get('City') or '').lower()
+            raw_str = raw_p.lower()
+            if 'сократ' in raw_str or any(k in city_str for k in ['спб', 'санкт-петербург']):
+                r['PartnerId'] = 1280
+                r['PartnerName'] = 'Сократ (Моторленд СПб)'
+                r['KAM'] = 'Светлана Дариенко'
+                modified = True
+            else:
+                r['PartnerId'] = 1014
+                r['PartnerName'] = 'Моторленд (Воронеж)'
+                r['KAM'] = 'Валерия Солдатова'
+                modified = True
 
     if modified:
         with open(filepath, 'w', encoding='utf-8') as f:

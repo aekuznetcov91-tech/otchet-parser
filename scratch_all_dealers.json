@@ -1,0 +1,1210 @@
+[
+  {
+    "row": 2,
+    "dealer": "Вагнер Авто / Авторитэйл Online",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 12.100000000000001,
+    "fact_k": 3
+  },
+  {
+    "row": 3,
+    "dealer": "Вагнер Авто / Авторитэйл Online",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": 1
+  },
+  {
+    "row": 4,
+    "dealer": "Вагнер Авто / Авторитэйл Online",
+    "brand": "Чанган",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": 3
+  },
+  {
+    "row": 5,
+    "dealer": "Аларм -Моторс",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 19.8,
+    "fact_k": 7
+  },
+  {
+    "row": 6,
+    "dealer": "Аларм -Моторс",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": 1
+  },
+  {
+    "row": 7,
+    "dealer": "Аларм -Моторс",
+    "brand": "Солярис",
+    "region": "СПБ",
+    "plan_j": 8.8,
+    "fact_k": 2
+  },
+  {
+    "row": 8,
+    "dealer": "Аларм -Моторс",
+    "brand": "Лада",
+    "region": "СПБ",
+    "plan_j": 3.3000000000000003,
+    "fact_k": 3
+  },
+  {
+    "row": 9,
+    "dealer": "Аларм -Моторс",
+    "brand": "Омода/дж",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": 2
+  },
+  {
+    "row": 10,
+    "dealer": "Аларм -Моторс",
+    "brand": "Черри/тенет",
+    "region": "СПБ",
+    "plan_j": 3,
+    "fact_k": null
+  },
+  {
+    "row": 11,
+    "dealer": "Аларм -Моторс",
+    "brand": "Танк",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 12,
+    "dealer": "Аларм -Моторс",
+    "brand": "Иксид",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 13,
+    "dealer": "Аларм -Моторс",
+    "brand": "Хавал сити, Про",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": 1
+  },
+  {
+    "row": 14,
+    "dealer": "Авто Премиум",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 15,
+    "dealer": "Авто Премиум",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 5.5,
+    "fact_k": 1
+  },
+  {
+    "row": 16,
+    "dealer": "Восток Авто Жуково",
+    "brand": "Солярис",
+    "region": "СПБ",
+    "plan_j": 19.8,
+    "fact_k": 12
+  },
+  {
+    "row": 17,
+    "dealer": "Восток Авто Жуково",
+    "brand": "Танк",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 18,
+    "dealer": "Максимум",
+    "brand": "Чанган",
+    "region": "СПБ",
+    "plan_j": 5.5,
+    "fact_k": null
+  },
+  {
+    "row": 19,
+    "dealer": "Максимум",
+    "brand": "Тенет",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 20,
+    "dealer": "Максимум",
+    "brand": "Джили",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 21,
+    "dealer": "Максимум",
+    "brand": "Белджи",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 22,
+    "dealer": "Максимум",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 3.3000000000000003,
+    "fact_k": null
+  },
+  {
+    "row": 23,
+    "dealer": "Максимум",
+    "brand": "Хавал",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 24,
+    "dealer": "Максимум",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 30.800000000000004,
+    "fact_k": 1
+  },
+  {
+    "row": 25,
+    "dealer": "Автопортрет (Нева Авто)",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 3.3000000000000003,
+    "fact_k": null
+  },
+  {
+    "row": 26,
+    "dealer": "Автопортрет (Нева Авто)",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 13.200000000000001,
+    "fact_k": 5
+  },
+  {
+    "row": 27,
+    "dealer": "Автопродикс",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 48.400000000000006,
+    "fact_k": 15
+  },
+  {
+    "row": 28,
+    "dealer": "Автопродикс",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 2.2,
+    "fact_k": 5
+  },
+  {
+    "row": 29,
+    "dealer": "Автопродикс",
+    "brand": "ГАК",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": 1
+  },
+  {
+    "row": 30,
+    "dealer": "Автопродикс",
+    "brand": "Чанган",
+    "region": "СПБ",
+    "plan_j": 4.4,
+    "fact_k": null
+  },
+  {
+    "row": 31,
+    "dealer": "Автополе (Н)",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 18.700000000000003,
+    "fact_k": 7
+  },
+  {
+    "row": 32,
+    "dealer": "Автополе (Н)",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 3.3000000000000003,
+    "fact_k": null
+  },
+  {
+    "row": 33,
+    "dealer": "Автополе (Н)",
+    "brand": "Чанган",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 34,
+    "dealer": "Автополе (Н)",
+    "brand": "Омода/дж",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 35,
+    "dealer": "Автополе (Н)",
+    "brand": "Джили",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": 1
+  },
+  {
+    "row": 36,
+    "dealer": "Автополе (Н)",
+    "brand": "Черри/тенет",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 37,
+    "dealer": "Автополе (Н)",
+    "brand": "ГАК",
+    "region": "СПБ",
+    "plan_j": 14.3,
+    "fact_k": null
+  },
+  {
+    "row": 38,
+    "dealer": "Иат",
+    "brand": "Иксид",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 39,
+    "dealer": "Иат",
+    "brand": "ГАК В",
+    "region": "СПБ",
+    "plan_j": 2.2,
+    "fact_k": 2
+  },
+  {
+    "row": 40,
+    "dealer": "Иат",
+    "brand": "ГАК П",
+    "region": "СПБ",
+    "plan_j": 8.8,
+    "fact_k": 5
+  },
+  {
+    "row": 41,
+    "dealer": "Иат",
+    "brand": "Черри/тенет",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 42,
+    "dealer": "ООО \"СИГМА АВТО\"",
+    "brand": "Омода/дж",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 43,
+    "dealer": "ООО \"СИГМА АВТО\"",
+    "brand": "ГАК",
+    "region": "СПБ",
+    "plan_j": 5.5,
+    "fact_k": 3
+  },
+  {
+    "row": 44,
+    "dealer": "ООО \"СИГМА АВТО\"",
+    "brand": "Черри/тенет",
+    "region": "СПБ",
+    "plan_j": 2.2,
+    "fact_k": 4
+  },
+  {
+    "row": 45,
+    "dealer": "Моторленд",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 6.6000000000000005,
+    "fact_k": 1
+  },
+  {
+    "row": 46,
+    "dealer": "Моторленд",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 47,
+    "dealer": "Моторленд",
+    "brand": "Белджи",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 48,
+    "dealer": "Форсаж",
+    "brand": "ГАК",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": 3
+  },
+  {
+    "row": 49,
+    "dealer": "Форсаж",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 7.700000000000001,
+    "fact_k": 3
+  },
+  {
+    "row": 50,
+    "dealer": "Форсаж",
+    "brand": "Соуист",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 51,
+    "dealer": "Форсаж",
+    "brand": "Лада",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 52,
+    "dealer": "Форсаж",
+    "brand": "Солярис",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": 2
+  },
+  {
+    "row": 53,
+    "dealer": "Автостиль",
+    "brand": "Белджи",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 54,
+    "dealer": "Автостиль",
+    "brand": "Джили",
+    "region": "ВН",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 55,
+    "dealer": "Автостиль",
+    "brand": "Черри/тенет",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": 1
+  },
+  {
+    "row": 56,
+    "dealer": "Автостиль",
+    "brand": "Омода/дж",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 57,
+    "dealer": "Автостиль",
+    "brand": "Джетур",
+    "region": "СПБ",
+    "plan_j": 4.4,
+    "fact_k": null
+  },
+  {
+    "row": 58,
+    "dealer": "Автостиль",
+    "brand": "Остальные ",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 59,
+    "dealer": "Р-Моторс НВСБРСК пилот ФДЦ  Курган Барнаул Омск СПБ Тюмень Кемерово Новокузнецк ONLINE",
+    "brand": "Лада",
+    "region": "СПБ/СФО",
+    "plan_j": 6.6000000000000005,
+    "fact_k": 2
+  },
+  {
+    "row": 60,
+    "dealer": "Лада Кудрово",
+    "brand": "Лада",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 61,
+    "dealer": "Город Русских Машин (ГРМ)",
+    "brand": "Лада",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 62,
+    "dealer": "Прагматика",
+    "brand": "Лада",
+    "region": "СПБ/СЗФО",
+    "plan_j": 7.700000000000001,
+    "fact_k": 1
+  },
+  {
+    "row": 63,
+    "dealer": "Прагматика",
+    "brand": "Джили",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 64,
+    "dealer": "Прагматика",
+    "brand": "Чанган",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 65,
+    "dealer": "Элан-Моторс",
+    "brand": "Черри/тенет",
+    "region": "СПБ",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 66,
+    "dealer": "Элан-Моторс",
+    "brand": "Хавал",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 67,
+    "dealer": "Петровский",
+    "brand": "Лада",
+    "region": "МСК",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 68,
+    "dealer": "Петровский",
+    "brand": "ГАК",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 69,
+    "dealer": "Петровский",
+    "brand": "Омода/дж",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 70,
+    "dealer": "Петровский",
+    "brand": "Москвич",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 71,
+    "dealer": "Автотим Псков",
+    "brand": "Джетур",
+    "region": "Псков",
+    "plan_j": 3.3000000000000003,
+    "fact_k": 2
+  },
+  {
+    "row": 72,
+    "dealer": "АЛГОРИТМ-СЕРВИС",
+    "brand": "Лада",
+    "region": "Архангельск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 73,
+    "dealer": "Автоцентр Автоград Чери Калининград",
+    "brand": "Черри/тенет",
+    "region": "Калининград",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 74,
+    "dealer": "Элке Авто",
+    "brand": "Джетур",
+    "region": "Томск",
+    "plan_j": 7.700000000000001,
+    "fact_k": 7
+  },
+  {
+    "row": 75,
+    "dealer": "Элке Авто",
+    "brand": "Соуист",
+    "region": "Томск",
+    "plan_j": 1.1,
+    "fact_k": 1
+  },
+  {
+    "row": 76,
+    "dealer": "Элке Авто",
+    "brand": "ГАК",
+    "region": "Томск",
+    "plan_j": 0,
+    "fact_k": 2
+  },
+  {
+    "row": 77,
+    "dealer": "Рус-Авто Трейд",
+    "brand": "Джетур",
+    "region": "ВН",
+    "plan_j": 1.1,
+    "fact_k": 1
+  },
+  {
+    "row": 78,
+    "dealer": "Рус-Авто Трейд",
+    "brand": "Соуист",
+    "region": "ВН",
+    "plan_j": 0,
+    "fact_k": 1
+  },
+  {
+    "row": 79,
+    "dealer": "Бетта Групп",
+    "brand": "Черри/тенет",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 80,
+    "dealer": "Бетта Групп",
+    "brand": "Джетур",
+    "region": "Петрозаводск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 81,
+    "dealer": "Бетта Групп",
+    "brand": "Омода/дж",
+    "region": "Мурманск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 82,
+    "dealer": "АНТ2000",
+    "brand": "Черри/тенет",
+    "region": "Барнаул",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 83,
+    "dealer": "Атик-Моторс",
+    "brand": "Омода/дж",
+    "region": "Благовещенск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 84,
+    "dealer": "Дакар",
+    "brand": "Омода/дж",
+    "region": "Ваологда",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 85,
+    "dealer": "Дакар",
+    "brand": "Солярис",
+    "region": "Ваологда",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 86,
+    "dealer": "ЛУНААВТО",
+    "brand": "Черри/тенет",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": 2
+  },
+  {
+    "row": 87,
+    "dealer": "Динамика",
+    "brand": "Черри/тенет",
+    "region": "Архангельск",
+    "plan_j": 0,
+    "fact_k": 3
+  },
+  {
+    "row": 88,
+    "dealer": "Динамика",
+    "brand": "Джетур",
+    "region": "Череповец",
+    "plan_j": 1.1,
+    "fact_k": 1
+  },
+  {
+    "row": 89,
+    "dealer": "Динамика",
+    "brand": "Джетур",
+    "region": "Вологда",
+    "plan_j": 7.700000000000001,
+    "fact_k": 4
+  },
+  {
+    "row": 90,
+    "dealer": "Динамика",
+    "brand": "Джетур",
+    "region": "Архангельск",
+    "plan_j": 5.5,
+    "fact_k": null
+  },
+  {
+    "row": 91,
+    "dealer": "СибАвоцентр",
+    "brand": "Джетур",
+    "region": "Кемерово",
+    "plan_j": 0,
+    "fact_k": 4
+  },
+  {
+    "row": 92,
+    "dealer": "Ай-Би Эм",
+    "brand": "Черри/тенет",
+    "region": "Сибирь",
+    "plan_j": 1.1,
+    "fact_k": null
+  },
+  {
+    "row": 93,
+    "dealer": "Ай-Би Эм",
+    "brand": "Джили",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 94,
+    "dealer": "Автоград Калининград",
+    "brand": "Черри/тенет",
+    "region": "СЗФО",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 95,
+    "dealer": "Авто - континент Черри (Иркутск)",
+    "brand": "Черри/тенет",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 96,
+    "dealer": "Тюмень Автоваз",
+    "brand": "Лада",
+    "region": "Тюмень",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 97,
+    "dealer": "Томь Лада Автодром",
+    "brand": "Лада",
+    "region": "Томск",
+    "plan_j": 0,
+    "fact_k": 1
+  },
+  {
+    "row": 98,
+    "dealer": "Авто-континент",
+    "brand": "Чанган",
+    "region": "Братск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 99,
+    "dealer": "Авто-континент",
+    "brand": "Омода/дж",
+    "region": "Иркутск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 100,
+    "dealer": "Авто-континент",
+    "brand": "Джетур",
+    "region": "Иркутск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 101,
+    "dealer": "Авто-континент",
+    "brand": "Черри/тенет",
+    "region": "Иркутск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 102,
+    "dealer": "АВН",
+    "brand": "Омода/дж",
+    "region": "ВН",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 103,
+    "dealer": "Восток -СВ",
+    "brand": "Омода/дж",
+    "region": "Владивосток",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 104,
+    "dealer": "Восток -СВ",
+    "brand": "Солярис",
+    "region": "Владивосток",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 105,
+    "dealer": "Автолига",
+    "brand": "Джетур",
+    "region": "Новосбирск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 106,
+    "dealer": "Арсенал (НЦ-Лидер)",
+    "brand": "Джетур",
+    "region": "Красноярск",
+    "plan_j": 0,
+    "fact_k": 1
+  },
+  {
+    "row": 107,
+    "dealer": "СибМоторс",
+    "brand": "Джетур",
+    "region": "Кемерово",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 108,
+    "dealer": "Картель (Картель и Картель Авто, СВ - Авто)",
+    "brand": "Джетур",
+    "region": "Кемерово",
+    "plan_j": 4.4,
+    "fact_k": 2
+  },
+  {
+    "row": 109,
+    "dealer": "Картель (Картель и Картель Авто, СВ - Авто)",
+    "brand": "Джетур",
+    "region": "Новокузнецк",
+    "plan_j": 4.4,
+    "fact_k": 2
+  },
+  {
+    "row": 110,
+    "dealer": "Картель (Картель и Картель Авто, СВ - Авто)",
+    "brand": "Белджи",
+    "region": "Кемерово",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 111,
+    "dealer": "Дюк и К",
+    "brand": "Лада",
+    "region": "Кемерово",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 112,
+    "dealer": "Авторитет",
+    "brand": "Лада",
+    "region": "Архангельск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 113,
+    "dealer": "Алгоритм Сервис",
+    "brand": "Лада",
+    "region": "Архангельск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 114,
+    "dealer": "Автомаг",
+    "brand": "Хавал",
+    "region": "Тюмень",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 115,
+    "dealer": "Автолига",
+    "brand": "Джетур",
+    "region": "Новосибирск",
+    "plan_j": 0,
+    "fact_k": 2
+  },
+  {
+    "row": 116,
+    "dealer": "Эксперт Авто",
+    "brand": "Джили",
+    "region": "Новосибирск",
+    "plan_j": 0,
+    "fact_k": 1
+  },
+  {
+    "row": 117,
+    "dealer": "Форвард Авто Тюмень",
+    "brand": "Черри/тенет",
+    "region": "Тюмень",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 118,
+    "dealer": "Сиб",
+    "brand": "Джетур",
+    "region": "Кемерово",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 119,
+    "dealer": "АлексМоторс",
+    "brand": "Джетур",
+    "region": "Сыктывкар",
+    "plan_j": 1.1,
+    "fact_k": 3
+  },
+  {
+    "row": 120,
+    "dealer": "Просперити",
+    "brand": "Омода/дж",
+    "region": "Братск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 121,
+    "dealer": "Просперити",
+    "brand": "Черри/тенет",
+    "region": "Братск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 122,
+    "dealer": "Никко",
+    "brand": "Тюмень",
+    "region": "Тюмень",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 123,
+    "dealer": "Сармат",
+    "brand": "Солярис",
+    "region": "Новосибирск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 124,
+    "dealer": "Сармат",
+    "brand": "Джетур",
+    "region": "Новосибирск",
+    "plan_j": 6.6000000000000005,
+    "fact_k": 7
+  },
+  {
+    "row": 125,
+    "dealer": "Сармат",
+    "brand": "Соуист",
+    "region": "Новосибирск",
+    "plan_j": 0,
+    "fact_k": 2
+  },
+  {
+    "row": 126,
+    "dealer": "Итого по новым",
+    "brand": null,
+    "region": null,
+    "plan_j": 328.60000000000014,
+    "fact_k": 147
+  },
+  {
+    "row": 127,
+    "dealer": "Б/У",
+    "brand": null,
+    "region": null,
+    "plan_j": null,
+    "fact_k": null
+  },
+  {
+    "row": 128,
+    "dealer": "Приоритет_Вагнер",
+    "brand": "Асп",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 129,
+    "dealer": "Фастар (Новосибирск)",
+    "brand": "Асп",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 130,
+    "dealer": "ГК Авторитет / ИП Абакумова",
+    "brand": "Асп",
+    "region": "СЗФО",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 131,
+    "dealer": "Фрвард Авто",
+    "brand": "Асп",
+    "region": "Тюмень",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 132,
+    "dealer": "Сармат",
+    "brand": "АСП",
+    "region": "Новосибирск",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 133,
+    "dealer": "Приоритет_Прагматика пилот ФДЦ",
+    "brand": "Асп",
+    "region": null,
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 134,
+    "dealer": "Автомаг",
+    "brand": "Асп",
+    "region": null,
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 135,
+    "dealer": "Агат (ООО Альтернатива)",
+    "brand": "Асп",
+    "region": null,
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 136,
+    "dealer": "СИГМА Моторс ГмбХ VW",
+    "brand": "Асп",
+    "region": "СПБ",
+    "plan_j": 1.3,
+    "fact_k": null
+  },
+  {
+    "row": 137,
+    "dealer": "АвтоДом Петрозаводск",
+    "brand": "Асп",
+    "region": "СЗФО",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 138,
+    "dealer": "Прайм Авто PRIME AUTO Новосибирск",
+    "brand": "Асп",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 139,
+    "dealer": "ГК Форсаж",
+    "brand": "Асп",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 140,
+    "dealer": "Авто Брокер Мурманск",
+    "brand": "Асп",
+    "region": "СЗФО",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 141,
+    "dealer": "Автолиния (ООО Автотрейдинг)",
+    "brand": "Асп",
+    "region": null,
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 142,
+    "dealer": "Аксель Аутлет Авто Вилладж (ООО АУТЛЕТ АВТО ВИЛЛЕДЖ)",
+    "brand": "Асп",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 143,
+    "dealer": "Петровский",
+    "brand": "Асп",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 144,
+    "dealer": "Ай-Би-Эм",
+    "brand": "Асп",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 145,
+    "dealer": "Приоритет_Тачки Иркутск",
+    "brand": "Асп",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 146,
+    "dealer": "Yes Auto Иркутск",
+    "brand": "Асп",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 147,
+    "dealer": "Бугач-авто Лада Красноярск",
+    "brand": "Асп",
+    "region": "Сибирь",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 148,
+    "dealer": "Приоритет_Сигма СПб Сервис",
+    "brand": "Асп",
+    "region": "СПБ",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 149,
+    "dealer": "ГК ДИНАМИКА (Вологда)",
+    "brand": "Асп",
+    "region": "СЗФО",
+    "plan_j": 0,
+    "fact_k": null
+  },
+  {
+    "row": 150,
+    "dealer": "Итого Б/У",
+    "brand": null,
+    "region": null,
+    "plan_j": 1.4516129032258065,
+    "fact_k": 0
+  },
+  {
+    "row": 151,
+    "dealer": "Итого всего",
+    "brand": null,
+    "region": null,
+    "plan_j": 432.5806451612903,
+    "fact_k": null
+  },
+  {
+    "row": 152,
+    "dealer": "Итого всего",
+    "brand": null,
+    "region": null,
+    "plan_j": null,
+    "fact_k": null
+  }
+]

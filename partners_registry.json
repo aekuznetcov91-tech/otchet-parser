@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1837,
+  "total_master_partners": 1835,
   "partners": [
     {
       "partner_id": 1001,
@@ -920,9 +920,8 @@
       "partner_id": 1014,
       "canonical_name": "Моторленд (Воронеж)",
       "holding": "Моторленд",
-      "kam": "Светлана Дариенко",
+      "kam": "Валерия Солдатова",
       "bitrix_aliases": [
-        "ONLINE ООО \"СОКРАТ СПБ\"",
         "АВТОПРОЕКТ",
         "Моторленд",
         "Online АВТОПРОЕКТ",
@@ -995,155 +994,6 @@
           "name": "Моторленд",
           "legal_entity": "ООО Автопроект",
           "inn": "3662267900",
-          "responsible": "Валерия Солдатова"
-        }
-      ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1015,
-      "canonical_name": "Вагнер Авто (СПб)",
-      "holding": "Вагнер Авто",
-      "kam": "Светлана Дариенко",
-      "bitrix_aliases": [
-        "Online Вагнер Авто",
-        "Вагнер Авто",
-        "Вагнер Авто / Авторитэйл",
-        "Вагнер-Авто",
-        "ONLINE ООО \"АВТОРИТЭЙЛ М\" КРАСНОДАР",
-        "ONLINE ООО \"АВТОРИТЭЙЛ М\" СПБ"
-      ],
-      "bi_aliases": [
-        "Online Вагнер Авто / Авторитэйл",
-        "Вагнер Авто / Авторитэйл",
-        "Приоритет_Вагнер"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/L4_klzZ9iuRD9Mn_Bf-fZG2vg0m5MpktF7P9MzH4G1E",
-          "name": "Авторитэйл Таллинское",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7801214832",
-          "address": "г. Санкт-Петербург, 198205 - ЮГ Таллинское ш., 157а, ,",
-          "back_name": "",
-          "email": "Andrey.Boycov@wagner-changanauto.ru Elizaveta.Belova@wagner-auto.ru, Mikhail.Badyin@wagner-auto.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "CHANGAN"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/L4_klzZ9iuRD9Mn_Bf-fZG2vg0m5MpktF7P9MzH4G1E",
-          "name": "Авторитэйл Выборгское",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7801214832",
-          "address": "г. Санкт-Петербург, Санкт-Петербург, Шоссе, Выборгское, 352, Литера А",
-          "back_name": "",
-          "email": "AV-SalesCh@wagner-changanauto.ru Mikhail.Badyin@wagner-auto.ru Elizaveta.Belova@wagner-auto.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "CHANGAN"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Краснодар",
-          "group_link": "https://max.ru/join/ny1WE4I1CweWRIss6WUyDJ2Q1IcdBWJEZ3H4fPjIC84",
-          "name": "Авторитэйл",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7714461708",
-          "address": "г. Краснодар, ул. Ростовское шоссе, д. 33",
-          "back_name": "Online Вагнер Авто / Авторитэйл",
-          "email": "autoretail_postbot@telestandard.ru, v.pasenina@autoretail.ru, callcenter_ss@wagner-auto.ru, a.esankulova@autoretail.ru, k.kovalev@autoretail.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/HEbczyErW0m4tCiso_sKKjZnfur4IN_3k5RXGbMkSiw",
-          "name": "Авторитэйл Таллинское",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7801214832",
-          "address": "г. Санкт-Петербург, ш. Таллинское, 157",
-          "back_name": "Online Вагнер Авто / Авторитэйл",
-          "email": "Valentin.Osipov@wagner-auto.ru M.Tryasunov@wagner-auto.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Краснодар",
-          "group_link": "https://max.ru/join/ny1WE4I1CweWRIss6WUyDJ2Q1IcdBWJEZ3H4fPjIC84",
-          "name": "Авторитэйл",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7714461708",
-          "address": "г. Краснодар, ул. Ростовское шоссе, д. 33",
-          "back_name": "Online Вагнер Авто / Авторитэйл",
-          "email": "autoretail_postbot@telestandard.ru, v.pasenina@autoretail.ru, callcenter_ss@wagner-auto.ru, a.esankulova@autoretail.ru, k.kovalev@autoretail.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "Soueast"
-        },
-        {
-          "sheet": "DEEPAL",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/L4_klzZ9iuRD9Mn_Bf-fZG2vg0m5MpktF7P9MzH4G1E",
-          "name": "Вагнер",
-          "legal_entity": "ООО Вагнер Авто",
-          "inn": "7801214832",
-          "address": "Выборгское ш., 352А, Санкт-Петербург, 194362 - СЕВЕР, Таллинское ш., 157а, Санкт-Петербург, 198205 - ЮГ",
-          "back_name": "",
-          "email": "Andrey.Boycov@wagner-changanauto.ru Elizaveta.Belova@wagner-auto.ru, Mikhail.Badyin@wagner-auto.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "DEEPAL"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "name": "Авторитэйл Таллинское",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7801214832",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "name": "Авторитэйл Выборгское",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7801214832",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Авторитэйл Таллинское",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7801214832",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "DEEPAL",
-          "city": "Санкт-Петербург",
-          "name": "Вагнер",
-          "legal_entity": "ООО Вагнер Авто",
-          "inn": "7801214832",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Краснодар",
-          "name": "Авторитэйл",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7714461708",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Краснодар",
-          "name": "Авторитэйл",
-          "legal_entity": "ООО Авторитэйл М",
-          "inn": "7714461708",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -7292,14 +7142,20 @@
     },
     {
       "partner_id": 1083,
-      "canonical_name": "ООО \"НЕВААВТО",
+      "canonical_name": "Автопортрет (Нева Авто)",
       "holding": "ООО \"НЕВААВТО",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "ООО \"НЕВААВТО\" online",
-        "ООО \"НЕВААВТО"
+        "ООО \"НЕВААВТО",
+        "Автопортрет (Нева Авто)",
+        "Автопортрет",
+        "Online ООО \"АВТОПОРТРЕТ ЛАХТА\""
       ],
-      "bi_aliases": [],
+      "bi_aliases": [
+        "Автопортрет (Нева Авто)",
+        "Автопортрет"
+      ],
       "pochta_aliases": [],
       "oem_data": [
         {
@@ -7322,6 +7178,103 @@
           "legal_entity": "ООО НеваАвто",
           "inn": "7816740073",
           "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/a_UAdghyK5Agr3P_6mMyXGJP5L8PD3iCp52ZFAm1rb8",
+          "name": "Автопортрет",
+          "legal_entity": "ООО Автопортрет СПб Юг",
+          "inn": "7810337380",
+          "address": "г. Санкт-Петербург, ул. Софийская, д. 2Б",
+          "back_name": "Автопортрет",
+          "email": "v.baidevich@avtoportret-tenetplus.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "CHERY & TENET"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Санк-Петербург",
+          "group_link": "https://max.ru/join/PVOn0JJiJco5VFrnU0TI_M9kNHkIlfqHw08kuF92oTw",
+          "name": "Автопортрет Сити",
+          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
+          "inn": "7810337380",
+          "address": "СОФИЙСКАЯ, Д. 2, ЛИТЕРА Б, ЭТАЖ/ПОМ 1/1-Н, КОМ. 20",
+          "back_name": "Автопортрет",
+          "email": "a.soikin@haval-spb.ru e.minikaeva@haval-spb.ru a.utkin@haval-spb.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Санк-Петербург",
+          "group_link": "https://max.ru/join/5jYa9qZkdO6Hkkf5WXZI5LtvCAHE9V5oOGQJCICKFVI",
+          "name": "Автопортрет Про",
+          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
+          "inn": "7810337380",
+          "address": "СОФИЙСКАЯ, Д. 2, ЛИТЕРА Б, ЭТАЖ/ПОМ 1/1-Н, КОМ. 20",
+          "back_name": "Автопортрет",
+          "email": "a.yureva@haval-spb.ru a.utkin@haval-spb.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Санк-Петербург",
+          "group_link": "https://max.ru/join/4ceOpaftPd8j99JDyGOdWmPg6Gyl7WvCKh-9rzXd77w",
+          "name": "Автопортрет Сити",
+          "legal_entity": "ООО  Автопортрет Лахта",
+          "inn": "7814693364",
+          "address": "Руставели 53, корп. 1",
+          "back_name": "Максимум",
+          "email": "a.grigorev@haval-lahta.ru a.malyshev@haval-lahta.ru v.elinskiy@haval-lahta.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/oV6TqXOAJf9uj6nCMcSNPnlhbfQnr-uu1EEAuYZhTHk",
+          "name": "Автопортрет",
+          "legal_entity": "ООО Автопорттрет Лахта",
+          "inn": "7814693364",
+          "address": "Лахтинский пр. 10, лит. А., оф. 1",
+          "back_name": "",
+          "email": "",
+          "responsible": "",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Санкт-Петербург",
+          "name": "Автопортрет",
+          "legal_entity": "ООО Автопортрет СПб Юг",
+          "inn": "7810337380",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Санк-Петербург",
+          "name": "Автопортрет Сити",
+          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
+          "inn": "7810337380",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Санк-Петербург",
+          "name": "Автопортрет Про",
+          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
+          "inn": "7810337380",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "name": "Автопортрет",
+          "legal_entity": "ООО Автопорттрет Лахта",
+          "inn": "7814693364",
+          "responsible": "Не назначен"
         }
       ],
       "status": "verified"
@@ -12069,119 +12022,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1222,
-      "canonical_name": "Автопортрет",
-      "holding": "Автопортрет",
-      "kam": "Светлана Дариенко",
-      "bitrix_aliases": [
-        "Online ООО \"АВТОПОРТРЕТ ЛАХТА\""
-      ],
-      "bi_aliases": [
-        "Автопортрет"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/a_UAdghyK5Agr3P_6mMyXGJP5L8PD3iCp52ZFAm1rb8",
-          "name": "Автопортрет",
-          "legal_entity": "ООО Автопортрет СПб Юг",
-          "inn": "7810337380",
-          "address": "г. Санкт-Петербург, ул. Софийская, д. 2Б",
-          "back_name": "Автопортрет",
-          "email": "v.baidevich@avtoportret-tenetplus.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "CHERY & TENET"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Санк-Петербург",
-          "group_link": "https://max.ru/join/PVOn0JJiJco5VFrnU0TI_M9kNHkIlfqHw08kuF92oTw",
-          "name": "Автопортрет Сити",
-          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
-          "inn": "7810337380",
-          "address": "СОФИЙСКАЯ, Д. 2, ЛИТЕРА Б, ЭТАЖ/ПОМ 1/1-Н, КОМ. 20",
-          "back_name": "Автопортрет",
-          "email": "a.soikin@haval-spb.ru e.minikaeva@haval-spb.ru a.utkin@haval-spb.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Санк-Петербург",
-          "group_link": "https://max.ru/join/5jYa9qZkdO6Hkkf5WXZI5LtvCAHE9V5oOGQJCICKFVI",
-          "name": "Автопортрет Про",
-          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
-          "inn": "7810337380",
-          "address": "СОФИЙСКАЯ, Д. 2, ЛИТЕРА Б, ЭТАЖ/ПОМ 1/1-Н, КОМ. 20",
-          "back_name": "Автопортрет",
-          "email": "a.yureva@haval-spb.ru a.utkin@haval-spb.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Санк-Петербург",
-          "group_link": "https://max.ru/join/4ceOpaftPd8j99JDyGOdWmPg6Gyl7WvCKh-9rzXd77w",
-          "name": "Автопортрет Сити",
-          "legal_entity": "ООО  Автопортрет Лахта",
-          "inn": "7814693364",
-          "address": "Руставели 53, корп. 1",
-          "back_name": "Максимум",
-          "email": "a.grigorev@haval-lahta.ru a.malyshev@haval-lahta.ru v.elinskiy@haval-lahta.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/oV6TqXOAJf9uj6nCMcSNPnlhbfQnr-uu1EEAuYZhTHk",
-          "name": "Автопортрет",
-          "legal_entity": "ООО Автопорттрет Лахта",
-          "inn": "7814693364",
-          "address": "Лахтинский пр. 10, лит. А., оф. 1",
-          "back_name": "",
-          "email": "",
-          "responsible": "",
-          "brand": "CHANGAN"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Санкт-Петербург",
-          "name": "Автопортрет",
-          "legal_entity": "ООО Автопортрет СПб Юг",
-          "inn": "7810337380",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Санк-Петербург",
-          "name": "Автопортрет Сити",
-          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
-          "inn": "7810337380",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Санк-Петербург",
-          "name": "Автопортрет Про",
-          "legal_entity": "ООО Автопортрет СПБ-ЮГ",
-          "inn": "7810337380",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "name": "Автопортрет",
-          "legal_entity": "ООО Автопорттрет Лахта",
-          "inn": "7814693364",
-          "responsible": "Не назначен"
-        }
-      ],
-      "status": "verified"
-    },
-    {
       "partner_id": 1223,
       "canonical_name": "Чери Арконт",
       "holding": "Чери",
@@ -15733,7 +15573,7 @@
     },
     {
       "partner_id": 1280,
-      "canonical_name": "Сократ (Моторленд)",
+      "canonical_name": "Сократ (Моторленд СПб)",
       "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "Сократ",
@@ -15742,7 +15582,8 @@
         "3662259794",
         "Скорат",
         "ООО Скорат",
-        "ONLINE ООО \"СОКРАТ СПБ\""
+        "ONLINE ООО \"СОКРАТ СПБ\"",
+        "Моторленд СПб"
       ],
       "bi_aliases": [
         "Сократ"
@@ -15770,7 +15611,8 @@
           "inn": "3662259794",
           "responsible": "Светлана Дариенко"
         }
-      ]
+      ],
+      "holding": "Моторленд"
     },
     {
       "partner_id": 1281,
@@ -24895,22 +24737,159 @@
     },
     {
       "partner_id": 1285,
-      "canonical_name": "ГК Авторитэйл М",
+      "canonical_name": "Вагнер Авто / Авторитэйл",
       "holding": "Авторитэйл",
-      "kam": "Валерия Солдатова",
+      "kam": "Светлана Дариенко",
       "bitrix_aliases": [
         "Online ООО \"АВТОРИТЭЙЛ М\"",
         "ООО \"АВТОРИТЭЙЛ М\" ONLINE",
         "ООО \"АВТОРИТЭЙЛ М\"",
         "Авторитэйл М",
-        "ONLINE ООО \"АВТОРИТЭЙЛ М\" СПБ"
+        "ONLINE ООО \"АВТОРИТЭЙЛ М\" СПБ",
+        "Вагнер Авто / Авторитэйл",
+        "Вагнер Авто (СПб)",
+        "Online Вагнер Авто",
+        "Вагнер Авто",
+        "Вагнер-Авто",
+        "ONLINE ООО \"АВТОРИТЭЙЛ М\" КРАСНОДАР"
       ],
       "bi_aliases": [
         "Авторитэйл М",
-        "ООО Авторитэйл М"
+        "ООО Авторитэйл М",
+        "Вагнер Авто / Авторитэйл",
+        "Вагнер Авто (СПб)",
+        "Online Вагнер Авто / Авторитэйл",
+        "Приоритет_Вагнер"
       ],
       "pochta_aliases": [],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/L4_klzZ9iuRD9Mn_Bf-fZG2vg0m5MpktF7P9MzH4G1E",
+          "name": "Авторитэйл Таллинское",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7801214832",
+          "address": "г. Санкт-Петербург, 198205 - ЮГ Таллинское ш., 157а, ,",
+          "back_name": "",
+          "email": "Andrey.Boycov@wagner-changanauto.ru Elizaveta.Belova@wagner-auto.ru, Mikhail.Badyin@wagner-auto.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/L4_klzZ9iuRD9Mn_Bf-fZG2vg0m5MpktF7P9MzH4G1E",
+          "name": "Авторитэйл Выборгское",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7801214832",
+          "address": "г. Санкт-Петербург, Санкт-Петербург, Шоссе, Выборгское, 352, Литера А",
+          "back_name": "",
+          "email": "AV-SalesCh@wagner-changanauto.ru Mikhail.Badyin@wagner-auto.ru Elizaveta.Belova@wagner-auto.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Краснодар",
+          "group_link": "https://max.ru/join/ny1WE4I1CweWRIss6WUyDJ2Q1IcdBWJEZ3H4fPjIC84",
+          "name": "Авторитэйл",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7714461708",
+          "address": "г. Краснодар, ул. Ростовское шоссе, д. 33",
+          "back_name": "Online Вагнер Авто / Авторитэйл",
+          "email": "autoretail_postbot@telestandard.ru, v.pasenina@autoretail.ru, callcenter_ss@wagner-auto.ru, a.esankulova@autoretail.ru, k.kovalev@autoretail.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/HEbczyErW0m4tCiso_sKKjZnfur4IN_3k5RXGbMkSiw",
+          "name": "Авторитэйл Таллинское",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7801214832",
+          "address": "г. Санкт-Петербург, ш. Таллинское, 157",
+          "back_name": "Online Вагнер Авто / Авторитэйл",
+          "email": "Valentin.Osipov@wagner-auto.ru M.Tryasunov@wagner-auto.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Краснодар",
+          "group_link": "https://max.ru/join/ny1WE4I1CweWRIss6WUyDJ2Q1IcdBWJEZ3H4fPjIC84",
+          "name": "Авторитэйл",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7714461708",
+          "address": "г. Краснодар, ул. Ростовское шоссе, д. 33",
+          "back_name": "Online Вагнер Авто / Авторитэйл",
+          "email": "autoretail_postbot@telestandard.ru, v.pasenina@autoretail.ru, callcenter_ss@wagner-auto.ru, a.esankulova@autoretail.ru, k.kovalev@autoretail.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "Soueast"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/L4_klzZ9iuRD9Mn_Bf-fZG2vg0m5MpktF7P9MzH4G1E",
+          "name": "Вагнер",
+          "legal_entity": "ООО Вагнер Авто",
+          "inn": "7801214832",
+          "address": "Выборгское ш., 352А, Санкт-Петербург, 194362 - СЕВЕР, Таллинское ш., 157а, Санкт-Петербург, 198205 - ЮГ",
+          "back_name": "",
+          "email": "Andrey.Boycov@wagner-changanauto.ru Elizaveta.Belova@wagner-auto.ru, Mikhail.Badyin@wagner-auto.ru",
+          "responsible": "Светлана Дариенко",
+          "brand": "DEEPAL"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "name": "Авторитэйл Таллинское",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7801214832",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "name": "Авторитэйл Выборгское",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7801214832",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "name": "Авторитэйл Таллинское",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7801214832",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Санкт-Петербург",
+          "name": "Вагнер",
+          "legal_entity": "ООО Вагнер Авто",
+          "inn": "7801214832",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Краснодар",
+          "name": "Авторитэйл",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7714461708",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Краснодар",
+          "name": "Авторитэйл",
+          "legal_entity": "ООО Авторитэйл М",
+          "inn": "7714461708",
+          "responsible": "Валерия Солдатова"
+        }
+      ],
       "status": "verified"
     },
     {
