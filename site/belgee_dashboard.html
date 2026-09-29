@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BELGEE — Операционная аналитика лидов, сделок и скидок | Август–Сентябрь 2026</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { font-size: 11pt; color: #000; background: #fff; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen font-sans antialiased transition-colors duration-200">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-md text-white font-extrabold text-xl">
+            B
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="font-extrabold text-lg text-slate-900 dark:text-white tracking-tight">BELGEE</span>
+              <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">Белджи</span>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-mono">Август vs Сентябрь 2026</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Операционный дашборд: Лиды, Сделки, ЦФО, Федералы и Матрица скидок OEM</p>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2 no-print">
+          <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Переключить тему">
+            <svg id="themeMoon" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <svg id="themeSun" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          </button>
+          <button onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 transition">
+            Печать
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- 1. SUMMARY CARDS -->
+    <section>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- 1. Получено лидов -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm">
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">1. Лиды: получили мы (CRM)</div>
+          <div class="mt-2 flex items-baseline space-x-2">
+            <span class="text-3xl font-black text-slate-900 dark:text-white">426</span>
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">▲ +52.1%</span>
+          </div>
+          <div class="mt-1 text-xs text-slate-500">
+            В сентябре (+146 лидов к августу: 280)
+          </div>
+        </div>
+
+        <!-- 2. Передано лидов в ДЦ -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm">
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">2. Лиды: передали в ДЦ</div>
+          <div class="mt-2 flex items-baseline space-x-2">
+            <span class="text-3xl font-black text-slate-900 dark:text-white">40</span>
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">▲ +17.6%</span>
+          </div>
+          <div class="mt-1 text-xs text-slate-500">
+            В сентябре (+6 лидов к августу: 34)
+          </div>
+        </div>
+
+        <!-- 3. Всего сделок -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm">
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">3. Всего закрыто сделок</div>
+          <div class="mt-2 flex items-baseline space-x-2">
+            <span class="text-3xl font-black text-emerald-600 dark:text-emerald-400">45</span>
+            <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400">▲ +9.8%</span>
+          </div>
+          <div class="mt-1 text-xs text-slate-500">
+            В сентябре (+4 сделки к августу: 41)
+          </div>
+        </div>
+
+        <!-- 4. Сделки в ЦФО -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm">
+          <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">4. Сделки в ЦФО</div>
+          <div class="mt-2 flex items-baseline space-x-2">
+            <span class="text-3xl font-black text-blue-600 dark:text-blue-400">38</span>
+            <span class="text-xs font-bold text-blue-600 dark:text-blue-400">84.4% доли</span>
+          </div>
+          <div class="mt-1 text-xs text-slate-500">
+            В сентябре (в августе: 36 шт / 87.8%)
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. LEADS: RECEIVED VS TRANSFERRED -->
+    <section class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="font-bold text-base text-slate-900 dark:text-white">1. Воронка лидов BELGEE: Получено нами vs Передано в ДЦ</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Сравнение входящего трафика СберАвто и переданных обращений партнерам (штуки и динамика)</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <!-- Visual Comparison Bars -->
+        <div class="space-y-4">
+          <!-- Август -->
+          <div class="p-4 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-2">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-slate-700 dark:text-slate-200">Август 2026 (Факт)</span>
+              <span class="text-slate-500">Конверсия передачи: 12.1%</span>
+            </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Получили мы (входящие лиды в CRM):</span>
+                <span class="font-bold font-mono text-slate-800 dark:text-slate-100">280 шт</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-600 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-slate-400 h-2.5 rounded-full" style="width: 100%"></div>
+              </div>
+              <div class="flex justify-between pt-1">
+                <span class="text-slate-500">Передали в дилерские центры:</span>
+                <span class="font-bold font-mono text-emerald-600">34 шт</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-600 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 12.1%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Сентябрь -->
+          <div class="p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl border border-emerald-100 dark:border-emerald-900/50 space-y-2">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-emerald-900 dark:text-emerald-200">Сентябрь 2026 (MTD факт)</span>
+              <span class="text-emerald-600 font-bold">▲ +52.1% входящий поток</span>
+            </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-600 dark:text-slate-300">Получили мы (входящие лиды в CRM):</span>
+                <span class="font-bold font-mono text-slate-900 dark:text-white">426 шт</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-600 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-blue-500 h-2.5 rounded-full" style="width: 100%"></div>
+              </div>
+              <div class="flex justify-between pt-1">
+                <span class="text-slate-600 dark:text-slate-300">Передали в дилерские центры:</span>
+                <span class="font-bold font-mono text-emerald-600">40 шт</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-600 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-2.5 rounded-full" style="width: 9.4%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Summary -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-50 dark:bg-slate-700/50 text-slate-500 dark:text-slate-400 uppercase font-semibold">
+              <tr>
+                <th class="py-2.5 px-3">Категория потока</th>
+                <th class="py-2.5 px-3 text-right">Август</th>
+                <th class="py-2.5 px-3 text-right">Сентябрь</th>
+                <th class="py-2.5 px-3 text-right">Динамика</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-700 font-medium">
+              <tr>
+                <td class="py-3 px-3 font-semibold text-slate-900 dark:text-white">Получено лидов нами (CRM СберАвто)</td>
+                <td class="py-3 px-3 text-right font-mono">280 шт</td>
+                <td class="py-3 px-3 text-right font-mono font-bold text-slate-900 dark:text-white">426 шт</td>
+                <td class="py-3 px-3 text-right font-mono font-bold text-emerald-600">+146 шт (+52.1%)</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-3 font-semibold text-slate-900 dark:text-white">Передано лидов в дилерские центры</td>
+                <td class="py-3 px-3 text-right font-mono">34 шт</td>
+                <td class="py-3 px-3 text-right font-mono font-bold text-emerald-600">40 шт</td>
+                <td class="py-3 px-3 text-right font-mono font-bold text-emerald-600">+6 шт (+17.6%)</td>
+              </tr>
+              <tr class="bg-slate-50/50 dark:bg-slate-700/30">
+                <td class="py-2.5 px-3 text-slate-500">Доля передачи в ДЦ (% от входящих)</td>
+                <td class="py-2.5 px-3 text-right font-mono">12.1%</td>
+                <td class="py-2.5 px-3 text-right font-mono font-semibold">9.4%</td>
+                <td class="py-2.5 px-3 text-right font-mono text-slate-400">-2.7 п.п.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. DEALS: TOTAL & MODEL BREAKDOWN -->
+    <section class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="font-bold text-base text-slate-900 dark:text-white">2. Количество сделок и модельный ряд (в штуках)</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Общий объем и распределение продаж по моделям BELGEE за Август и Сентябрь 2026 г.</p>
+        </div>
+        <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+          Всего в сентябре: 45 авто (+9.8%)
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Model Card 1: X50 -->
+        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Бестселлер</span>
+              <span class="text-xs font-mono font-bold bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded text-emerald-800 dark:text-emerald-300">86.7% продаж</span>
+            </div>
+            <div class="text-lg font-black text-slate-900 dark:text-white mt-2">BELGEE X50 / X50+</div>
+            <div class="text-xs text-slate-500 mt-1">Компактный городской кроссовер</div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 space-y-1.5 text-xs">
+            <div class="flex justify-between"><span class="text-slate-500">Сделки Август:</span> <span class="font-mono font-semibold">28 шт</span> (68.3%)</div>
+            <div class="flex justify-between"><span class="text-slate-500">Сделки Сентябрь:</span> <span class="font-mono font-black text-emerald-600 text-sm">39 шт</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Динамика:</span> <span class="font-bold text-emerald-600">▲ +11 шт (+39.3%)</span></div>
+          </div>
+        </div>
+
+        <!-- Model Card 2: X70 -->
+        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Семейный SUV</span>
+              <span class="text-xs font-mono font-bold bg-blue-100 dark:bg-blue-950 px-2 py-0.5 rounded text-blue-800 dark:text-blue-300">8.9% продаж</span>
+            </div>
+            <div class="text-lg font-black text-slate-900 dark:text-white mt-2">BELGEE X70 / X70 FL</div>
+            <div class="text-xs text-slate-500 mt-1">Среднеразмерный кроссовер 2WD / 4WD</div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 space-y-1.5 text-xs">
+            <div class="flex justify-between"><span class="text-slate-500">Сделки Август:</span> <span class="font-mono font-semibold">11 шт</span> (26.8%)</div>
+            <div class="flex justify-between"><span class="text-slate-500">Сделки Сентябрь:</span> <span class="font-mono font-black text-blue-600 text-sm">4 шт</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Динамика:</span> <span class="font-bold text-slate-400">▼ -7 шт</span></div>
+          </div>
+        </div>
+
+        <!-- Model Card 3: S50 -->
+        <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Седан</span>
+              <span class="text-xs font-mono font-bold bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded text-amber-800 dark:text-amber-300">4.4% продаж</span>
+            </div>
+            <div class="text-lg font-black text-slate-900 dark:text-white mt-2">BELGEE S50</div>
+            <div class="text-xs text-slate-500 mt-1">Седан С-класса (MT / AT)</div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700 space-y-1.5 text-xs">
+            <div class="flex justify-between"><span class="text-slate-500">Сделки Август:</span> <span class="font-mono font-semibold">2 шт</span> (4.9%)</div>
+            <div class="flex justify-between"><span class="text-slate-500">Сделки Сентябрь:</span> <span class="font-mono font-black text-amber-600 text-sm">2 шт</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Динамика:</span> <span class="font-bold text-slate-500">= 0 шт (стабильно)</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 & 5. GEOGRAPHY (ЦФО) & DEALER TYPE (ФЕДЕРАЛЫ VS РЕГИОНЫ) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Section 4: ЦФО -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-3">
+            <h2 class="font-bold text-sm text-slate-900 dark:text-white">3. Количество сделок в ЦФО</h2>
+            <span class="text-xs px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-semibold">
+              84.4% от всех сделок
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+            Продажи в Центральном Федеральном Округе (Москва, Московская область и регионы ЦФО) в сравнении с другими округами
+          </p>
+
+          <div class="space-y-3 text-xs">
+            <!-- Сентябрь -->
+            <div class="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-1.5">
+              <div class="flex justify-between font-semibold">
+                <span>Сентябрь 2026:</span>
+                <span class="font-mono font-bold text-blue-600">38 сделок в ЦФО (84.4%)</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-600 h-2 rounded-full overflow-hidden flex">
+                <div class="bg-blue-600 h-2" style="width: 84.4%" title="ЦФО: 38"></div>
+                <div class="bg-slate-400 h-2" style="width: 15.6%" title="Другие округа: 7"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-400">
+                <span>ЦФО: 38 авто</span>
+                <span>Прочие округа (ЮФО, ПФО): 7 авто (15.6%)</span>
+              </div>
+            </div>
+
+            <!-- Август -->
+            <div class="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-1.5">
+              <div class="flex justify-between font-semibold">
+                <span>Август 2026:</span>
+                <span class="font-mono font-bold text-slate-700 dark:text-slate-300">36 сделок в ЦФО (87.8%)</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-600 h-2 rounded-full overflow-hidden flex">
+                <div class="bg-slate-500 h-2" style="width: 87.8%"></div>
+                <div class="bg-slate-400 h-2" style="width: 12.2%"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-400">
+                <span>ЦФО: 36 авто</span>
+                <span>Прочие округа: 5 авто (12.2%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-500">
+          Динамика продаж в ЦФО: <strong class="text-slate-900 dark:text-white">+2 сделки (+5.6%)</strong> к августу.
+        </div>
+      </section>
+
+      <!-- Section 5: Федералы без названия ДЦ -->
+      <section class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-center mb-3">
+            <h2 class="font-bold text-sm text-slate-900 dark:text-white">4. Сделки у федеральных сетей vs регионалов</h2>
+            <span class="text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold">
+              Федералы: 88.9%
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mb-4">
+            Распределение сделок между крупными федеральными сетями и локальными региональными дилерами (агрегировано, без названий ДЦ)
+          </p>
+
+          <div class="space-y-3 text-xs">
+            <!-- Сентябрь -->
+            <div class="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-1.5">
+              <div class="flex justify-between font-semibold">
+                <span>Сентябрь 2026:</span>
+                <span class="font-mono font-bold text-emerald-600">40 сделок у федералов (88.9%)</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-600 h-2 rounded-full overflow-hidden flex">
+                <div class="bg-emerald-600 h-2" style="width: 88.9%" title="Федеральные сети: 40"></div>
+                <div class="bg-slate-400 h-2" style="width: 11.1%" title="Региональные ДЦ: 5"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-400">
+                <span>Федеральные сети: 40 авто</span>
+                <span>Региональные дилеры: 5 авто (11.1%)</span>
+              </div>
+            </div>
+
+            <!-- Август -->
+            <div class="p-3 bg-slate-50 dark:bg-slate-700/40 rounded-xl space-y-1.5">
+              <div class="flex justify-between font-semibold">
+                <span>Август 2026:</span>
+                <span class="font-mono font-bold text-slate-700 dark:text-slate-300">36 сделок у федералов (87.8%)</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-600 h-2 rounded-full overflow-hidden flex">
+                <div class="bg-slate-500 h-2" style="width: 87.8%"></div>
+                <div class="bg-slate-400 h-2" style="width: 12.2%"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-400">
+                <span>Федеральные сети: 36 авто</span>
+                <span>Региональные дилеры: 5 авто (12.2%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-500">
+          Динамика федеральных сетей: <strong class="text-slate-900 dark:text-white">+4 сделки (+11.1%)</strong> к августу.
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 6. DISCOUNT MATRIX FROM OEM FILE -->
+    <section class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <h2 class="font-bold text-base text-slate-900 dark:text-white">5. Матрица официальных скидок BELGEE (OEM СберАвто)</h2>
+            <span class="text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 font-mono">
+              Файл: OEM СберАвто финал (15).xlsx
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Официальные рекомендованные цены, глубина партнерской скидки и клиентская стоимость по всем комплектациям
+          </p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap items-center gap-1.5 text-xs no-print">
+          <button onclick="filterMatrix('ALL')" class="matrix-filter-btn px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-semibold" data-model="ALL">Все (21)</button>
+          <button onclick="filterMatrix('BELGEE X50')" class="matrix-filter-btn px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200" data-model="BELGEE X50">X50</button>
+          <button onclick="filterMatrix('BELGEE X50+')" class="matrix-filter-btn px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200" data-model="BELGEE X50+">X50+</button>
+          <button onclick="filterMatrix('Belgee X70')" class="matrix-filter-btn px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200" data-model="Belgee X70">X70</button>
+          <button onclick="filterMatrix('Belgee X70 FL')" class="matrix-filter-btn px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200" data-model="Belgee X70 FL">X70 FL</button>
+          <button onclick="filterMatrix('Belgee S50')" class="matrix-filter-btn px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200" data-model="Belgee S50">S50</button>
+        </div>
+      </div>
+
+      <!-- Discount Table -->
+      <div class="overflow-x-auto border border-slate-200 dark:border-slate-700 rounded-xl">
+        <table class="w-full text-xs text-left" id="matrixTable">
+          <thead class="bg-slate-50 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300 uppercase font-semibold">
+            <tr>
+              <th class="py-2.5 px-3">Модель</th>
+              <th class="py-2.5 px-3">Комплектация / Двигатель</th>
+              <th class="py-2.5 px-2 text-center">Год</th>
+              <th class="py-2.5 px-3 text-right">РРЦ (Базовая)</th>
+              <th class="py-2.5 px-3 text-right text-emerald-600 dark:text-emerald-400">Скидка клиенту</th>
+              <th class="py-2.5 px-3 text-right font-bold text-slate-900 dark:text-white">Цена со скидкой</th>
+              <th class="py-2.5 px-2 text-right">Глубина %</th>
+              <th class="py-2.5 px-2">Примечание</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-700/60 font-medium" id="matrixBody">
+            <!-- Injected via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-xs text-slate-400 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+    <div>
+      Операционный отчет BELGEE • Источник матрицы: <strong class="text-slate-600 dark:text-slate-300">OEM СберАвто финал (15).xlsx</strong>
+    </div>
+    <div class="font-mono">
+      Период: Август vs Сентябрь 2026
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle
+    const themeBtn = document.getElementById('themeToggle');
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    themeBtn.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    });
+
+    // Discount matrix data
+    const MATRIX_DATA = [{"model": "BELGEE X50", "trim": "Active 1,5 7DCT", "year": "2025/2026", "rrc": "2 479 990", "discount": "360 000", "client_price": "2 119 990", "discount_pct": 14.5, "note": ""}, {"model": "BELGEE X50", "trim": "Style 1,5 7DCT", "year": "2025/2026", "rrc": "2 590 990", "discount": "238 500", "client_price": "2 352 490", "discount_pct": 9.2, "note": ""}, {"model": "BELGEE X50", "trim": "Prestige 1,5 7DCT", "year": "2025/2026", "rrc": "2 690 990", "discount": "238 500", "client_price": "2 452 490", "discount_pct": 8.9, "note": ""}, {"model": "BELGEE X50+", "trim": "Active 1,5 7DCT", "year": "2025/2026", "rrc": "2 319 990", "discount": "90 000", "client_price": "2 229 990", "discount_pct": 3.9, "note": ""}, {"model": "BELGEE X50+", "trim": "Style 1,5 7DCT", "year": "2025/2026", "rrc": "2 509 990", "discount": "90 000", "client_price": "2 419 990", "discount_pct": 3.6, "note": ""}, {"model": "BELGEE X50+", "trim": "Prestige 1,5 7DCT", "year": "2025/2026", "rrc": "2 699 990", "discount": "90 000", "client_price": "2 609 990", "discount_pct": 3.3, "note": "увеличилась ррц"}, {"model": "BELGEE X50+", "trim": "Onyx 1,5 7DCT", "year": "2025/2026", "rrc": "2 799 990", "discount": "90 000", "client_price": "2 709 990", "discount_pct": 3.2, "note": "увеличилась ррц"}, {"model": "Belgee X70", "trim": "Active 1,5 6AT 2WD", "year": "2025/2026", "rrc": "2 825 990", "discount": "495 000", "client_price": "2 330 990", "discount_pct": 17.5, "note": ""}, {"model": "Belgee X70", "trim": "Style 1,5 6AT 2WD", "year": "2025/2026", "rrc": "2 946 190", "discount": "396 000", "client_price": "2 550 190", "discount_pct": 13.4, "note": ""}, {"model": "Belgee X70", "trim": "Style 1,5 7DCT 4WD", "year": "2025/2026", "rrc": "3 121 190", "discount": "450 000", "client_price": "2 671 190", "discount_pct": 14.4, "note": ""}, {"model": "Belgee X70", "trim": "Prestige 1,5 7DCT 4WD", "year": "2025/2026", "rrc": "3 321 190", "discount": "567 000", "client_price": "2 754 190", "discount_pct": 17.1, "note": ""}, {"model": "Belgee X70", "trim": "Prestige+ 1,5 7DCT 4WD", "year": "2025/2026", "rrc": "3 426 190", "discount": "594 000", "client_price": "2 832 190", "discount_pct": 17.3, "note": ""}, {"model": "Belgee X70 FL", "trim": "Active 1,5 6AT 2WD", "year": "2025/2026", "rrc": "2 609 990", "discount": "72 000", "client_price": "2 537 990", "discount_pct": 2.8, "note": ""}, {"model": "Belgee X70 FL", "trim": "Style 1,5 6AT 2WD", "year": "2025/2026", "rrc": "2 745 990", "discount": "72 000", "client_price": "2 673 990", "discount_pct": 2.6, "note": ""}, {"model": "Belgee X70 FL", "trim": "Style 1,5 7DCT 4WD", "year": "2025/2026", "rrc": "2 839 990", "discount": "72 000", "client_price": "2 767 990", "discount_pct": 2.5, "note": ""}, {"model": "Belgee X70 FL", "trim": "Prestige 1,5 7DCT 4WD", "year": "2025/2026", "rrc": "3 039 990", "discount": "72 000", "client_price": "2 967 990", "discount_pct": 2.4, "note": ""}, {"model": "Belgee X70 FL", "trim": "Prestige+ 1,5 7DCT 4WD", "year": "2025/2026", "rrc": "3 115 990", "discount": "72 000", "client_price": "3 043 990", "discount_pct": 2.3, "note": ""}, {"model": "Belgee S50", "trim": "Active MT", "year": "2025/2026", "rrc": "1 929 990", "discount": "180 000", "client_price": "1 749 990", "discount_pct": 9.3, "note": ""}, {"model": "Belgee S50", "trim": "Active AT", "year": "2025/2026", "rrc": "2 069 990", "discount": "108 000", "client_price": "1 961 990", "discount_pct": 5.2, "note": ""}, {"model": "Belgee S50", "trim": "Style", "year": "2025/2026", "rrc": "2 165 990", "discount": "108 000", "client_price": "2 057 990", "discount_pct": 5.0, "note": ""}, {"model": "Belgee S50", "trim": "Prestige", "year": "2025/2026", "rrc": "2 345 990", "discount": "108 000", "client_price": "2 237 990", "discount_pct": 4.6, "note": ""}];
+
+    function renderMatrix(items) {
+      const tbody = document.getElementById('matrixBody');
+      tbody.innerHTML = '';
+      items.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-700/40 transition-colors';
+        const noteBadge = r.note ? `<span class="px-2 py-0.5 rounded text-[10px] bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">${r.note}</span>` : '-';
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-bold text-slate-900 dark:text-white">${r.model}</td>
+          <td class="py-2.5 px-3 text-slate-700 dark:text-slate-200 font-semibold">${r.trim}</td>
+          <td class="py-2.5 px-2 text-center text-slate-400 font-mono text-[11px]">${r.year}</td>
+          <td class="py-2.5 px-3 text-right font-mono text-slate-500">${r.rrc} ₽</td>
+          <td class="py-2.5 px-3 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">${r.discount} ₽</td>
+          <td class="py-2.5 px-3 text-right font-mono font-black text-slate-900 dark:text-white">${r.client_price} ₽</td>
+          <td class="py-2.5 px-2 text-right font-mono font-bold text-emerald-700 dark:text-emerald-400">${r.discount_pct}%</td>
+          <td class="py-2.5 px-2 text-slate-400 text-xs">${noteBadge}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterMatrix(modelName) {
+      document.querySelectorAll('.matrix-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-model') === modelName) {
+          btn.className = 'matrix-filter-btn px-2.5 py-1 rounded-lg bg-emerald-600 text-white font-semibold';
+        } else {
+          btn.className = 'matrix-filter-btn px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200';
+        }
+      });
+
+      if (modelName === 'ALL') {
+        renderMatrix(MATRIX_DATA);
+      } else {
+        const filtered = MATRIX_DATA.filter(item => item.model.toUpperCase() === modelName.toUpperCase());
+        renderMatrix(filtered);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderMatrix(MATRIX_DATA);
+    });
+  </script>
+</body>
+</html>
