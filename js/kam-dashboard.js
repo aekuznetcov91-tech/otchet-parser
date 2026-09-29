@@ -2372,6 +2372,8 @@ function renderKamTable(partners) {
         const brandsCount = Object.keys(p.brands || {}).length;
         const hasSubrows = citiesCount > 0 || brandsCount > 0;
 
+        const safePNameAttr = (p.name || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
         // Level 1: Partner Row
         html += `
         <tr class="font-semibold bg-white hover:bg-blue-50/40 transition cursor-pointer select-none border-b border-gray-200" 
@@ -2404,7 +2406,7 @@ function renderKamTable(partners) {
             <td class="text-center ${planBadge} kam-plan-pct">${p.plan > 0 ? `${p.plan_pct.toFixed(0)}%` : '—'}</td>
             <td class="text-center font-bold text-gray-700">
                 ${p.trans_leads > 0 
-                    ? `<button type="button" onclick="event.stopPropagation(); openTransferredLeadsModal(${p.id || 'null'}, '${(p.name || '').replace(/'/g, "\\'")}')" class="px-2 py-0.5 rounded font-bold text-blue-600 hover:text-blue-900 hover:bg-blue-100 transition underline decoration-dotted cursor-pointer" title="Посмотреть переданные лиды (${p.trans_leads} шт.)">${fmt(p.trans_leads)}</button>`
+                    ? `<button type="button" data-pid="${p.id || ''}" data-pname="${safePNameAttr}" onclick="event.stopPropagation(); handleTransLeadsButtonClick(this)" class="px-2 py-0.5 rounded font-bold text-blue-600 hover:text-blue-900 hover:bg-blue-100 transition underline decoration-dotted cursor-pointer" title="Посмотреть переданные лиды (${p.trans_leads} шт.)">${fmt(p.trans_leads)}</button>`
                     : `<span class="text-gray-400">0</span>`}
             </td>
             <td class="text-center font-black text-purple-700 bg-purple-50/40">${fmt(p.trans_deals)}</td>
@@ -2460,6 +2462,7 @@ function renderKamTable(partners) {
                     } else if (bStats.trans_deals > 0) {
                         bCrColor = 'text-blue-600 font-bold';
                     }
+                    const safeBNameAttr = brandName.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
                     
                     html += `
                     <tr class="kam-subrow-${safeKey} hidden bg-white/90 text-[11px] hover:bg-gray-100 transition border-b border-gray-100">
@@ -2472,7 +2475,7 @@ function renderKamTable(partners) {
                         <td class="text-center text-gray-400">—</td>
                         <td class="text-center text-gray-600">
                             ${bStats.trans_leads > 0 
-                                ? `<button type="button" onclick="event.stopPropagation(); openTransferredLeadsModal(${p.id || 'null'}, '${(p.name || '').replace(/'/g, "\\'")}', '${brandName.replace(/'/g, "\\'")}')" class="px-1.5 py-0.5 rounded font-semibold text-blue-600 hover:text-blue-900 hover:bg-blue-100 transition underline decoration-dotted cursor-pointer" title="Посмотреть переданные лиды по марке ${brandName}">${fmt(bStats.trans_leads)}</button>`
+                                ? `<button type="button" data-pid="${p.id || ''}" data-pname="${safePNameAttr}" data-brand="${safeBNameAttr}" onclick="event.stopPropagation(); handleTransLeadsButtonClick(this)" class="px-1.5 py-0.5 rounded font-semibold text-blue-600 hover:text-blue-900 hover:bg-blue-100 transition underline decoration-dotted cursor-pointer" title="Посмотреть переданные лиды по марке ${brandName}">${fmt(bStats.trans_leads)}</button>`
                                 : `<span class="text-gray-400">0</span>`}
                         </td>
                         <td class="text-center text-purple-700 font-semibold">${fmt(bStats.trans_deals)}</td>
@@ -2949,6 +2952,15 @@ function renderKamLegalEntitiesModalTable() {
  * ====================================================================*/
 let currentTransferredLeadsList = [];
 
+function handleTransLeadsButtonClick(btn) {
+    if (!btn) return;
+    const pidStr = btn.getAttribute('data-pid');
+    const pid = pidStr ? parseInt(pidStr, 10) : null;
+    const pname = btn.getAttribute('data-pname') || '';
+    const brand = btn.getAttribute('data-brand') || null;
+    openTransferredLeadsModal(pid, pname, brand);
+}
+
 function openTransferredLeadsModal(pid, partnerName, brandFilter) {
     const modal = document.getElementById('modalTransferredLeads');
     if (!modal) return;
@@ -2964,21 +2976,41 @@ function openTransferredLeadsModal(pid, partnerName, brandFilter) {
     if (brandFilter) displayName += ` (${brandFilter})`;
     if (titleEl) titleEl.innerText = displayName;
 
-    // Get active month
-    const curMonth = (typeof activeMonth !== 'undefined' && activeMonth) ? activeMonth : '2026-09';
-    if (subEl) subEl.innerText = `Реестр отправленных лидов дилеру из CRM за период: ${curMonth}`;
+    // Get active filter config and current month
+    const cfg = (typeof currentFilterConfig !== 'undefined') ? currentFilterConfig : { mode: 'month', month: '2026-09' };
+    let curMonth = '2026-09';
+    if (cfg.mode === 'month' && cfg.month) {
+        curMonth = cfg.month;
+    } else if (cfg.mode === 'all') {
+        curMonth = 'all';
+    }
+
+    if (subEl) {
+        subEl.innerText = curMonth === 'all' 
+            ? 'Реестр отправленных лидов дилеру из CRM за все время' 
+            : `Реестр отправленных лидов дилеру из CRM за период: ${curMonth}`;
+    }
+
+    const payload = window.dataPayload || (typeof payload !== 'undefined' ? payload : {});
+    const regList = (payload && payload.partners_registry) || (typeof masterRegistry !== 'undefined' ? masterRegistry : []);
 
     // Registry lookup for emails & aliases
     let regPartner = null;
-    if (pid && typeof partnerLookup !== 'undefined' && partnerLookup[`ID_${pid}`]) {
-        regPartner = partnerLookup[`ID_${pid}`];
-    } else if (typeof matchDealerToPartner === 'function') {
-        regPartner = matchDealerToPartner(safePName);
+    if (pid) {
+        regPartner = regList.find(p => p.partner_id == pid);
+    }
+    if (!regPartner && safePName) {
+        const low = safePName.toLowerCase().trim();
+        regPartner = regList.find(p => 
+            (p.canonical_name && p.canonical_name.toLowerCase().trim() === low) ||
+            (p.bitrix_aliases && p.bitrix_aliases.some(a => (a || '').toLowerCase().trim() === low)) ||
+            (p.bi_aliases && p.bi_aliases.some(a => (a || '').toLowerCase().trim() === low))
+        );
     }
 
     // Build client-to-deal map for models
     const clientDealMap = {};
-    if (payload && payload.sys_db) {
+    if (payload.sys_db && Array.isArray(payload.sys_db)) {
         payload.sys_db.forEach(d => {
             if (d.ClientId) clientDealMap[String(d.ClientId).trim()] = d;
             if (d.LeadId) clientDealMap[String(d.LeadId).trim()] = d;
@@ -2986,24 +3018,49 @@ function openTransferredLeadsModal(pid, partnerName, brandFilter) {
     }
 
     // Filter leads from payload.sys_db_partners
-    const allLeads = (payload && payload.sys_db_partners) ? payload.sys_db_partners : [];
+    const allLeads = (payload && payload.sys_db_partners && Array.isArray(payload.sys_db_partners)) ? payload.sys_db_partners : [];
     const matchedLeads = [];
 
-    const normPName = safePName.toLowerCase();
+    const normPName = safePName.toLowerCase().trim();
     const normBrand = brandFilter ? normalizeBrandName(brandFilter) : null;
+    const targetPid = pid ? parseInt(pid, 10) : (regPartner ? regPartner.partner_id : null);
 
     allLeads.forEach(r => {
         if (r.Type !== 'Лид') return;
         const rMonth = (r.Month || '').replace("'", "");
-        if (rMonth !== curMonth) return;
-        if (r.HasPrepay && r.HasPrepay !== 0) return; // Transferred leads are clean leads without prepay
+        
+        // Month / date filter
+        if (cfg.mode === 'month') {
+            if (curMonth !== 'all' && rMonth !== curMonth) return;
+        } else if (cfg.mode === 'custom') {
+            const fTime = cfg.from ? new Date(cfg.from).getTime() : -Infinity;
+            const tTime = cfg.to ? new Date(cfg.to).getTime() : Infinity;
+            const d = typeof excelToJSDate === 'function' ? excelToJSDate(r.Date) : null;
+            if (d) {
+                const t = d.getTime();
+                if (t < fTime || t > tTime) return;
+            }
+        }
+        
+        // Transferred leads are clean leads without prepay
+        if (r.HasPrepay && r.HasPrepay !== 0) return;
 
         // Match partner
         let match = false;
-        if (pid && r.PartnerId === pid) match = true;
-        else if (r.Partner && r.Partner.toLowerCase() === normPName) match = true;
+        if (targetPid && r.PartnerId && parseInt(r.PartnerId, 10) === targetPid) match = true;
+        else if (r.Partner && r.Partner.toLowerCase().trim() === normPName) match = true;
         else if (r.RawPartner && r.RawPartner.toLowerCase().includes(normPName)) match = true;
-        else if (regPartner && r.PartnerId === regPartner.id) match = true;
+        else if (regPartner && r.PartnerId && parseInt(r.PartnerId, 10) === regPartner.partner_id) match = true;
+        else if (normPName && r.Partner && normPName.includes(r.Partner.toLowerCase().trim())) match = true;
+
+        if (!match && regPartner) {
+            const rName = (r.Partner || r.RawPartner || '').toLowerCase().trim();
+            if (rName) {
+                if (regPartner.canonical_name && regPartner.canonical_name.toLowerCase().trim() === rName) match = true;
+                else if (regPartner.bitrix_aliases && regPartner.bitrix_aliases.some(a => (a || '').toLowerCase().trim() === rName)) match = true;
+                else if (regPartner.bi_aliases && regPartner.bi_aliases.some(a => (a || '').toLowerCase().trim() === rName)) match = true;
+            }
+        }
         
         if (!match) return;
 
@@ -3057,12 +3114,18 @@ function openTransferredLeadsModal(pid, partnerName, brandFilter) {
     renderTransferredLeadsModalTable(matchedLeads);
 
     modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    modal.style.display = 'flex';
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
 function closeTransferredLeadsModal() {
     const modal = document.getElementById('modalTransferredLeads');
-    if (modal) modal.classList.add('hidden');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        modal.style.display = 'none';
+    }
 }
 
 function renderTransferredLeadsModalTable(leads) {
