@@ -1312,8 +1312,12 @@ def resolve_sberauto_lead_partner(contact_name, raw_partner=""):
         return (1121, 'АВТОЦЕНТР АВТОГРАД', 'Светлана Дариенко')
     elif 'автостиль' in c_low or 'новгород' in c_low:
         return (1034, 'Автостиль', 'Светлана Дариенко')
-    elif 'брянск' in c_low or 'бн-моторс' in c_low:
-        return (1177, 'ГК БН-МОТОРС, БНМ', 'Евгения Добролюбова')
+    elif 'брянск' in c_low or 'бн-моторс' in c_low or 'дебрянск' in c_low:
+        return (1177, 'Дебрянск Авто', 'Валерия Солдатова')
+    elif 'юг-авто' in c_low or 'юг авто' in c_low:
+        return (1290, 'Юг-Авто', 'Валерия Солдатова')
+    elif 'ааа' in c_low or 'формула-н' in c_low or 'формула н' in c_low:
+        return (1291, 'ААА Моторс', 'Валерия Солдатова')
     elif 'архангельск' in c_low:
         return (1138, 'Авторитет (Архангельск)', 'Светлана Дариенко')
     elif 'нижегородец' in c_low or 'чери нн' in c_low:
@@ -2305,10 +2309,21 @@ def run_pipeline():
                     elif 'олимп' in p_lower or 'темп авто кубань' in p_lower or deal_inn == '2311093925':
                         cname = 'Олимп (Кубань)'
                         kam_partner = 'Евгения Добролюбова'
-                    # БН-Моторс (БНМ) -> Добролюбова
-                    elif any(k in p_lower for k in ['бн', 'бнм', 'бн-моторс', 'дебрянск']) or deal_inn in ('3257002460', '3257014272'):
-                        cname = 'ГК БН-Моторс'
-                        kam_partner = 'Евгения Добролюбова'
+                    # Дебрянск Авто (БНМ) -> Солдатова
+                    elif any(k in p_lower for k in ['дебрянск', 'бн', 'бнм', 'бн-моторс']) or deal_inn in ('3250521481', '3257002460', '3257014272'):
+                        pid = 1177
+                        cname = 'Дебрянск Авто'
+                        kam_partner = 'Валерия Солдатова'
+                    # Юг-Авто (Краснодар) -> Солдатова
+                    elif ('юг-авто' in p_lower or 'юг авто' in p_lower or deal_inn in ('2310079830', '2311120713')) and not ('автоюг' in p_lower and not 'юг-авто' in p_lower):
+                        pid = 1290
+                        cname = 'Юг-Авто'
+                        kam_partner = 'Валерия Солдатова'
+                    # ААА Моторс (Ростов-на-Дону) -> Солдатова
+                    elif any(k in p_lower for k in ['ааа', 'aaa', 'формула-н', 'формула н']) or deal_inn == '6168043686':
+                        pid = 1291
+                        cname = 'ААА Моторс'
+                        kam_partner = 'Валерия Солдатова'
                     # Автобан / Приоритет Автобан -> Добролюбова
                     elif any(k in p_lower for k in ['автобан', 'автобан-восток']) or deal_inn == '6679163711':
                         cname = 'Приоритет_Автобан'
@@ -2459,9 +2474,15 @@ def run_pipeline():
                     # Олимп -> Добролюбова
                     elif 'олимп' in p_lower or 'темп авто кубань' in p_lower or deal_inn == '2311093925':
                         kam_prepay = 'Евгения Добролюбова'
-                    # БН-Моторс -> Добролюбова
-                    elif any(k in p_lower for k in ['бн', 'бнм', 'бн-моторс', 'дебрянск']) or deal_inn in ('3257002460', '3257014272'):
-                        kam_prepay = 'Евгения Добролюбова'
+                    # Дебрянск Авто -> Солдатова
+                    elif any(k in p_lower for k in ['дебрянск', 'бн', 'бнм', 'бн-моторс']) or deal_inn in ('3250521481', '3257002460', '3257014272'):
+                        kam_prepay = 'Валерия Солдатова'
+                    # Юг-Авто -> Солдатова
+                    elif ('юг-авто' in p_lower or 'юг авто' in p_lower or deal_inn in ('2310079830', '2311120713')) and not ('автоюг' in p_lower and not 'юг-авто' in p_lower):
+                        kam_prepay = 'Валерия Солдатова'
+                    # ААА Моторс -> Солдатова
+                    elif any(k in p_lower for k in ['ааа', 'aaa', 'формула-н', 'формула н']) or deal_inn == '6168043686':
+                        kam_prepay = 'Валерия Солдатова'
                     # Автобан -> Добролюбова
                     elif any(k in p_lower for k in ['автобан', 'автобан-восток']) or deal_inn == '6679163711':
                         kam_prepay = 'Евгения Добролюбова'
@@ -2817,9 +2838,18 @@ def run_pipeline():
                 elif 'олимп' in p_lower or 'темп авто кубань' in p_lower:
                     cname = 'Олимп (Кубань)'
                     kam = 'Евгения Добролюбова'
-                elif any(k in p_lower for k in ['бн', 'бнм', 'бн-моторс', 'дебрянск']):
-                    cname = 'ГК БН-Моторс'
-                    kam = 'Евгения Добролюбова'
+                elif any(k in p_lower for k in ['дебрянск', 'бн', 'бнм', 'бн-моторс']):
+                    pid = 1177
+                    cname = 'Дебрянск Авто'
+                    kam = 'Валерия Солдатова'
+                elif ('юг-авто' in p_lower or 'юг авто' in p_lower) and not ('автоюг' in p_lower and not 'юг-авто' in p_lower):
+                    pid = 1290
+                    cname = 'Юг-Авто'
+                    kam = 'Валерия Солдатова'
+                elif any(k in p_lower for k in ['ааа', 'aaa', 'формула-н', 'формула н']):
+                    pid = 1291
+                    cname = 'ААА Моторс'
+                    kam = 'Валерия Солдатова'
                 elif any(k in p_lower for k in ['автобан', 'автобан-восток']):
                     cname = 'Приоритет_Автобан'
                     kam = 'Евгения Добролюбова'

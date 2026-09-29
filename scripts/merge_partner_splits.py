@@ -177,12 +177,12 @@ MERGERS = [
         'target_kam': 'Евгения Добролюбова',
         'donor_ids': [1085]
     },
-    # 25. БН-Моторс: merge 1186 into 1177
+    # 25. Дебрянск Авто / БН-Моторс: merge 1186, 1187, 632038 into 1177
     {
         'target_id': 1177,
-        'target_name': 'ГК БН-МОТОРС',
-        'target_kam': 'Евгения Добролюбова',
-        'donor_ids': [1186]
+        'target_name': 'Дебрянск Авто',
+        'target_kam': 'Валерия Солдатова',
+        'donor_ids': [1186, 1187, 632038]
     },
     # 26. ГК Сигма: merge 1024 into 1011
     {
@@ -746,6 +746,119 @@ def apply_merges_to_file(filepath):
         for oem in p1035['oem_data']:
             oem['responsible'] = 'Евгения Добролюбова'
 
+    # 22. Дебрянск Авто: 1177 -> Валерия Солдатова (объединен с 1186, 1187, 632038)
+    p1177 = partners_by_id.get(1177)
+    if p1177:
+        p1177['canonical_name'] = 'Дебрянск Авто'
+        p1177['holding'] = 'Дебрянск Авто'
+        p1177['kam'] = 'Валерия Солдатова'
+        p1177['bitrix_aliases'] = clean_list((p1177.get('bitrix_aliases', []) or []) + [
+            'Дебрянск Авто',
+            'ГК БН-МОТОРС',
+            'Дебрянск Авто (Дебрянск Авто)',
+            'ООО "ДЕБРЯНСК АВТО" ONLINE',
+            'ООО "МБ-БРЯНСК" ONLINE',
+            'ONLINE ООО "БНМ-1"',
+            'БНМ-3'
+        ])
+        p1177['bi_aliases'] = clean_list((p1177.get('bi_aliases', []) or []) + [
+            'Дебрянск Авто',
+            'ГК БН-МОТОРС, БНМ',
+            'ГК БН-МОТОРС',
+            'Дебрянск Авто (Дебрянск Авто)',
+            'Дебрянск Авто (Крона Авто)'
+        ])
+        for oem in p1177.get('oem_data', []):
+            oem['responsible'] = 'Валерия Солдатова'
+
+    # 23. Юг-Авто (Краснодар): 1290 -> Валерия Солдатова (отделен от АвтоЮг 1228)
+    p1228 = partners_by_id.get(1228)
+    yug_avto_oem = []
+    if p1228:
+        kept_oem = []
+        for oem in p1228.get('oem_data', []):
+            if 'юг-авто' in (oem.get('name') or '').lower() or '2310079830' in str(oem.get('inn') or '') or '2311120713' in str(oem.get('inn') or ''):
+                oem['responsible'] = 'Валерия Солдатова'
+                yug_avto_oem.append(oem)
+            else:
+                kept_oem.append(oem)
+        p1228['oem_data'] = kept_oem
+        p1228['bitrix_aliases'] = [a for a in p1228.get('bitrix_aliases', []) if 'юг-авто' not in a.lower()]
+
+    p1290 = partners_by_id.get(1290)
+    if not p1290:
+        p1290 = {
+            'partner_id': 1290,
+            'canonical_name': 'Юг-Авто',
+            'holding': 'Юг-Авто',
+            'kam': 'Валерия Солдатова',
+            'bitrix_aliases': clean_list([
+                'ONLINE ООО АК «Юг-Авто»',
+                'Юг-Авто',
+                'ООО "АК "ЮГ-АВТО"',
+                'ООО АК «Юг-Авто»',
+                'ООО "ДЦ ЮГ-АВТО"',
+                'ООО ДЦ Юг-Авто',
+                'ООО АК Юг-Авто',
+                'ООО ДЦ Юг-Авто'
+            ]),
+            'bi_aliases': ['Юг-Авто'],
+            'pochta_aliases': [],
+            'oem_data': yug_avto_oem,
+            'status': 'verified'
+        }
+        partners.append(p1290)
+        partners_by_id[1290] = p1290
+    else:
+        p1290['canonical_name'] = 'Юг-Авто'
+        p1290['holding'] = 'Юг-Авто'
+        p1290['kam'] = 'Валерия Солдатова'
+        if yug_avto_oem and not p1290.get('oem_data'):
+            p1290['oem_data'] = yug_avto_oem
+
+    # 24. ААА Моторс (Ростов-на-Дону): 1291 -> Валерия Солдатова (отделен от Артекс 1065)
+    p1065 = partners_by_id.get(1065)
+    aaa_oem = []
+    if p1065:
+        kept_oem = []
+        for oem in p1065.get('oem_data', []):
+            if 'ааа' in (oem.get('name') or '').lower() or '6168043686' in str(oem.get('inn') or ''):
+                oem['responsible'] = 'Валерия Солдатова'
+                aaa_oem.append(oem)
+            else:
+                kept_oem.append(oem)
+        p1065['oem_data'] = kept_oem
+        p1065['bitrix_aliases'] = [a for a in p1065.get('bitrix_aliases', []) if 'формула' not in a.lower() and 'ааа' not in a.lower()]
+
+    p1291 = partners_by_id.get(1291)
+    if not p1291:
+        p1291 = {
+            'partner_id': 1291,
+            'canonical_name': 'ААА Моторс',
+            'holding': 'ААА Моторс',
+            'kam': 'Валерия Солдатова',
+            'bitrix_aliases': clean_list([
+                'Online ООО "ФОРМУЛА-Н"',
+                'ААА Моторс',
+                'ООО "Формула Н"',
+                'ООО Формула Н',
+                'Формула-Н',
+                'Формула Н'
+            ]),
+            'bi_aliases': ['ААА Моторс', 'ААА-Моторс'],
+            'pochta_aliases': [],
+            'oem_data': aaa_oem,
+            'status': 'verified'
+        }
+        partners.append(p1291)
+        partners_by_id[1291] = p1291
+    else:
+        p1291['canonical_name'] = 'ААА Моторс'
+        p1291['holding'] = 'ААА Моторс'
+        p1291['kam'] = 'Валерия Солдатова'
+        if aaa_oem and not p1291.get('oem_data'):
+            p1291['oem_data'] = aaa_oem
+
 
     # Filter out removed donor partners
     new_partners = [p for p in partners if (p.get('partner_id') or p.get('id')) not in removed_pids]
@@ -934,6 +1047,36 @@ def apply_merges_to_data_json(filepath):
                 r['KAM'] = 'Евгения Добролюбова'
             modified = True
 
+        # 5. Дебрянск Авто (ID 1177, Валерия Солдатова)
+        if (r.get('PartnerId') in [1177, 1186, 1187, 632038] or
+            any(k in raw_p_low for k in ['дебрянск', 'мб-брянск', 'бнм-1', 'бнм-3', 'бн-моторс', 'бн моторс']) or
+            any(k in p_name_low for k in ['дебрянск', 'мб-брянск', 'бн-моторс', 'бн моторс'])):
+            r['PartnerId'] = 1177
+            r['Partner'] = 'Дебрянск Авто'
+            if r.get('Month', '') >= '2026-09':
+                r['KAM'] = 'Валерия Солдатова'
+            elif r.get('KAM') != 'Андрей Кузнецов':
+                r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # 6. Юг-Авто (ID 1290, Валерия Солдатова) - Краснодар
+        if (r.get('PartnerId') == 1290 or
+            (('юг-авто' in raw_p_low or 'юг авто' in raw_p_low or 'ак «юг-авто»' in raw_p_low or 'дц юг-авто' in raw_p_low) and
+             not ('автоюг' in raw_p_low and not 'юг-авто' in raw_p_low))):
+            r['PartnerId'] = 1290
+            r['Partner'] = 'Юг-Авто'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # 7. ААА Моторс (ID 1291, Валерия Солдатова) - Ростов-на-Дону
+        if (r.get('PartnerId') == 1291 or
+            any(k in raw_p_low for k in ['формула-н', 'формула н', 'ааа моторс', 'ааа-моторс']) or
+            any(k in p_name_low for k in ['ааа моторс', 'ааа-моторс'])):
+            r['PartnerId'] = 1291
+            r['Partner'] = 'ААА Моторс'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
     for r in data.get('deals', []):
         pid = r.get('PartnerId')
         if pid in donor_to_target:
@@ -1083,6 +1226,53 @@ def apply_merges_to_data_json(filepath):
                 r['KAM'] = 'Светлана Дариенко'
             elif m >= '2026-10':
                 r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 5. Дебрянск Авто (ID 1177, Валерия Солдатова)
+        if (r.get('PartnerId') in [1177, 1186, 1187, 632038] or
+            any(k in raw_p_low for k in ['дебрянск', 'мб-брянск', 'бнм-1', 'бнм-3', 'бн-моторс', 'бн моторс']) or
+            any(k in p_name_low for k in ['дебрянск', 'мб-брянск', 'бн-моторс', 'бн моторс'])):
+            r['PartnerId'] = 1177
+            r['PartnerName'] = 'Дебрянск Авто'
+            if r.get('KAM') != 'Андрей Кузнецов':
+                r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # 6. Юг-Авто (ID 1290, Валерия Солдатова) - Краснодар
+        if (r.get('PartnerId') == 1290 or
+            (('юг-авто' in raw_p_low or 'юг авто' in raw_p_low or 'ак «юг-авто»' in raw_p_low or 'дц юг-авто' in raw_p_low) and
+             not ('автоюг' in raw_p_low and not 'юг-авто' in raw_p_low))):
+            r['PartnerId'] = 1290
+            r['PartnerName'] = 'Юг-Авто'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # 7. ААА Моторс (ID 1291, Валерия Солдатова) - Ростов-на-Дону
+        if (r.get('PartnerId') == 1291 or
+            any(k in raw_p_low for k in ['формула-н', 'формула н', 'ааа моторс', 'ааа-моторс']) or
+            any(k in p_name_low for k in ['ааа моторс', 'ааа-моторс'])):
+            r['PartnerId'] = 1291
+            r['PartnerName'] = 'ААА Моторс'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+    # Debtors allocation
+    for d in data.get('debtors', []):
+        raw_c = (d.get('raw_company') or d.get('company') or '').lower()
+        if any(k in raw_c for k in ['дебрянск', 'бнм', 'бн-моторс', 'мб-брянск']):
+            d['partner_id'] = 1177
+            d['company'] = 'Дебрянск Авто'
+            d['kam'] = 'Валерия Солдатова'
+            modified = True
+        elif ('юг-авто' in raw_c or 'юг авто' in raw_c) and not ('автоюг' in raw_c and not 'юг-авто' in raw_c):
+            d['partner_id'] = 1290
+            d['company'] = 'Юг-Авто'
+            d['kam'] = 'Валерия Солдатова'
+            modified = True
+        elif any(k in raw_c for k in ['ааа', 'формула-н', 'формула н']):
+            d['partner_id'] = 1291
+            d['company'] = 'ААА Моторс'
+            d['kam'] = 'Валерия Солдатова'
             modified = True
 
     if modified:

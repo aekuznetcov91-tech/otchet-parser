@@ -59,8 +59,16 @@ function canonicalPartnerName(name) {
     // Автосеть РФ / Апельсин
     if (low.includes('апельсин')) return 'Апельсин (Автосеть РФ)';
     
-    // БН-Моторс
-    if (low.includes('бн-моторс') || low.includes('бн моторс') || low.includes('дебрянск') || low.includes('бнм')) return 'ГК БН-Моторс';
+    // Дебрянск Авто (БН-Моторс)
+    if (low.includes('дебрянск') || low.includes('бн-моторс') || low.includes('бн моторс') || low.includes('бнм')) return 'Дебрянск Авто';
+
+    // Юг-Авто (Краснодар) vs АвтоЮг (Ставрополь)
+    if (low.includes('юг-авто') || low.includes('юг авто') || low.includes('ак «юг-авто»') || low.includes('дц юг-авто')) return 'Юг-Авто';
+    if (low.includes('автоюг')) return 'АвтоЮг';
+
+    // ААА Моторс (Ростов-на-Дону) vs Артекс
+    if (low.includes('ааа моторс') || low.includes('ааа-моторс') || low.includes('формула-н') || low.includes('формула н')) return 'ААА Моторс';
+    if (low.includes('артекс')) return 'Артекс';
     
     // Восток Моторс
     if (low.includes('восток моторс') || low.includes('восток-моторс')) return 'ООО "ВОСТОК МОТОРС" ONLINE';

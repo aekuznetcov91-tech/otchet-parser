@@ -5778,8 +5778,7 @@
       "bitrix_aliases": [
         "ООО \"АРТ-МОТОРС\" ONLINE",
         "Артекс",
-        "Online ГК Артекс / ООО РедКар",
-        "Online ООО \"ФОРМУЛА-Н\""
+        "Online ГК Артекс / ООО РедКар"
       ],
       "bi_aliases": [
         "Online Артекс",
@@ -5798,19 +5797,6 @@
           "city": "Ставрополь, Старомарьевское шоссе, 42",
           "name": "Online Артекс",
           "brand": "Geely & Belgee"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Ростов-на-дону",
-          "group_link": "https://max.ru/join/rfyEBrVqSF9IVCf05eJbzvJK90MgSmZW4AOySZ3tvAo",
-          "name": "ААА Моторс",
-          "legal_entity": "ООО Формула Н",
-          "inn": "6168043686",
-          "address": "г. Ростов-на-Дону, ул. Текучева, д. 352, корп. Б",
-          "back_name": "",
-          "email": "m.tishkov@hyundai-rostov.ru, y.kondakov@hyundai-rostov.ru, t.kazaryan@hyundai-rostov.ru, v.zolotarev@hyundai-rostov.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "CHANGAN"
         },
         {
           "sheet": "JETOUR",
@@ -5841,19 +5827,6 @@
         {
           "sheet": "SOLARIS",
           "city": "Ростов-на-Дону",
-          "group_link": "https://max.ru/join/rfyEBrVqSF9IVCf05eJbzvJK90MgSmZW4AOySZ3tvAo",
-          "name": "ААА Моторс",
-          "legal_entity": "ООО Формула Н",
-          "inn": "6168043686",
-          "address": "г. Ростов-на-Дону, ул. Текучева, д. 352Б",
-          "back_name": "",
-          "email": "m.tishkov@hyundai-rostov.ru, y.kondakov@hyundai-rostov.ru, t.kazaryan@hyundai-rostov.ru, v.zolotarev@hyundai-rostov.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "SOLARIS"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Ростов-на-Дону",
           "group_link": "https://max.ru/join/Pa7CRNzVxKgnTH2TbiP47P-S1Iy4ZjNJwi_UpKmPMjE",
           "name": "Артекс",
           "legal_entity": "ООО РедКар",
@@ -5878,19 +5851,6 @@
           "brand": "GAC"
         },
         {
-          "sheet": "DEEPAL",
-          "city": "Ростов-на-дону",
-          "group_link": "https://max.ru/join/rfyEBrVqSF9IVCf05eJbzvJK90MgSmZW4AOySZ3tvAo",
-          "name": "ААА Моторс",
-          "legal_entity": "ООО Формула Н",
-          "inn": "6168043686",
-          "address": "г. Ростов-на-Дону, ул. Текучева, д. 352, корп. Б",
-          "back_name": "",
-          "email": "m.tishkov@hyundai-rostov.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "DEEPAL"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Ростов-на-Дону",
           "name": "Артекс",
@@ -5904,30 +5864,6 @@
           "name": "Артекс",
           "legal_entity": "ООО Арт-Моторс",
           "inn": "6168057294",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Ростов-на-дону",
-          "name": "ААА Моторс",
-          "legal_entity": "ООО Формула Н",
-          "inn": "6168043686",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Ростов-на-Дону",
-          "name": "ААА Моторс",
-          "legal_entity": "ООО Формула Н",
-          "inn": "6168043686",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "DEEPAL",
-          "city": "Ростов-на-дону",
-          "name": "ААА Моторс",
-          "legal_entity": "ООО Формула Н",
-          "inn": "6168043686",
           "responsible": "Валерия Солдатова"
         },
         {
@@ -10838,19 +10774,26 @@
     },
     {
       "partner_id": 1177,
-      "canonical_name": "ГК БН-МОТОРС",
-      "holding": "ГК",
-      "kam": "Евгения Добролюбова",
+      "canonical_name": "Дебрянск Авто",
+      "holding": "Дебрянск Авто",
+      "kam": "Валерия Солдатова",
       "bitrix_aliases": [
         "ГК БН-МОТОРС",
         "Дебрянск Авто (Дебрянск Авто)",
         "ООО \"ДЕБРЯНСК АВТО\" ONLINE",
-        "ООО \"МБ-БРЯНСК\" ONLINE"
+        "ООО \"МБ-БРЯНСК\" ONLINE",
+        "Дебрянск Авто",
+        "Дебрянск Авто (Крона Авто)",
+        "БНМ-3",
+        "ONLINE ООО \"БНМ-1\""
       ],
       "bi_aliases": [
         "ГК БН-МОТОРС, БНМ",
         "ГК БН-МОТОРС",
-        "Дебрянск Авто (Дебрянск Авто)"
+        "Дебрянск Авто (Дебрянск Авто)",
+        "Дебрянск Авто",
+        "Дебрянск Авто (Крона Авто)",
+        "БНМ-3"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -11178,19 +11121,6 @@
           "responsible": "Алексей Чихарев"
         }
       ],
-      "status": "verified"
-    },
-    {
-      "partner_id": 1187,
-      "canonical_name": "Дебрянск Авто (Крона Авто)",
-      "holding": "Дебрянск",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [],
-      "bi_aliases": [
-        "Дебрянск Авто (Крона Авто)"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [],
       "status": "verified"
     },
     {
@@ -12600,8 +12530,7 @@
       "bitrix_aliases": [
         "ООО Ставрополь Автоюг",
         "ONLINE АВТОЮГ-ПЯТИГОРСК",
-        "ООО \"АВТОЮГ СТАВРОПОЛЬ\" ONLINE",
-        "ONLINE ООО АК «Юг-Авто»"
+        "ООО \"АВТОЮГ СТАВРОПОЛЬ\" ONLINE"
       ],
       "bi_aliases": [
         "АвтоЮг"
@@ -12667,19 +12596,6 @@
         },
         {
           "sheet": "JETOUR",
-          "city": "Краснодар",
-          "group_link": "https://max.ru/join/5VrTyi2FNB9LrdcPPGyMpFExiehRNxQoYE5f40s-h4g",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО АК Юг-Авто",
-          "inn": "2310079830",
-          "address": "пос. Яблоновский, ул. Краснодарская, 3",
-          "back_name": "",
-          "email": "evgeniya.kalashnikova@yug-avto.ru, anton.dremov@yug-avto.ru, bislan.turk@yug-avto.ru, yuriy.shazzo@yug-avto.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
           "city": "Пятигорск",
           "group_link": "https://max.ru/join/NYrhHr6UGEyFzDS0zSvfeXhf0bz7YHn0S-cx3J_HrEI",
           "name": "АвтоЮг",
@@ -12706,19 +12622,6 @@
         },
         {
           "sheet": "Soueast",
-          "city": "Краснодар",
-          "group_link": "https://max.ru/join/5VrTyi2FNB9LrdcPPGyMpFExiehRNxQoYE5f40s-h4g",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО АК Юг-Авто",
-          "inn": "2310079830",
-          "address": "пос. Яблоновский, ул. Краснодарская, 3",
-          "back_name": "",
-          "email": "evgeniya.kalashnikova@yug-avto.ru, anton.dremov@yug-avto.ru, bislan.turk@yug-avto.ru, yuriy.shazzo@yug-avto.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "Soueast"
-        },
-        {
-          "sheet": "Soueast",
           "city": "Пятигорск",
           "group_link": "https://max.ru/join/NYrhHr6UGEyFzDS0zSvfeXhf0bz7YHn0S-cx3J_HrEI",
           "name": "АвтоЮг",
@@ -12729,19 +12632,6 @@
           "email": "ildar.mardanov@jetour-autougptg.ru, z.mamedov@jetour-autougptg.ru, artem.mamikonyan@jetour-autougptg.ru, e.arutyunov@jetour-autougptg.ru",
           "responsible": "Валерия Солдатова",
           "brand": "Soueast"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Краснодар",
-          "group_link": "https://max.ru/join/cVniEObV7I8hI-YCRwMkr1CEzlKv0Dmb0nz28CS2ETs",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО ДЦ Юг-Авто",
-          "inn": "2311120713",
-          "address": "Краснодар, ул. имени Дзержинского, 102/2",
-          "back_name": "",
-          "email": "vladislav.kravchuk@yug-avto.ru, vladimir.demin@yug-avto.ru, sergey.mityasov@yug-avto.ru, viktor.gerasimov@yug-avto.ru, evgeniy.eliseev@yug-avto.ru",
-          "responsible": "Валерия Солдатова",
-          "brand": "SOLARIS"
         },
         {
           "sheet": "SOLARIS",
@@ -12815,35 +12705,11 @@
           "responsible": "Валерия Солдатова"
         },
         {
-          "sheet": "SOLARIS",
-          "city": "Краснодар",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО ДЦ Юг-Авто",
-          "inn": "2311120713",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "Soueast",
           "city": "Пятигорск",
           "name": "АвтоЮг",
           "legal_entity": "ООО АвтоЮг-Пятигорск",
           "inn": "2635255478",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Краснодар",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО АК Юг-Авто",
-          "inn": "2310079830",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Краснодар",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО АК Юг-Авто",
-          "inn": "2310079830",
           "responsible": "Валерия Солдатова"
         },
         {
@@ -16973,19 +16839,6 @@
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ONLINE Автоимпорт / ООО Автоимпорт Центр"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [],
-      "status": "verified"
-    },
-    {
-      "partner_id": 632038,
-      "canonical_name": "БНМ-3",
-      "holding": "",
-      "kam": "Евгения Добролюбова",
-      "bitrix_aliases": [
-        "БНМ-3"
       ],
       "bi_aliases": [],
       "pochta_aliases": [],
@@ -30981,6 +30834,176 @@
           "brand": "GAC"
         }
       ]
+    },
+    {
+      "partner_id": 1290,
+      "canonical_name": "Юг-Авто",
+      "holding": "Юг-Авто",
+      "kam": "Валерия Солдатова",
+      "bitrix_aliases": [
+        "ONLINE ООО АК «Юг-Авто»",
+        "Юг-Авто",
+        "ООО \"АК \"ЮГ-АВТО\"",
+        "ООО АК «Юг-Авто»",
+        "ООО \"ДЦ ЮГ-АВТО\"",
+        "ООО ДЦ Юг-Авто",
+        "ООО АК Юг-Авто"
+      ],
+      "bi_aliases": [
+        "Юг-Авто"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Краснодар",
+          "group_link": "https://max.ru/join/5VrTyi2FNB9LrdcPPGyMpFExiehRNxQoYE5f40s-h4g",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО АК Юг-Авто",
+          "inn": "2310079830",
+          "address": "пос. Яблоновский, ул. Краснодарская, 3",
+          "back_name": "",
+          "email": "evgeniya.kalashnikova@yug-avto.ru, anton.dremov@yug-avto.ru, bislan.turk@yug-avto.ru, yuriy.shazzo@yug-avto.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Краснодар",
+          "group_link": "https://max.ru/join/5VrTyi2FNB9LrdcPPGyMpFExiehRNxQoYE5f40s-h4g",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО АК Юг-Авто",
+          "inn": "2310079830",
+          "address": "пос. Яблоновский, ул. Краснодарская, 3",
+          "back_name": "",
+          "email": "evgeniya.kalashnikova@yug-avto.ru, anton.dremov@yug-avto.ru, bislan.turk@yug-avto.ru, yuriy.shazzo@yug-avto.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "Soueast"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Краснодар",
+          "group_link": "https://max.ru/join/cVniEObV7I8hI-YCRwMkr1CEzlKv0Dmb0nz28CS2ETs",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО ДЦ Юг-Авто",
+          "inn": "2311120713",
+          "address": "Краснодар, ул. имени Дзержинского, 102/2",
+          "back_name": "",
+          "email": "vladislav.kravchuk@yug-avto.ru, vladimir.demin@yug-avto.ru, sergey.mityasov@yug-avto.ru, viktor.gerasimov@yug-avto.ru, evgeniy.eliseev@yug-avto.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "SOLARIS"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Краснодар",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО ДЦ Юг-Авто",
+          "inn": "2311120713",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Краснодар",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО АК Юг-Авто",
+          "inn": "2310079830",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Краснодар",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО АК Юг-Авто",
+          "inn": "2310079830",
+          "responsible": "Валерия Солдатова"
+        }
+      ],
+      "status": "verified"
+    },
+    {
+      "partner_id": 1291,
+      "canonical_name": "ААА Моторс",
+      "holding": "ААА Моторс",
+      "kam": "Валерия Солдатова",
+      "bitrix_aliases": [
+        "Online ООО \"ФОРМУЛА-Н\"",
+        "ААА Моторс",
+        "ООО \"Формула Н\"",
+        "ООО Формула Н",
+        "Формула-Н",
+        "Формула Н"
+      ],
+      "bi_aliases": [
+        "ААА Моторс",
+        "ААА-Моторс"
+      ],
+      "pochta_aliases": [],
+      "oem_data": [
+        {
+          "sheet": "CHANGAN",
+          "city": "Ростов-на-дону",
+          "group_link": "https://max.ru/join/rfyEBrVqSF9IVCf05eJbzvJK90MgSmZW4AOySZ3tvAo",
+          "name": "ААА Моторс",
+          "legal_entity": "ООО Формула Н",
+          "inn": "6168043686",
+          "address": "г. Ростов-на-Дону, ул. Текучева, д. 352, корп. Б",
+          "back_name": "",
+          "email": "m.tishkov@hyundai-rostov.ru, y.kondakov@hyundai-rostov.ru, t.kazaryan@hyundai-rostov.ru, v.zolotarev@hyundai-rostov.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "CHANGAN"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Ростов-на-Дону",
+          "group_link": "https://max.ru/join/rfyEBrVqSF9IVCf05eJbzvJK90MgSmZW4AOySZ3tvAo",
+          "name": "ААА Моторс",
+          "legal_entity": "ООО Формула Н",
+          "inn": "6168043686",
+          "address": "г. Ростов-на-Дону, ул. Текучева, д. 352Б",
+          "back_name": "",
+          "email": "m.tishkov@hyundai-rostov.ru, y.kondakov@hyundai-rostov.ru, t.kazaryan@hyundai-rostov.ru, v.zolotarev@hyundai-rostov.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "SOLARIS"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Ростов-на-дону",
+          "group_link": "https://max.ru/join/rfyEBrVqSF9IVCf05eJbzvJK90MgSmZW4AOySZ3tvAo",
+          "name": "ААА Моторс",
+          "legal_entity": "ООО Формула Н",
+          "inn": "6168043686",
+          "address": "г. Ростов-на-Дону, ул. Текучева, д. 352, корп. Б",
+          "back_name": "",
+          "email": "m.tishkov@hyundai-rostov.ru",
+          "responsible": "Валерия Солдатова",
+          "brand": "DEEPAL"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Ростов-на-дону",
+          "name": "ААА Моторс",
+          "legal_entity": "ООО Формула Н",
+          "inn": "6168043686",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Ростов-на-Дону",
+          "name": "ААА Моторс",
+          "legal_entity": "ООО Формула Н",
+          "inn": "6168043686",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Ростов-на-дону",
+          "name": "ААА Моторс",
+          "legal_entity": "ООО Формула Н",
+          "inn": "6168043686",
+          "responsible": "Валерия Солдатова"
+        }
+      ],
+      "status": "verified"
     }
   ],
   "auto_matched_deals": [
