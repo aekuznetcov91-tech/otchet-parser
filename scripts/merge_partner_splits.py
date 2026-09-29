@@ -484,7 +484,7 @@ def apply_merges_to_data_json(filepath):
 
     if modified:
         with open(filepath, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
         print(f"Successfully updated donor IDs in {filepath}")
 
 if __name__ == '__main__':

@@ -48,6 +48,19 @@ def deploy():
         print(f"[!] Oshibka: Papka {site_dir} ne naydena!")
         sys.exit(1)
 
+    # Cloudflare Pages enforces a hard 25 MiB limit per file. Ensure site/data.json is compacted.
+    site_data_path = os.path.join(site_dir, 'data.json')
+    if os.path.exists(site_data_path):
+        size_mb = os.path.getsize(site_data_path) / (1024 * 1024)
+        if size_mb >= 24.0:
+            print(f"[*] data.json ({size_mb:.2f} MiB) exceeds 24 MiB limit. Minifying/compacting...")
+            with open(site_data_path, 'r', encoding='utf-8') as f:
+                d_obj = json.load(f)
+            with open(site_data_path, 'w', encoding='utf-8') as f:
+                json.dump(d_obj, f, ensure_ascii=False, separators=(',', ':'))
+            new_size_mb = os.path.getsize(site_data_path) / (1024 * 1024)
+            print(f"[+] data.json compacted: {new_size_mb:.2f} MiB")
+
     env["PYTHONIOENCODING"] = "utf-8"
     env["NO_COLOR"] = "1"
 
