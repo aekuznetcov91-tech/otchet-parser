@@ -8,6 +8,76 @@ let currentKamFilter = 'all'; // 'all' or KAM full name
 let currentKamSearchQuery = '';
 let currentKamPlanFilter = 'all'; // 'all', 'completed', 'in_progress', 'no_plan'
 
+// Official September 2026 Sales Plans for Alexei Chikharev (33 partners, Sum = 553)
+const CHIKHAREV_OFFICIAL_PLANS = {
+    // 1. БОРИСХОФ (10)
+    "1070": 10, "ID_1070": 10, "ID_1070__Алексей Чихарев": 10, "БорисХоф": 10, "БОРИСХОФ": 10,
+    // 2. ООО "ДЕЛИВЕРИ КАР" (1)
+    "1099": 1, "ID_1099": 1, "ID_1099__Алексей Чихарев": 1, "ООО \"ДЕЛИВЕРИ КАР\"": 1, "ООО \"ДЕЛИВЕРИ КАР": 1, "ДЕЛИВЕРИ КАР": 1,
+    // 3. ООО "ИЗМАЙЛОВО-СЕРВИС" (10)
+    "1059": 10, "ID_1059": 10, "ID_1059__Алексей Чихарев": 10, "CHERY Измайлово": 10, "ООО \"ИЗМАЙЛОВО-СЕРВИС\"": 10, "МБ-Измайлово": 10,
+    // 4. ООО Автодин-Кама (2)
+    "1042": 2, "ID_1042": 2, "ID_1042__Алексей Чихарев": 2, "Автодин": 2, "ООО Автодин-Кама": 2,
+    // 5. Тауэр Орехово (6)
+    "1133": 6, "ID_1133": 6, "ID_1133__Алексей Чихарев": 6, "ООО \"ТАУЭР ЛТД\"": 6, "ООО \"ТАУЭР ЛТД": 6, "Тауэр Орехово": 6,
+    // 6. ООО У Сервис (20)
+    "1111": 20, "ID_1111": 20, "ID_1111__Алексей Чихарев": 20, "Geely У Сервис": 20, "ООО У Сервис": 20, "У Сервис": 20, "У Сервис+": 20,
+    // 7. Автодом (20)
+    "1154": 20, "ID_1154": 20, "ID_1154__Алексей Чихарев": 20, "АвтоДом Петрозаводск": 20, "ГК Автодом": 20, "Автодом": 20,
+    // 8. АСЦ (25)
+    "1130": 25, "ID_1130": 25, "ID_1130__Алексей Чихарев": 25, "ООО \"КАР АЦ\"": 25, "ООО \"КАР АЦ": 25, "АСЦ": 25,
+    // 9. ООО "МАРКАР ГРУПП" ONLINE (60)
+    "1120": 60, "ID_1120": 60, "ID_1120__Алексей Чихарев": 60, "ООО \"МАРКАР ГРУПП\"": 60, "ООО \"МАРКАР ГРУПП": 60, "Маркар": 60, "ООО \"МАРКАР ГРУПП\" ONLINE": 60,
+    // 10. ООО КВАЗАР (30)
+    "1052": 30, "ID_1052": 30, "ID_1052__Алексей Чихарев": 30, "КВАЗАР": 30, "ООО КВАЗАР": 30,
+    // 11. КМ/ч (1)
+    "1095": 1, "ID_1095": 1, "ID_1095__Алексей Чихарев": 1, "КМ/Ч": 1, "КМ/ч": 1, "КМ/ч (Москва)": 1,
+    // 12. ООО Кунцево АТ (50)
+    "1091": 50, "ID_1091": 50, "ID_1091__Алексей Чихарев": 50, "ТЦ Кунцево": 50, "ООО Кунцево АТ": 50, "Кунцево": 50,
+    // 13. ООО Автопассаж (2)
+    "1160": 2, "ID_1160": 2, "ID_1160__Алексей Чихарев": 2, "Автопассаж": 2, "ООО Автопассаж": 2,
+    // 14. Мейджер (5)
+    "1044": 5, "ID_1044": 5, "ID_1044__Алексей Чихарев": 5, "ГК Major/Мэйджор": 5, "Мейджер": 5, "Major": 5,
+    // 15. Эрси Автотрейд (8)
+    "1135": 8, "ID_1135": 8, "ID_1135__Алексей Чихарев": 8, "ЭрСи Автотрейд": 8, "Эрси Автотрейд": 8,
+    // 16. Фаворит (7)
+    "1227": 7, "ID_1227": 7, "ID_1227__Алексей Чихарев": 7, "Фаворит": 7, "FAVORIT MOTORS": 7,
+    // 17. Империя(независимость) (15)
+    "1261": 15, "ID_1261": 15, "ID_1261__Алексей Чихарев": 15, "Независимость": 15, "Империя(независимость)": 15, "Империя": 15,
+    // 18. Автопрестиж (70)
+    "1076": 70, "ID_1076": 70, "ID_1076__Алексей Чихарев": 70, "ГК Автопрестиж": 70, "Автопрестиж": 70,
+    // 19. Автокласс (3)
+    "1102": 3, "ID_1102": 3, "ID_1102__Алексей Чихарев": 3, "Чери Центр Автокласс (М-Авто)": 3, "Автокласс": 3,
+    // 20. Автоград (1)
+    "1050": 1, "ID_1050": 1, "ID_1050__Алексей Чихарев": 1, "ООО \"АВТОГРАД-Н\"": 1, "ООО \"АВТОГРАД-Н": 1, "Автоград": 1,
+    // 21. Важная Персона Тверь (10)
+    "1258": 10, "ID_1258": 10, "ID_1258__Алексей Чихарев": 10, "Важная персона": 10, "Важная Персона Тверь": 10,
+    // 22. ООО "ПАРУС" online (2)
+    "1117": 2, "ID_1117": 2, "ID_1117__Алексей Чихарев": 2, "ООО \"ПАРУС\"": 2, "ООО \"ПАРУС": 2, "ООО \"ПАРУС\" online": 2,
+    // 23. Радар (15)
+    "1041": 15, "ID_1041": 15, "ID_1041__Алексей Чихарев": 15, "Радар-Авто": 15, "Радар": 15, "Радар-Запад": 15,
+    // 24. Анкар (1)
+    "1090": 1, "ID_1090": 1, "ID_1090__Алексей Чихарев": 1, "Анкар Калуга": 1, "Анкар": 1,
+    // 25. Гранд Техцентр Владимир JETOUR (Млада Авто) (25)
+    "1124": 25, "ID_1124": 25, "ID_1124__Алексей Чихарев": 25, "ООО \"МЛАДА - АВТО\"": 25, "ООО \"МЛАДА - АВТО": 25, "Млада Авто": 25, "Гранд Техцентр Владимир JETOUR (Млада Авто)": 25,
+    // 26. Автоцентр Лада (2)
+    "1126": 2, "ID_1126": 2, "ID_1126__Алексей Чихарев": 2, "ООО \"Центр Лада\"": 2, "ООО \"Центр Лада": 2, "Автоцентр Лада": 2,
+    // 27. Авто Премиум (Союз Т) (10)
+    "1040": 10, "ID_1040": 10, "ID_1040__Алексей Чихарев": 10, "Авто Премиум Тверь": 10, "Авто Премиум (Союз Т)": 10, "СОЮЗ-Т": 10,
+    // 28. Звезда Ярославии (8)
+    "1046": 8, "ID_1046": 8, "ID_1046__Алексей Чихарев": 8, "ЗВЕЗДА ЯРОСЛАВИИ": 8, "Звезда Ярославии": 8,
+    // 29. Автоимпорт (5)
+    "1087": 5, "ID_1087": 5, "ID_1087__Алексей Чихарев": 5, "ГК Автоимпорт": 5, "Автоимпорт": 5,
+    // 30. Диалог (76)
+    "1082": 76, "ID_1082": 76, "ID_1082__Алексей Чихарев": 76, "ГК Диалог Авто": 76, "Диалог": 76, "Диалог Авто": 76,
+    // 31. КАН АВТО (10)
+    "1201": 10, "ID_1201": 10, "ID_1201__Алексей Чихарев": 10, "Приоритет_ГК КАН Авто": 10, "КАН АВТО": 10, "КАН Авто": 10,
+    // 32. БАРС АВТО (23)
+    "1233": 23, "ID_1233": 23, "ID_1233__Алексей Чихарев": 23, "Барс Авто": 23, "БАРС АВТО": 23,
+    // 33. Апельсин (20)
+    "1054": 20, "ID_1054": 20, "ID_1054__Алексей Чихарев": 20, "Апельсин-Челны": 20, "Апельсин": 20
+};
+
 // Default fallback plans if localStorage is empty
 const DEFAULT_KAM_PLANS = {
     kam_plans: {
@@ -19,7 +89,7 @@ const DEFAULT_KAM_PLANS = {
         "Евгения Добролюбова": 210,
         "Не назначен": 0
     },
-    partner_plans: {
+    partner_plans: Object.assign({
         "	ФДЦ АВТОЦЕНТР НА ЗАВОДСКОМ Самара": 5,
         "1003": 5,
         "1004": 10,
@@ -398,7 +468,7 @@ const DEFAULT_KAM_PLANS = {
         "ЮНИКОР Дзержинск НН": 8,
         "Юг-Авто": 8,
         "пилот ФДЦ Автосеть РФ АМК Самара Тольятти ЕКБ": 5
-    }
+    }, CHIKHAREV_OFFICIAL_PLANS)
 };
 
 const STORAGE_KEY_KAM_PLANS = 'sberauto_kam_plans';
@@ -708,12 +778,15 @@ function getPartnerPlanCellHtml(p) {
 /**
  * Retrieves KAM plans from localStorage/sessionStorage or defaults.
  */
+const PLANS_MIGRATION_VERSION = '2026-09-29-chikharev-553-v1';
+
 function getKamPlansStore() {
     try {
         let raw = localStorage.getItem(STORAGE_KEY_KAM_PLANS);
         if (!raw) {
             raw = sessionStorage.getItem(STORAGE_KEY_KAM_PLANS);
         }
+        let store = null;
         if (raw) {
             const parsed = JSON.parse(raw);
             const mergedKam = Object.assign({}, DEFAULT_KAM_PLANS.kam_plans, parsed.kam_plans || {});
@@ -727,11 +800,25 @@ function getKamPlansStore() {
                     }
                 }
             }
-            return {
+            store = {
                 kam_plans: mergedKam,
                 partner_plans: mergedPartners
             };
+        } else {
+            store = JSON.parse(JSON.stringify(DEFAULT_KAM_PLANS));
         }
+
+        // Auto-migrate authoritative September plans if not yet stamped
+        try {
+            if (typeof localStorage !== 'undefined' && localStorage.getItem(PLANS_MIGRATION_VERSION) !== 'applied') {
+                Object.assign(store.partner_plans, CHIKHAREV_OFFICIAL_PLANS);
+                store.kam_plans["Алексей Чихарев"] = 550;
+                localStorage.setItem(STORAGE_KEY_KAM_PLANS, JSON.stringify(store));
+                localStorage.setItem(PLANS_MIGRATION_VERSION, 'applied');
+            }
+        } catch(e) {}
+
+        return store;
     } catch (e) {
         console.warn('Error reading KAM plans from localStorage:', e);
     }
@@ -1126,13 +1213,14 @@ function getKamAggregatedData(filterCfg) {
 
     // Helper to get or initialize partner entry
     const getPartnerStats = (pid, pName, rawKam) => {
+        let regEntry = pid ? partnerLookup[`ID_${pid}`] : matchDealerToPartner(pName);
+        let finalPid = pid || (regEntry ? regEntry.id : null);
+        let finalName = regEntry ? regEntry.name : (pName || 'Неизвестный партнер');
         let normKam = normalizeKamName(rawKam);
-        let key = pid ? (normKam ? `ID_${pid}__${normKam}` : `ID_${pid}`) : (normKam ? `RAW_${pName}__${normKam}` : `RAW_${pName}`);
+        let finalKam = (normKam && normKam !== 'Не назначен') ? normKam : (regEntry ? normalizeKamName(regEntry.kam) : 'Не назначен');
+        let key = finalPid ? (finalKam ? `ID_${finalPid}__${finalKam}` : `ID_${finalPid}`) : (finalKam ? `RAW_${finalName}__${finalKam}` : `RAW_${finalName}`);
         
         if (!partnerStats[key]) {
-            let regEntry = pid ? partnerLookup[`ID_${pid}`] : matchDealerToPartner(pName);
-            let finalName = regEntry ? regEntry.name : (pName || 'Неизвестный партнер');
-            let finalKam = (normKam && normKam !== 'Не назначен') ? normKam : (regEntry ? regEntry.kam : 'Не назначен');
             let oemGeo = regEntry ? regEntry.oem_data : [];
 
             // Build STRICT Cities and Brands from OEM Data
@@ -1574,7 +1662,23 @@ function getKamAggregatedData(filterCfg) {
     let sumDebts = 0;
 
     filteredPartners.forEach(p => {
-        const plan = plansStore.partner_plans[p.key] || plansStore.partner_plans[`ID_${p.id}`] || plansStore.partner_plans[String(p.id)] || plansStore.partner_plans[p.name] || plansStore.partner_plans[(p.name || '').toLowerCase()] || 0;
+        let plan = 0;
+        if (currentKamFilter !== 'all') {
+            const kamNorm = normalizeKamName(currentKamFilter);
+            const kamSpecificKey = `ID_${p.id}__${kamNorm}`;
+            if (plansStore.partner_plans[kamSpecificKey] !== undefined) {
+                plan = plansStore.partner_plans[kamSpecificKey];
+            } else if (plansStore.partner_plans[p.key] !== undefined) {
+                plan = plansStore.partner_plans[p.key];
+            } else {
+                const regPartner = partnerLookup[`ID_${p.id}`];
+                if (regPartner && normalizeKamName(regPartner.kam) === kamNorm) {
+                    plan = plansStore.partner_plans[`ID_${p.id}`] || plansStore.partner_plans[String(p.id)] || plansStore.partner_plans[p.name] || plansStore.partner_plans[(p.name || '').toLowerCase()] || 0;
+                }
+            }
+        } else {
+            plan = plansStore.partner_plans[p.key] || plansStore.partner_plans[`ID_${p.id}`] || plansStore.partner_plans[String(p.id)] || plansStore.partner_plans[p.name] || plansStore.partner_plans[(p.name || '').toLowerCase()] || 0;
+        }
         p.plan = plan;
         p.plan_pct = plan > 0 ? (p.total_deals / plan * 100) : 0;
         p.cr_pct = p.trans_leads > 0 ? (p.trans_deals / p.trans_leads * 100) : 0;

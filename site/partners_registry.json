@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 1839,
+  "total_master_partners": 1837,
   "partners": [
     {
       "partner_id": 1001,
@@ -7538,10 +7538,18 @@
         "ООО \"Кунцево Авто Трейдинг\" (ООО \"КУНЦЕВО АТ\") Online",
         "ООО \"ТЦ \"КУНЦЕВО ЛИМИТЕД\" ONLINE",
         "ООО КУНЦЕВО АТ",
-        "ТЦ КУНЦЕВО ЛИМИТЕД"
+        "ТЦ КУНЦЕВО ЛИМИТЕД",
+        "ТЦ Кунцево",
+        "АО \"РОЛЬФ\" ONLINE",
+        "ONLINE АО \"РОЛЬФ\" Филиал Центр",
+        "ONLINE АО \"РОЛЬФ\" Филиал Восток",
+        "ONLINE АО \"РОЛЬФ\" филиал «Алтуфьево»",
+        "ONLINE АО \"РОЛЬФ\" Филиал ЯЛР Ясенево"
       ],
       "bi_aliases": [
-        "Кунцево"
+        "Кунцево",
+        "ТЦ Кунцево",
+        "ONLINE Кунцево"
       ],
       "pochta_aliases": [],
       "oem_data": [
@@ -7607,6 +7615,431 @@
           "legal_entity": "ООО Кунцево АТ",
           "inn": "5032271860",
           "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/VhMoz0Wpe15TPLrK6DEOo2HcQo8I_lB8CLumqUG92Fw",
+          "name": "ГК Рольф",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г.Москва,МКАД, 39-Й Км",
+          "back_name": "",
+          "email": "NAZAHARENKO@rolf.ru  DRAHMIDEEVA1@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "OMODA & JAECOO"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/OKIMWt0JL9z4rJVe7oGjW-GNfgFN4Ru3NZ2yl4crhA4",
+          "name": "ГК Рольф",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г.Москва,Химки, Ленинградское шоссе, вл. 21,с1",
+          "back_name": "",
+          "email": "IATerentev@rolf.ru IVStihov@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "OMODA & JAECOO"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Санкт-Петербург",
+          "group_link": "https://max.ru/join/NWdL1SPe0jKKyzlJ9eFnrxW4KuGFiJrI1OuZo2xyc44",
+          "name": "ГК Рольф",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Санкт Петербург, Полюстровский проспект, д. 68АВ.",
+          "back_name": "",
+          "email": "ASShevyakov@rolf.ru SSRAGIMOV1@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "OMODA & JAECOO"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/xUMXVHzbnbGqVS5PjUo7k1NcCWXGmzpybZZUJORyaGU",
+          "name": "Рольф Алтуфьево",
+          "legal_entity": "АО РОЛЬФ",
+          "inn": "5047254063",
+          "address": "Москва, Алтуфьевское ш., 31к1,",
+          "back_name": "",
+          "email": "pvzbandut@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/mqfzG_kjQMAG7aKqlHRp-7xTpPp2H3lp5r2NSIsJDW8",
+          "name": "Рольф Восток",
+          "legal_entity": "АО РОЛЬФ",
+          "inn": "5047254063",
+          "address": "Москва,Рязанский проспект, дом 24 к.3 р",
+          "back_name": "",
+          "email": "mrkochiashvili@geely-rolf.ru",
+          "responsible": "",
+          "brand": "Geely & Belgee"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/FU1t7OzP30A9vX7vwfjwhCCkJi9-WCxU58G7wU5FLAM",
+          "name": "Кунцево (City)",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "address": "Московская область, Одинцовский район, село Немчиновка, Московская 61",
+          "back_name": "Кунцево",
+          "email": "AZheleznyakov@kuntsevo.com PrazdnovAE@kuntsevo.com OKatraga@kuntsevo.com MTemnikov@kuntsevo-haval.ru",
+          "responsible": "",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/FU1t7OzP30A9vX7vwfjwhCCkJi9-WCxU58G7wU5FLAM",
+          "name": "Кунцево (PRO)",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "address": "Московская область, Одинцовский район, село Немчиновка, Московская 61",
+          "back_name": "Кунцево",
+          "email": "PrazdnovAE@kuntsevo.com OKatraga@kuntsevo.com MTemnikov@kuntsevo-haval.ru",
+          "responsible": "",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/2lKNtRMoYuy_nweN-DKfFLdgrNyqkVYkx30-v7NGzWU",
+          "name": "Рольф ЮГ  Haval PRO",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "Москва,Обручева 27к1",
+          "back_name": "ГК Рольф",
+          "email": "veegorov@rolf.ru\nVVDEREVYANKO@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "HAVAL"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/b8EzTbDwhAY2y5wugS0s2qxISox42p4O9lzImoMecoc",
+          "name": "Рольф",
+          "legal_entity": "ООО АО Рольф",
+          "inn": "5047254063",
+          "address": "г.Москва, 2-й Магистральный туп., 5Ас4",
+          "back_name": "",
+          "email": "ANKOZLOV@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/GLk2YkHvo7_Olf4b-4Z7dbcuyxSBLNi0kUGhwtScU7c",
+          "name": "Кунцево",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "address": "Московская область, Одинцовский район, село Немчиновка, Московская 61",
+          "back_name": "Кунцево",
+          "email": "NScherbakov@kuntsevo.com Rinat.Yumangulov@kuntsevo.com , AFominok@kuntsevo.com , VErmoshin@kuntsevo.com , SBulatov@kuntsevo.com ADebelyy@kuntsevo.com VSMIRNOV@KUNTSEVO.COM",
+          "responsible": "Алексей Чихарев",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/AKy7EKzJ4V5rWwLaTGwaVHTa8qgYQiqfOl8UkChsNcA",
+          "name": "РОЛЬФ",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Москва, 2-й Магистральный туп., 5Ас4",
+          "back_name": "",
+          "email": "dvivanov1@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "SOLARIS"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/t0BXaRpvLmTzB_dpXkX1VRBDZSm6f0tx4Xghsp73EBQ",
+          "name": "Кунцево",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "address": "Московская область, Одинцовский район, село Немчиновка, Московская 61",
+          "back_name": "Кунцево",
+          "email": "mailto:Pavel.Sheverdin@omoda-kuntsevo.ru NScherbakov@kuntsevo.com",
+          "responsible": "Алексей Чихарев",
+          "brand": "GAC"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/-8KFVrX98WWz6O04Y8dI75MEudyW9UfUntG-aLtmmnQ",
+          "name": "Рольф Алтуфьево",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Москва, Алтуфьевское ш., д.31, к.1",
+          "back_name": "",
+          "email": "a.s.korolev@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "",
+          "name": "Рольф Сити",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Москва, Ярославское ш., 31",
+          "back_name": "",
+          "email": "aazolotarenko@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "",
+          "name": "Рольф Химки",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Химки, Ленинградское ш., вл.21",
+          "back_name": "",
+          "email": "Ivan.Shvedov@bmw-rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "",
+          "name": "Рольф ЮГ",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Москва, ул.Обручева, д.27, корп.1.",
+          "back_name": "",
+          "email": "avnischedimov@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/AqUv-3RrYR-5erdcPCCghymN583ZMKeu7dQ6nuT0RwQ",
+          "name": "Рольф Восток",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Москва, Рязанский проспект, 24, корп. 3",
+          "back_name": "",
+          "email": "dmzelenskaya@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/0eZ7l3AGiKkvoQGl8a35YlS7huje9mGo2u04AvmAVn8",
+          "name": "Рольф Волгоградский",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Москва, Остаповский проезд, 4,",
+          "back_name": "",
+          "email": "dmevgrafov@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "",
+          "name": "Рольф Центр",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Москва, 2-й Магистральный тупик, 5А",
+          "back_name": "",
+          "email": "dvivanov1@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "",
+          "name": "Рольф Ясенево",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "г. Москва, район Коммунарка, МКАД, 40-й километр, 1",
+          "back_name": "",
+          "email": "asorlov@rolf.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/sBt4Nl26jo0DBOaIOtBUtNtiktcfA0XtcL9HbBcEJZg",
+          "name": "Рольф Вешки",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "address": "МО, посёлок Вешки, Автомобильный пр., 2А/3",
+          "back_name": "",
+          "email": "dmitriy.feschenko@rolfesteo.ru",
+          "responsible": "Андрей Кузнецов",
+          "brand": "Рольф Импорт"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "name": "Кунцево (City)",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Не назначен"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "name": "Кунцево (PRO)",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Не назначен"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Москва",
+          "name": "ГК Рольф",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "name": "Рольф Алтуфьево",
+          "legal_entity": "АО РОЛЬФ",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Москва",
+          "name": "Рольф Восток",
+          "legal_entity": "АО РОЛЬФ",
+          "inn": "5047254063",
+          "responsible": "Не назначен"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "name": "Рольф ЮГ Haval PRO",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "name": "Рольф",
+          "legal_entity": "ООО АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Москва",
+          "name": "РОЛЬФ",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф Алтуфьево",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф Сити",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф Химки",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф ЮГ",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф Восток",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф Волгоградский",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф Центр",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф Ясенево",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "Рольф Импорт",
+          "city": "Москва",
+          "name": "Рольф Вешки",
+          "legal_entity": "АО Рольф",
+          "inn": "5047254063",
+          "responsible": "Андрей Кузнецов"
         }
       ],
       "status": "verified"
@@ -7709,7 +8142,7 @@
       "partner_id": 1095,
       "canonical_name": "КМ/Ч",
       "holding": "КМ/Ч",
-      "kam": "Валерия Солдатова",
+      "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "КМ/Ч Авто (Changan)",
         "КМ/Ч",
@@ -8516,457 +8949,6 @@
       "status": "verified"
     },
     {
-      "partner_id": 1116,
-      "canonical_name": "ТЦ Кунцево",
-      "holding": "Кунцево",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [
-        "ONLINE Кунцево",
-        "Кунцево",
-        "ООО \"Кунцево Авто Трейдинг\" (ООО \"КУНЦЕВО АТ\") Online",
-        "ООО \"ТЦ \"КУНЦЕВО ЛИМИТЕД\" ONLINE",
-        "ООО КУНЦЕВО АТ",
-        "ТЦ КУНЦЕВО ЛИМИТЕД",
-        "АО \"РОЛЬФ\" ONLINE",
-        "ONLINE АО \"РОЛЬФ\" Филиал Центр",
-        "ONLINE АО \"РОЛЬФ\" Филиал Восток",
-        "ONLINE АО \"РОЛЬФ\" филиал «Алтуфьево»",
-        "ONLINE АО \"РОЛЬФ\" Филиал ЯЛР Ясенево"
-      ],
-      "bi_aliases": [
-        "ONLINE Кунцево"
-      ],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/VhMoz0Wpe15TPLrK6DEOo2HcQo8I_lB8CLumqUG92Fw",
-          "name": "ГК Рольф",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г.Москва,МКАД, 39-Й Км",
-          "back_name": "",
-          "email": "NAZAHARENKO@rolf.ru  DRAHMIDEEVA1@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "OMODA & JAECOO"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/OKIMWt0JL9z4rJVe7oGjW-GNfgFN4Ru3NZ2yl4crhA4",
-          "name": "ГК Рольф",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г.Москва,Химки, Ленинградское шоссе, вл. 21,с1",
-          "back_name": "",
-          "email": "IATerentev@rolf.ru IVStihov@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "OMODA & JAECOO"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/NWdL1SPe0jKKyzlJ9eFnrxW4KuGFiJrI1OuZo2xyc44",
-          "name": "ГК Рольф",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Санкт Петербург, Полюстровский проспект, д. 68АВ.",
-          "back_name": "",
-          "email": "ASShevyakov@rolf.ru SSRAGIMOV1@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "OMODA & JAECOO"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/xUMXVHzbnbGqVS5PjUo7k1NcCWXGmzpybZZUJORyaGU",
-          "name": "Рольф Алтуфьево",
-          "legal_entity": "АО РОЛЬФ",
-          "inn": "5047254063",
-          "address": "Москва, Алтуфьевское ш., 31к1,",
-          "back_name": "",
-          "email": "pvzbandut@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Geely & Belgee"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/mqfzG_kjQMAG7aKqlHRp-7xTpPp2H3lp5r2NSIsJDW8",
-          "name": "Рольф Восток",
-          "legal_entity": "АО РОЛЬФ",
-          "inn": "5047254063",
-          "address": "Москва,Рязанский проспект, дом 24 к.3 р",
-          "back_name": "",
-          "email": "mrkochiashvili@geely-rolf.ru",
-          "responsible": "",
-          "brand": "Geely & Belgee"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/FU1t7OzP30A9vX7vwfjwhCCkJi9-WCxU58G7wU5FLAM",
-          "name": "Кунцево (City)",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "address": "Московская область, Одинцовский район, село Немчиновка, Московская 61",
-          "back_name": "Кунцево",
-          "email": "AZheleznyakov@kuntsevo.com PrazdnovAE@kuntsevo.com OKatraga@kuntsevo.com MTemnikov@kuntsevo-haval.ru",
-          "responsible": "",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/FU1t7OzP30A9vX7vwfjwhCCkJi9-WCxU58G7wU5FLAM",
-          "name": "Кунцево (PRO)",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "address": "Московская область, Одинцовский район, село Немчиновка, Московская 61",
-          "back_name": "Кунцево",
-          "email": "PrazdnovAE@kuntsevo.com OKatraga@kuntsevo.com MTemnikov@kuntsevo-haval.ru",
-          "responsible": "",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/2lKNtRMoYuy_nweN-DKfFLdgrNyqkVYkx30-v7NGzWU",
-          "name": "Рольф ЮГ  Haval PRO",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "Москва,Обручева 27к1",
-          "back_name": "ГК Рольф",
-          "email": "veegorov@rolf.ru\nVVDEREVYANKO@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "HAVAL"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/b8EzTbDwhAY2y5wugS0s2qxISox42p4O9lzImoMecoc",
-          "name": "Рольф",
-          "legal_entity": "ООО АО Рольф",
-          "inn": "5047254063",
-          "address": "г.Москва, 2-й Магистральный туп., 5Ас4",
-          "back_name": "",
-          "email": "ANKOZLOV@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/GLk2YkHvo7_Olf4b-4Z7dbcuyxSBLNi0kUGhwtScU7c",
-          "name": "Кунцево",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "address": "Московская область, Одинцовский район, село Немчиновка, Московская 61",
-          "back_name": "Кунцево",
-          "email": "NScherbakov@kuntsevo.com Rinat.Yumangulov@kuntsevo.com , AFominok@kuntsevo.com , VErmoshin@kuntsevo.com , SBulatov@kuntsevo.com ADebelyy@kuntsevo.com VSMIRNOV@KUNTSEVO.COM",
-          "responsible": "Алексей Чихарев",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/AKy7EKzJ4V5rWwLaTGwaVHTa8qgYQiqfOl8UkChsNcA",
-          "name": "РОЛЬФ",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Москва, 2-й Магистральный туп., 5Ас4",
-          "back_name": "",
-          "email": "dvivanov1@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "SOLARIS"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/t0BXaRpvLmTzB_dpXkX1VRBDZSm6f0tx4Xghsp73EBQ",
-          "name": "Кунцево",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "address": "Московская область, Одинцовский район, село Немчиновка, Московская 61",
-          "back_name": "Кунцево",
-          "email": "mailto:Pavel.Sheverdin@omoda-kuntsevo.ru NScherbakov@kuntsevo.com",
-          "responsible": "Алексей Чихарев",
-          "brand": "GAC"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/-8KFVrX98WWz6O04Y8dI75MEudyW9UfUntG-aLtmmnQ",
-          "name": "Рольф Алтуфьево",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Москва, Алтуфьевское ш., д.31, к.1",
-          "back_name": "",
-          "email": "a.s.korolev@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "",
-          "name": "Рольф Сити",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Москва, Ярославское ш., 31",
-          "back_name": "",
-          "email": "aazolotarenko@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "",
-          "name": "Рольф Химки",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Химки, Ленинградское ш., вл.21",
-          "back_name": "",
-          "email": "Ivan.Shvedov@bmw-rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "",
-          "name": "Рольф ЮГ",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Москва, ул.Обручева, д.27, корп.1.",
-          "back_name": "",
-          "email": "avnischedimov@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/AqUv-3RrYR-5erdcPCCghymN583ZMKeu7dQ6nuT0RwQ",
-          "name": "Рольф Восток",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Москва, Рязанский проспект, 24, корп. 3",
-          "back_name": "",
-          "email": "dmzelenskaya@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/0eZ7l3AGiKkvoQGl8a35YlS7huje9mGo2u04AvmAVn8",
-          "name": "Рольф Волгоградский",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Москва, Остаповский проезд, 4,",
-          "back_name": "",
-          "email": "dmevgrafov@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "",
-          "name": "Рольф Центр",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Москва, 2-й Магистральный тупик, 5А",
-          "back_name": "",
-          "email": "dvivanov1@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "",
-          "name": "Рольф Ясенево",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "г. Москва, район Коммунарка, МКАД, 40-й километр, 1",
-          "back_name": "",
-          "email": "asorlov@rolf.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/sBt4Nl26jo0DBOaIOtBUtNtiktcfA0XtcL9HbBcEJZg",
-          "name": "Рольф Вешки",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "address": "МО, посёлок Вешки, Автомобильный пр., 2А/3",
-          "back_name": "",
-          "email": "dmitriy.feschenko@rolfesteo.ru",
-          "responsible": "Андрей Кузнецов",
-          "brand": "Рольф Импорт"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "name": "Кунцево (City)",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Не назначен"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "name": "Кунцево (PRO)",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Не назначен"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Москва",
-          "name": "ГК Рольф",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Москва",
-          "name": "Рольф Алтуфьево",
-          "legal_entity": "АО РОЛЬФ",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Москва",
-          "name": "Рольф Восток",
-          "legal_entity": "АО РОЛЬФ",
-          "inn": "5047254063",
-          "responsible": "Не назначен"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "name": "Рольф ЮГ Haval PRO",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "name": "Рольф",
-          "legal_entity": "ООО АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Москва",
-          "name": "РОЛЬФ",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф Алтуфьево",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф Сити",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф Химки",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф ЮГ",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф Восток",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф Волгоградский",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф Центр",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф Ясенево",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "Рольф Импорт",
-          "city": "Москва",
-          "name": "Рольф Вешки",
-          "legal_entity": "АО Рольф",
-          "inn": "5047254063",
-          "responsible": "Андрей Кузнецов"
-        }
-      ],
-      "status": "verified"
-    },
-    {
       "partner_id": 1117,
       "canonical_name": "ООО \"ПАРУС",
       "holding": "ООО \"ПАРУС",
@@ -9072,11 +9054,80 @@
       "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "ООО \"МАРКАР ГРУПП\" ONLINE",
-        "ООО \"МАРКАР ГРУПП"
+        "ООО \"МАРКАР ГРУПП",
+        "Маркар",
+        "АЦ МАРКАР ONLINE"
       ],
-      "bi_aliases": [],
+      "bi_aliases": [
+        "ООО \"МАРКАР ГРУПП",
+        "Маркар"
+      ],
       "pochta_aliases": [],
-      "oem_data": [],
+      "oem_data": [
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "group_link": "https://max.ru/join/eZJnSvuNHCMnnOmcB1ZYdVozCSjmH06Ss6-tF948HB4",
+          "name": "Маркар",
+          "legal_entity": "ООО Маркар Групп",
+          "inn": "7751153074",
+          "address": "",
+          "back_name": "",
+          "email": "leasing@marcar.ru   84952019871@mail.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "JETOUR"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Петрозаводск",
+          "group_link": "https://max.ru/join/7mv05dqQ_D9aVpn5C4V729UU-d7-L0rpMnPXkJ7u2Bw",
+          "name": "Маркар",
+          "legal_entity": "ООО АЦ МАРКАР",
+          "inn": "9713029697",
+          "address": "Петрозаводск, Лесной проспект, дом 85 1",
+          "back_name": "МАРКАР ГРУПП ONLINE",
+          "email": "Marcar.rk@yandex.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "Soueast"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Петрозаводск",
+          "group_link": "https://max.ru/join/7mv05dqQ_D9aVpn5C4V729UU-d7-L0rpMnPXkJ7u2Bw",
+          "name": "Маркар",
+          "legal_entity": "ООО АЦ МАРКАР",
+          "inn": "9713029697",
+          "address": "Петрозаводск, Лесной проспект, дом 85 1",
+          "back_name": "МАРКАР ГРУПП ONLINE",
+          "email": "Marcar.rk@yandex.ru",
+          "responsible": "Алексей Чихарев",
+          "brand": "GAC"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Петрозаводск",
+          "name": "Маркар",
+          "legal_entity": "ООО АЦ МАРКАР",
+          "inn": "9713029697",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Петрозаводск",
+          "name": "Маркар",
+          "legal_entity": "ООО АЦ МАРКАР",
+          "inn": "9713029697",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "name": "Маркар",
+          "legal_entity": "ООО Маркар Групп",
+          "inn": "7751153074",
+          "responsible": "Алексей Чихарев"
+        }
+      ],
       "status": "verified"
     },
     {
@@ -15089,82 +15140,6 @@
           "legal_entity": "ООО СИБАВТОЦЕНТР",
           "inn": "4205132566",
           "responsible": "Светлана Дариенко"
-        }
-      ]
-    },
-    {
-      "partner_id": "P_OEM_a7faf70c",
-      "canonical_name": "Маркар",
-      "kam": "Алексей Чихарев",
-      "bitrix_aliases": [
-        "ООО \"МАРКАР ГРУПП\" ONLINE",
-        "АЦ МАРКАР ONLINE"
-      ],
-      "bi_aliases": [],
-      "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "group_link": "https://max.ru/join/eZJnSvuNHCMnnOmcB1ZYdVozCSjmH06Ss6-tF948HB4",
-          "name": "Маркар",
-          "legal_entity": "ООО Маркар Групп",
-          "inn": "7751153074",
-          "address": "",
-          "back_name": "",
-          "email": "leasing@marcar.ru   84952019871@mail.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Петрозаводск",
-          "group_link": "https://max.ru/join/7mv05dqQ_D9aVpn5C4V729UU-d7-L0rpMnPXkJ7u2Bw",
-          "name": "Маркар",
-          "legal_entity": "ООО АЦ МАРКАР",
-          "inn": "9713029697",
-          "address": "Петрозаводск, Лесной проспект, дом 85 1",
-          "back_name": "МАРКАР ГРУПП ONLINE",
-          "email": "Marcar.rk@yandex.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "Soueast"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Петрозаводск",
-          "group_link": "https://max.ru/join/7mv05dqQ_D9aVpn5C4V729UU-d7-L0rpMnPXkJ7u2Bw",
-          "name": "Маркар",
-          "legal_entity": "ООО АЦ МАРКАР",
-          "inn": "9713029697",
-          "address": "Петрозаводск, Лесной проспект, дом 85 1",
-          "back_name": "МАРКАР ГРУПП ONLINE",
-          "email": "Marcar.rk@yandex.ru",
-          "responsible": "Алексей Чихарев",
-          "brand": "GAC"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Петрозаводск",
-          "name": "Маркар",
-          "legal_entity": "ООО АЦ МАРКАР",
-          "inn": "9713029697",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Петрозаводск",
-          "name": "Маркар",
-          "legal_entity": "ООО АЦ МАРКАР",
-          "inn": "9713029697",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "name": "Маркар",
-          "legal_entity": "ООО Маркар Групп",
-          "inn": "7751153074",
-          "responsible": "Алексей Чихарев"
         }
       ]
     },

@@ -190,6 +190,20 @@ MERGERS = [
         'target_name': 'ГК Сигма',
         'target_kam': 'Светлана Дариенко',
         'donor_ids': [1024]
+    },
+    # 27. Кунцево: merge 1116 into 1091
+    {
+        'target_id': 1091,
+        'target_name': 'ТЦ Кунцево',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': [1116]
+    },
+    # 28. Маркар: merge P_OEM_a7faf70c into 1120
+    {
+        'target_id': 1120,
+        'target_name': 'ООО "МАРКАР ГРУПП',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_a7faf70c']
     }
 ]
 
@@ -318,6 +332,13 @@ def apply_merges_to_file(filepath):
         p632032['bitrix_aliases'] = ['Премиум Авто ONLINE', 'Премиум Авто']
         p632032['bi_aliases'] = ['Премиум Авто ONLINE', 'Премиум Авто']
 
+    # 4. КМ/ч: Москва (1095) -> Алексей Чихарев (план: 1)
+    p1095 = partners_by_id.get(1095)
+    if p1095:
+        p1095['canonical_name'] = 'КМ/Ч'
+        p1095['holding'] = 'КМ/Ч'
+        p1095['kam'] = 'Алексей Чихарев'
+
     # General cleanup of corrupted/truncated holdings like 'ONLIN', 'ONLINE', 'ООО', 'ИП'
     for p in partners:
         h = (p.get('holding') or '').strip()
@@ -398,12 +419,19 @@ def apply_merges_to_data_json(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
+    modified = False
+    # Sync partners_registry in data.json with the canonical partners_registry.json
+    reg_path = os.path.join(PROJECT_ROOT, 'partners_registry.json')
+    if os.path.exists(reg_path):
+        with open(reg_path, 'r', encoding='utf-8') as rf:
+            reg_data = json.load(rf)
+            data['partners_registry'] = reg_data.get('partners', [])
+            modified = True
+
     donor_to_target = {}
     for m in MERGERS:
         for did in m['donor_ids']:
             donor_to_target[did] = (m['target_id'], m['target_name'], m['target_kam'])
-
-    modified = False
     for r in data.get('sys_db_partners', []):
         pid = r.get('PartnerId')
         if pid in donor_to_target:
@@ -413,6 +441,23 @@ def apply_merges_to_data_json(filepath):
             if tkam: r['KAM'] = tkam
             modified = True
 
+        # Fix Spektr / Apelsin (ООО "СПЕКТР" ONLINE АВТОСЕТЬ РФ/Апельсин) -> 1054 Апельсин-Челны (Чихарев)
+        raw_p = (r.get('RawPartner') or '').upper()
+        p_name = (r.get('Partner') or '').upper()
+        if ('СПЕКТР' in raw_p and 'АПЕЛЬСИН' in raw_p) or ('АПЕЛЬСИН' in p_name):
+            if r.get('PartnerId') == 1049:
+                r['PartnerId'] = 1054
+                r['Partner'] = 'Апельсин-Челны'
+                r['KAM'] = 'Алексей Чихарев'
+                modified = True
+
+        # Fix АнкарАвто -> 1090 Анкар Калуга (Чихарев)
+        if (r.get('Partner') == 'АнкарАвто' or 'АНКАРАВТО' in raw_p) and r.get('PartnerId') == 1119:
+            r['PartnerId'] = 1090
+            r['Partner'] = 'Анкар Калуга'
+            r['KAM'] = 'Алексей Чихарев'
+            modified = True
+
     for r in data.get('deals', []):
         pid = r.get('PartnerId')
         if pid in donor_to_target:
@@ -420,6 +465,21 @@ def apply_merges_to_data_json(filepath):
             r['PartnerId'] = tid
             r['PartnerName'] = tname
             if tkam: r['KAM'] = tkam
+            modified = True
+
+        raw_p = (r.get('RawPartner') or '').upper()
+        p_name = (r.get('PartnerName') or '').upper()
+        if ('СПЕКТР' in raw_p and 'АПЕЛЬСИН' in raw_p) or ('АПЕЛЬСИН' in p_name):
+            if r.get('PartnerId') == 1049:
+                r['PartnerId'] = 1054
+                r['PartnerName'] = 'Апельсин-Челны'
+                r['KAM'] = 'Алексей Чихарев'
+                modified = True
+
+        if (r.get('PartnerName') == 'АнкарАвто' or 'АНКАРАВТО' in raw_p) and r.get('PartnerId') == 1119:
+            r['PartnerId'] = 1090
+            r['PartnerName'] = 'Анкар Калуга'
+            r['KAM'] = 'Алексей Чихарев'
             modified = True
 
     if modified:
@@ -435,3 +495,10 @@ if __name__ == '__main__':
     ]
     for p in paths:
         apply_merges_to_file(p)
+
+    data_paths = [
+        os.path.join(PROJECT_ROOT, 'data.json'),
+        os.path.join(SITE_DIR, 'data.json')
+    ]
+    for dp in data_paths:
+        apply_merges_to_data_json(dp)
