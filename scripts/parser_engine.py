@@ -2536,7 +2536,7 @@ def run_pipeline():
                 })
                 if not is_prepay:
                     debtor_calc_date = d_prepay_date or d_deal_date
-                    debtor_age = (datetime.date(2026, 9, 23) - debtor_calc_date).days if debtor_calc_date else 0
+                    debtor_age = (datetime.date.today() - debtor_calc_date).days if debtor_calc_date else 0
                     debtors.append({
                         "company": cname,
                         "raw_company": partner_raw,
