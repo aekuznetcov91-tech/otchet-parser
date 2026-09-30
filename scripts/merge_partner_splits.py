@@ -34,7 +34,7 @@ MERGERS = [
     {
         'target_id': 1184,
         'target_name': 'Дав-Авто',
-        'target_kam': 'Андрей Кузнецов',
+        'target_kam': 'Евгения Добролюбова',
         'donor_ids': [1088]
     },
     # 5. Диалог Авто: merge 1178 into 1082
@@ -128,18 +128,18 @@ MERGERS = [
         'target_kam': 'Евгения Добролюбова',
         'donor_ids': [1214, 632023]
     },
-    # 18. Форвард Ижевск/Сызрань: merge 632020 into 1060
+    # 18. Форвард Ижевск/Сызрань: merge 1051, 632013, 632020 into 1060
     {
         'target_id': 1060,
         'target_name': 'Форвард Ижевск/Сызрань',
         'target_kam': 'Евгения Добролюбова',
-        'donor_ids': [632020]
+        'donor_ids': [1051, 632013, 632020]
     },
     # 19. ЮНИКОР: merge 632014 into 1086
     {
         'target_id': 1086,
         'target_name': 'ЮНИКОР Дзержинск НН',
-        'target_kam': 'Андрей Кузнецов',
+        'target_kam': 'Евгения Добролюбова',
         'donor_ids': [632014]
     },
     # 20. Автосеть РФ АМК: merge 632018, 1236 into 1053
@@ -163,12 +163,12 @@ MERGERS = [
         'target_kam': 'Евгения Добролюбова',
         'donor_ids': [1197]
     },
-    # 23. Авто Сити: merge 1175 into 1118
+    # 23. Воронеж-Авто-Сити: merge 1118, 1175 into 1114
     {
-        'target_id': 1118,
-        'target_name': 'ООО "АВТО СИТИ"',
+        'target_id': 1114,
+        'target_name': 'ООО "ВОРОНЕЖ-АВТО-СИТИ',
         'target_kam': 'Валерия Солдатова',
-        'donor_ids': [1175]
+        'donor_ids': [1118, 1175]
     },
     # 24. Автофорум: merge 1085 into 1134
     {
@@ -267,6 +267,69 @@ MERGERS = [
         'target_name': 'ГК Арконт Холдинг',
         'target_kam': 'Евгения Добролюбова',
         'donor_ids': [1223]
+    },
+    # 38. Нижегородец: 1071 -> Евгения Добролюбова
+    {
+        'target_id': 1071,
+        'target_name': 'Нижегородец',
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': []
+    },
+    # 39. Сатурн-Р: merge P_OEM_6e979ac2 into 1110
+    {
+        'target_id': 1110,
+        'target_name': 'Сатурн-Р',
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': ['P_OEM_6e979ac2']
+    },
+    # 40. Tenet / Haval Автопремьер М: merge P_OEM_b19664be into P_OEM_ac181614
+    {
+        'target_id': 'P_OEM_ac181614',
+        'target_name': 'Уфа Haval / Tenet Автопремьер М',
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': ['P_OEM_b19664be']
+    },
+    # 41. Автолидер: merge 632031 into 1266
+    {
+        'target_id': 1266,
+        'target_name': 'Автолидер ГАК',
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': [632031]
+    },
+    # 42. Армада: 1128 -> Евгения Добролюбова
+    {
+        'target_id': 1128,
+        'target_name': 'ООО "ТД АРМАДА-АВТО',
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': []
+    },
+    # 43. Автохолдинг Максимум: 1163 -> Светлана Дариенко
+    {
+        'target_id': 1163,
+        'target_name': 'Автохолдинг Максимум',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': []
+    },
+    # 44. Гедон-Юг: 1288 -> Валерия Солдатова
+    {
+        'target_id': 1288,
+        'target_name': 'Гедон-Юг',
+        'target_kam': 'Валерия Солдатова',
+        'donor_ids': []
+    },
+    # 45. АсАвто: P_OEM_943c0828 -> Евгения Добролюбова
+    {
+        'target_id': 'P_OEM_943c0828',
+        'target_name': 'АсАвто на Алмаатинской',
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': []
+    },
+    # 46. Асмото: P_OEM_ae51d9c1 -> Евгения Добролюбова
+    {
+        'target_id': 'P_OEM_ae51d9c1',
+        'target_name': 'ООО "Асмото"',
+        'target_kam': 'Евгения Добролюбова',
+        'donor_ids': []
     }
 ]
 
@@ -1074,6 +1137,102 @@ def apply_merges_to_data_json(filepath):
             any(k in p_name_low for k in ['ааа моторс', 'ааа-моторс'])):
             r['PartnerId'] = 1291
             r['Partner'] = 'ААА Моторс'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # 8. Нижегородец -> 1071 Нижегородец, Евгения Добролюбова (все месяцы)
+        if r.get('PartnerId') == 1071 or 'нижегородец' in raw_p_low or 'нижегородец' in p_name_low:
+            r['PartnerId'] = 1071
+            r['Partner'] = 'Нижегородец'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 9. Форвард-Авто -> 1060 Форвард Ижевск/Сызрань, Евгения Добролюбова (все месяцы)
+        if (r.get('PartnerId') in [1051, 1060, 632013, 632020] or
+            (('форвард' in raw_p_low or 'форвард' in p_name_low) and not any(ex in raw_p_low for ex in ['диамант', 'диаманд']))):
+            r['PartnerId'] = 1060
+            r['Partner'] = 'Форвард Ижевск/Сызрань'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 10. Дав-Авто -> 1184 Дав-Авто, Евгения Добролюбова (все месяцы)
+        if r.get('PartnerId') in [1088, 1184] or 'дав-авто' in raw_p_low or 'дав-авто' in p_name_low or 'дав авто' in raw_p_low:
+            r['PartnerId'] = 1184
+            r['Partner'] = 'Дав-Авто'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 11. Сатурн-Р -> 1110 Сатурн-Р, Евгения Добролюбова (Пермь)
+        if (r.get('PartnerId') in [1110, 'P_OEM_6e979ac2'] or
+            (('сатурн-р' in raw_p_low or 'сатурн-р' in p_name_low or 'сатурн р' in raw_p_low or 'сатурн р' in p_name_low) and not ('липецк' in raw_p_low or 'липецк' in p_name_low))):
+            r['PartnerId'] = 1110
+            r['Partner'] = 'Сатурн-Р'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 12. Tenet / Haval Автопремьер М -> Уфа Haval / Tenet Автопремьер М, Евгения Добролюбова
+        if (r.get('PartnerId') in ['P_OEM_b19664be', 'P_OEM_ac181614'] or
+            'автопремьер м' in raw_p_low or 'автопремьер м' in p_name_low or 'авпремьер м' in raw_p_low):
+            r['PartnerId'] = 'P_OEM_ac181614'
+            r['Partner'] = 'Уфа Haval / Tenet Автопремьер М'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 13. Асмото / Асмото Тагил -> ООО "Асмото", Евгения Добролюбова
+        if r.get('PartnerId') == 'P_OEM_ae51d9c1' or 'асмото' in raw_p_low or 'асмото' in p_name_low:
+            r['PartnerId'] = 'P_OEM_ae51d9c1'
+            r['Partner'] = 'ООО "Асмото"'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 14. Юникор Дзержинск -> 1086 ЮНИКОР Дзержинск НН, Евгения Добролюбова (все месяцы)
+        if r.get('PartnerId') in [1086, 632014] or 'юникор' in raw_p_low or 'юникор' in p_name_low:
+            r['PartnerId'] = 1086
+            r['Partner'] = 'ЮНИКОР Дзержинск НН'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 15. Автолидер ГАК / Автолидер online -> 1266 Автолидер ГАК, Евгения Добролюбова
+        if r.get('PartnerId') in [1266, 632031] or 'автолидер' in raw_p_low or 'автолидер' in p_name_low:
+            r['PartnerId'] = 1266
+            r['Partner'] = 'Автолидер ГАК'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 16. АсАвто на Алмаатинской -> P_OEM_943c0828, Евгения Добролюбова
+        if r.get('PartnerId') == 'P_OEM_943c0828' or 'асавто' in raw_p_low or 'асавто' in p_name_low:
+            r['PartnerId'] = 'P_OEM_943c0828'
+            r['Partner'] = 'АсАвто на Алмаатинской'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 17. Армада Уфа, Ульяновск -> 1128 ООО "ТД АРМАДА-АВТО, Евгения Добролюбова
+        if r.get('PartnerId') == 1128 or 'армада-авто' in raw_p_low or 'армада-авто' in p_name_low or 'армада авто' in raw_p_low:
+            r['PartnerId'] = 1128
+            r['Partner'] = 'ООО "ТД АРМАДА-АВТО'
+            r['KAM'] = 'Евгения Добролюбова'
+            modified = True
+
+        # 18. Гедон Юг -> 1288 Гедон-Юг, Валерия Солдатова (убрать с Добролюбовой)
+        if r.get('PartnerId') in [1230, 1288] or 'гедон' in raw_p_low or 'гедон' in p_name_low:
+            r['PartnerId'] = 1288
+            r['Partner'] = 'Гедон-Юг'
+            r['KAM'] = 'Валерия Солдатова'
+            modified = True
+
+        # 19. Автохолдинг Максимум -> 1163 Автохолдинг Максимум, Светлана Дариенко (убрать с Добролюбовой)
+        if r.get('PartnerId') in [1163, 1234] or 'максимум' in raw_p_low or 'максимум' in p_name_low or 'lucky motors' in raw_p_low:
+            r['PartnerId'] = 1163
+            r['Partner'] = 'Автохолдинг Максимум'
+            r['KAM'] = 'Светлана Дариенко'
+            modified = True
+
+        # 20. Авто Сити (1118) -> перенести сделки на 1114 ООО "ВОРОНЕЖ-АВТО-СИТИ", Валерия Солдатова
+        if (r.get('PartnerId') in [1114, 1118, 1175] or
+            'воронеж-авто-сити' in raw_p_low or 'воронеж-авто-сити' in p_name_low or
+            (('авто сити' in raw_p_low or 'авто сити' in p_name_low or 'авто-сити' in raw_p_low) and not ('мэйджор' in raw_p_low or 'major' in raw_p_low))):
+            r['PartnerId'] = 1114
+            r['Partner'] = 'ООО "ВОРОНЕЖ-АВТО-СИТИ'
             r['KAM'] = 'Валерия Солдатова'
             modified = True
 

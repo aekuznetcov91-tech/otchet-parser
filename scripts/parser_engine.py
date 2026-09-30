@@ -2245,13 +2245,13 @@ def run_pipeline():
                     kam_partner = "Алексей Чихарев"
                 elif 'борис' in p_lower or 'борис' in c_lower:
                     kam_partner = "Алексей Чихарев"
-                elif 'тд армада-авто' in p_lower or 'тд армада-авто' in c_lower:
-                    kam_partner = "Андрей Кузнецов"
-                elif 'армада-авто' in p_lower or 'армада-авто' in c_lower:
-                    kam_partner = "Алексей Чихарев"
+                elif 'тд армада-авто' in p_lower or 'тд армада-авто' in c_lower or 'армада-авто' in p_lower or 'армада-авто' in c_lower or 'армада' in p_lower:
+                    kam_partner = "Евгения Добролюбова"
                 elif 'оренбург' in p_lower or 'оренбург' in c_lower:
                     kam_partner = "Алексей Чихарев"
-                elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто', 'автолидер']) or any(k in c_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто', 'автолидер']):
+                elif 'автолидер' in p_lower or 'автолидер' in c_lower:
+                    kam_partner = "Евгения Добролюбова"
+                elif any(k in p_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто']) or any(k in c_lower for k in ['агат', 'автопрофиль', 'аркада', 'квант', 'альтаир', 'приоритет моторс', 'максима авто', 'платинум', 'планета авто', 'гольфстрим', 'lucky motors', 'эксперт самара', 'эксперт авто']):
                     kam_partner = "Андрей Кузнецов"
                 elif any(k in p_lower for k in ['лидер сервис', 'лидер online', 'автопилот', 'максимум', 'вагнер авто']) or any(k in c_lower for k in ['лидер сервис', 'лидер online', 'автопилот', 'максимум', 'вагнер авто']) or ('фаворит' in p_lower and ('санкт-петербург' in p_lower or 'спб' in p_lower)):
                     kam_partner = "Светлана Дариенко"
@@ -2301,21 +2301,90 @@ def run_pipeline():
                 pid, cname, kam_partner = (1016, 'Леон Авто (Йошкар-Ола)', 'Евгения Добролюбова')
             elif pid == 1285 and any(spb_k in p_lower or spb_k in c_lower for spb_k in ['санкт-петербург', 'спб']):
                 pid, cname, kam_partner = (1285, 'Вагнер Авто / Авторитэйл', 'Светлана Дариенко')
+            elif 'нижегородец' in p_lower:
+                pid, cname, kam_partner = (1071, 'Нижегородец', 'Евгения Добролюбова')
+            elif (pid in [1051, 1060, 632013, 632020] or 'форвард' in p_lower) and not any(ex in p_lower for ex in ['диамант', 'диаманд']):
+                pid, cname, kam_partner = (1060, 'Форвард Ижевск/Сызрань', 'Евгения Добролюбова')
+            elif pid == 1184 or 'дав-авто' in p_lower or 'дав авто' in p_lower:
+                pid, cname, kam_partner = (1184, 'Дав-Авто', 'Евгения Добролюбова')
+            elif ('сатурн-р' in p_lower or 'сатурн р' in p_lower) and not ('липецк' in p_lower or 'липецк' in c_lower):
+                pid, cname, kam_partner = (1110, 'Сатурн-Р', 'Евгения Добролюбова')
+            elif 'автопремьер м' in p_lower or 'авпремьер м' in p_lower or 'автопремьер-м' in p_lower:
+                pid, cname, kam_partner = ('P_OEM_ac181614', 'Уфа Haval / Tenet Автопремьер М', 'Евгения Добролюбова')
+            elif 'асмото' in p_lower:
+                pid, cname, kam_partner = ('P_OEM_ae51d9c1', 'ООО "Асмото"', 'Евгения Добролюбова')
+            elif 'юникор' in p_lower:
+                pid, cname, kam_partner = (1086, 'ЮНИКОР Дзержинск НН', 'Евгения Добролюбова')
+            elif 'автолидер' in p_lower:
+                pid, cname, kam_partner = (1266, 'Автолидер ГАК', 'Евгения Добролюбова')
+            elif 'асавто' in p_lower:
+                pid, cname, kam_partner = ('P_OEM_943c0828', 'АсАвто на Алмаатинской', 'Евгения Добролюбова')
+            elif 'армада-авто' in p_lower or 'армада авто' in p_lower or 'армада' in p_lower:
+                pid, cname, kam_partner = (1128, 'ООО "ТД АРМАДА-АВТО', 'Евгения Добролюбова')
+            elif 'гедон' in p_lower:
+                pid, cname, kam_partner = (1288, 'Гедон-Юг', 'Валерия Солдатова')
+            elif 'максимум' in p_lower or 'lucky motors' in p_lower:
+                pid, cname, kam_partner = (1163, 'Автохолдинг Максимум', 'Светлана Дариенко')
+            elif any(k in p_lower for k in ['воронеж-авто-сити', 'воронеж авто сити', 'авто сити', 'авто-сити']) and not any(ex in p_lower for ex in ['мэйджор', 'major']):
+                pid, cname, kam_partner = (1114, 'ООО "ВОРОНЕЖ-АВТО-СИТИ', 'Валерия Солдатова')
 
-            # Portfolio handover rule: in August 2026 and earlier, deals of Dobrolyubova's portfolio are attributed to Kuznetsov (excluding Leon Yoshkar-Ola)
-            if kam_partner == "Евгения Добролюбова" and (deal_month_str <= "2026-08" or not deal_month_str) and pid != 1016:
+            # Portfolio handover rule: in August 2026 and earlier, deals of Dobrolyubova's portfolio are attributed to Kuznetsov (excluding Leon Yoshkar-Ola and explicitly assigned partners)
+            dobro_full_pids = {1016, 1071, 1060, 1051, 632013, 1184, 1110, 1086, 1128, 1266, 632031, 'P_OEM_6e979ac2', 'P_OEM_b19664be', 'P_OEM_ac181614', 'P_OEM_ae51d9c1', 'P_OEM_943c0828'}
+            dobro_full_kws = ['нижегородец', 'дав-авто', 'дав авто', 'сатурн-р', 'сатурн р', 'юникор', 'армада', 'автолидер', 'асавто', 'асмото', 'автопремьер м', 'автопремьер-м', 'форвард']
+            is_full_dobro = (pid in dobro_full_pids) or any(k in p_lower for k in dobro_full_kws) or any(k in (cname or '').lower() for k in dobro_full_kws)
+
+            if kam_partner == "Евгения Добролюбова" and (deal_month_str <= "2026-08" or not deal_month_str) and not is_full_dobro:
                 kam_partner = "Андрей Кузнецов"
 
             kam_prepay = kam_partner
-            if kam_prepay == "Евгения Добролюбова" and (prepay_month_str <= "2026-08" or not prepay_month_str) and pid != 1016:
+            if kam_prepay == "Евгения Добролюбова" and (prepay_month_str <= "2026-08" or not prepay_month_str) and not is_full_dobro:
                 kam_prepay = "Андрей Кузнецов"
 
             # Priority OEM (15) routing and user-verified overrides for September 2026 and later:
             if oem_resolver:
                 deal_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or (deal_bridge.get('city', '') if deal_bridge else "")).strip()
                 if deal_month_str and deal_month_str >= "2026-09":
+                    # Нижегородец -> Добролюбова
+                    if 'нижегородец' in p_lower:
+                        pid, cname, kam_partner = (1071, 'Нижегородец', 'Евгения Добролюбова')
+                    # Форвард-Авто -> Добролюбова
+                    elif (pid in [1051, 1060, 632013, 632020] or 'форвард' in p_lower) and not any(ex in p_lower for ex in ['диамант', 'диаманд']):
+                        pid, cname, kam_partner = (1060, 'Форвард Ижевск/Сызрань', 'Евгения Добролюбова')
+                    # Дав-Авто -> Добролюбова
+                    elif pid == 1184 or 'дав-авто' in p_lower or 'дав авто' in p_lower:
+                        pid, cname, kam_partner = (1184, 'Дав-Авто', 'Евгения Добролюбова')
+                    # Сатурн-Р -> Добролюбова (Пермь)
+                    elif ('сатурн-р' in p_lower or 'сатурн р' in p_lower) and not ('липецк' in p_lower or 'липецк' in deal_city.lower()):
+                        pid, cname, kam_partner = (1110, 'Сатурн-Р', 'Евгения Добролюбова')
+                    # Tenet Уфа Автопремьер М / Haval -> Добролюбова
+                    elif 'автопремьер м' in p_lower or 'авпремьер м' in p_lower or 'автопремьер-м' in p_lower:
+                        pid, cname, kam_partner = ('P_OEM_ac181614', 'Уфа Haval / Tenet Автопремьер М', 'Евгения Добролюбова')
+                    # Асмото -> Добролюбова
+                    elif 'асмото' in p_lower:
+                        pid, cname, kam_partner = ('P_OEM_ae51d9c1', 'ООО "Асмото"', 'Евгения Добролюбова')
+                    # Юникор Дзержинск -> Добролюбова
+                    elif 'юникор' in p_lower:
+                        pid, cname, kam_partner = (1086, 'ЮНИКОР Дзержинск НН', 'Евгения Добролюбова')
+                    # Автолидер -> Добролюбова
+                    elif 'автолидер' in p_lower:
+                        pid, cname, kam_partner = (1266, 'Автолидер ГАК', 'Евгения Добролюбова')
+                    # АсАвто на Алмаатинской -> Добролюбова
+                    elif 'асавто' in p_lower:
+                        pid, cname, kam_partner = ('P_OEM_943c0828', 'АсАвто на Алмаатинской', 'Евгения Добролюбова')
+                    # Армада -> Добролюбова
+                    elif 'армада-авто' in p_lower or 'армада авто' in p_lower or 'армада' in p_lower:
+                        pid, cname, kam_partner = (1128, 'ООО "ТД АРМАДА-АВТО', 'Евгения Добролюбова')
+                    # Гедон Юг -> Солдатова
+                    elif 'гедон' in p_lower:
+                        pid, cname, kam_partner = (1288, 'Гедон-Юг', 'Валерия Солдатова')
+                    # Автохолдинг Максимум -> Дариенко
+                    elif 'максимум' in p_lower or 'lucky motors' in p_lower:
+                        pid, cname, kam_partner = (1163, 'Автохолдинг Максимум', 'Светлана Дариенко')
+                    # Авто Сити -> Воронеж-Авто-Сити (Солдатова)
+                    elif any(k in p_lower for k in ['воронеж-авто-сити', 'воронеж авто сити', 'авто сити', 'авто-сити']) and not any(ex in p_lower for ex in ['мэйджор', 'major']):
+                        pid, cname, kam_partner = (1114, 'ООО "ВОРОНЕЖ-АВТО-СИТИ', 'Валерия Солдатова')
                     # Диалог авто (в т.ч. КЗН, Альметьевск, Челны) -> Чихарев
-                    if 'диалог' in p_lower or deal_inn in ('1650207558', '1649021206', '1644062657'):
+                    elif 'диалог' in p_lower or deal_inn in ('1650207558', '1649021206', '1644062657'):
                         cname = 'Диалог Авто'
                         kam_partner = 'Алексей Чихарев'
                     # Ринг Авто / ONLINE Ринг -> Солдатова
@@ -2509,8 +2578,47 @@ def run_pipeline():
                             kam_partner = resolved_deal_kam
 
                 if prepay_month_str and prepay_month_str >= "2026-09":
+                    # Нижегородец -> Добролюбова
+                    if 'нижегородец' in p_lower:
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Форвард-Авто -> Добролюбова
+                    elif (pid in [1051, 1060, 632013, 632020] or 'форвард' in p_lower) and not any(ex in p_lower for ex in ['диамант', 'диаманд']):
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Дав-Авто -> Добролюбова
+                    elif pid == 1184 or 'дав-авто' in p_lower or 'дав авто' in p_lower:
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Сатурн-Р -> Добролюбова (Пермь)
+                    elif ('сатурн-р' in p_lower or 'сатурн р' in p_lower) and not ('липецк' in p_lower or 'липецк' in deal_city.lower()):
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Tenet Уфа Автопремьер М / Haval -> Добролюбова
+                    elif 'автопремьер м' in p_lower or 'авпремьер м' in p_lower or 'автопремьер-м' in p_lower:
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Асмото -> Добролюбова
+                    elif 'асмото' in p_lower:
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Юникор Дзержинск -> Добролюбова
+                    elif 'юникор' in p_lower:
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Автолидер -> Добролюбова
+                    elif 'автолидер' in p_lower:
+                        kam_prepay = 'Евгения Добролюбова'
+                    # АсАвто на Алмаатинской -> Добролюбова
+                    elif 'асавто' in p_lower:
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Армада -> Добролюбова
+                    elif 'армада-авто' in p_lower or 'армада авто' in p_lower or 'армада' in p_lower:
+                        kam_prepay = 'Евгения Добролюбова'
+                    # Гедон Юг -> Солдатова
+                    elif 'гедон' in p_lower:
+                        kam_prepay = 'Валерия Солдатова'
+                    # Автохолдинг Максимум -> Дариенко
+                    elif 'максимум' in p_lower or 'lucky motors' in p_lower:
+                        kam_prepay = 'Светлана Дариенко'
+                    # Авто Сити -> Воронеж-Авто-Сити (Солдатова)
+                    elif any(k in p_lower for k in ['воронеж-авто-сити', 'воронеж авто сити', 'авто сити', 'авто-сити']) and not any(ex in p_lower for ex in ['мэйджор', 'major']):
+                        kam_prepay = 'Валерия Солдатова'
                     # Диалог авто -> Чихарев
-                    if 'диалог' in p_lower or deal_inn in ('1650207558', '1649021206', '1644062657'):
+                    elif 'диалог' in p_lower or deal_inn in ('1650207558', '1649021206', '1644062657'):
                         kam_prepay = 'Алексей Чихарев'
                     # Ринг Авто / ONLINE Ринг -> Солдатова
                     elif 'ринг' in p_lower:
@@ -2884,12 +2992,41 @@ def run_pipeline():
                 elif any(k in p_lower for k in ['техно-темп', 'трансфор', 'авторитэйл', 'темп авто к', 'темп авто дон']):
                     kam = "Валерия Солдатова"
 
-                if kam == "Евгения Добролюбова":
+                dobro_full_pids = {1016, 1071, 1060, 1051, 632013, 1184, 1110, 1086, 1128, 1266, 632031, 'P_OEM_6e979ac2', 'P_OEM_b19664be', 'P_OEM_ac181614', 'P_OEM_ae51d9c1', 'P_OEM_943c0828'}
+                dobro_full_kws = ['нижегородец', 'дав-авто', 'дав авто', 'сатурн-р', 'сатурн р', 'юникор', 'армада', 'автолидер', 'асавто', 'асмото', 'автопремьер м', 'автопремьер-м', 'форвард']
+                is_full_dobro = (pid in dobro_full_pids) or any(k in p_lower for k in dobro_full_kws) or any(k in (cname or '').lower() for k in dobro_full_kws)
+                if kam == "Евгения Добролюбова" and not is_full_dobro:
                     kam = "Андрей Кузнецов"
             elif oem_resolver:
                 lead_city = str(get_exact_val(row, 'ГОРОДB2C', 'ГОРОД.B2C', 'ГОРОД') or "").strip()
                 # User explicit overrides for September leads
-                if 'диалог' in p_lower:
+                if 'нижегородец' in p_lower:
+                    pid, cname, kam = (1071, 'Нижегородец', 'Евгения Добролюбова')
+                elif (pid in [1051, 1060, 632013, 632020] or 'форвард' in p_lower) and not any(ex in p_lower for ex in ['диамант', 'диаманд']):
+                    pid, cname, kam = (1060, 'Форвард Ижевск/Сызрань', 'Евгения Добролюбова')
+                elif pid == 1184 or 'дав-авто' in p_lower or 'дав авто' in p_lower:
+                    pid, cname, kam = (1184, 'Дав-Авто', 'Евгения Добролюбова')
+                elif ('сатурн-р' in p_lower or 'сатурн р' in p_lower) and not ('липецк' in p_lower or 'липецк' in lead_city.lower()):
+                    pid, cname, kam = (1110, 'Сатурн-Р', 'Евгения Добролюбова')
+                elif 'автопремьер м' in p_lower or 'авпремьер м' in p_lower or 'автопремьер-м' in p_lower:
+                    pid, cname, kam = ('P_OEM_ac181614', 'Уфа Haval / Tenet Автопремьер М', 'Евгения Добролюбова')
+                elif 'асмото' in p_lower:
+                    pid, cname, kam = ('P_OEM_ae51d9c1', 'ООО "Асмото"', 'Евгения Добролюбова')
+                elif 'юникор' in p_lower:
+                    pid, cname, kam = (1086, 'ЮНИКОР Дзержинск НН', 'Евгения Добролюбова')
+                elif 'автолидер' in p_lower:
+                    pid, cname, kam = (1266, 'Автолидер ГАК', 'Евгения Добролюбова')
+                elif 'асавто' in p_lower:
+                    pid, cname, kam = ('P_OEM_943c0828', 'АсАвто на Алмаатинской', 'Евгения Добролюбова')
+                elif 'армада-авто' in p_lower or 'армада авто' in p_lower or 'армада' in p_lower:
+                    pid, cname, kam = (1128, 'ООО "ТД АРМАДА-АВТО', 'Евгения Добролюбова')
+                elif 'гедон' in p_lower:
+                    pid, cname, kam = (1288, 'Гедон-Юг', 'Валерия Солдатова')
+                elif 'максимум' in p_lower or 'lucky motors' in p_lower:
+                    pid, cname, kam = (1163, 'Автохолдинг Максимум', 'Светлана Дариенко')
+                elif any(k in p_lower for k in ['воронеж-авто-сити', 'воронеж авто сити', 'авто сити', 'авто-сити']) and not any(ex in p_lower for ex in ['мэйджор', 'major']):
+                    pid, cname, kam = (1114, 'ООО "ВОРОНЕЖ-АВТО-СИТИ', 'Валерия Солдатова')
+                elif 'диалог' in p_lower:
                     cname = 'Диалог Авто'
                     kam = 'Алексей Чихарев'
                 elif 'ринг' in p_lower:
