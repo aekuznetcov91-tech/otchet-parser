@@ -10,6 +10,15 @@ let currentFilterConfig = {
     from: null,
     to: null
 };
+// Expose on window for cross-module access (lead-geo.js, kam-dashboard.js use window.currentFilterConfig)
+window.currentFilterConfig = currentFilterConfig;
+
+// Lazy tab rendering: track which tabs need re-rendering
+let _activeTabId = 'tab-dashboard';
+const _dirtyTabs = new Set();
+function markAllTabsDirty() {
+    ['tab-dynamics', 'tab-dyn-months', 'tab-partners', 'tab-managers', 'tab-details', 'tab-funnel', 'tab-lead-geo', 'tab-kam', 'tab-banking'].forEach(t => _dirtyTabs.add(t));
+}
 
 if (typeof ChartDataLabels !== 'undefined') {
     Chart.register(ChartDataLabels);
@@ -17,7 +26,9 @@ if (typeof ChartDataLabels !== 'undefined') {
 
 async function loadData() {
     try {
-        const res = await fetch('data.json?v=' + new Date().getTime());
+        // Use metadata version for cache key instead of timestamp (enables HTTP 304 caching)
+        const cacheKey = window._dataVersion || Date.now();
+        const res = await fetch('data.json?v=' + cacheKey);
         if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
         const data = await res.json();
         db = data.sys_db || [];
@@ -117,6 +128,7 @@ function onPeriodSelectChange(val) {
     } else {
         currentFilterConfig = { mode: 'month', month: val, from: null, to: null };
     }
+    window.currentFilterConfig = currentFilterConfig;
     updateAllTabs();
 }
 
@@ -134,6 +146,7 @@ function applyCustomDateFilter() {
     }
 
     currentFilterConfig = { mode: 'custom', month: null, from: fromDate, to: toDate };
+    window.currentFilterConfig = currentFilterConfig;
     updateAllTabs();
 }
 
@@ -233,6 +246,7 @@ function updateAllTabs() {
         renderExecutiveDashboard(sDb, pDb, db, dbPartners, currentFilterConfig, rawDebtorsList);
     }
 
+    // === Only render the active Dashboard tab (charts + tables) ===
     renderDashTables(sDb);
     let y, m;
     if (currentFilterConfig.mode === 'month') {
@@ -248,20 +262,67 @@ function updateAllTabs() {
     updatePieChart('pieBrands', null, getTopBrands(sDb), 'Сплит по брендам');
     updatePieChart('pieB2C', null, getB2CSplit(sDb), 'Тип сделки B2C');
 
-    renderDynamicsTab(sDb, pDb, currentFilterConfig.mode === 'all');
-    renderDynMonthsTab(sDb, currentFilterConfig.mode === 'all', currentFilterConfig.mode === 'month' ? currentFilterConfig.month : null);
-    renderPartnersTable(currentFilterConfig);
-    renderManagersTable(sDb, pDb);
-    renderWaitingTable(currentFilterConfig);
-    renderDebtorsTable(currentFilterConfig);
+    // Mark all other tabs as dirty — they will render on-demand when user clicks on them
+    markAllTabsDirty();
 
-    // Regional heatmap & modules
-    if (typeof updateHeatmap === 'function') updateHeatmap(sDb);
-    if (typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
-    if (typeof renderKamTab === 'function') renderKamTab(currentFilterConfig);
+    // If the currently active tab is not 'tab-dashboard', render it immediately
+    if (_activeTabId !== 'tab-dashboard') {
+        _renderTabContent(_activeTabId);
+    }
 
-    initTableSorting();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    const dashRoot = document.getElementById('tab-dashboard');
+    if (dashRoot) {
+        initTableSorting(dashRoot);
+        if (typeof lucide !== 'undefined') lucide.createIcons({ root: dashRoot });
+    }
+}
+
+/**
+ * Renders content for a specific tab on-demand (lazy rendering).
+ * Called by switchTab() when the tab is dirty.
+ */
+function _renderTabContent(tabId) {
+    const { sDb, pDb } = getFilteredData();
+    
+    switch (tabId) {
+        case 'tab-dynamics':
+            renderDynamicsTab(sDb, pDb, currentFilterConfig.mode === 'all');
+            break;
+        case 'tab-dyn-months':
+            renderDynMonthsTab(sDb, currentFilterConfig.mode === 'all', currentFilterConfig.mode === 'month' ? currentFilterConfig.month : null);
+            break;
+        case 'tab-partners':
+            renderPartnersTable(currentFilterConfig);
+            break;
+        case 'tab-managers':
+            renderManagersTable(sDb, pDb);
+            break;
+        case 'tab-details':
+            if (typeof renderWaitingTable === 'function') renderWaitingTable(currentFilterConfig);
+            if (typeof renderDebtorsTable === 'function') renderDebtorsTable(currentFilterConfig);
+            break;
+        case 'tab-funnel':
+            if (typeof selectFunnelBrand === 'function') selectFunnelBrand('ALL');
+            break;
+        case 'tab-lead-geo':
+            if (typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
+            break;
+        case 'tab-kam':
+            if (typeof renderKamTab === 'function') renderKamTab(currentFilterConfig);
+            break;
+        case 'tab-banking':
+            if (typeof renderBankingDashboard === 'function') renderBankingDashboard();
+            break;
+    }
+
+    _dirtyTabs.delete(tabId);
+
+    // Scoped icon rendering and table sorting for the rendered tab
+    const tabRoot = document.getElementById(tabId);
+    if (tabRoot) {
+        initTableSorting(tabRoot);
+        if (typeof lucide !== 'undefined') lucide.createIcons({ root: tabRoot });
+    }
 }
 
 // ====================================================================
@@ -690,18 +751,18 @@ function switchTab(tabId, btn) {
     const targetEl = document.getElementById(tabId);
     if (targetEl) targetEl.classList.remove('hidden');
     if (btn) btn.classList.add('active');
-    if (tabId === 'tab-funnel' && typeof selectFunnelBrand === 'function') selectFunnelBrand('ALL');
-    if (tabId === 'tab-lead-geo' && typeof renderLeadGeoTab === 'function') renderLeadGeoTab();
-    if (tabId === 'tab-kam' && typeof renderKamTab === 'function') renderKamTab(currentFilterConfig);
-    if (tabId === 'tab-banking' && typeof renderBankingDashboard === 'function') renderBankingDashboard();
+    _activeTabId = tabId;
+
+    // Render tab content on-demand if it's dirty
+    if (_dirtyTabs.has(tabId)) {
+        _renderTabContent(tabId);
+    }
+    // Special re-renders that always happen on tab switch
     if (tabId === 'tab-details') {
         const sInput = document.getElementById('searchDebtors');
         if (sInput) {
             sInput.value = '';
             if (typeof filterDebtorsTable === 'function') filterDebtorsTable('');
         }
-        if (typeof renderDebtorsTable === 'function') renderDebtorsTable(currentFilterConfig);
-        if (typeof renderWaitingTable === 'function') renderWaitingTable(currentFilterConfig);
     }
-    if (typeof lucide !== 'undefined') lucide.createIcons();
 }

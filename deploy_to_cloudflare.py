@@ -121,13 +121,12 @@ def sync_and_push_git(commit_message=None):
                 if len(changes.splitlines()) > 10:
                     print(f"    ... i esche {len(changes.splitlines()) - 10} faylov")
                 
-                # Always rebase latest remote commits before committing to prevent push rejects
-                subprocess.run(["git", "pull", "--rebase", "origin", "main"], capture_output=True)
-                
                 subprocess.run(["git", "add", "-A"], capture_output=True)
-                
                 msg = commit_message or "data(deploy): auto-sync data and assets with Cloudflare deployment"
                 subprocess.run(["git", "commit", "-m", msg], capture_output=True)
+
+                # Rebase remote commits if any after committing
+                subprocess.run(["git", "pull", "--rebase", "origin", "main"], capture_output=True)
             else:
                 print("[+] Git derevo chistoe, proverka nepushed kommitov...")
 

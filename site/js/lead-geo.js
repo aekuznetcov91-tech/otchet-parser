@@ -268,12 +268,32 @@ function toggleRegionRows(rIdx) {
 
 /**
  * Opens Client Drilldown Modal for a specific Dealer
+ * Lazy-loads geo_clients.json on first invocation for performance
  */
-function openDealerClientDrilldown(encodedReg, encodedDealer, filterType) {
+let _geoClientsCache = null;
+async function _ensureGeoClients() {
+    if (_geoClientsCache) return _geoClientsCache;
+    try {
+        const cacheKey = window._dataVersion || Date.now();
+        const res = await fetch('geo_clients.json?v=' + cacheKey);
+        if (res.ok) {
+            _geoClientsCache = await res.json();
+        }
+    } catch (e) {
+        console.warn('Failed to load geo_clients.json, falling back to main payload', e);
+    }
+    // Fallback: use main payload if separate file not available
+    if (!_geoClientsCache) {
+        _geoClientsCache = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
+    }
+    return _geoClientsCache;
+}
+
+async function openDealerClientDrilldown(encodedReg, encodedDealer, filterType) {
     const regName = decodeURIComponent(encodedReg);
     const dealerName = decodeURIComponent(encodedDealer);
 
-    const lgd = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
+    const lgd = await _ensureGeoClients();
     const reg = (lgd.regions || []).find(r => r.region_name === regName);
     if (!reg) return;
 
@@ -303,9 +323,9 @@ function openDealerClientDrilldown(encodedReg, encodedDealer, filterType) {
 /**
  * Opens Client Drilldown Modal for an entire Region
  */
-function openRegionClientDrilldown(encodedReg, filterType) {
+async function openRegionClientDrilldown(encodedReg, filterType) {
     const regName = decodeURIComponent(encodedReg);
-    const lgd = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
+    const lgd = await _ensureGeoClients();
     const reg = (lgd.regions || []).find(r => r.region_name === regName);
     if (!reg) return;
 

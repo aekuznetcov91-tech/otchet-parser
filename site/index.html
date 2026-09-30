@@ -11,13 +11,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- html2canvas for copying cards -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- SheetJS for multi-file Excel export -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Custom Dashboard Styles -->
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/banking-dashboard.css">
+    <style>
+        /* Performance: skip rendering for hidden tabs */
+        .tab-content.hidden {
+            content-visibility: hidden;
+        }
+        /* Performance: defer rendering for below-fold table sections */
+        .tab-content table tbody tr:nth-child(n+51) {
+            content-visibility: auto;
+            contain-intrinsic-size: auto none auto 36px;
+        }
+    </style>
 </head>
 <body class="p-4 md:p-6 text-slate-800">
     <!-- Toast Notification Container -->
@@ -1293,21 +1300,27 @@
         </div>
     </div>
 
+    <!-- Deferred: loaded after initial render, only needed for export actions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+
     <!-- ==================== MODULAR JAVASCRIPT BUNDLE ==================== -->
-    <script src="js/utils.js?v=1109_1200"></script>
-    <script src="js/data-loader.js?v=1109_1200"></script>
-    <script src="js/charts.js?v=1109_1200"></script>
-    <script src="js/tables.js?v=1109_1200"></script>
-    <script src="js/debtors.js?v=1109_1200"></script>
-    <script src="js/funnel.js?v=1109_1200"></script>
-    <script src="js/heatmap.js?v=1109_1200"></script>
-    <script src="js/lead-geo.js?v=1109_1200"></script>
-    <script src="js/kam-dashboard.js?v=1109_1200"></script>
-    <script src="js/banking-dashboard.js?v=1109_1200"></script>
-    <script src="js/executive-dashboard.js?v=1809_0945"></script>
+    <script src="js/utils.js?v=3009_1030"></script>
+    <script src="js/data-loader.js?v=3009_1030"></script>
+    <script src="js/charts.js?v=3009_1030"></script>
+    <script src="js/tables.js?v=3009_1030"></script>
+    <script src="js/debtors.js?v=3009_1030"></script>
+    <script src="js/funnel.js?v=3009_1030"></script>
+    <script src="js/heatmap.js?v=3009_1030"></script>
+    <script src="js/lead-geo.js?v=3009_1030"></script>
+    <script src="js/kam-dashboard.js?v=3009_1030"></script>
+    <script src="js/banking-dashboard.js?v=3009_1030"></script>
+    <script src="js/executive-dashboard.js?v=3009_1030"></script>
 
     <script>
         window.onload = () => {
+            // Set data version from build metadata to enable HTTP 304 caching
+            window._dataVersion = '20260930_1030';
             loadData();
             if (typeof lucide !== 'undefined') setTimeout(() => lucide.createIcons(), 100);
         };

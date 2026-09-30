@@ -1675,9 +1675,10 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
     jul_tree = build_tree_for_clients(jul_clients, include_clients=False)
     sep_tree = build_tree_for_clients(sep_clients, include_clients=False)
 
-    return {
+    # Performance split: return two versions — lightweight (for data.json) and full (for geo_clients.json)
+    lightweight_result = {
         'summary': all_tree['summary'],
-        'regions': all_tree['regions'],
+        'regions': all_tree_no_clients['regions'],   # aggregate stats only, NO client-level data
         'by_month': {
             'all': all_tree_no_clients,
             '2026-09': sep_tree,
@@ -1685,6 +1686,17 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             '2026-07': jul_tree
         }
     }
+    full_result = {
+        'summary': all_tree['summary'],
+        'regions': all_tree['regions'],   # full tree with clients arrays (for lazy-loaded geo_clients.json)
+        'by_month': {
+            'all': all_tree_no_clients,
+            '2026-09': sep_tree,
+            '2026-08': aug_tree,
+            '2026-07': jul_tree
+        }
+    }
+    return lightweight_result, full_result
 
 
 
@@ -3036,7 +3048,7 @@ def run_pipeline():
     city_expansion = calculate_city_expansion_potential(deals_data, leads_data)
     competitor_benchmarks = calculate_competitor_benchmarks(deals_data)
     discount_analytics = calculate_discount_analytics(deals_data)
-    lead_geo_dealers = calculate_lead_geo_dealers_analytics(all_leads_data, deals_data)
+    lead_geo_dealers, lead_geo_dealers_full = calculate_lead_geo_dealers_analytics(all_leads_data, deals_data)
 
     total_sales = sum(r['SaleQty'] for r in sys_db)
     total_prepays = sum(r['PrepayQty'] for r in sys_db)
@@ -3084,7 +3096,14 @@ def run_pipeline():
                 pass
 
     if banking_analytics:
-        output_payload["banking_analytics"] = banking_analytics
+        # Performance split: extract heavy other_deals_db into a separate lazy-loaded file
+        banking_deals_payload = None
+        if 'other_deals_db' in banking_analytics:
+            banking_deals_payload = banking_analytics['other_deals_db']
+            banking_analytics_lite = {k: v for k, v in banking_analytics.items() if k != 'other_deals_db'}
+            output_payload["banking_analytics"] = banking_analytics_lite
+        else:
+            output_payload["banking_analytics"] = banking_analytics
 
     # 6. Save JSON and sync HTML assets to site/
     def safe_save_json(payload, target_path):
@@ -3104,6 +3123,16 @@ def run_pipeline():
     os.makedirs(SITE_DIR, exist_ok=True)
     safe_save_json(output_payload, OUTPUT_JSON_SITE)
     safe_save_json(output_payload, OUTPUT_JSON_ROOT)
+
+    # 6.1. Save lazy-loaded satellite JSON files for performance
+    geo_clients_path = os.path.join(SITE_DIR, 'geo_clients.json')
+    safe_save_json(lead_geo_dealers_full, geo_clients_path)
+    print(f"💾 geo_clients.json: {os.path.getsize(geo_clients_path)/(1024*1024):.2f} MB (lazy-loaded drilldown)")
+
+    if banking_deals_payload:
+        banking_deals_path = os.path.join(SITE_DIR, 'banking_deals.json')
+        safe_save_json(banking_deals_payload, banking_deals_path)
+        print(f"💾 banking_deals.json: {os.path.getsize(banking_deals_path)/(1024*1024):.2f} MB (lazy-loaded)")
 
     parent_root_json = os.path.join(os.path.dirname(PROJECT_ROOT), 'data.json')
     if os.path.exists(parent_root_json):
