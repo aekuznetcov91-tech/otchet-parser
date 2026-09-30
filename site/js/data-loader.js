@@ -346,7 +346,16 @@ function updatePlanVsFact(totalDeals, totalRevenue, totalPrice) {
     const q3Deals = allQ3Sales.length;
     const q3Revenue = allQ3Sales.reduce((s, r) => s + (r.Revenue || 0), 0);
     const q3Price = allQ3Sales.reduce((s, r) => s + (r.Price || 0), 0);
-    const q3TR = q3Price > 0 ? (q3Revenue / q3Price * 100) : 0;
+    const q3Comm = allQ3Sales.reduce((s, r) => s + (r.Comm || 0), 0);
+    const q3PriceNoVat = q3Price / 1.20;
+    // TR (Take Rate) = КВ / Стоимость авто без НДС
+    const q3TR = q3PriceNoVat > 0 ? (q3Comm / q3PriceNoVat * 100) : 0;
+
+    // Filtered period TR
+    const curSales = (typeof window !== 'undefined' && window.currentFilteredSales) ? window.currentFilteredSales : [];
+    const curComm = curSales.reduce((s, r) => s + (r.Comm || 0), 0);
+    const curPriceNoVat = totalPrice / 1.20;
+    const curTR = curPriceNoVat > 0 ? (curComm / curPriceNoVat * 100) : 0;
 
     const dealsPct = Math.min(100, (q3Deals / Q3_TARGETS.deals * 100));
     const revPct = Math.min(100, (q3Revenue / Q3_TARGETS.revenue * 100));
@@ -394,7 +403,7 @@ function updatePlanVsFact(totalDeals, totalRevenue, totalPrice) {
             </div>
             <div class="flex justify-between items-center mt-1.5">
                 <span class="text-[10px] font-bold" style="color: ${trColor}">${trPct.toFixed(1)}%</span>
-                <span class="text-[10px] text-gray-400">${q3TR >= Q3_TARGETS.trPercent ? '✅ В целевом коридоре' : '⚠️ Ниже цели'}</span>
+                <span class="text-[10px] text-gray-400">${q3TR >= Q3_TARGETS.trPercent ? '✅ В целевом коридоре' : '⚠️ Ниже цели'}${currentFilterConfig.mode === 'month' ? ` | Период: <b>${curTR.toFixed(2)}%</b>` : ''}</span>
             </div>
         </div>
     `;

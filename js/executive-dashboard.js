@@ -1091,6 +1091,7 @@ function calculateChannelUnitEconomics(sDb) {
         channels[key].deals += 1;
         channels[key].revenue += rev;
         channels[key].totalPrice += pr;
+        channels[key].totalComm = (channels[key].totalComm || 0) + (d.Comm || 0);
     });
 
     const rows = Object.values(channels).map(c => {
@@ -1098,7 +1099,9 @@ function calculateChannelUnitEconomics(sDb) {
         const shareRev = totalRev > 0 ? Math.round((c.revenue / totalRev) * 100) : 0;
         const arpu = c.deals > 0 ? Math.round(c.revenue / c.deals) : 0;
         const avgCheck = c.deals > 0 ? Math.round(c.totalPrice / c.deals) : 0;
-        const takeRate = c.totalPrice > 0 ? ((c.revenue / c.totalPrice) * 100).toFixed(2) : '0.00';
+        const priceNoVat = c.totalPrice / 1.20;
+        const totalComm = c.totalComm || 0;
+        const takeRate = priceNoVat > 0 ? ((totalComm / priceNoVat) * 100).toFixed(2) : '0.00';
 
         return {
             ...c,
@@ -1232,12 +1235,14 @@ function calculatePartnerHealthScore(sDb, allPartners) {
         partnersMap[pName].deals += 1;
         partnersMap[pName].revenue += (d.Revenue || 0);
         partnersMap[pName].totalPrice += (d.Price || 0);
+        partnersMap[pName].totalComm = (partnersMap[pName].totalComm || 0) + (d.Comm || 0);
     });
 
     const list = Object.values(partnersMap).map(p => {
         const arpu = p.deals > 0 ? Math.round(p.revenue / p.deals) : 0;
         const avgCheck = p.deals > 0 ? Math.round(p.totalPrice / p.deals) : 0;
-        const takeRate = p.totalPrice > 0 ? ((p.revenue / p.totalPrice) * 100).toFixed(2) : '0.00';
+        const priceNoVat = p.totalPrice / 1.20;
+        const takeRate = priceNoVat > 0 ? ((p.totalComm / priceNoVat) * 100).toFixed(2) : '0.00';
         return {
             ...p,
             rawPartnersList: Array.from(p.rawPartners),
