@@ -12,10 +12,21 @@ let currentLeadGeoFilter = {
 let currentModalClients = [];
 
 /**
+ * Returns currently selected month for Lead Geo tab ('2026-09', '2026-08', or 'all')
+ */
+function getActiveLeadGeoMonth() {
+    if (window.currentFilterConfig) {
+        if (window.currentFilterConfig.mode === 'all') return 'all';
+        if (window.currentFilterConfig.month) return window.currentFilterConfig.month;
+    }
+    return '2026-09';
+}
+
+/**
  * Initializes and renders the Lead Geo & Dealers Tab
  */
 function renderLeadGeoTab() {
-    const activeMonth = (window.currentFilterConfig && window.currentFilterConfig.month) || '2026-08';
+    const activeMonth = getActiveLeadGeoMonth();
     const lgd = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
     const monthData = (lgd.by_month && (lgd.by_month[activeMonth] || (activeMonth === 'all' ? lgd.by_month['all'] : lgd))) || lgd;
     const summary = monthData.summary || lgd.summary || {
@@ -76,7 +87,7 @@ function renderLeadGeoTable() {
     const container = document.getElementById('leadGeoTableContainer');
     if (!container) return;
 
-    const activeMonth = (window.currentFilterConfig && window.currentFilterConfig.month) || '2026-08';
+    const activeMonth = getActiveLeadGeoMonth();
     const lgd = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
     const monthData = (lgd.by_month && (lgd.by_month[activeMonth] || (activeMonth === 'all' ? lgd.by_month['all'] : lgd))) || lgd;
     const rawRegions = monthData.regions || lgd.regions || [];
@@ -223,7 +234,7 @@ function renderLeadGeoTable() {
                 </td>
                 <td class="text-right">
                     <button onclick="openDealerClientDrilldown('${safeRegName}', '${safeDealerName}', 'all')" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-lg text-xs font-bold transition inline-flex items-center gap-1 cursor-pointer shadow-sm">
-                        <span>🔗 БФС (${d.clients ? d.clients.length : 0})</span>
+                        <span>🔗 БФС (${d.total_clients || (d.clients ? d.clients.length : 0)})</span>
                     </button>
                 </td>
             </tr>`;
@@ -268,19 +279,54 @@ function toggleRegionRows(rIdx) {
 
 /**
  * Opens Client Drilldown Modal for a specific Dealer
+ * Lazy-loads geo_clients.json on first invocation for performance
  */
-function openDealerClientDrilldown(encodedReg, encodedDealer, filterType) {
+let _geoClientsCache = null;
+async function _ensureGeoClients() {
+    if (_geoClientsCache) return _geoClientsCache;
+    try {
+        const cacheKey = window._dataVersion || Date.now();
+        const res = await fetch('geo_clients.json?v=' + cacheKey);
+        if (res.ok) {
+            _geoClientsCache = await res.json();
+        }
+    } catch (e) {
+        console.warn('Failed to load geo_clients.json, falling back to main payload', e);
+    }
+    // Fallback: use main payload if separate file not available
+    if (!_geoClientsCache) {
+        _geoClientsCache = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
+    }
+    return _geoClientsCache;
+}
+
+async function openDealerClientDrilldown(encodedReg, encodedDealer, filterType) {
     const regName = decodeURIComponent(encodedReg);
     const dealerName = decodeURIComponent(encodedDealer);
 
-    const lgd = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
-    const reg = (lgd.regions || []).find(r => r.region_name === regName);
+    const activeMonth = getActiveLeadGeoMonth();
+    const lgd = await _ensureGeoClients();
+    const monthData = (lgd.by_month && (lgd.by_month[activeMonth] || (activeMonth === 'all' ? lgd.by_month['all'] : lgd))) || lgd;
+
+    const reg = (monthData.regions || []).find(r => r.region_name === regName) || (lgd.regions || []).find(r => r.region_name === regName);
     if (!reg) return;
 
-    const dealer = (reg.dealers || []).find(d => d.dealer_name === dealerName);
+    let dealer = (reg.dealers || []).find(d => d.dealer_name === dealerName);
+    if (!dealer || !dealer.clients || dealer.clients.length === 0) {
+        const rootReg = (lgd.regions || []).find(r => r.region_name === regName);
+        if (rootReg) {
+            const rootDealer = (rootReg.dealers || []).find(d => d.dealer_name === dealerName);
+            if (rootDealer && rootDealer.clients && rootDealer.clients.length > 0) {
+                dealer = rootDealer;
+            }
+        }
+    }
     if (!dealer) return;
 
     let clients = (dealer.clients || []).slice();
+    if (activeMonth !== 'all') {
+        clients = clients.filter(c => c.month === activeMonth);
+    }
     if (filterType === 'qual') clients = clients.filter(c => c.is_qual);
     if (filterType === 'trans') clients = clients.filter(c => c.is_trans);
     if (filterType === 'deals') clients = clients.filter(c => c.has_deal);
@@ -292,25 +338,36 @@ function openDealerClientDrilldown(encodedReg, encodedDealer, filterType) {
         'deals': 'Клиенты со сделками'
     };
 
+    const periodLabel = activeMonth === 'all' ? 'Весь период' : formatMonthLabel(activeMonth).replace('📅 ', '');
+
     openClientDrilldownModal({
         title: `${dealer.dealer_name} — ${typeLabels[filterType] || 'База клиентов'}`,
-        subtitle: `Регион: ${reg.region_name} | Всего клиентов в выборке: ${clients.length}`,
+        subtitle: `Период: ${periodLabel} | Регион: ${reg.region_name} | Всего клиентов в выборке: ${clients.length}`,
         clients: clients,
-        fileName: `Клиенты_БФС_${dealer.dealer_name.replace(/["*\\/?:<>|]/g, '')}_${filterType}`
+        fileName: `Клиенты_БФС_${dealer.dealer_name.replace(/["*\\/?:<>|]/g, '')}_${activeMonth}_${filterType}`
     });
 }
 
 /**
  * Opens Client Drilldown Modal for an entire Region
  */
-function openRegionClientDrilldown(encodedReg, filterType) {
+async function openRegionClientDrilldown(encodedReg, filterType) {
     const regName = decodeURIComponent(encodedReg);
-    const lgd = (window.dataPayload && window.dataPayload.lead_geo_dealers) || {};
-    const reg = (lgd.regions || []).find(r => r.region_name === regName);
+
+    const activeMonth = getActiveLeadGeoMonth();
+    const lgd = await _ensureGeoClients();
+    const monthData = (lgd.by_month && (lgd.by_month[activeMonth] || (activeMonth === 'all' ? lgd.by_month['all'] : lgd))) || lgd;
+
+    const reg = (monthData.regions || []).find(r => r.region_name === regName) || (lgd.regions || []).find(r => r.region_name === regName);
     if (!reg) return;
 
+    const rootReg = (lgd.regions || []).find(r => r.region_name === regName);
+    const sourceDealers = (reg.dealers && reg.dealers.some(d => d.clients && d.clients.length > 0))
+        ? reg.dealers
+        : (rootReg ? rootReg.dealers : reg.dealers || []);
+
     let allClients = [];
-    (reg.dealers || []).forEach(d => {
+    (sourceDealers || []).forEach(d => {
         (d.clients || []).forEach(c => {
             allClients.push({
                 ...c,
@@ -319,6 +376,9 @@ function openRegionClientDrilldown(encodedReg, filterType) {
         });
     });
 
+    if (activeMonth !== 'all') {
+        allClients = allClients.filter(c => c.month === activeMonth);
+    }
     if (filterType === 'qual') allClients = allClients.filter(c => c.is_qual);
     if (filterType === 'trans') allClients = allClients.filter(c => c.is_trans);
     if (filterType === 'deals') allClients = allClients.filter(c => c.has_deal);
@@ -330,11 +390,14 @@ function openRegionClientDrilldown(encodedReg, filterType) {
         'deals': 'Клиенты со сделками региона'
     };
 
+    const periodLabel = activeMonth === 'all' ? 'Весь период' : formatMonthLabel(activeMonth).replace('📅 ', '');
+    const dealersCount = (reg.dealers || []).length || reg.dealers_count || 0;
+
     openClientDrilldownModal({
         title: `${reg.region_name} — ${typeLabels[filterType] || 'База клиентов'}`,
-        subtitle: `Дилеров в регионе: ${reg.dealers_count} | Всего клиентов в выборке: ${allClients.length}`,
+        subtitle: `Период: ${periodLabel} | Дилеров в регионе: ${dealersCount} | Всего клиентов в выборке: ${allClients.length}`,
         clients: allClients,
-        fileName: `Клиенты_БФС_${reg.region_name.replace(/["*\\/?:<>|]/g, '')}_${filterType}`
+        fileName: `Клиенты_БФС_${reg.region_name.replace(/["*\\/?:<>|]/g, '')}_${activeMonth}_${filterType}`
     });
 }
 

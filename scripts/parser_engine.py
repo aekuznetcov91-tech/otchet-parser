@@ -1666,11 +1666,12 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
             'regions': regions_list
         }
 
-    all_tree = build_tree_for_clients(clients_all, include_clients=True, max_clients_per_dealer=150)
+    clients_all_sorted = sorted(clients_all, key=lambda c: str(c.get('date') or ''), reverse=True)
+    all_tree = build_tree_for_clients(clients_all_sorted, include_clients=True, max_clients_per_dealer=150)
     all_tree_no_clients = build_tree_for_clients(clients_all, include_clients=False)
-    aug_clients = [c for c in clients_all if c.get('month') == '2026-08']
-    jul_clients = [c for c in clients_all if c.get('month') == '2026-07']
-    sep_clients = [c for c in clients_all if c.get('month') == '2026-09']
+    aug_clients = [c for c in clients_all_sorted if c.get('month') == '2026-08']
+    jul_clients = [c for c in clients_all_sorted if c.get('month') == '2026-07']
+    sep_clients = [c for c in clients_all_sorted if c.get('month') == '2026-09']
     aug_tree = build_tree_for_clients(aug_clients, include_clients=False)
     jul_tree = build_tree_for_clients(jul_clients, include_clients=False)
     sep_tree = build_tree_for_clients(sep_clients, include_clients=False)

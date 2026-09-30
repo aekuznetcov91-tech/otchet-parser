@@ -198,6 +198,20 @@ console.log('OK');
         self.assertIn('mtdBadgeB2CBrands', index_content, "index.html must have mtdBadgeB2CBrands element")
         self.assertIn('mtdBadgeB2CStruct', index_content, "index.html must have mtdBadgeB2CStruct element")
 
+    def test_lead_geo_modal_period_sync(self):
+        root_geo = os.path.join(BASE_DIR, 'js', 'lead-geo.js')
+        site_geo = os.path.join(JS_DIR, 'lead-geo.js')
+        self.assertTrue(os.path.exists(root_geo), "js/lead-geo.js missing")
+        self.assertTrue(os.path.exists(site_geo), "site/js/lead-geo.js missing")
+        with open(root_geo, 'r', encoding='utf-8') as f1, open(site_geo, 'r', encoding='utf-8') as f2:
+            self.assertEqual(f1.read(), f2.read(), "js/lead-geo.js and site/js/lead-geo.js must be identical")
+
+        with open(site_geo, 'r', encoding='utf-8') as f:
+            content = f.read()
+        self.assertIn('getActiveLeadGeoMonth', content, "lead-geo.js must define getActiveLeadGeoMonth helper")
+        self.assertIn('c.month === activeMonth', content, "lead-geo.js drilldowns must filter clients by activeMonth")
+        self.assertIn('Период: ${periodLabel}', content, "lead-geo.js drilldowns must display period in subtitle")
+
 if __name__ == '__main__':
     unittest.main()
 
