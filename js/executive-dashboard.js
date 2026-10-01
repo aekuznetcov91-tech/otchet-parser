@@ -354,9 +354,9 @@ function renderPaceCardHTML(p) {
                     <!-- Dual Badges (Velocity LFL + Gross MoM) -->
                     <div class="flex items-center gap-2 flex-wrap">
                         <span class="text-xs px-2.5 py-1 rounded-full font-black border ${velocityBg} ${velocityColor} flex items-center gap-1 cursor-help shadow-2xs"
-                              title="Нормализованный LFL темп: ${p.dailyRate} vs ${p.prevDailyRateDisplay} сд/сут. Устраняет погрешность разницы 30 и 31 дня. Эквивалент за ${p.totalDaysInMonth} дн.: ${fmtNum(p.mtdSalesCount)} vs ${fmtNum(p.normalizedPrevSales)}">
+                              title="Нормализованный темп (LFL): ${p.dailyRate} vs ${p.prevDailyRateDisplay} сд/сут. Устраняет погрешность разницы 30 и 31 дня. Эквивалент ${p.prevMonthName} за ${p.totalDaysInMonth} дн.: ${fmtNum(p.normalizedPrevSales)} сд. vs ${p.curMonthName}: ${fmtNum(p.mtdSalesCount)} сд.">
                             <span>⏱️</span>
-                            <span>${velocityIcon}${Math.abs(p.paceVelocityPct)}% темп/день</span>
+                            <span>${velocityIcon}${Math.abs(p.paceVelocityPct)}% темп/день (LFL)</span>
                         </span>
                         <span class="text-xs px-2.5 py-1 rounded-full font-black border ${grossBg} ${grossColor} flex items-center gap-1 cursor-help shadow-2xs"
                               title="Валовое сравнение: факт ${fmtNum(p.mtdSalesCount)} сд. (${p.curMonthName}, ${p.totalDaysInMonth} дн.) к факту ${fmtNum(p.benchmarkGrossSales)} сд. (${p.prevMonthName}, ${p.benchmarkDays} дн.)">
@@ -384,7 +384,7 @@ function renderPaceCardHTML(p) {
                     <!-- Card 1: Fact -->
                     <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
                         <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                            ${p.isClosedMonth ? 'Факт закрытия' : 'Факт MTD'}
+                            ${p.isClosedMonth ? `Факт ${p.curMonthName}` : 'Факт MTD'}
                         </div>
                         <div class="text-2xl font-black text-slate-800 mt-1">${fmtNum(p.mtdSalesCount)}</div>
                         <div class="text-[10px] text-slate-500 mt-0.5">${fmtRub(p.mtdRevenue)}</div>
@@ -393,7 +393,7 @@ function renderPaceCardHTML(p) {
                     <!-- Card 2: Daily Rate -->
                     <div class="bg-blue-50/60 p-3 rounded-2xl border border-blue-100 text-center">
                         <div class="text-[11px] font-bold text-blue-600 uppercase tracking-wider">
-                            ${p.isClosedMonth ? 'Среднесут. темп' : 'Темп / день'}
+                            ${p.isClosedMonth ? `Темп ${p.curMonthName}` : 'Темп / день'}
                         </div>
                         <div class="text-2xl font-black text-blue-700 mt-1">${p.dailyRate}</div>
                         <div class="text-[10px] text-blue-500 mt-0.5">сделок/сут.</div>
@@ -402,20 +402,20 @@ function renderPaceCardHTML(p) {
                     <!-- Card 3: Normalized Benchmark (LFL) / Projected Run-Rate -->
                     <div class="bg-indigo-50/60 p-3 rounded-2xl border border-indigo-100 text-center">
                         <div class="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">
-                            ${p.isClosedMonth ? `Нормир. LFL (${p.totalDaysInMonth} дн.)` : 'Прогноз Run-Rate'}
+                            ${p.isClosedMonth ? `${p.prevMonthName} на ${p.totalDaysInMonth} дн.` : 'Прогноз Run-Rate'}
                         </div>
                         <div class="text-2xl font-black text-indigo-700 mt-1">
                             ${fmtNum(p.isClosedMonth ? p.normalizedPrevSales : p.projectedSales)}
                         </div>
                         <div class="text-[10px] font-semibold mt-0.5 ${p.paceVelocityPct >= 0 ? 'text-emerald-600' : 'text-amber-600'}">
-                            ${p.isClosedMonth ? `${velocityIcon}${Math.abs(p.paceVelocityPct)}% по темпу` : fmtRub(p.projectedRevenue)}
+                            ${p.isClosedMonth ? `${velocityIcon}${Math.abs(p.paceVelocityPct)}% по темпу (LFL)` : fmtRub(p.projectedRevenue)}
                         </div>
                     </div>
 
                     <!-- Card 4: Gross Benchmark (Full Month or MTD) -->
                     <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
                         <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                            ${p.isClosedMonth ? `Факт ${p.prevMonthName} (${p.prevTotalDays} дн.)` : `Бенчмарк MTD (${p.daysElapsed} дн.)`}
+                            ${p.isClosedMonth ? `Весь ${p.prevMonthName} (${p.prevTotalDays} дн.)` : `Бенчмарк MTD (${p.daysElapsed} дн.)`}
                         </div>
                         <div class="text-2xl font-black text-slate-700 mt-1">${fmtNum(p.benchmarkGrossSales)}</div>
                         <div class="text-[10px] font-semibold mt-0.5 ${p.grossSalesPct >= 0 ? 'text-emerald-600' : 'text-rose-600'}">
@@ -438,7 +438,7 @@ function renderPaceCardHTML(p) {
                 </span>
                 <span class="font-bold flex items-center gap-2">
                     <span class="${p.paceVelocityPct >= 0 ? 'text-emerald-600' : 'text-amber-600'}">
-                        По темпу: ${velocityIcon}${Math.abs(p.paceVelocityPct)}%
+                        Темп (LFL): ${velocityIcon}${Math.abs(p.paceVelocityPct)}%
                     </span>
                     <span class="text-slate-300">|</span>
                     <span class="${p.grossSalesPct >= 0 ? 'text-emerald-600' : 'text-rose-600'}">
