@@ -218,8 +218,13 @@ function calculatePaceMetrics(sDb, allDb, filterConfig) {
     const totalDaysInMonth = new Date(targetYear, targetMonthIdx + 1, 0).getDate();
     const isLatestActiveMonth = (targetYear === latestYear && targetMonthIdx === latestMonthIdx);
 
-    const daysElapsed = isLatestActiveMonth ? Math.min(latestDay, totalDaysInMonth) : totalDaysInMonth;
-    const isClosedMonth = !isLatestActiveMonth;
+    const now = new Date();
+    const isPastCalendarMonth = (targetYear < now.getFullYear()) || 
+                                (targetYear === now.getFullYear() && targetMonthIdx < now.getMonth());
+    const isMonthFullyElapsed = (targetYear === latestYear && targetMonthIdx === latestMonthIdx && latestDay >= totalDaysInMonth);
+    const isClosedMonth = isPastCalendarMonth || (!isLatestActiveMonth) || isMonthFullyElapsed;
+
+    const daysElapsed = isClosedMonth ? totalDaysInMonth : Math.min(latestDay, totalDaysInMonth);
     const monthProgressPct = Math.round((daysElapsed / totalDaysInMonth) * 100);
 
     const curMonthPrefix = `${targetYear}-${String(targetMonthIdx + 1).padStart(2, '0')}`;
@@ -228,6 +233,7 @@ function calculatePaceMetrics(sDb, allDb, filterConfig) {
     const mtdRevenue = curMonthDeals.reduce((sum, d) => sum + (d.Revenue || 0), 0);
 
     const dailyRate = daysElapsed > 0 ? (mtdSalesCount / daysElapsed) : 0;
+    const dailyRevRate = daysElapsed > 0 ? (mtdRevenue / daysElapsed) : 0;
     const projectedSales = isClosedMonth ? mtdSalesCount : Math.round(dailyRate * totalDaysInMonth);
     const projectedRevenue = isClosedMonth ? mtdRevenue : (daysElapsed > 0 ? Math.round((mtdRevenue / daysElapsed) * totalDaysInMonth) : 0);
 
@@ -236,13 +242,16 @@ function calculatePaceMetrics(sDb, allDb, filterConfig) {
     const prevYear = targetMonthIdx === 0 ? targetYear - 1 : targetYear;
     const prevMonthPrefix = `${prevYear}-${String(prevMonthIdx + 1).padStart(2, '0')}`;
     const prevMonthName = monthNames[prevMonthIdx];
+    const prevTotalDays = new Date(prevYear, prevMonthIdx + 1, 0).getDate();
 
     const prevMonthAllDeals = salesOnly.filter(d => (d.SaleMonth || '').replace(/'/g, '') === prevMonthPrefix);
     const prevMonthTotalSales = prevMonthAllDeals.length;
     const prevMonthTotalRevenue = prevMonthAllDeals.reduce((sum, d) => sum + (d.Revenue || 0), 0);
+    const prevDailyRate = prevTotalDays > 0 ? (prevMonthTotalSales / prevTotalDays) : 0;
+    const prevDailyRevRate = prevTotalDays > 0 ? (prevMonthTotalRevenue / prevTotalDays) : 0;
 
+    // Previous month MTD (same day cutoff for mid-month comparison)
     const prevMtdDeals = prevMonthAllDeals.filter(d => {
-        if (isClosedMonth) return true;
         const sDate = d.SaleDate || d.DealDate;
         if (!sDate) return false;
         const dt = excelToJSDate(sDate);
@@ -251,11 +260,27 @@ function calculatePaceMetrics(sDb, allDb, filterConfig) {
 
     const prevMtdSalesCount = prevMtdDeals.length;
     const prevMtdRevenue = prevMtdDeals.reduce((sum, d) => sum + (d.Revenue || 0), 0);
+    const prevMtdDailyRate = daysElapsed > 0 ? (prevMtdSalesCount / daysElapsed) : 0;
 
-    const paceSalesDiff = mtdSalesCount - prevMtdSalesCount;
-    const paceSalesPct = prevMtdSalesCount > 0 ? Math.round((paceSalesDiff / prevMtdSalesCount) * 100) : 0;
-    const paceRevDiff = mtdRevenue - prevMtdRevenue;
-    const paceRevPct = prevMtdRevenue > 0 ? Math.round((paceRevDiff / prevMtdRevenue) * 100) : 0;
+    // Indicator 1: Normalized Daily Velocity (темп в сутки)
+    // Eliminates 30 vs 31 vs 28 days calendar skew
+    const benchmarkDailyRate = isClosedMonth ? prevDailyRate : prevMtdDailyRate;
+    const paceVelocityDiff = dailyRate - benchmarkDailyRate;
+    const paceVelocityPct = benchmarkDailyRate > 0 ? Math.round((paceVelocityDiff / benchmarkDailyRate) * 100 * 10) / 10 : 0;
+
+    // 30-day (or totalDaysInMonth) equivalent volume of previous month
+    const normalizedPrevSales = Math.round(benchmarkDailyRate * totalDaysInMonth);
+    const normalizedPrevRevenue = Math.round((isClosedMonth ? prevDailyRevRate : (daysElapsed > 0 ? prevMtdRevenue / daysElapsed : 0)) * totalDaysInMonth);
+
+    // Indicator 2: Gross MoM / MTD Volume (валовое сравнение)
+    const benchmarkGrossSales = isClosedMonth ? prevMonthTotalSales : prevMtdSalesCount;
+    const benchmarkGrossRevenue = isClosedMonth ? prevMonthTotalRevenue : prevMtdRevenue;
+    const benchmarkDays = isClosedMonth ? prevTotalDays : daysElapsed;
+
+    const grossSalesDiff = mtdSalesCount - benchmarkGrossSales;
+    const grossSalesPct = benchmarkGrossSales > 0 ? Math.round((grossSalesDiff / benchmarkGrossSales) * 100 * 10) / 10 : 0;
+    const grossRevDiff = mtdRevenue - benchmarkGrossRevenue;
+    const grossRevPct = benchmarkGrossRevenue > 0 ? Math.round((grossRevDiff / benchmarkGrossRevenue) * 100 * 10) / 10 : 0;
 
     return {
         curMonthName,
@@ -264,44 +289,60 @@ function calculatePaceMetrics(sDb, allDb, filterConfig) {
         targetYear,
         daysElapsed,
         totalDaysInMonth,
+        prevTotalDays,
+        benchmarkDays,
         monthProgressPct,
         isClosedMonth,
         isLatestActiveMonth,
         mtdSalesCount,
         mtdRevenue,
         dailyRate: dailyRate.toFixed(1),
+        dailyRateNum: dailyRate,
+        prevDailyRateDisplay: benchmarkDailyRate.toFixed(1),
+        prevDailyRateNum: benchmarkDailyRate,
         projectedSales,
         projectedRevenue,
+        normalizedPrevSales,
+        normalizedPrevRevenue,
+        paceVelocityPct,
+        grossSalesDiff,
+        grossSalesPct,
+        grossRevDiff,
+        grossRevPct,
         prevMtdSalesCount,
         prevMtdRevenue,
         prevMonthTotalSales,
         prevMonthTotalRevenue,
-        paceSalesDiff,
-        paceSalesPct,
-        paceRevDiff,
-        paceRevPct,
+        benchmarkGrossSales,
+        benchmarkGrossRevenue,
         asOfDateStr: isClosedMonth ? `Итоги за ${curMonthName} ${targetYear}` : `${daysElapsed} ${curMonthName.toLowerCase()} ${targetYear}`
     };
 }
 
 function renderPaceCardHTML(p) {
-    const isAhead = p.paceSalesPct >= 0;
-    const deltaColor = isAhead ? 'text-emerald-600' : 'text-rose-600';
-    const deltaBg = isAhead ? 'bg-emerald-50 border-emerald-200' : 'bg-rose-50 border-rose-200';
-    const deltaIcon = isAhead ? '▲ +' : '▼ ';
+    // Indicator 1: Velocity styling
+    const isVelocityAhead = p.paceVelocityPct >= 0;
+    const velocityColor = isVelocityAhead ? 'text-emerald-700' : 'text-amber-700';
+    const velocityBg = isVelocityAhead ? 'bg-emerald-50 border-emerald-300' : 'bg-amber-50 border-amber-300';
+    const velocityIcon = isVelocityAhead ? '▲ +' : '▼ ';
 
-    const benchmarkLabel = p.isClosedMonth ? `к ${p.prevMonthName}` : `к MTD ${p.prevMonthName}`;
+    // Indicator 2: Gross MoM styling
+    const isGrossAhead = p.grossSalesPct >= 0;
+    const grossColor = isGrossAhead ? 'text-emerald-700' : 'text-rose-700';
+    const grossBg = isGrossAhead ? 'bg-emerald-50 border-emerald-300' : 'bg-rose-50 border-rose-300';
+    const grossIcon = isGrossAhead ? '▲ +' : '▼ ';
+
     const cardSubtitle = p.isClosedMonth 
-        ? `Итоги закрытия за ${p.curMonthName} и сравнение с ${p.prevMonthName}`
+        ? `Итоги закрытия за ${p.curMonthName} (${p.totalDaysInMonth} дн.) и сопоставление с ${p.prevMonthName} (${p.prevTotalDays} дн.)`
         : `Прогноз закрытия ${p.curMonthName} на базе суточного темпа`;
 
     return `
         <div class="card !p-5 bg-white rounded-3xl shadow-sm border border-gray-200 flex flex-col justify-between">
             <div>
-                <!-- Title & Badge -->
-                <div class="flex items-center justify-between mb-3">
+                <!-- Title & Dual Badges -->
+                <div class="flex items-start sm:items-center justify-between mb-3 gap-3 flex-wrap">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg">
+                        <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg shrink-0">
                             ⏱️
                         </div>
                         <div>
@@ -309,16 +350,27 @@ function renderPaceCardHTML(p) {
                             <p class="text-xs text-slate-400">${cardSubtitle}</p>
                         </div>
                     </div>
-                    <span class="text-xs px-2.5 py-1 rounded-full font-black border ${deltaBg} ${deltaColor}">
-                        ${deltaIcon}${Math.abs(p.paceSalesPct)}% ${benchmarkLabel}
-                    </span>
+                    
+                    <!-- Dual Badges (Velocity LFL + Gross MoM) -->
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <span class="text-xs px-2.5 py-1 rounded-full font-black border ${velocityBg} ${velocityColor} flex items-center gap-1 cursor-help shadow-2xs"
+                              title="Нормализованный LFL темп: ${p.dailyRate} vs ${p.prevDailyRateDisplay} сд/сут. Устраняет погрешность разницы 30 и 31 дня. Эквивалент за ${p.totalDaysInMonth} дн.: ${fmtNum(p.mtdSalesCount)} vs ${fmtNum(p.normalizedPrevSales)}">
+                            <span>⏱️</span>
+                            <span>${velocityIcon}${Math.abs(p.paceVelocityPct)}% темп/день</span>
+                        </span>
+                        <span class="text-xs px-2.5 py-1 rounded-full font-black border ${grossBg} ${grossColor} flex items-center gap-1 cursor-help shadow-2xs"
+                              title="Валовое сравнение: факт ${fmtNum(p.mtdSalesCount)} сд. (${p.curMonthName}, ${p.totalDaysInMonth} дн.) к факту ${fmtNum(p.benchmarkGrossSales)} сд. (${p.prevMonthName}, ${p.benchmarkDays} дн.)">
+                            <span>📊</span>
+                            <span>${grossIcon}${Math.abs(p.grossSalesPct)}% ${p.isClosedMonth ? `к итогу ${p.prevMonthName}` : `к MTD ${p.prevMonthName}`}</span>
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Calendar Progress Bar -->
                 <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 mb-4">
                     <div class="flex justify-between items-center text-xs mb-1.5 font-bold">
                         <span class="text-slate-600">
-                            ${p.isClosedMonth ? `Месяц завершен (${p.totalDaysInMonth} дней)` : `День ${p.daysElapsed} из ${p.totalDaysInMonth} (${p.curMonthName})`}
+                            ${p.isClosedMonth ? `Месяц завершен (${p.totalDaysInMonth} из ${p.totalDaysInMonth} дней)` : `День ${p.daysElapsed} из ${p.totalDaysInMonth} (${p.curMonthName})`}
                         </span>
                         <span class="text-indigo-600">${p.monthProgressPct}% ${p.isClosedMonth ? 'итог' : 'месяца позади'}</span>
                     </div>
@@ -329,45 +381,69 @@ function renderPaceCardHTML(p) {
 
                 <!-- 4 KPI Metrics Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                    <!-- Card 1: Fact -->
                     <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
                         <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                            ${p.isClosedMonth ? 'Факт месяца' : 'Факт MTD'}
+                            ${p.isClosedMonth ? 'Факт закрытия' : 'Факт MTD'}
                         </div>
                         <div class="text-2xl font-black text-slate-800 mt-1">${fmtNum(p.mtdSalesCount)}</div>
                         <div class="text-[10px] text-slate-500 mt-0.5">${fmtRub(p.mtdRevenue)}</div>
                     </div>
+
+                    <!-- Card 2: Daily Rate -->
                     <div class="bg-blue-50/60 p-3 rounded-2xl border border-blue-100 text-center">
                         <div class="text-[11px] font-bold text-blue-600 uppercase tracking-wider">
-                            ${p.isClosedMonth ? 'Среднесут.' : 'Темп / день'}
+                            ${p.isClosedMonth ? 'Среднесут. темп' : 'Темп / день'}
                         </div>
                         <div class="text-2xl font-black text-blue-700 mt-1">${p.dailyRate}</div>
                         <div class="text-[10px] text-blue-500 mt-0.5">сделок/сут.</div>
                     </div>
+
+                    <!-- Card 3: Normalized Benchmark (LFL) / Projected Run-Rate -->
                     <div class="bg-indigo-50/60 p-3 rounded-2xl border border-indigo-100 text-center">
                         <div class="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">
-                            ${p.isClosedMonth ? 'Итог факта' : 'Прогноз Run-Rate'}
+                            ${p.isClosedMonth ? `Нормир. LFL (${p.totalDaysInMonth} дн.)` : 'Прогноз Run-Rate'}
                         </div>
-                        <div class="text-2xl font-black text-indigo-700 mt-1">${fmtNum(p.projectedSales)}</div>
-                        <div class="text-[10px] text-indigo-500 mt-0.5">${fmtRub(p.projectedRevenue)}</div>
+                        <div class="text-2xl font-black text-indigo-700 mt-1">
+                            ${fmtNum(p.isClosedMonth ? p.normalizedPrevSales : p.projectedSales)}
+                        </div>
+                        <div class="text-[10px] font-semibold mt-0.5 ${p.paceVelocityPct >= 0 ? 'text-emerald-600' : 'text-amber-600'}">
+                            ${p.isClosedMonth ? `${velocityIcon}${Math.abs(p.paceVelocityPct)}% по темпу` : fmtRub(p.projectedRevenue)}
+                        </div>
                     </div>
+
+                    <!-- Card 4: Gross Benchmark (Full Month or MTD) -->
                     <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
                         <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                            ${p.isClosedMonth ? 'Прошлый месяц' : 'Бенчмарк MTD'}
+                            ${p.isClosedMonth ? `Факт ${p.prevMonthName} (${p.prevTotalDays} дн.)` : `Бенчмарк MTD (${p.daysElapsed} дн.)`}
                         </div>
-                        <div class="text-2xl font-black text-slate-700 mt-1">${fmtNum(p.prevMtdSalesCount)}</div>
-                        <div class="text-[10px] text-slate-500 mt-0.5">${p.prevMonthName}</div>
+                        <div class="text-2xl font-black text-slate-700 mt-1">${fmtNum(p.benchmarkGrossSales)}</div>
+                        <div class="text-[10px] font-semibold mt-0.5 ${p.grossSalesPct >= 0 ? 'text-emerald-600' : 'text-rose-600'}">
+                            ${p.isClosedMonth ? `${grossIcon}${Math.abs(p.grossSalesPct)}% валово` : p.prevMonthName}
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Insight Footer -->
-            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 flex-wrap gap-2">
                 <span class="flex items-center gap-1.5">
-                    <i data-lucide="info" class="w-3.5 h-3.5 text-slate-400"></i>
-                    Весь ${p.prevMonthName}: <b>${fmtNum(p.prevMonthTotalSales)} сделок</b> (${fmtRub(p.prevMonthTotalRevenue)})
+                    <i data-lucide="info" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                    <span>
+                        ${p.isClosedMonth 
+                            ? `Весь <b>${p.prevMonthName}</b>: ${fmtNum(p.prevMonthTotalSales)} сд. (${p.prevTotalDays} дн., ${p.prevDailyRateDisplay}/сут) vs <b>${p.curMonthName}</b>: ${fmtNum(p.mtdSalesCount)} сд. (${p.totalDaysInMonth} дн., ${p.dailyRate}/сут)`
+                            : `Весь ${p.prevMonthName}: <b>${fmtNum(p.prevMonthTotalSales)} сделок</b> (${fmtRub(p.prevMonthTotalRevenue)})`
+                        }
+                    </span>
                 </span>
-                <span class="font-bold ${p.projectedSales >= p.prevMonthTotalSales ? 'text-emerald-600' : 'text-amber-600'}">
-                    ${p.projectedSales >= p.prevMonthTotalSales ? '🎯 Выше прошлого месяца' : '⚠️ Отстаем от прошлого месяца'}
+                <span class="font-bold flex items-center gap-2">
+                    <span class="${p.paceVelocityPct >= 0 ? 'text-emerald-600' : 'text-amber-600'}">
+                        По темпу: ${velocityIcon}${Math.abs(p.paceVelocityPct)}%
+                    </span>
+                    <span class="text-slate-300">|</span>
+                    <span class="${p.grossSalesPct >= 0 ? 'text-emerald-600' : 'text-rose-600'}">
+                        Валово: ${grossIcon}${Math.abs(p.grossSalesPct)}%
+                    </span>
                 </span>
             </div>
         </div>
