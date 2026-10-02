@@ -212,6 +212,66 @@ console.log('OK');
         self.assertIn('c.month === activeMonth', content, "lead-geo.js drilldowns must filter clients by activeMonth")
         self.assertIn('Период: ${periodLabel}', content, "lead-geo.js drilldowns must display period in subtitle")
 
+    def test_get_default_month_business_rule(self):
+        root_loader = os.path.join(BASE_DIR, 'js', 'data-loader.js')
+        site_loader = os.path.join(JS_DIR, 'data-loader.js')
+        self.assertTrue(os.path.exists(root_loader), "js/data-loader.js missing")
+        self.assertTrue(os.path.exists(site_loader), "site/js/data-loader.js missing")
+        with open(root_loader, 'r', encoding='utf-8') as f1, open(site_loader, 'r', encoding='utf-8') as f2:
+            self.assertEqual(f1.read(), f2.read(), "js/data-loader.js and site/js/data-loader.js must be identical")
+
+        with open(site_loader, 'r', encoding='utf-8') as f:
+            content = f.read()
+        self.assertIn('getDefaultMonth', content, "data-loader.js must define getDefaultMonth")
+
+        if not os.path.exists(NODE_BIN):
+            self.skipTest('Local node binary not found')
+
+        test_script = """
+const fs = require('fs');
+global.window = global;
+global.document = { getElementById: () => null };
+const vm = require('vm');
+const ctx = vm.createContext(global);
+vm.runInContext(fs.readFileSync('%s', 'utf8'), ctx);
+
+if (typeof ctx.getDefaultMonth !== 'function') {
+    console.error('getDefaultMonth missing');
+    process.exit(1);
+}
+
+const months = ['2026-10', '2026-09', '2026-08', '2026-07'];
+
+// Rule: Days 1 to 3 of month X -> auto-select month X-1
+const day1 = ctx.getDefaultMonth(months, new Date(2026, 9, 1)); // Oct 1
+const day2 = ctx.getDefaultMonth(months, new Date(2026, 9, 2)); // Oct 2
+const day3 = ctx.getDefaultMonth(months, new Date(2026, 9, 3)); // Oct 3
+if (day1 !== '2026-09' || day2 !== '2026-09' || day3 !== '2026-09') {
+    console.error('Failed days 1-3 rule:', { day1, day2, day3 });
+    process.exit(1);
+}
+
+// Rule: From day 4 -> select latest month (month X)
+const day4 = ctx.getDefaultMonth(months, new Date(2026, 9, 4)); // Oct 4
+const day15 = ctx.getDefaultMonth(months, new Date(2026, 9, 15)); // Oct 15
+if (day4 !== '2026-10' || day15 !== '2026-10') {
+    console.error('Failed day 4+ rule:', { day4, day15 });
+    process.exit(1);
+}
+
+// Year boundary: Jan 2 -> Dec previous year
+const ny = ctx.getDefaultMonth(['2027-01', '2026-12'], new Date(2027, 0, 2));
+if (ny !== '2026-12') {
+    console.error('Failed NY boundary rule:', ny);
+    process.exit(1);
+}
+
+console.log('OK');
+""" % site_loader.replace('\\', '/')
+
+        res = subprocess.run([NODE_BIN, '-e', test_script], capture_output=True, text=True)
+        self.assertEqual(res.returncode, 0, f"getDefaultMonth validation failed: {res.stderr}\n{res.stdout}")
+
 if __name__ == '__main__':
     unittest.main()
 

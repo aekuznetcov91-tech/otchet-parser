@@ -77,6 +77,33 @@ function updateDataFreshnessBadge(meta) {
     }
 }
 
+/**
+ * Правило выбора месяца по умолчанию:
+ * Если открывать дашборд с 1 по 3 число месяца X, автоматически выбирается месяц X-1 (прошлый),
+ * чтобы пользователи сразу видели полные итоги закрытого месяца, пока в новом месяце только первые авансы.
+ * С 4-го числа месяца X по умолчанию выбирается самый свежий доступный месяц.
+ */
+function getDefaultMonth(sortedMonths, refDate = new Date()) {
+    if (!sortedMonths || sortedMonths.length === 0) return "all";
+
+    const currentDay = refDate.getDate(); // 1..31
+
+    if (currentDay >= 1 && currentDay <= 3) {
+        // Месяц X-1 (прошлый относительно текущей календарной даты)
+        const prevDate = new Date(refDate.getFullYear(), refDate.getMonth() - 1, 1);
+        const prevYear = prevDate.getFullYear();
+        const prevMonth = String(prevDate.getMonth() + 1).padStart(2, '0');
+        const prevMonthStr = `${prevYear}-${prevMonth}`;
+
+        if (sortedMonths.includes(prevMonthStr)) {
+            return prevMonthStr;
+        }
+    }
+
+    return sortedMonths[0] || "all";
+}
+window.getDefaultMonth = getDefaultMonth;
+
 function initDropdown() {
     let months = new Set();
     db.forEach(r => {
@@ -91,14 +118,15 @@ function initDropdown() {
             sel.innerHTML += `<option value="${m}">${formatMonthLabel(m).replace('📅 ','')}</option>`;
         });
         sel.innerHTML += '<option value="custom">🗓️ Выбрать даты (календарь)...</option>';
-        // Auto-select latest month (no hardcode)
-        let def = sorted[0] || "all";
+        // Auto-select month based on rule (days 1-3 -> month X-1)
+        let def = getDefaultMonth(sorted);
         sel.value = def;
         currentFilterConfig.month = def;
         onPeriodSelectChange(def);
         sel.onchange = (e) => onPeriodSelectChange(e.target.value);
     } else {
-        currentFilterConfig.month = sorted[0] || null;
+        let def = getDefaultMonth(sorted);
+        currentFilterConfig.month = def !== "all" ? def : null;
         updateAllTabs();
     }
 }
