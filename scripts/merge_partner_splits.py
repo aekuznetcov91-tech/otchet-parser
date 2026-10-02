@@ -330,6 +330,174 @@ MERGERS = [
         'target_name': 'ООО "Асмото"',
         'target_kam': 'Евгения Добролюбова',
         'donor_ids': []
+    },
+    # 47. КАН Авто: merge P_OEM_470bf314 into 1201
+    {
+        'target_id': 1201,
+        'target_name': 'Приоритет_ГК КАН Авто',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_470bf314']
+    },
+    # 48. Фаворит: merge P_OEM_c945ead6 into 1227
+    {
+        'target_id': 1227,
+        'target_name': 'Фаворит',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_c945ead6']
+    },
+    # 49. Барс Авто: merge P_OEM_8b1a007a into 1233
+    {
+        'target_id': 1233,
+        'target_name': 'Барс Авто',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_8b1a007a']
+    },
+    # 50. Автодин: merge P_OEM_4745e299 into 1042
+    {
+        'target_id': 1042,
+        'target_name': 'Автодин',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_4745e299']
+    },
+    # 51. У Сервис: merge P_OEM_146fadbd into 1111
+    {
+        'target_id': 1111,
+        'target_name': 'Geely У Сервис',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_146fadbd']
+    },
+    # 52. Автопассаж: merge P_OEM_47b351a7 into 1160
+    {
+        'target_id': 1160,
+        'target_name': 'Автопассаж',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_47b351a7']
+    },
+    # 53. Звезда Ярославии: merge P_OEM_56d7a4be into 1046
+    {
+        'target_id': 1046,
+        'target_name': 'Звезда Ярославии',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_56d7a4be']
+    },
+    # 54. Важная персона: merge P_OEM_a82c4866 into 1258
+    {
+        'target_id': 1258,
+        'target_name': 'Важная персона',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_a82c4866']
+    },
+    # 55. Независимость: merge P_OEM_d272d060 into 1261
+    {
+        'target_id': 1261,
+        'target_name': 'Независимость',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_d272d060']
+    },
+    # 56. АСЦ: merge P_OEM_8c6abb28 into 1130
+    {
+        'target_id': 1130,
+        'target_name': 'АСЦ',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_8c6abb28']
+    },
+    # 57. Измайлово: merge P_OEM_8a5198d4 into 1059
+    {
+        'target_id': 1059,
+        'target_name': 'CHERY Измайлово',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': ['P_OEM_8a5198d4']
+    },
+    # 58. Премиум Авто: merge 92941177, P_OEM_fb550c48 into 632032
+    {
+        'target_id': 632032,
+        'target_name': 'Премиум Авто ONLINE',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [92941177, 'P_OEM_fb550c48']
+    },
+    # 59. Сократ (Моторленд СПб): merge P_OEM_a8949707 into 1280
+    {
+        'target_id': 1280,
+        'target_name': 'Сократ (Моторленд СПб)',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': ['P_OEM_a8949707']
+    },
+    # 60. Динамика: merge 1029, P_OEM_813ee700 into 1031
+    {
+        'target_id': 1031,
+        'target_name': 'ГК ДИНАМИКА',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [1029, 'P_OEM_813ee700']
+    },
+    # 61. Автополе: merge P_OEM_8f342a86 into 1063
+    {
+        'target_id': 1063,
+        'target_name': 'Автополе',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': ['P_OEM_8f342a86']
+    },
+    # 62. Автопродикс: merge P_OEM_7a28d7b7 into 1017
+    {
+        'target_id': 1017,
+        'target_name': 'Автопродикс',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': ['P_OEM_7a28d7b7']
+    },
+    # 63. Форсаж: merge P_OEM_0a1da625 into 1032
+    {
+        'target_id': 1032,
+        'target_name': 'ГК Форсаж',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': ['P_OEM_0a1da625']
+    },
+    # 64. Элке Авто: merge P_OEM_fd463b78 into 1219
+    {
+        'target_id': 1219,
+        'target_name': 'Элке Авто',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': ['P_OEM_fd463b78']
+    },
+    # 65. Рус-Авто Трейд: merge P_OEM_02fba7db into 1242
+    {
+        'target_id': 1242,
+        'target_name': 'Рус-Авто Трейд',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': ['P_OEM_02fba7db']
+    },
+    # 66. Сармат: merge 1019, P_OEM_e014612a into 1068
+    {
+        'target_id': 1068,
+        'target_name': 'Сармат',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [1019, 'P_OEM_e014612a']
+    },
+    # 67. АлексМоторс: merge 1009, P_OEM_9e68591b into 1257
+    {
+        'target_id': 1257,
+        'target_name': 'АлексМоторс',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': [1009, 'P_OEM_9e68591b']
+    },
+    # 68. Автотим: merge P_OEM_7cc355e9 into 1254
+    {
+        'target_id': 1254,
+        'target_name': 'Автотим',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': ['P_OEM_7cc355e9']
+    },
+    # 69. Автокласс: merge 1155, P_OEM_26fd34c3 into 1102
+    {
+        'target_id': 1102,
+        'target_name': 'Чери Центр Автокласс (М-Авто)',
+        'target_kam': 'Алексей Чихарев',
+        'donor_ids': [1155, 'P_OEM_26fd34c3']
+    },
+    # 70. Автохолдинг Максимум: merge P_OEM_b2de613c into 1163
+    {
+        'target_id': 1163,
+        'target_name': 'Автохолдинг Максимум',
+        'target_kam': 'Светлана Дариенко',
+        'donor_ids': ['P_OEM_b2de613c']
     }
 ]
 
@@ -398,6 +566,8 @@ def apply_merges_to_file(filepath):
         target['bitrix_aliases'].append(tname)
 
         for did in donors:
+            if did == tid:
+                continue
             donor = partners_by_id.get(did)
             if donor:
                 d_cname = donor.get('canonical_name')
@@ -443,12 +613,24 @@ def apply_merges_to_file(filepath):
 
     # 3. Автопремиум: Тверь (1040) -> Алексей Чихарев, СПб (632032) -> Светлана Дариенко
     p1040 = partners_by_id.get(1040)
-    if p1040:
-        p1040['canonical_name'] = 'Авто Премиум Тверь'
-        p1040['holding'] = 'Авто Премиум'
-        p1040['kam'] = 'Алексей Чихарев'
-        p1040['bitrix_aliases'] = ['ONLINE ООО "СОЮЗ-Т"', 'ООО "СОЮЗ-Т"', 'Авто Премиум Тверь', 'Авто Премиум Тверь ONLINE']
-        p1040['bi_aliases'] = ['Авто Премиум Тверь']
+    if not p1040:
+        p1040 = {
+            'partner_id': 1040,
+            'canonical_name': 'Авто Премиум Тверь',
+            'holding': 'Авто Премиум',
+            'kam': 'Алексей Чихарев',
+            'bitrix_aliases': [],
+            'bi_aliases': [],
+            'pochta_aliases': [],
+            'oem_data': []
+        }
+        partners.append(p1040)
+        partners_by_id[1040] = p1040
+    p1040['canonical_name'] = 'Авто Премиум Тверь'
+    p1040['holding'] = 'Авто Премиум'
+    p1040['kam'] = 'Алексей Чихарев'
+    p1040['bitrix_aliases'] = ['ONLINE ООО "СОЮЗ-Т"', 'ООО "СОЮЗ-Т"', 'Авто Премиум Тверь', 'Авто Премиум Тверь ONLINE']
+    p1040['bi_aliases'] = ['Авто Премиум Тверь']
     
     p632032 = partners_by_id.get(632032)
     if p632032:
@@ -457,6 +639,28 @@ def apply_merges_to_file(filepath):
         p632032['kam'] = 'Светлана Дариенко'
         p632032['bitrix_aliases'] = ['Премиум Авто ONLINE', 'Премиум Авто']
         p632032['bi_aliases'] = ['Премиум Авто ONLINE', 'Премиум Авто']
+
+    # Wagner / Avtoretail M (1285) oem_data for Krasnodar (Soldatova) and SPb (Darienko)
+    p1285 = partners_by_id.get(1285)
+    if p1285:
+        if 'oem_data' not in p1285 or p1285['oem_data'] is None:
+            p1285['oem_data'] = []
+        if not any(oem.get('city') == 'Краснодар' for oem in p1285['oem_data']):
+            p1285['oem_data'].append({
+                'sheet': 'B2C',
+                'city': 'Краснодар',
+                'name': 'Авторитэйл М Краснодар',
+                'legal_entity': 'ООО Авторитэйл М',
+                'responsible': 'Валерия Солдатова'
+            })
+        if not any(oem.get('city') == 'Санкт-Петербург' for oem in p1285['oem_data']):
+            p1285['oem_data'].append({
+                'sheet': 'B2C',
+                'city': 'Санкт-Петербург',
+                'name': 'Вагнер Авто / Авторитэйл М',
+                'legal_entity': 'ООО Авторитэйл М',
+                'responsible': 'Светлана Дариенко'
+            })
 
     # 4. КМ/ч: Москва (1095) -> Алексей Чихарев (план: 1)
     p1095 = partners_by_id.get(1095)
@@ -1025,7 +1229,7 @@ def apply_merges_to_data_json(filepath):
             modified = True
 
         # Globus allocation (including Tambov-Auto 1115)
-        if r.get('PartnerId') in [1013, 1115] or 'глобус' in p_name or 'тамбов-авто' in raw_p or 'тамбов-авто' in p_name or 'тамбов авто' in raw_p:
+        if r.get('PartnerId') in [1013, 1115] or 'глобус' in (p_name or '').lower() or 'тамбов' in (raw_p or '').lower() or 'тамбов' in (p_name or '').lower():
             r['PartnerId'] = 1013
             r['Partner'] = 'ГК Глобус'
             r['KAM'] = 'Валерия Солдатова'
@@ -1303,7 +1507,7 @@ def apply_merges_to_data_json(filepath):
             modified = True
 
         # Globus allocation (including Tambov-Auto 1115)
-        if r.get('PartnerId') in [1013, 1115] or 'глобус' in p_name or 'тамбов-авто' in raw_p or 'тамбов-авто' in p_name or 'тамбов авто' in raw_p:
+        if r.get('PartnerId') in [1013, 1115] or 'глобус' in (p_name or '').lower() or 'тамбов' in (raw_p or '').lower() or 'тамбов' in (p_name or '').lower():
             r['PartnerId'] = 1013
             r['PartnerName'] = 'ГК Глобус'
             r['KAM'] = 'Валерия Солдатова'
