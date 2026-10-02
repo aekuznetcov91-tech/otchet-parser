@@ -1,0 +1,42 @@
+{
+  "2026-01": {
+    "rows": 110,
+    "sales": 73,
+    "sha256": "f8535e469172fdb350143a04cb70896861132ee50aac5feaecf65af1eb33432d"
+  },
+  "2026-02": {
+    "rows": 147,
+    "sales": 97,
+    "sha256": "3bdb851df0adb2ec584c8b1aa50b4af04e56c545c9da6e73a066a6396c30c7b7"
+  },
+  "2026-03": {
+    "rows": 520,
+    "sales": 371,
+    "sha256": "334c94d3a9771122e177d8fa0aeb95324df5c1e41958ca7b99fb377e465ee600"
+  },
+  "2026-04": {
+    "rows": 867,
+    "sales": 506,
+    "sha256": "79d976cb17ab6085ca949cc9627d66dcf2f083f361c025810868dfd7897bba65"
+  },
+  "2026-05": {
+    "rows": 1266,
+    "sales": 656,
+    "sha256": "e0d015f1c8edc312af530216676f125f09ae369e9c0ebe6d95c4d0490caf94d4"
+  },
+  "2026-06": {
+    "rows": 1760,
+    "sales": 945,
+    "sha256": "21714f03d4bb6239f1697c445116fae36d69040b38b20ad80d595878d9e757c7"
+  },
+  "2026-07": {
+    "rows": 3008,
+    "sales": 1504,
+    "sha256": "962808d89f08647ce281d7e4dbc56ece88ba9954f5ef3ec733744c6ec7b8ef82"
+  },
+  "2026-08": {
+    "rows": 3194,
+    "sales": 1776,
+    "sha256": "f5df875c5e29bf56a19e3e885c159d3b81c1f8ce7692e99657878bfcedeb8a83"
+  }
+}

@@ -564,7 +564,7 @@ function normalizeKamName(name) {
 /**
  * Normalizes brand name to match OEM standards.
  */
-function normalizeBrandName(b) {
+function normalizeBrandName(b, selectedMonth = window.selectedKamMonth || '') {
     if (!b) return 'Другие';
     let ub = String(b).toUpperCase().trim();
     const aux = ["ВНЕСЕНИЕ", "АВАНС", "КРЕДИТ", "КАСКО", "ОСАГО", "ГАП", "СТРАХОВ", "СЕРТИФИКАТ", "ДОП", "СЕРВИС", "ФИНАНС", "ДОГОВОР", "ОФОРМЛЕН", "КОМИСС", "УСЛУГ", "НЕИЗВЕСТН", "ДРУГИЕ", "NULL", "UNDEFINED"];
@@ -584,7 +584,7 @@ function normalizeBrandName(b) {
     if (ub.includes('МОСКВИЧ')) return 'МОСКВИЧ';
     if (ub.includes('JELAND') || ub.includes('ДЖЕЙЛЕНД')) return 'JELAND';
     if (ub.includes('OMODA') || ub.includes('JAECOO')) {
-        let m = (window.selectedKamMonth || '').replace("'", "");
+        let m = selectedMonth.replace("'", "");
         if (m >= '2026-09') return 'JELAND';
         return 'OMODA & JAECOO';
     }
@@ -828,8 +828,8 @@ function getPartnerPlanCellHtml(p) {
 
     if (canEdit) {
         return `
-            <input type="number" min="0" step="1" 
-                value="${p.plan || ''}" 
+            <input type="number" min="0" step="1"
+                value="${p.plan || ''}"
                 placeholder="—"
                 class="w-16 text-center text-xs font-bold text-blue-700 bg-gray-50 border border-gray-300 rounded px-1.5 py-0.5 outline-none focus:bg-white focus:border-blue-500 transition"
                 onchange="onPartnerPlanChange('${p.key}', this.value, '${partnerKam}')"
@@ -945,13 +945,13 @@ async function syncKamPlansFromCloud() {
                 const localStore = getKamPlansStore();
                 const mergedKam = Object.assign({}, DEFAULT_KAM_PLANS.kam_plans, localStore.kam_plans || {}, cloudData.kam_plans || {});
                 const mergedPartners = Object.assign({}, DEFAULT_KAM_PLANS.partner_plans, localStore.partner_plans || {}, cloudData.partner_plans || {});
-                
+
                 const updated = {
                     kam_plans: mergedKam,
                     partner_plans: mergedPartners
                 };
                 saveKamPlansStore(updated, false); // save locally without echo
-                
+
                 // Refresh KAM tab if visible
                 const kamTab = document.getElementById('tab-kam');
                 if (kamTab && !kamTab.classList.contains('hidden')) {
@@ -993,7 +993,7 @@ function onKamOverallPlanChange(kamName, val) {
     const store = getKamPlansStore();
     store.kam_plans[kamName] = num;
     saveKamPlansStore(store);
-    
+
     // In-place refresh header KPI and progress bar without losing DOM focus
     const agg = getKamAggregatedData(currentFilterConfig);
     renderKamPlanHeader(agg.summary);
@@ -1037,7 +1037,7 @@ function onPartnerPlanChange(partnerKey, val, partnerKam = '') {
         }
     }
     saveKamPlansStore(store);
-    
+
     // In-place DOM update for row % and plan badge
     if (row) {
         const planPctCell = row.querySelector('.kam-plan-pct') || row.querySelectorAll('td')[3];
@@ -1128,7 +1128,7 @@ function importKamPlansPrompt() {
  */
 function setKamManagerFilter(kamName) {
     currentKamFilter = kamName;
-    
+
     // Update active state on selector pills
     document.querySelectorAll('.kam-select-pill').forEach(pill => {
         if (pill.dataset.kam === kamName) {
@@ -1137,7 +1137,7 @@ function setKamManagerFilter(kamName) {
             pill.className = 'kam-select-pill px-3.5 py-1.5 rounded-xl text-xs font-bold transition bg-white text-gray-700 hover:bg-gray-100 cursor-pointer border border-gray-200';
         }
     });
-    
+
     renderKamTab(currentFilterConfig);
 }
 
@@ -1184,12 +1184,25 @@ function toggleKamPartnerRows(pKey) {
  */
 function getKamAggregatedData(filterCfg) {
     const payload = window.dataPayload || {};
-    const rawDbPartners = payload.sys_db_partners || (typeof dbPartners !== 'undefined' ? dbPartners : []);
+    const cfg = filterCfg || (typeof currentFilterConfig !== 'undefined' ? currentFilterConfig : { mode: 'all' });
+    return calculateKamAggregation({
+        ...payload,
+        sys_db_partners: payload.sys_db_partners || (typeof dbPartners !== 'undefined' ? dbPartners : [])
+    }, cfg, {
+        kamFilter: currentKamFilter,
+        plans: getKamPlansStore(),
+        brandMonth: window.selectedKamMonth || '',
+        today: new Date()
+    });
+}
+
+/** Compute metrics from explicit inputs; storage and UI state stay in the adapter. */
+function calculateKamAggregation(payload, cfg, options) {
+    const rawDbPartners = payload.sys_db_partners || [];
     const registry = payload.partners_registry || [];
     const lgd = payload.lead_geo_dealers || {};
-    
-    // Determine active date filter safely
-    const cfg = filterCfg || (typeof currentFilterConfig !== 'undefined' ? currentFilterConfig : { mode: 'all' });
+    const currentKamFilter = options.kamFilter;
+    const normalizeBrand = brand => normalizeBrandName(brand, options.brandMonth);
     const activeMonth = (cfg.mode === 'month' && cfg.month) ? cfg.month : (cfg.mode === 'all' ? 'all' : '2026-08');
     const monthLgd = (lgd.by_month && (lgd.by_month[activeMonth] || (activeMonth === 'all' ? lgd.by_month['all'] : lgd.by_month['2026-08']))) || lgd;
     const lgdSummary = monthLgd.summary || lgd.summary || {
@@ -1222,7 +1235,7 @@ function getKamAggregatedData(filterCfg) {
     const partnerListForMatching = [];
 
     const GENERIC_STOP_WORDS = new Set([
-        'ооо', 'зао', 'пао', 'ао', 'ип', 'online', 'онлайн', 'onlin', 
+        'ооо', 'зао', 'пао', 'ао', 'ип', 'online', 'онлайн', 'onlin',
         'авто', 'auto', 'холдинг', 'holding', 'группа', 'group', 'моторс', 'motors',
         'центр', 'дилер', 'сервис', 'плюс', 'трейд', 'компания', 'россия', 'russia'
     ]);
@@ -1294,7 +1307,7 @@ function getKamAggregatedData(filterCfg) {
         let normKam = normalizeKamName(rawKam);
         let finalKam = (normKam && normKam !== 'Не назначен') ? normKam : (regEntry ? normalizeKamName(regEntry.kam) : 'Не назначен');
         let key = finalPid ? (finalKam ? `ID_${finalPid}__${finalKam}` : `ID_${finalPid}`) : (finalKam ? `RAW_${finalName}__${finalKam}` : `RAW_${finalName}`);
-        
+
         if (!partnerStats[key]) {
             let oemGeo = regEntry ? regEntry.oem_data : [];
 
@@ -1313,7 +1326,7 @@ function getKamAggregatedData(filterCfg) {
                     }
 
                     const city = oem.city || 'Город не указан';
-                    const br = normalizeBrandName(oem.brand);
+                    const br = normalizeBrand(oem.brand);
 
                     if (!oemCities[city]) {
                         oemCities[city] = {
@@ -1412,7 +1425,7 @@ function getKamAggregatedData(filterCfg) {
             ps.kam = normKam;
         }
         const rawBrand = r.Brand || 'Другие';
-        const brand = normalizeBrandName(rawBrand);
+        const brand = normalizeBrand(rawBrand);
         const b2c = (r.B2C || '').toUpperCase().trim();
 
         // Ensure brand entry exists in partner's brands
@@ -1522,7 +1535,7 @@ function getKamAggregatedData(filterCfg) {
                     if (!ps.has_trans_from_db) {
                         ps.trans_leads += (d.trans_clients || 0);
                         (d.top_brands || []).forEach(tb => {
-                            const ntb = normalizeBrandName(tb);
+                            const ntb = normalizeBrand(tb);
                             if (!ps.brands[ntb]) {
                                 ps.brands[ntb] = { name: ntb, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
                             }
@@ -1573,7 +1586,7 @@ function getKamAggregatedData(filterCfg) {
                     }
                 }
             });
-            maxDealDay = foundMax > 0 ? foundMax : new Date().getDate();
+            maxDealDay = foundMax > 0 ? foundMax : options.today.getDate();
         } else {
             maxDealDay = 31;
         }
@@ -1610,7 +1623,7 @@ function getKamAggregatedData(filterCfg) {
                 const qty = (r.Qty || 1);
                 targetPs.mtd_deals += qty;
                 const rawBrand = r.Brand || 'Другие';
-                const brand = normalizeBrandName(rawBrand);
+                const brand = normalizeBrand(rawBrand);
                 if (!targetPs.brands[brand]) {
                     targetPs.brands[brand] = { name: brand, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
                 }
@@ -1658,7 +1671,7 @@ function getKamAggregatedData(filterCfg) {
         if (targetPs) {
             targetPs.debts_count = (targetPs.debts_count || 0) + 1;
             const rawBrand = d.brand || 'Другие';
-            const brand = normalizeBrandName(rawBrand);
+            const brand = normalizeBrand(rawBrand);
             if (!targetPs.brands[brand]) {
                 targetPs.brands[brand] = { name: brand, trans_leads: 0, trans_deals: 0, mp_deals: 0, fdc_online_deals: 0, total_deals: 0, mtd_deals: 0, debts_count: 0 };
             }
@@ -1711,7 +1724,7 @@ function getKamAggregatedData(filterCfg) {
         if (b2c.includes('ФДЦ') || b2c.includes('ONLINE') || b2c.includes('ОНЛАЙН')) {
             le.fdc_online_deals += (r.Qty || 1);
         }
-        const nb = normalizeBrandName(r.Brand);
+        const nb = normalizeBrand(r.Brand);
         if (nb) le.brands.add(nb);
     });
 
@@ -1719,7 +1732,7 @@ function getKamAggregatedData(filterCfg) {
     legalEntitiesList.sort((a, b) => b.total_deals - a.total_deals);
 
     // 5. Calculate Totals & CR
-    const plansStore = getKamPlansStore();
+    const plansStore = options.plans;
     const allPartnersList = Object.values(partnerStats);
 
     // Guarantee that every partner with brands has at least one city containing those brands
@@ -1842,7 +1855,7 @@ function getKamAggregatedData(filterCfg) {
 
     // 4.1 Build Rooftops (Город + Бренд) for the selected KAM (or all)
     const rooftopsMap = {};
-    
+
     // Seed from assigned partners & OEM data
     registry.forEach(p => {
         if (p.partner_id === 1210 || (p.canonical_name && p.canonical_name.toLowerCase().includes('сберавто'))) return;
@@ -1861,7 +1874,7 @@ function getKamAggregatedData(filterCfg) {
         if (oemData.length > 0) {
             oemData.forEach(o => {
                 const city = String(o.city || 'Город не указан').trim();
-                const brand = normalizeBrandName(o.brand || 'Другие');
+                const brand = normalizeBrand(o.brand || 'Другие');
                 const rkey = `${pid}__${city.toLowerCase()}__${brand.toLowerCase()}`;
                 if (!rooftopsMap[rkey]) {
                     rooftopsMap[rkey] = {
@@ -1891,7 +1904,7 @@ function getKamAggregatedData(filterCfg) {
         const pid = r.PartnerId || (matchDealerToPartner(r.Partner) ? matchDealerToPartner(r.Partner).id : null);
         const pname = r.Partner || r.RawPartner || 'Неизвестный партнер';
         const rawBrand = r.Brand || 'Другие';
-        const brand = normalizeBrandName(rawBrand);
+        const brand = normalizeBrand(rawBrand);
         const city = String(r.City || 'Город не указан').trim();
 
         let rkey = `${pid}__${city.toLowerCase()}__${brand.toLowerCase()}`;
@@ -2018,7 +2031,7 @@ function renderKamTab(filterCfg, tableOnly = false) {
 
     // 5. Render Brand Breakdown Analytics Card
     renderKamBrandsSplit(agg.partners);
-    
+
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
@@ -2044,7 +2057,7 @@ function renderKamPlanHeader(s) {
     const planVal = s.overall_plan;
     const factVal = s.total_deals;
     const pct = s.overall_plan_pct;
-    
+
     let badgeColor = 'bg-blue-100 text-blue-700 border-blue-200';
     let progressColor = 'bg-blue-600';
     if (pct >= 100) {
@@ -2061,8 +2074,8 @@ function renderKamPlanHeader(s) {
 
     if (canEditOverall) {
         overallPlanInputHtml = `
-            <input type="number" min="0" step="1" 
-                value="${planVal || ''}" 
+            <input type="number" min="0" step="1"
+                value="${planVal || ''}"
                 placeholder="0"
                 class="w-24 text-center text-base font-black text-blue-700 bg-blue-50/70 border border-blue-300 rounded-lg px-2 py-1 outline-none focus:ring-2 focus:ring-blue-500 transition"
                 onchange="onKamOverallPlanChange('${kamName}', this.value)"
@@ -2071,14 +2084,14 @@ function renderKamPlanHeader(s) {
         `;
     } else {
         const lockTitle = activeAuthUser
-            ? (kamName === 'all' 
-                ? 'Общий план сети может устанавливать только Руководитель / Администратор' 
+            ? (kamName === 'all'
+                ? 'Общий план сети может устанавливать только Руководитель / Администратор'
                 : `План сотрудника «${displayName}» может редактировать только он сам или Руководитель`)
             : `Для изменения плана войдите в профиль сотрудника «${displayName}» или Руководителя`;
         overallPlanInputHtml = `
             <div class="flex items-center gap-1.5 cursor-pointer group" onclick="openKamLoginModal('${kamName}')" title="${lockTitle} (нажмите для входа)">
                 <input type="number" disabled
-                    value="${planVal || ''}" 
+                    value="${planVal || ''}"
                     placeholder="0"
                     class="w-24 text-center text-base font-black text-gray-500 bg-gray-100 border border-gray-200 rounded-lg px-2 py-1 cursor-not-allowed opacity-80">
                 <span class="text-xs text-amber-600 group-hover:text-blue-600 transition" title="Заблокировано (требуется вход)">🔒</span>
@@ -2231,7 +2244,7 @@ function getDebtsHtml(debtsCount, partnerName) {
         return `<span class="text-gray-400 font-medium text-xs">—</span>`;
     }
     const safeName = (partnerName || '').replace(/'/g, "\\'");
-    return `<button type="button" 
+    return `<button type="button"
         onclick="event.stopPropagation(); openDebtorsTabForPartner('${safeName}')"
         class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-black bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 shadow-xs transition cursor-pointer"
         title="Нажмите, чтобы открыть реестр должников по партнеру ${safeName}">
@@ -2248,7 +2261,7 @@ function getBrandDebtsHtml(debtsCount, partnerName, brandName) {
         return `<span class="text-gray-400 font-medium text-[11px]">—</span>`;
     }
     const safeSearch = `${partnerName} ${brandName}`.replace(/'/g, "\\'");
-    return `<button type="button" 
+    return `<button type="button"
         onclick="event.stopPropagation(); openDebtorsTabForPartner('${safeSearch}')"
         class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[10px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 transition cursor-pointer"
         title="Нажмите, чтобы открыть должников по ${safeSearch}">
@@ -2265,7 +2278,7 @@ function openDebtorsTabForPartner(partnerQuery) {
     if (typeof switchTab === 'function') {
         switchTab('tab-details', btn);
     }
-    
+
     // Show return button in debtors tab
     const returnBtn = document.getElementById('btnReturnToKam');
     const returnText = document.getElementById('btnReturnToKamText');
@@ -2371,7 +2384,7 @@ function renderKamTable(partners) {
 
         const safeKey = 'krow_' + idx + '_' + (p.id ? String(p.id) : 'raw') + '_' + p.key.replace(/[^a-zA-Z0-9_-]/g, '_');
         const crFormatted = p.trans_leads > 0 ? `${p.cr_pct.toFixed(1)}%` : (p.trans_deals > 0 ? '—' : '0%');
-        
+
         let crColor = 'text-gray-500';
         if (p.trans_leads > 0) {
             if (p.cr_pct < 7) {
@@ -2400,8 +2413,8 @@ function renderKamTable(partners) {
 
         // Level 1: Partner Row
         html += `
-        <tr class="font-semibold bg-white hover:bg-blue-50/40 transition cursor-pointer select-none border-b border-gray-200" 
-            data-total-deals="${p.total_deals}" 
+        <tr class="font-semibold bg-white hover:bg-blue-50/40 transition cursor-pointer select-none border-b border-gray-200"
+            data-total-deals="${p.total_deals}"
             onclick="toggleKamPartnerRows('${safeKey}')">
             <td class="py-2.5 px-3">
                 <div class="flex items-center gap-1.5">
@@ -2419,17 +2432,17 @@ function renderKamTable(partners) {
                 </div>
             </td>
             <td class="text-center text-xs text-gray-600">${p.kam || '—'}</td>
-            
+
             <!-- Interactive Partner Plan Input with Auto-Save (Role Protected) -->
             <td class="text-center" onclick="event.stopPropagation()">
                 <div class="flex items-center justify-center gap-1">
                     ${getPartnerPlanCellHtml(p)}
                 </div>
             </td>
-            
+
             <td class="text-center ${planBadge} kam-plan-pct">${p.plan > 0 ? `${p.plan_pct.toFixed(0)}%` : '—'}</td>
             <td class="text-center font-bold text-gray-700">
-                ${p.trans_leads > 0 
+                ${p.trans_leads > 0
                     ? `<button type="button" data-pid="${p.id || ''}" data-pname="${safePNameAttr}" onclick="event.stopPropagation(); handleTransLeadsButtonClick(this)" class="px-2 py-0.5 rounded font-bold text-blue-600 hover:text-blue-900 hover:bg-blue-100 transition underline decoration-dotted cursor-pointer" title="Посмотреть переданные лиды (${p.trans_leads} шт.)">${fmt(p.trans_leads)}</button>`
                     : `<span class="text-gray-400">0</span>`}
             </td>
@@ -2487,7 +2500,7 @@ function renderKamTable(partners) {
                         bCrColor = 'text-blue-600 font-bold';
                     }
                     const safeBNameAttr = brandName.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-                    
+
                     html += `
                     <tr class="kam-subrow-${safeKey} hidden bg-white/90 text-[11px] hover:bg-gray-100 transition border-b border-gray-100">
                         <td class="py-1 pl-12 text-gray-600">
@@ -2498,7 +2511,7 @@ function renderKamTable(partners) {
                         <td class="text-center text-gray-400">—</td>
                         <td class="text-center text-gray-400">—</td>
                         <td class="text-center text-gray-600">
-                            ${bStats.trans_leads > 0 
+                            ${bStats.trans_leads > 0
                                 ? `<button type="button" data-pid="${p.id || ''}" data-pname="${safePNameAttr}" data-brand="${safeBNameAttr}" onclick="event.stopPropagation(); handleTransLeadsButtonClick(this)" class="px-1.5 py-0.5 rounded font-semibold text-blue-600 hover:text-blue-900 hover:bg-blue-100 transition underline decoration-dotted cursor-pointer" title="Посмотреть переданные лиды по марке ${brandName}">${fmt(bStats.trans_leads)}</button>`
                                 : `<span class="text-gray-400">0</span>`}
                         </td>
@@ -2558,7 +2571,7 @@ function renderKamBrandsSplit(partners) {
 
     const fmt = typeof fmtNum === 'function' ? fmtNum : (x => x);
     const brandTotals = {};
-    
+
     partners.forEach(p => {
         Object.entries(p.brands || {}).forEach(([brand, stats]) => {
             const nb = normalizeBrandName(brand);
@@ -2733,8 +2746,8 @@ function renderKamLegalEntitiesModalContent() {
                         </span>
                     </h3>
                     <p class="text-xs text-slate-300 mt-0.5">
-                        Юр. лиц: <b>${activeLeCount} из ${currentKamLegalEntities.length}</b> | 
-                        Крыш (Город+Бренд): <b>${activeRooftopsCount} из ${currentKamRooftops.length}</b> | 
+                        Юр. лиц: <b>${activeLeCount} из ${currentKamLegalEntities.length}</b> |
+                        Крыш (Город+Бренд): <b>${activeRooftopsCount} из ${currentKamRooftops.length}</b> |
                         Сделок: <b class="text-emerald-300">${fmt(totalDeals)}</b>
                     </p>
                 </div>
@@ -2775,7 +2788,7 @@ function renderKamLegalEntitiesModalContent() {
         <!-- Search Bar -->
         <div class="px-4 py-2.5 bg-white border-b border-gray-100 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
             <div class="relative flex-1">
-                <input type="text" 
+                <input type="text"
                     id="searchKamLegalEntitiesInput"
                     placeholder="${kamModalActiveTab === 'rooftops' ? 'Поиск по партнеру, городу или бренду крыши...' : 'Поиск по юрлицу, ИНН, Master Partner, городу или бренду...'}"
                     value="${kamLegalEntitiesSearchQuery}"
@@ -2877,8 +2890,8 @@ function renderKamLegalEntitiesModalTable() {
                     </span>
                 </td>
                 <td class="py-2 px-3 text-center">
-                    ${isActive 
-                        ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Активна</span>' 
+                    ${isActive
+                        ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Активна</span>'
                         : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">💤 Спит (0)</span>'}
                 </td>
                 <td class="py-2 px-3 text-center font-bold ${isActive ? 'text-amber-700' : 'text-gray-300'}">${fmt(rt.mp_deals)}</td>
@@ -3010,8 +3023,8 @@ function openTransferredLeadsModal(pid, partnerName, brandFilter) {
     }
 
     if (subEl) {
-        subEl.innerText = curMonth === 'all' 
-            ? 'Реестр отправленных лидов дилеру из CRM за все время' 
+        subEl.innerText = curMonth === 'all'
+            ? 'Реестр отправленных лидов дилеру из CRM за все время'
             : `Реестр отправленных лидов дилеру из CRM за период: ${curMonth}`;
     }
 
@@ -3025,7 +3038,7 @@ function openTransferredLeadsModal(pid, partnerName, brandFilter) {
     }
     if (!regPartner && safePName) {
         const low = safePName.toLowerCase().trim();
-        regPartner = regList.find(p => 
+        regPartner = regList.find(p =>
             (p.canonical_name && p.canonical_name.toLowerCase().trim() === low) ||
             (p.bitrix_aliases && p.bitrix_aliases.some(a => (a || '').toLowerCase().trim() === low)) ||
             (p.bi_aliases && p.bi_aliases.some(a => (a || '').toLowerCase().trim() === low))
@@ -3052,7 +3065,7 @@ function openTransferredLeadsModal(pid, partnerName, brandFilter) {
     allLeads.forEach(r => {
         if (r.Type !== 'Лид') return;
         const rMonth = (r.Month || '').replace("'", "");
-        
+
         // Month / date filter
         if (cfg.mode === 'month') {
             if (curMonth !== 'all' && rMonth !== curMonth) return;
@@ -3065,7 +3078,7 @@ function openTransferredLeadsModal(pid, partnerName, brandFilter) {
                 if (t < fTime || t > tTime) return;
             }
         }
-        
+
         // Transferred leads are clean leads without prepay
         if (r.HasPrepay && r.HasPrepay !== 0) return;
 
@@ -3085,7 +3098,7 @@ function openTransferredLeadsModal(pid, partnerName, brandFilter) {
                 else if (regPartner.bi_aliases && regPartner.bi_aliases.some(a => (a || '').toLowerCase().trim() === rName)) match = true;
             }
         }
-        
+
         if (!match) return;
 
         // Match brand if provided
@@ -3191,14 +3204,14 @@ function renderTransferredLeadsModalTable(leads) {
 
     leads.forEach((l, idx) => {
         const rowBg = idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60';
-        
+
         let dateStr = '—';
         if (l.date_serial && typeof excelToJSDate === 'function') {
             const d = excelToJSDate(l.date_serial);
             if (d) dateStr = d.toLocaleDateString('ru-RU');
         }
 
-        const leadLink = l.lead_id 
+        const leadLink = l.lead_id
             ? `<a href="https://back.sberauto.com/crm/leads/${l.lead_id}" target="_blank" class="inline-flex items-center gap-1 font-bold text-blue-600 hover:text-blue-800 hover:underline">
                 ${l.lead_id}
                 <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>

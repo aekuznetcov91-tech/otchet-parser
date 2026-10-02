@@ -196,32 +196,41 @@ function forceDataUpdate(btn) {
     });
 }
 
-function getFilteredData() {
-    let sDb = [], pDb = [];
-    if (currentFilterConfig.mode === 'all') {
-        sDb = db.filter(r => r.SaleQty > 0);
-        pDb = db.filter(r => r.PrepayQty > 0);
-    } else if (currentFilterConfig.mode === 'month') {
-        const m = currentFilterConfig.month;
-        sDb = db.filter(r => r.SaleQty > 0 && r.SaleMonth === m);
-        pDb = db.filter(r => r.PrepayQty > 0 && r.PrepayMonth === m);
-    } else if (currentFilterConfig.mode === 'custom') {
-        const fTime = currentFilterConfig.from.getTime();
-        const tTime = currentFilterConfig.to.getTime();
-        sDb = db.filter(r => {
-            if (r.SaleQty <= 0) return false;
-            const d = excelToJSDate(r.DealDate);
-            if (!d) return false;
-            return d.getTime() >= fTime && d.getTime() <= tTime;
-        });
-        pDb = db.filter(r => {
-            if (r.PrepayQty <= 0) return false;
-            const d = excelToJSDate(r.PrepayDate);
-            if (!d) return false;
-            return d.getTime() >= fTime && d.getTime() <= tTime;
+/**
+ * Select rows without reading or changing dashboard state.
+ * Sales and prepays use independent month/date fields.
+ */
+function filterRowsByPeriod(rows, filterConfig, qtyField, monthField, dateField) {
+    if (filterConfig.mode === 'all') {
+        return rows.filter(r => r[qtyField] > 0);
+    }
+    if (filterConfig.mode === 'month') {
+        return rows.filter(r => r[qtyField] > 0 && r[monthField] === filterConfig.month);
+    }
+    if (filterConfig.mode === 'custom') {
+        const fromTime = filterConfig.from.getTime();
+        const toTime = filterConfig.to.getTime();
+        return rows.filter(r => {
+            // Preserve the existing custom-range handling of missing quantities.
+            if (r[qtyField] <= 0) return false;
+            const date = excelToJSDate(r[dateField]);
+            if (!date) return false;
+            const time = date.getTime();
+            return time >= fromTime && time <= toTime;
         });
     }
-    return { sDb, pDb };
+    return [];
+}
+
+function selectDashboardData(rows, filterConfig) {
+    return {
+        sDb: filterRowsByPeriod(rows, filterConfig, 'SaleQty', 'SaleMonth', 'DealDate'),
+        pDb: filterRowsByPeriod(rows, filterConfig, 'PrepayQty', 'PrepayMonth', 'PrepayDate')
+    };
+}
+
+function getFilteredData() {
+    return selectDashboardData(db, currentFilterConfig);
 }
 
 function updateAllTabs() {

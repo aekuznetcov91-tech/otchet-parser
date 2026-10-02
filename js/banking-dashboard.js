@@ -204,8 +204,31 @@ function setDbFilter(cat, btn) {
     renderDatabaseRows();
 }
 
-function renderDatabaseRows() {
-    const rawData = currentActiveDb === 'lead_deals' ? dataPayload.lead_deals_db : dataPayload.other_deals_db;
+let _bankingDealsCache = null;
+async function _ensureBankingDeals() {
+    if (_bankingDealsCache) return _bankingDealsCache;
+    try {
+        const cacheKey = window._dataVersion || Date.now();
+        const res = await fetch('banking_deals.json?v=' + cacheKey);
+        if (res.ok) {
+            _bankingDealsCache = await res.json();
+            return _bankingDealsCache;
+        }
+    } catch (e) {
+        console.warn('Failed to load banking_deals.json, falling back to payload', e);
+    }
+    // Fallback: use main payload if separate file not available
+    _bankingDealsCache = dataPayload.other_deals_db || [];
+    return _bankingDealsCache;
+}
+
+async function renderDatabaseRows() {
+    let rawData;
+    if (currentActiveDb === 'lead_deals') {
+        rawData = dataPayload.lead_deals_db;
+    } else {
+        rawData = await _ensureBankingDeals();
+    }
     if (!rawData) return;
 
     const sInput = document.getElementById('dbSearchInput');

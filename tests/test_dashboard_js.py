@@ -12,16 +12,11 @@ NODE_BIN = os.path.join(BASE_DIR, 'scratch', 'tools', 'node-v20.18.0-darwin-arm6
 class TestDashboardJavaScript(unittest.TestCase):
 
     def setUp(self):
-        self.js_files = [
-            os.path.join(JS_DIR, 'utils.js'),
-            os.path.join(JS_DIR, 'tables.js'),
-            os.path.join(JS_DIR, 'charts.js'),
-            os.path.join(JS_DIR, 'debtors.js'),
-            os.path.join(JS_DIR, 'data-loader.js'),
-            os.path.join(JS_DIR, 'lead-geo.js'),
-            os.path.join(JS_DIR, 'banking-dashboard.js'),
-            os.path.join(JS_DIR, 'kam-dashboard.js')
-        ]
+        self.js_files = sorted(
+            os.path.join(directory, name)
+            for directory, _, names in os.walk(JS_DIR)
+            for name in names if name.endswith('.js')
+        )
 
     def test_js_files_exist(self):
         for f in self.js_files:

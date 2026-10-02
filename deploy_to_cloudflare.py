@@ -1,155 +1,132 @@
-import subprocess
-import os
-import sys
+"""Validate, publish the checked commit to Git, then deploy its site/ snapshot."""
+import argparse
 import json
+import os
+from pathlib import Path
+import re
 import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
 
-if sys.platform == 'win32':
-    try:
-        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
-    except AttributeError:
-        pass
+from scripts.sync_frontend import sync_frontend
 
-CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.local.json')
+ROOT = Path(__file__).resolve().parent
+CONFIG_FILE = ROOT / 'config.local.json'
+MAX_FILE_BYTES = 25 * 1024 * 1024
 
-def deploy():
-    print("[*] Zapusk avtovygruzki na Cloudflare Pages...")
-    
+
+def redact(text):
+    text = re.sub(r'https://[^/\s@]+@', 'https://[redacted]@', text or '')
+    return re.sub(r'(?:cfut_|ghp_)[A-Za-z0-9_-]+', '[redacted]', text)
+
+
+def run(args, *, env=None, cwd=ROOT, timeout=300):
+    result = subprocess.run(args, cwd=cwd, env=env, capture_output=True,
+                            text=True, errors='replace', timeout=timeout)
+    if result.returncode:
+        raise RuntimeError(f'{Path(args[0]).name} failed ({result.returncode}): '
+                           + redact(result.stderr or result.stdout))
+    return result.stdout.strip()
+
+
+def deployment_environment():
     config = {}
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, 'r', encoding='utf-8-sig') as f:
-                config = json.load(f)
-        except Exception as e:
-            print(f"[!] Warning: Failed to read config.local.json: {e}")
-
+    if CONFIG_FILE.exists():
+        config = json.loads(CONFIG_FILE.read_text(encoding='utf-8-sig'))
     env = os.environ.copy()
-    token = os.environ.get("CLOUDFLARE_API_TOKEN", config.get("api_token", ""))
-    account_id = os.environ.get("CLOUDFLARE_ACCOUNT_ID", config.get("account_id", ""))
-    project_name = config.get("project_name", "dashbord-partners1")
-    
-    env["CLOUDFLARE_API_TOKEN"] = token
-    env["CLOUDFLARE_ACCOUNT_ID"] = account_id
+    for key, field in [('CLOUDFLARE_API_TOKEN', 'api_token'), ('CLOUDFLARE_ACCOUNT_ID', 'account_id')]:
+        env.setdefault(key, config.get(field, ''))
+    node_bin = ROOT / 'scratch/tools/node-v20.18.0-darwin-arm64/bin'
+    if node_bin.exists():
+        env['PATH'] = str(node_bin) + os.pathsep + env.get('PATH', '')
+    if sys.platform == 'win32':
+        env['PATH'] = str(Path(env.get('APPDATA', '')) / 'npm') + os.pathsep + env.get('PATH', '')
+    env.update(PYTHONIOENCODING='utf-8', NO_COLOR='1')
+    return env, config.get('project_name', 'dashbord-partners1')
 
-    # Auto-add local node tools if present
-    local_node_bin = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scratch', 'tools', 'node-v20.18.0-darwin-arm64', 'bin')
-    if os.path.exists(local_node_bin):
-        env["PATH"] = local_node_bin + os.pathsep + env.get("PATH", "")
 
-    # Auto-add npm global path on Windows
-    if sys.platform.startswith("win"):
-        appdata_npm = os.path.join(os.environ.get("APPDATA", ""), "npm")
-        if os.path.exists(appdata_npm) and appdata_npm not in env.get("PATH", ""):
-            env["PATH"] = appdata_npm + os.pathsep + env.get("PATH", "")
+def validate_site(site):
+    if not (site / 'index.html').is_file():
+        raise RuntimeError('site/index.html missing')
+    for path in site.rglob('*'):
+        if path.is_symlink():
+            raise RuntimeError(f'Symlinks are not deployable: {path.name}')
+        if path.is_file() and path.stat().st_size >= MAX_FILE_BYTES:
+            raise RuntimeError(f'Cloudflare file size limit exceeded: {path.name}')
 
-    site_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'site')
-    if not os.path.exists(site_dir):
-        print(f"[!] Oshibka: Papka {site_dir} ne naydena!")
-        sys.exit(1)
 
-    # Cloudflare Pages enforces a hard 25 MiB limit per file. Ensure site/data.json is compacted.
-    site_data_path = os.path.join(site_dir, 'data.json')
-    if os.path.exists(site_data_path):
-        size_mb = os.path.getsize(site_data_path) / (1024 * 1024)
-        if size_mb >= 24.0:
-            print(f"[*] data.json ({size_mb:.2f} MiB) exceeds 24 MiB limit. Minifying/compacting...")
-            with open(site_data_path, 'r', encoding='utf-8') as f:
-                d_obj = json.load(f)
-            with open(site_data_path, 'w', encoding='utf-8') as f:
-                json.dump(d_obj, f, ensure_ascii=False, separators=(',', ':'))
-            new_size_mb = os.path.getsize(site_data_path) / (1024 * 1024)
-            print(f"[+] data.json compacted: {new_size_mb:.2f} MiB")
+def validate_staged_changes():
+    names = run(['git', 'diff', '--cached', '--name-only']).splitlines()
+    if any(Path(name).name in ('config.local.json', '.env') for name in names):
+        raise RuntimeError('Local secrets must not be committed')
+    diff = run(['git', 'diff', '--cached', '--no-ext-diff', '--unified=0'])
+    added = '\n'.join(line[1:] for line in diff.splitlines() if line.startswith('+') and not line.startswith('+++'))
+    if re.search(r'(?:cfut_|ghp_)[A-Za-z0-9_-]{20,}', added):
+        raise RuntimeError('A token was detected in staged changes; remove it before publishing')
 
-    env["PYTHONIOENCODING"] = "utf-8"
-    env["NO_COLOR"] = "1"
-
-    # Determine wrangler / npx executable
-    wrangler_bin = "wrangler.cmd" if sys.platform.startswith("win") else "wrangler"
-    wrangler_path = shutil.which(wrangler_bin, path=env.get("PATH"))
-    
-    if wrangler_path:
-        cmd = [wrangler_path, "pages", "deploy", site_dir, f"--project-name={project_name}", "--commit-dirty=true", "--branch=main"]
-    else:
-        npx_bin = "npx.cmd" if sys.platform.startswith("win") else "npx"
-        if not shutil.which(npx_bin, path=env.get("PATH")):
-            if os.path.exists(os.path.join(local_node_bin, 'npx')):
-                npx_bin = os.path.join(local_node_bin, 'npx')
-        cmd = [npx_bin, "--yes", "wrangler", "pages", "deploy", site_dir, f"--project-name={project_name}", "--commit-dirty=true", "--branch=main"]
-
-    try:
-        print(f"[*] Komanda: {' '.join(cmd)}")
-        res = subprocess.run(
-            cmd,
-            env=env,
-            capture_output=True,
-            text=True,
-            encoding='utf-8',
-            errors='replace',
-            timeout=300
-        )
-        combined = (res.stdout or "") + "\n" + (res.stderr or "")
-        print(combined)
-        
-        if res.returncode == 0 or 'Success' in combined or 'Deployment complete' in combined or 'pages.dev' in combined:
-            print("\n[+] USPESHNO VYGRUZHENO NA CLOUDFLARE PAGES!")
-            print("[+] Proizvodstvennyy URL (zaschishen avtorizaciey): https://dashbord-partners.beckelaguas723.workers.dev")
-            print("[+] Cloudflare Pages URL (zaschishen avtorizaciey):   https://dashbord-partners1.pages.dev")
-        else:
-            print("\n[!] Oshibka wrangler pri vygruzke:")
-            if not combined.strip():
-                print(f"Protsess zavershilsya s kodom {res.returncode}")
-    except subprocess.TimeoutExpired:
-        print("\n[!] Warning: Wrangler process timed out, continuing...")
-    except Exception as e:
-        print(f"[!] Oshibka: {e}")
-
-    # Synchronize and push all changes to Git (origin main)
-    sync_and_push_git()
 
 def sync_and_push_git(commit_message=None):
-    """Auto-syncs and pushes all tracked and modified files to Git origin main."""
-    print("\n[*] Sinkhronizatsiya i otpravka v Git (origin main)...")
-    try:
-        status_res = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True, errors='replace')
-        if status_res.returncode == 0:
-            changes = status_res.stdout.strip()
-            if changes:
-                print("[*] Obnaruzheny izmeneniya dlya Git:")
-                for l in changes.splitlines()[:10]:
-                    print(f"    {l}")
-                if len(changes.splitlines()) > 10:
-                    print(f"    ... i esche {len(changes.splitlines()) - 10} faylov")
-                
-                subprocess.run(["git", "add", "-A"], capture_output=True)
-                msg = commit_message or "data(deploy): auto-sync data and assets with Cloudflare deployment"
-                subprocess.run(["git", "commit", "-m", msg], capture_output=True)
+    """Fail closed on divergence or any Git error; return the published commit."""
+    if run(['git', 'branch', '--show-current']) != 'main':
+        raise RuntimeError('Publishing requires the main branch')
+    run(['git', 'fetch', 'origin', 'main'])
+    run(['git', 'merge-base', '--is-ancestor', 'origin/main', 'HEAD'])
+    run(['git', 'add', '-A'])
+    validate_staged_changes()
+    if run(['git', 'diff', '--cached', '--name-only']):
+        run(['git', 'commit', '-m', commit_message or 'refactor: validate and synchronize dashboard release'])
+    revision = run(['git', 'rev-parse', 'HEAD'])
+    run(['git', 'push', 'origin', 'HEAD:refs/heads/main'])
+    remote = run(['git', 'ls-remote', 'origin', 'refs/heads/main']).split()
+    if not remote or remote[0] != revision:
+        raise RuntimeError('Remote main does not match the release commit')
+    print(f'Git origin/main verified: {revision}')
+    return revision
 
-                # Rebase remote commits if any after committing
-                subprocess.run(["git", "pull", "--rebase", "origin", "main"], capture_output=True)
-            else:
-                print("[+] Git derevo chistoe, proverka nepushed kommitov...")
 
-            push_res = subprocess.run(["git", "push", "origin", "main"], capture_output=True, text=True, errors='replace')
-            if push_res.returncode == 0:
-                print("[+] Uspeshno zapusheno v Git (origin main)!")
-            else:
-                print(f"[!] Warning Git push: {push_res.stderr.strip() or push_res.stdout.strip()}")
-            
-            # Auto-sync comrade remote if configured
-            try:
-                remotes = subprocess.run(["git", "remote"], capture_output=True, text=True).stdout.split()
-                if "comrade" in remotes:
-                    c_push = subprocess.run(["git", "push", "comrade", "main"], capture_output=True, text=True)
-                    if c_push.returncode == 0:
-                        print("[+] Uspeshno sinkhronizirovano s repo tovarishcha (comrade main)!")
-            except Exception:
-                pass
-    except Exception as e:
-        print(f"[!] Warning Git sync: {e}")
+def deploy(*, git_only=False, commit_message=None):
+    env, project = deployment_environment()
+    if not shutil.which('node', path=env.get('PATH')):
+        raise RuntimeError('Node.js is required for dashboard regression tests')
+    # Configuration errors are caught before committing or pushing.
+    if not git_only and not (env['CLOUDFLARE_API_TOKEN'] and env['CLOUDFLARE_ACCOUNT_ID']):
+        raise RuntimeError('Cloudflare credentials are missing')
+    sync_frontend()
+    validate_site(ROOT / 'site')
+    print(run([sys.executable, '-m', 'unittest', 'discover', 'tests'], env=env))
+    sync_frontend(check=True)
+    revision = sync_and_push_git(commit_message)
+    if git_only:
+        return revision
+    # Only tracked files from the exact pushed commit reach Cloudflare.
+    with tempfile.TemporaryDirectory(prefix='dashboard-release-') as temp:
+        archive = Path(temp) / 'site.tar'
+        run(['git', 'archive', '--format=tar', '--output=' + str(archive), revision, 'site'])
+        with tarfile.open(archive) as tar:
+            for member in tar.getmembers():
+                if member.issym() or member.islnk() or '..' in Path(member.name).parts or Path(member.name).is_absolute():
+                    raise RuntimeError('Unsafe path in release archive')
+            tar.extractall(temp)
+        site = Path(temp) / 'site'
+        validate_site(site)
+        wrangler = shutil.which('wrangler.cmd' if sys.platform == 'win32' else 'wrangler', path=env.get('PATH'))
+        command = [wrangler] if wrangler else ['npx.cmd' if sys.platform == 'win32' else 'npx', '--yes', 'wrangler']
+        command += ['pages', 'deploy', str(site), '--project-name=' + project,
+                    '--branch=main', '--commit-hash=' + revision]
+        print(redact(run(command, env=env, cwd=temp)))
+    print(f'Cloudflare deployment completed for {revision}')
+    return revision
+
 
 if __name__ == '__main__':
-    deploy()
-
-
-
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--git-only', action='store_true', help='Publish the checked commit to origin/main without Cloudflare')
+    parser.add_argument('--message', help='Git commit message')
+    args = parser.parse_args()
+    try:
+        deploy(git_only=args.git_only, commit_message=args.message)
+    except (RuntimeError, OSError, ValueError, subprocess.TimeoutExpired) as error:
+        print('Release stopped: ' + redact(str(error)), file=sys.stderr)
+        sys.exit(1)

@@ -2,6 +2,7 @@ import unittest
 import os
 import subprocess
 import json
+import re
 
 class TestAuthSecurity(unittest.TestCase):
     @classmethod
@@ -34,7 +35,7 @@ class TestAuthSecurity(unittest.TestCase):
         deploy_script = os.path.join(self.root_dir, 'deploy_to_cloudflare.py')
         with open(deploy_script, 'r', encoding='utf-8') as f:
             content = f.read()
-        self.assertNotIn("cfut_", content, "No hardcoded Cloudflare API tokens in deploy_to_cloudflare.py")
+        self.assertIsNone(re.search(r"(?:cfut_|ghp_)[A-Za-z0-9_-]{20,}", content), "No hardcoded API tokens in deploy_to_cloudflare.py")
 
     def test_tracked_files_no_leaked_cloudflare_tokens(self):
         """Verify no git-tracked files contain Cloudflare API tokens."""
@@ -49,7 +50,7 @@ class TestAuthSecurity(unittest.TestCase):
                 if os.path.exists(full_path):
                     with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
                         data = f.read()
-                    self.assertNotIn("cfut_", data, f"Found Cloudflare API token in tracked file: {rel_path}")
+                    self.assertIsNone(re.search(r"(?:cfut_|ghp_)[A-Za-z0-9_-]{20,}", data), f"Found API token in tracked file: {rel_path}")
 
     def test_kam_role_based_access(self):
         """Verify KAM role-based auth and modal are present in js and html."""
