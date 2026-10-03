@@ -23,6 +23,7 @@ const path = require('node:path');
         await page.waitForFunction(() => window.dataPayload?.sys_db?.length > 0);
         for (const [month, count] of [['2026-08', '1 776'], ['2026-09', '1 559'], ['2026-10', '21']]) {
             await page.selectOption('#monthFilter', month);
+            await page.waitForFunction(expected => document.getElementById('kpiSales').innerText.trim() === expected, count);
             assert.equal((await page.locator('#kpiSales').innerText()).trim(), count);
         }
         await page.selectOption('#monthFilter', 'custom');

@@ -1,0 +1,1518 @@
+{
+  "schema_version": 1,
+  "source": "Google Sheets / Calculator",
+  "fetched_at": "2026-10-03T10:59:21.770756+00:00",
+  "first_event": "2026-07-14T21:08:08",
+  "last_event": "2026-10-03T11:37:59",
+  "raw_rows": 55021,
+  "duplicates_removed": 47,
+  "invalid_dates": 0,
+  "by_month": {
+    "all": {
+      "ALL": {
+        "calc": {
+          "events": 34339,
+          "clients": 8644,
+          "without_id": 6495
+        },
+        "offer": {
+          "events": 14711,
+          "clients": 6761,
+          "without_id": 2104
+        },
+        "fdc_form": {
+          "events": 3706,
+          "clients": 2470,
+          "without_id": 513
+        }
+      },
+      "BELGEE": {
+        "calc": {
+          "events": 700,
+          "clients": 258,
+          "without_id": 156
+        },
+        "offer": {
+          "events": 274,
+          "clients": 160,
+          "without_id": 49
+        },
+        "fdc_form": {
+          "events": 34,
+          "clients": 22,
+          "without_id": 6
+        }
+      },
+      "CHANGAN": {
+        "calc": {
+          "events": 992,
+          "clients": 365,
+          "without_id": 210
+        },
+        "offer": {
+          "events": 338,
+          "clients": 227,
+          "without_id": 34
+        },
+        "fdc_form": {
+          "events": 54,
+          "clients": 42,
+          "without_id": 6
+        }
+      },
+      "CHERY": {
+        "calc": {
+          "events": 126,
+          "clients": 53,
+          "without_id": 11
+        },
+        "offer": {
+          "events": 64,
+          "clients": 45,
+          "without_id": 6
+        },
+        "fdc_form": {
+          "events": 16,
+          "clients": 14,
+          "without_id": 0
+        }
+      },
+      "DEEPAL": {
+        "calc": {
+          "events": 157,
+          "clients": 55,
+          "without_id": 47
+        },
+        "offer": {
+          "events": 52,
+          "clients": 33,
+          "without_id": 6
+        },
+        "fdc_form": {
+          "events": 9,
+          "clients": 5,
+          "without_id": 4
+        }
+      },
+      "GAC": {
+        "calc": {
+          "events": 929,
+          "clients": 278,
+          "without_id": 189
+        },
+        "offer": {
+          "events": 368,
+          "clients": 184,
+          "without_id": 58
+        },
+        "fdc_form": {
+          "events": 71,
+          "clients": 41,
+          "without_id": 19
+        }
+      },
+      "GEELY": {
+        "calc": {
+          "events": 601,
+          "clients": 194,
+          "without_id": 136
+        },
+        "offer": {
+          "events": 186,
+          "clients": 103,
+          "without_id": 29
+        },
+        "fdc_form": {
+          "events": 37,
+          "clients": 23,
+          "without_id": 6
+        }
+      },
+      "HAVAL": {
+        "calc": {
+          "events": 663,
+          "clients": 259,
+          "without_id": 191
+        },
+        "offer": {
+          "events": 253,
+          "clients": 143,
+          "without_id": 56
+        },
+        "fdc_form": {
+          "events": 40,
+          "clients": 24,
+          "without_id": 11
+        }
+      },
+      "JAECOO": {
+        "calc": {
+          "events": 351,
+          "clients": 123,
+          "without_id": 68
+        },
+        "offer": {
+          "events": 172,
+          "clients": 99,
+          "without_id": 22
+        },
+        "fdc_form": {
+          "events": 28,
+          "clients": 22,
+          "without_id": 2
+        }
+      },
+      "JELAND": {
+        "calc": {
+          "events": 4422,
+          "clients": 1314,
+          "without_id": 1005
+        },
+        "offer": {
+          "events": 2059,
+          "clients": 971,
+          "without_id": 417
+        },
+        "fdc_form": {
+          "events": 403,
+          "clients": 262,
+          "without_id": 63
+        }
+      },
+      "JETOUR": {
+        "calc": {
+          "events": 6334,
+          "clients": 2150,
+          "without_id": 1132
+        },
+        "offer": {
+          "events": 2901,
+          "clients": 1610,
+          "without_id": 386
+        },
+        "fdc_form": {
+          "events": 851,
+          "clients": 626,
+          "without_id": 111
+        }
+      },
+      "KNEWSTAR": {
+        "calc": {
+          "events": 21,
+          "clients": 10,
+          "without_id": 1
+        },
+        "offer": {
+          "events": 9,
+          "clients": 6,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 2,
+          "clients": 2,
+          "without_id": 0
+        }
+      },
+      "LADA": {
+        "calc": {
+          "events": 7716,
+          "clients": 2350,
+          "without_id": 1142
+        },
+        "offer": {
+          "events": 3051,
+          "clients": 1707,
+          "without_id": 361
+        },
+        "fdc_form": {
+          "events": 1189,
+          "clients": 839,
+          "without_id": 141
+        }
+      },
+      "OMODA": {
+        "calc": {
+          "events": 442,
+          "clients": 161,
+          "without_id": 58
+        },
+        "offer": {
+          "events": 207,
+          "clients": 115,
+          "without_id": 20
+        },
+        "fdc_form": {
+          "events": 35,
+          "clients": 27,
+          "without_id": 4
+        }
+      },
+      "SOLARIS": {
+        "calc": {
+          "events": 781,
+          "clients": 256,
+          "without_id": 125
+        },
+        "offer": {
+          "events": 265,
+          "clients": 149,
+          "without_id": 25
+        },
+        "fdc_form": {
+          "events": 66,
+          "clients": 37,
+          "without_id": 18
+        }
+      },
+      "SOUEAST": {
+        "calc": {
+          "events": 1024,
+          "clients": 390,
+          "without_id": 198
+        },
+        "offer": {
+          "events": 465,
+          "clients": 267,
+          "without_id": 66
+        },
+        "fdc_form": {
+          "events": 139,
+          "clients": 109,
+          "without_id": 18
+        }
+      },
+      "TENET": {
+        "calc": {
+          "events": 9062,
+          "clients": 2650,
+          "without_id": 1818
+        },
+        "offer": {
+          "events": 4013,
+          "clients": 2016,
+          "without_id": 565
+        },
+        "fdc_form": {
+          "events": 732,
+          "clients": 517,
+          "without_id": 104
+        }
+      },
+      "XCITE": {
+        "calc": {
+          "events": 7,
+          "clients": 2,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 1,
+          "clients": 1,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "МОСКВИЧ": {
+        "calc": {
+          "events": 11,
+          "clients": 3,
+          "without_id": 8
+        },
+        "offer": {
+          "events": 2,
+          "clients": 0,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "НЕ ОПРЕДЕЛЁН": {
+        "calc": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 31,
+          "clients": 21,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      }
+    },
+    "2026-07": {
+      "ALL": {
+        "calc": {
+          "events": 4786,
+          "clients": 1438,
+          "without_id": 534
+        },
+        "offer": {
+          "events": 2193,
+          "clients": 1088,
+          "without_id": 261
+        },
+        "fdc_form": {
+          "events": 434,
+          "clients": 365,
+          "without_id": 17
+        }
+      },
+      "BELGEE": {
+        "calc": {
+          "events": 108,
+          "clients": 44,
+          "without_id": 18
+        },
+        "offer": {
+          "events": 52,
+          "clients": 32,
+          "without_id": 11
+        },
+        "fdc_form": {
+          "events": 5,
+          "clients": 4,
+          "without_id": 1
+        }
+      },
+      "CHANGAN": {
+        "calc": {
+          "events": 150,
+          "clients": 53,
+          "without_id": 22
+        },
+        "offer": {
+          "events": 45,
+          "clients": 35,
+          "without_id": 5
+        },
+        "fdc_form": {
+          "events": 3,
+          "clients": 3,
+          "without_id": 0
+        }
+      },
+      "CHERY": {
+        "calc": {
+          "events": 37,
+          "clients": 18,
+          "without_id": 2
+        },
+        "offer": {
+          "events": 23,
+          "clients": 18,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 6,
+          "clients": 5,
+          "without_id": 0
+        }
+      },
+      "DEEPAL": {
+        "calc": {
+          "events": 45,
+          "clients": 17,
+          "without_id": 6
+        },
+        "offer": {
+          "events": 21,
+          "clients": 12,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 3,
+          "clients": 3,
+          "without_id": 0
+        }
+      },
+      "GAC": {
+        "calc": {
+          "events": 118,
+          "clients": 36,
+          "without_id": 30
+        },
+        "offer": {
+          "events": 48,
+          "clients": 20,
+          "without_id": 10
+        },
+        "fdc_form": {
+          "events": 2,
+          "clients": 1,
+          "without_id": 1
+        }
+      },
+      "GEELY": {
+        "calc": {
+          "events": 63,
+          "clients": 29,
+          "without_id": 8
+        },
+        "offer": {
+          "events": 27,
+          "clients": 17,
+          "without_id": 4
+        },
+        "fdc_form": {
+          "events": 2,
+          "clients": 1,
+          "without_id": 1
+        }
+      },
+      "HAVAL": {
+        "calc": {
+          "events": 29,
+          "clients": 16,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 10,
+          "clients": 7,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "JAECOO": {
+        "calc": {
+          "events": 117,
+          "clients": 42,
+          "without_id": 25
+        },
+        "offer": {
+          "events": 59,
+          "clients": 33,
+          "without_id": 12
+        },
+        "fdc_form": {
+          "events": 7,
+          "clients": 6,
+          "without_id": 1
+        }
+      },
+      "JELAND": {
+        "calc": {
+          "events": 17,
+          "clients": 9,
+          "without_id": 1
+        },
+        "offer": {
+          "events": 4,
+          "clients": 3,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 1,
+          "clients": 1,
+          "without_id": 0
+        }
+      },
+      "JETOUR": {
+        "calc": {
+          "events": 1949,
+          "clients": 695,
+          "without_id": 249
+        },
+        "offer": {
+          "events": 936,
+          "clients": 517,
+          "without_id": 126
+        },
+        "fdc_form": {
+          "events": 234,
+          "clients": 204,
+          "without_id": 12
+        }
+      },
+      "KNEWSTAR": {
+        "calc": {
+          "events": 7,
+          "clients": 4,
+          "without_id": 1
+        },
+        "offer": {
+          "events": 3,
+          "clients": 2,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "LADA": {
+        "calc": {
+          "events": 1214,
+          "clients": 416,
+          "without_id": 105
+        },
+        "offer": {
+          "events": 525,
+          "clients": 301,
+          "without_id": 52
+        },
+        "fdc_form": {
+          "events": 116,
+          "clients": 104,
+          "without_id": 1
+        }
+      },
+      "OMODA": {
+        "calc": {
+          "events": 107,
+          "clients": 43,
+          "without_id": 2
+        },
+        "offer": {
+          "events": 44,
+          "clients": 27,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 7,
+          "clients": 6,
+          "without_id": 0
+        }
+      },
+      "SOLARIS": {
+        "calc": {
+          "events": 213,
+          "clients": 75,
+          "without_id": 14
+        },
+        "offer": {
+          "events": 87,
+          "clients": 48,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 11,
+          "clients": 7,
+          "without_id": 0
+        }
+      },
+      "SOUEAST": {
+        "calc": {
+          "events": 29,
+          "clients": 8,
+          "without_id": 9
+        },
+        "offer": {
+          "events": 15,
+          "clients": 7,
+          "without_id": 5
+        },
+        "fdc_form": {
+          "events": 2,
+          "clients": 2,
+          "without_id": 0
+        }
+      },
+      "TENET": {
+        "calc": {
+          "events": 576,
+          "clients": 218,
+          "without_id": 42
+        },
+        "offer": {
+          "events": 285,
+          "clients": 157,
+          "without_id": 30
+        },
+        "fdc_form": {
+          "events": 35,
+          "clients": 30,
+          "without_id": 0
+        }
+      },
+      "XCITE": {
+        "calc": {
+          "events": 7,
+          "clients": 2,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 1,
+          "clients": 1,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "НЕ ОПРЕДЕЛЁН": {
+        "calc": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 8,
+          "clients": 5,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      }
+    },
+    "2026-08": {
+      "ALL": {
+        "calc": {
+          "events": 10494,
+          "clients": 2874,
+          "without_id": 1543
+        },
+        "offer": {
+          "events": 4248,
+          "clients": 2215,
+          "without_id": 380
+        },
+        "fdc_form": {
+          "events": 1248,
+          "clients": 863,
+          "without_id": 147
+        }
+      },
+      "BELGEE": {
+        "calc": {
+          "events": 264,
+          "clients": 111,
+          "without_id": 26
+        },
+        "offer": {
+          "events": 99,
+          "clients": 71,
+          "without_id": 6
+        },
+        "fdc_form": {
+          "events": 13,
+          "clients": 10,
+          "without_id": 1
+        }
+      },
+      "CHANGAN": {
+        "calc": {
+          "events": 267,
+          "clients": 99,
+          "without_id": 56
+        },
+        "offer": {
+          "events": 97,
+          "clients": 69,
+          "without_id": 6
+        },
+        "fdc_form": {
+          "events": 11,
+          "clients": 9,
+          "without_id": 1
+        }
+      },
+      "CHERY": {
+        "calc": {
+          "events": 84,
+          "clients": 34,
+          "without_id": 5
+        },
+        "offer": {
+          "events": 37,
+          "clients": 26,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 10,
+          "clients": 9,
+          "without_id": 0
+        }
+      },
+      "DEEPAL": {
+        "calc": {
+          "events": 49,
+          "clients": 19,
+          "without_id": 16
+        },
+        "offer": {
+          "events": 15,
+          "clients": 10,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 3,
+          "clients": 1,
+          "without_id": 2
+        }
+      },
+      "GAC": {
+        "calc": {
+          "events": 354,
+          "clients": 112,
+          "without_id": 60
+        },
+        "offer": {
+          "events": 133,
+          "clients": 75,
+          "without_id": 20
+        },
+        "fdc_form": {
+          "events": 24,
+          "clients": 14,
+          "without_id": 4
+        }
+      },
+      "GEELY": {
+        "calc": {
+          "events": 181,
+          "clients": 65,
+          "without_id": 27
+        },
+        "offer": {
+          "events": 54,
+          "clients": 33,
+          "without_id": 7
+        },
+        "fdc_form": {
+          "events": 10,
+          "clients": 8,
+          "without_id": 0
+        }
+      },
+      "HAVAL": {
+        "calc": {
+          "events": 208,
+          "clients": 80,
+          "without_id": 59
+        },
+        "offer": {
+          "events": 92,
+          "clients": 51,
+          "without_id": 18
+        },
+        "fdc_form": {
+          "events": 14,
+          "clients": 9,
+          "without_id": 2
+        }
+      },
+      "JAECOO": {
+        "calc": {
+          "events": 234,
+          "clients": 83,
+          "without_id": 43
+        },
+        "offer": {
+          "events": 113,
+          "clients": 67,
+          "without_id": 10
+        },
+        "fdc_form": {
+          "events": 21,
+          "clients": 16,
+          "without_id": 1
+        }
+      },
+      "JELAND": {
+        "calc": {
+          "events": 312,
+          "clients": 111,
+          "without_id": 20
+        },
+        "offer": {
+          "events": 107,
+          "clients": 65,
+          "without_id": 11
+        },
+        "fdc_form": {
+          "events": 24,
+          "clients": 20,
+          "without_id": 1
+        }
+      },
+      "JETOUR": {
+        "calc": {
+          "events": 2589,
+          "clients": 903,
+          "without_id": 395
+        },
+        "offer": {
+          "events": 1163,
+          "clients": 674,
+          "without_id": 94
+        },
+        "fdc_form": {
+          "events": 392,
+          "clients": 271,
+          "without_id": 53
+        }
+      },
+      "KNEWSTAR": {
+        "calc": {
+          "events": 12,
+          "clients": 5,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 5,
+          "clients": 3,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 2,
+          "clients": 2,
+          "without_id": 0
+        }
+      },
+      "LADA": {
+        "calc": {
+          "events": 2846,
+          "clients": 915,
+          "without_id": 325
+        },
+        "offer": {
+          "events": 1099,
+          "clients": 664,
+          "without_id": 74
+        },
+        "fdc_form": {
+          "events": 459,
+          "clients": 334,
+          "without_id": 52
+        }
+      },
+      "OMODA": {
+        "calc": {
+          "events": 335,
+          "clients": 121,
+          "without_id": 56
+        },
+        "offer": {
+          "events": 163,
+          "clients": 88,
+          "without_id": 20
+        },
+        "fdc_form": {
+          "events": 28,
+          "clients": 21,
+          "without_id": 4
+        }
+      },
+      "SOLARIS": {
+        "calc": {
+          "events": 310,
+          "clients": 100,
+          "without_id": 45
+        },
+        "offer": {
+          "events": 97,
+          "clients": 61,
+          "without_id": 11
+        },
+        "fdc_form": {
+          "events": 27,
+          "clients": 19,
+          "without_id": 3
+        }
+      },
+      "SOUEAST": {
+        "calc": {
+          "events": 363,
+          "clients": 151,
+          "without_id": 45
+        },
+        "offer": {
+          "events": 167,
+          "clients": 99,
+          "without_id": 16
+        },
+        "fdc_form": {
+          "events": 44,
+          "clients": 41,
+          "without_id": 1
+        }
+      },
+      "TENET": {
+        "calc": {
+          "events": 2086,
+          "clients": 615,
+          "without_id": 365
+        },
+        "offer": {
+          "events": 804,
+          "clients": 442,
+          "without_id": 83
+        },
+        "fdc_form": {
+          "events": 166,
+          "clients": 126,
+          "without_id": 22
+        }
+      },
+      "НЕ ОПРЕДЕЛЁН": {
+        "calc": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 3,
+          "clients": 3,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      }
+    },
+    "2026-09": {
+      "ALL": {
+        "calc": {
+          "events": 18186,
+          "clients": 4350,
+          "without_id": 4051
+        },
+        "offer": {
+          "events": 7936,
+          "clients": 3454,
+          "without_id": 1334
+        },
+        "fdc_form": {
+          "events": 1926,
+          "clients": 1207,
+          "without_id": 313
+        }
+      },
+      "BELGEE": {
+        "calc": {
+          "events": 314,
+          "clients": 102,
+          "without_id": 102
+        },
+        "offer": {
+          "events": 120,
+          "clients": 57,
+          "without_id": 29
+        },
+        "fdc_form": {
+          "events": 16,
+          "clients": 9,
+          "without_id": 4
+        }
+      },
+      "CHANGAN": {
+        "calc": {
+          "events": 547,
+          "clients": 206,
+          "without_id": 123
+        },
+        "offer": {
+          "events": 185,
+          "clients": 118,
+          "without_id": 21
+        },
+        "fdc_form": {
+          "events": 39,
+          "clients": 30,
+          "without_id": 4
+        }
+      },
+      "CHERY": {
+        "calc": {
+          "events": 5,
+          "clients": 1,
+          "without_id": 4
+        },
+        "offer": {
+          "events": 4,
+          "clients": 1,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "DEEPAL": {
+        "calc": {
+          "events": 58,
+          "clients": 19,
+          "without_id": 23
+        },
+        "offer": {
+          "events": 15,
+          "clients": 12,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 3,
+          "clients": 1,
+          "without_id": 2
+        }
+      },
+      "GAC": {
+        "calc": {
+          "events": 431,
+          "clients": 127,
+          "without_id": 91
+        },
+        "offer": {
+          "events": 182,
+          "clients": 87,
+          "without_id": 27
+        },
+        "fdc_form": {
+          "events": 43,
+          "clients": 25,
+          "without_id": 13
+        }
+      },
+      "GEELY": {
+        "calc": {
+          "events": 328,
+          "clients": 93,
+          "without_id": 96
+        },
+        "offer": {
+          "events": 93,
+          "clients": 49,
+          "without_id": 16
+        },
+        "fdc_form": {
+          "events": 22,
+          "clients": 12,
+          "without_id": 4
+        }
+      },
+      "HAVAL": {
+        "calc": {
+          "events": 402,
+          "clients": 161,
+          "without_id": 110
+        },
+        "offer": {
+          "events": 142,
+          "clients": 85,
+          "without_id": 29
+        },
+        "fdc_form": {
+          "events": 25,
+          "clients": 14,
+          "without_id": 9
+        }
+      },
+      "JELAND": {
+        "calc": {
+          "events": 3893,
+          "clients": 1154,
+          "without_id": 902
+        },
+        "offer": {
+          "events": 1851,
+          "clients": 877,
+          "without_id": 369
+        },
+        "fdc_form": {
+          "events": 353,
+          "clients": 228,
+          "without_id": 54
+        }
+      },
+      "JETOUR": {
+        "calc": {
+          "events": 1729,
+          "clients": 586,
+          "without_id": 456
+        },
+        "offer": {
+          "events": 775,
+          "clients": 433,
+          "without_id": 154
+        },
+        "fdc_form": {
+          "events": 217,
+          "clients": 150,
+          "without_id": 41
+        }
+      },
+      "KNEWSTAR": {
+        "calc": {
+          "events": 2,
+          "clients": 1,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 1,
+          "clients": 1,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "LADA": {
+        "calc": {
+          "events": 3477,
+          "clients": 1004,
+          "without_id": 648
+        },
+        "offer": {
+          "events": 1356,
+          "clients": 727,
+          "without_id": 211
+        },
+        "fdc_form": {
+          "events": 586,
+          "clients": 386,
+          "without_id": 78
+        }
+      },
+      "SOLARIS": {
+        "calc": {
+          "events": 244,
+          "clients": 77,
+          "without_id": 63
+        },
+        "offer": {
+          "events": 77,
+          "clients": 38,
+          "without_id": 13
+        },
+        "fdc_form": {
+          "events": 27,
+          "clients": 10,
+          "without_id": 15
+        }
+      },
+      "SOUEAST": {
+        "calc": {
+          "events": 603,
+          "clients": 226,
+          "without_id": 133
+        },
+        "offer": {
+          "events": 279,
+          "clients": 163,
+          "without_id": 44
+        },
+        "fdc_form": {
+          "events": 91,
+          "clients": 65,
+          "without_id": 17
+        }
+      },
+      "TENET": {
+        "calc": {
+          "events": 6144,
+          "clients": 1790,
+          "without_id": 1294
+        },
+        "offer": {
+          "events": 2834,
+          "clients": 1397,
+          "without_id": 415
+        },
+        "fdc_form": {
+          "events": 504,
+          "clients": 349,
+          "without_id": 72
+        }
+      },
+      "МОСКВИЧ": {
+        "calc": {
+          "events": 9,
+          "clients": 3,
+          "without_id": 6
+        },
+        "offer": {
+          "events": 2,
+          "clients": 0,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "НЕ ОПРЕДЕЛЁН": {
+        "calc": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        },
+        "offer": {
+          "events": 20,
+          "clients": 13,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      }
+    },
+    "2026-10": {
+      "ALL": {
+        "calc": {
+          "events": 873,
+          "clients": 138,
+          "without_id": 367
+        },
+        "offer": {
+          "events": 334,
+          "clients": 97,
+          "without_id": 129
+        },
+        "fdc_form": {
+          "events": 98,
+          "clients": 46,
+          "without_id": 36
+        }
+      },
+      "BELGEE": {
+        "calc": {
+          "events": 14,
+          "clients": 2,
+          "without_id": 10
+        },
+        "offer": {
+          "events": 3,
+          "clients": 0,
+          "without_id": 3
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "CHANGAN": {
+        "calc": {
+          "events": 28,
+          "clients": 7,
+          "without_id": 9
+        },
+        "offer": {
+          "events": 11,
+          "clients": 5,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 1,
+          "clients": 0,
+          "without_id": 1
+        }
+      },
+      "DEEPAL": {
+        "calc": {
+          "events": 5,
+          "clients": 1,
+          "without_id": 2
+        },
+        "offer": {
+          "events": 1,
+          "clients": 0,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      },
+      "GAC": {
+        "calc": {
+          "events": 26,
+          "clients": 7,
+          "without_id": 8
+        },
+        "offer": {
+          "events": 5,
+          "clients": 4,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 2,
+          "clients": 1,
+          "without_id": 1
+        }
+      },
+      "GEELY": {
+        "calc": {
+          "events": 29,
+          "clients": 8,
+          "without_id": 5
+        },
+        "offer": {
+          "events": 12,
+          "clients": 5,
+          "without_id": 2
+        },
+        "fdc_form": {
+          "events": 3,
+          "clients": 2,
+          "without_id": 1
+        }
+      },
+      "HAVAL": {
+        "calc": {
+          "events": 24,
+          "clients": 2,
+          "without_id": 22
+        },
+        "offer": {
+          "events": 9,
+          "clients": 0,
+          "without_id": 9
+        },
+        "fdc_form": {
+          "events": 1,
+          "clients": 1,
+          "without_id": 0
+        }
+      },
+      "JELAND": {
+        "calc": {
+          "events": 200,
+          "clients": 44,
+          "without_id": 82
+        },
+        "offer": {
+          "events": 97,
+          "clients": 28,
+          "without_id": 37
+        },
+        "fdc_form": {
+          "events": 25,
+          "clients": 14,
+          "without_id": 8
+        }
+      },
+      "JETOUR": {
+        "calc": {
+          "events": 67,
+          "clients": 13,
+          "without_id": 32
+        },
+        "offer": {
+          "events": 27,
+          "clients": 7,
+          "without_id": 12
+        },
+        "fdc_form": {
+          "events": 8,
+          "clients": 2,
+          "without_id": 5
+        }
+      },
+      "LADA": {
+        "calc": {
+          "events": 179,
+          "clients": 44,
+          "without_id": 64
+        },
+        "offer": {
+          "events": 71,
+          "clients": 28,
+          "without_id": 24
+        },
+        "fdc_form": {
+          "events": 28,
+          "clients": 16,
+          "without_id": 10
+        }
+      },
+      "SOLARIS": {
+        "calc": {
+          "events": 14,
+          "clients": 6,
+          "without_id": 3
+        },
+        "offer": {
+          "events": 4,
+          "clients": 3,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 1,
+          "clients": 1,
+          "without_id": 0
+        }
+      },
+      "SOUEAST": {
+        "calc": {
+          "events": 29,
+          "clients": 10,
+          "without_id": 11
+        },
+        "offer": {
+          "events": 4,
+          "clients": 1,
+          "without_id": 1
+        },
+        "fdc_form": {
+          "events": 2,
+          "clients": 1,
+          "without_id": 0
+        }
+      },
+      "TENET": {
+        "calc": {
+          "events": 256,
+          "clients": 49,
+          "without_id": 117
+        },
+        "offer": {
+          "events": 90,
+          "clients": 35,
+          "without_id": 37
+        },
+        "fdc_form": {
+          "events": 27,
+          "clients": 12,
+          "without_id": 10
+        }
+      },
+      "МОСКВИЧ": {
+        "calc": {
+          "events": 2,
+          "clients": 0,
+          "without_id": 2
+        },
+        "offer": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        },
+        "fdc_form": {
+          "events": 0,
+          "clients": 0,
+          "without_id": 0
+        }
+      }
+    }
+  }
+}

@@ -16,7 +16,7 @@ import os
 def build_payload(sys_db, sys_db_partners, debtors, reg_data, deals_data, leads_data, all_leads_data, latest_deal_file, leads_file_name):
     # 5. Funnel Data (Clickstream & Brand Funnel) & Analytics Modules
     funnel_metrics = parse_funnel_image_or_config(RAW_DATA_DIR if os.path.exists(RAW_DATA_DIR) else PROJECT_ROOT)
-    brand_funnel = calculate_brand_funnel(sys_db, all_leads_data)
+    brand_funnel = calculate_brand_funnel(sys_db, all_leads_data, partners=sys_db_partners)
     geo_analytics = calculate_geo_match_analytics(deals_data, leads_data, sys_db)
     city_expansion = calculate_city_expansion_potential(deals_data, leads_data)
     competitor_benchmarks = calculate_competitor_benchmarks(deals_data)

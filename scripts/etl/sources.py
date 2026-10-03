@@ -13,52 +13,53 @@ import os
 import re
 import sys
 
-def load_sources():
-    # 0. Sync OEM dealers & benchmarks if an OEM file exists in raw_data or root
-    try:
-        if PROJECT_ROOT not in sys.path:
-            sys.path.insert(0, PROJECT_ROOT)
-        from scripts.sync_oem_registry import sync_oem_to_registry
-        sync_oem_to_registry()
-    except Exception as e:
-        print(f"[!] OEM sync check skipped/warning: {e}")
+def load_sources(sync_catalogs=True, leads_only=False):
+    if sync_catalogs:
+        # 0. Sync OEM dealers & benchmarks if an OEM file exists in raw_data or root
+        try:
+            if PROJECT_ROOT not in sys.path:
+                sys.path.insert(0, PROJECT_ROOT)
+            from scripts.sync_oem_registry import sync_oem_to_registry
+            sync_oem_to_registry()
+        except Exception as e:
+            print(f"[!] OEM sync check skipped/warning: {e}")
 
-    try:
-        if PROJECT_ROOT not in sys.path:
-            sys.path.insert(0, PROJECT_ROOT)
-        from scripts.sync_inn_dealers import sync_inn_dealers
-        sync_inn_dealers()
-    except Exception as e:
-        print(f"[!] INN dealers sync check skipped/warning: {e}")
+        try:
+            if PROJECT_ROOT not in sys.path:
+                sys.path.insert(0, PROJECT_ROOT)
+            from scripts.sync_inn_dealers import sync_inn_dealers
+            sync_inn_dealers()
+        except Exception as e:
+            print(f"[!] INN dealers sync check skipped/warning: {e}")
 
-    try:
-        if PROJECT_ROOT not in sys.path:
-            sys.path.insert(0, PROJECT_ROOT)
-        from scripts.enrich_september_bi_oem import run_enrichment
-        run_enrichment()
-    except Exception as e:
-        print(f"[!] September BI + OEM enrichment skipped/warning: {e}")
+        try:
+            if PROJECT_ROOT not in sys.path:
+                sys.path.insert(0, PROJECT_ROOT)
+            from scripts.enrich_september_bi_oem import run_enrichment
+            run_enrichment()
+        except Exception as e:
+            print(f"[!] September BI + OEM enrichment skipped/warning: {e}")
 
-    try:
-        if PROJECT_ROOT not in sys.path:
-            sys.path.insert(0, PROJECT_ROOT)
-        from scripts.sync_kam_to_registry import sync_kam_to_registry
-        sync_kam_to_registry()
-    except Exception as e:
-        print(f"[!] OEM KAM sync to registry skipped/warning: {e}")
+        try:
+            if PROJECT_ROOT not in sys.path:
+                sys.path.insert(0, PROJECT_ROOT)
+            from scripts.sync_kam_to_registry import sync_kam_to_registry
+            sync_kam_to_registry()
+        except Exception as e:
+            print(f"[!] OEM KAM sync to registry skipped/warning: {e}")
 
-    try:
-        if PROJECT_ROOT not in sys.path:
-            sys.path.insert(0, PROJECT_ROOT)
-        from scripts.merge_partner_splits import apply_merges_to_file
-        for rp in [
-            os.path.join(PROJECT_ROOT, 'partners_registry.json'),
-            os.path.join(SITE_DIR, 'partners_registry.json'),
-            os.path.join(DATA_DIR, 'partners_registry.json')
-        ]:
-            apply_merges_to_file(rp)
-    except Exception as e:
-        print(f"[!] Partner splits merger skipped/warning: {e}")
+        try:
+            if PROJECT_ROOT not in sys.path:
+                sys.path.insert(0, PROJECT_ROOT)
+            from scripts.merge_partner_splits import apply_merges_to_file
+            for rp in [
+                os.path.join(PROJECT_ROOT, 'partners_registry.json'),
+                os.path.join(SITE_DIR, 'partners_registry.json'),
+                os.path.join(DATA_DIR, 'partners_registry.json')
+            ]:
+                apply_merges_to_file(rp)
+        except Exception as e:
+            print(f"[!] Partner splits merger skipped/warning: {e}")
 
     # 1. Collect files from raw_data or root with MD5 hash deduplication
     search_dirs = [RAW_DATA_DIR, PROJECT_ROOT]
@@ -76,6 +77,8 @@ def load_sources():
         if not os.path.exists(sdir):
             continue
         for fname in sorted(os.listdir(sdir), reverse=True):
+            if leads_only and not (fname.startswith('data (') and fname.lower().endswith('.xlsx')):
+                continue
             if fname.startswith('~$') or fname.startswith('.'):
                 continue
             if fname.lower().endswith(('.xlsx', '.xlsm', '.csv', '.xls')):
@@ -106,7 +109,7 @@ def load_sources():
                     elif dtype == "directory":
                         directory_candidates.append((fname, rows))
 
-    if not deals_candidates:
+    if not deals_candidates and not leads_only:
         print("[!] Ошибка: Файл сделок не найден!")
         sys.exit(1)
 
