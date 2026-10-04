@@ -9,16 +9,16 @@ function getPartnerPlanCellHtml(p) {
                 value="${p.plan || ''}"
                 placeholder="—"
                 class="w-16 text-center text-xs font-bold text-blue-700 bg-gray-50 border border-gray-300 rounded px-1.5 py-0.5 outline-none focus:bg-white focus:border-blue-500 transition"
-                onchange="onPartnerPlanChange('${p.key}', this.value, '${partnerKam}')"
+                onchange="onPartnerPlanChange(${escapeHtml(JSON.stringify(p.key))}, this.value, ${escapeHtml(JSON.stringify(partnerKam))})"
                 onkeyup="if(event.key==='Enter') this.blur();"
-                title="Введите план сделок для «${p.name}» (сохраняется автоматически)">
+                title="Введите план сделок для «${escapeHtml(p.name)}» (сохраняется автоматически)">
         `;
     } else {
         const lockHint = user
             ? `План закреплен за КАМом: ${partnerKam || 'Не назначен'}. Редактирование доступно только ему или Руководителю.`
             : `План закреплен за КАМом: ${partnerKam || 'Не назначен'}. Войдите в профиль для редактирования.`;
         return `
-            <div class="flex items-center justify-center gap-1 cursor-pointer group" onclick="openKamLoginModal('${partnerKam}')" title="${lockHint} (нажмите для входа)">
+            <div class="flex items-center justify-center gap-1 cursor-pointer group" onclick="openKamLoginModal(${escapeHtml(JSON.stringify(partnerKam))})" title="${escapeHtml(lockHint)} (нажмите для входа)">
                 <span class="text-xs font-bold ${p.plan > 0 ? 'text-gray-700' : 'text-gray-400'}">${p.plan > 0 ? p.plan : '—'}</span>
                 <span class="text-[10px] text-gray-400 group-hover:text-blue-600 transition">🔒</span>
             </div>
@@ -46,7 +46,7 @@ function getKamPlansStore() {
                 for (let k in parsed.partner_plans) {
                     const val = parsed.partner_plans[k];
                     // Keep positive customized plans; don't let empty/0 wipe out configured defaults
-                    if (val > 0 || !(k in DEFAULT_KAM_PLANS.partner_plans)) {
+                    if (Number.isSafeInteger(val) && val >= 0) {
                         mergedPartners[k] = val;
                     }
                 }
@@ -80,77 +80,71 @@ function getKamPlansStore() {
 /**
  * Saves KAM plans store to both localStorage and sessionStorage, and auto-syncs to Cloudflare KV.
  */
+let cloudPlanRevision = null;
+let cloudPlanBaseline = null;
+let pendingPlanChanges = {kam_plans:{}, partner_plans:{}};
+let cloudPlanWriteInProgress = false;
+
+function cacheKamPlans(store) {
+    try { localStorage.setItem(STORAGE_KEY_KAM_PLANS, JSON.stringify(store)); } catch (_) {}
+    try { sessionStorage.setItem(STORAGE_KEY_KAM_PLANS, JSON.stringify(store)); } catch (_) {}
+}
 function saveKamPlansStore(store, pushToCloud = true) {
-    try {
-        localStorage.setItem(STORAGE_KEY_KAM_PLANS, JSON.stringify(store));
-    } catch (e) {
-        console.warn('Ошибка сохранения sberauto_kam_plans в localStorage:', e);
+    const previous = getKamPlansStore();
+    cacheKamPlans(store);
+    if (!pushToCloud) return;
+    if (cloudPlanRevision === null || !getKamActiveUser()) {
+        cacheKamPlans(previous);
+        if(typeof showToast==='function')showToast('Изменение не сохранено: войдите в профиль и дождитесь загрузки планов.', 'warning');
+        return;
     }
-    try {
-        sessionStorage.setItem(STORAGE_KEY_KAM_PLANS, JSON.stringify(store));
-    } catch (e) {}
-
-    // Auto-sync to Cloudflare KV in background
-    if (pushToCloud) {
-        clearTimeout(planSaveDebounceTimer);
-        planSaveDebounceTimer = setTimeout(async () => {
-            try {
-                await fetch(CLOUD_PLANS_API, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json; charset=utf-8' },
-                    body: JSON.stringify(store)
-                });
-                console.log('☁️ Plans auto-synced to Cloudflare KV database');
-            } catch (err) {
-                console.warn('Notice: Background cloud sync unavailable:', err);
-            }
-        }, 800);
-    }
-}
-
-/**
- * Automatically loads the latest plans from Cloudflare KV database and updates the dashboard.
- */
-async function syncKamPlansFromCloud() {
-    if (isSyncingPlansWithCloud) return;
-    isSyncingPlansWithCloud = true;
-    try {
-        const res = await fetch(CLOUD_PLANS_API, { cache: 'no-store' });
-        if (res.ok) {
-            const cloudData = await res.json();
-            if (cloudData && (cloudData.kam_plans || cloudData.partner_plans)) {
-                const localStore = getKamPlansStore();
-                const mergedKam = Object.assign({}, DEFAULT_KAM_PLANS.kam_plans, localStore.kam_plans || {}, cloudData.kam_plans || {});
-                const mergedPartners = Object.assign({}, DEFAULT_KAM_PLANS.partner_plans, localStore.partner_plans || {}, cloudData.partner_plans || {});
-
-                const updated = {
-                    kam_plans: mergedKam,
-                    partner_plans: mergedPartners
-                };
-                saveKamPlansStore(updated, false); // save locally without echo
-
-                // Refresh KAM tab if visible
-                const kamTab = document.getElementById('tab-kam');
-                if (kamTab && !kamTab.classList.contains('hidden')) {
-                    if (typeof renderKamTab === 'function') {
-                        renderKamTab(currentFilterConfig, true);
-                    }
-                }
-            }
+    for (const section of ['kam_plans','partner_plans']) {
+        for (const [key,value] of Object.entries(store[section]||{})) {
+            if(value!==previous[section]?.[key])pendingPlanChanges[section][key]=value;
         }
-    } catch (e) {
-        console.warn('Notice: Cloud plans fetch skipped or offline:', e);
-    } finally {
-        isSyncingPlansWithCloud = false;
     }
+    clearTimeout(planSaveDebounceTimer);
+    planSaveDebounceTimer = setTimeout(flushKamPlanChanges, 500);
 }
-
-// Initial background sync from Cloudflare KV on page load
-if (typeof window !== 'undefined') {
-    setTimeout(() => {
-        syncKamPlansFromCloud();
-    }, 200);
+async function flushKamPlanChanges() {
+    if(cloudPlanWriteInProgress)return;
+    if(!Object.values(pendingPlanChanges).some(x=>Object.keys(x).length))return;
+    cloudPlanWriteInProgress=true;
+    const changes=pendingPlanChanges;pendingPlanChanges={kam_plans:{},partner_plans:{}};
+    try {
+        const response=await fetch(CLOUD_PLANS_API,{method:'POST',credentials:'same-origin',
+            headers:{'Content-Type':'application/json','X-Dashboard-Request':'1'},
+            body:JSON.stringify({revision:cloudPlanRevision,changes})});
+        const result=await response.json();
+        if(!response.ok)throw new Error(result.error||'Ошибка сохранения');
+        cloudPlanRevision=result.revision;
+        cloudPlanBaseline={kam_plans:result.kam_plans,partner_plans:result.partner_plans};
+        if(typeof showToast==='function')showToast('Планы сохранены на сервере', 'success', 2000);
+    } catch(error) {
+        pendingPlanChanges={kam_plans:{},partner_plans:{}};
+        if(cloudPlanBaseline)cacheKamPlans(cloudPlanBaseline);
+        await syncKamPlansFromCloud(true);
+        if(typeof showToast==='function')showToast('Изменения не сохранены: '+error.message,'error',6000);
+    } finally {cloudPlanWriteInProgress=false;}
+    if(Object.values(pendingPlanChanges).some(x=>Object.keys(x).length))await flushKamPlanChanges();
 }
+async function syncKamPlansFromCloud(force = false) {
+    if(isSyncingPlansWithCloud || (!force && (cloudPlanWriteInProgress || Object.values(pendingPlanChanges).some(x=>Object.keys(x).length))))return;
+    isSyncingPlansWithCloud=true;
+    try {
+        const response=await fetch(CLOUD_PLANS_API,{credentials:'same-origin',cache:'no-store'});
+        if(!response.ok)throw new Error('Планы недоступны');
+        const result=await response.json();
+        if(!Number.isSafeInteger(result.revision))throw new Error('Обновите страницу для новой версии API');
+        cloudPlanRevision=result.revision;
+        cloudPlanBaseline={kam_plans:{...DEFAULT_KAM_PLANS.kam_plans,...result.kam_plans},partner_plans:{...DEFAULT_KAM_PLANS.partner_plans,...result.partner_plans}};
+        cacheKamPlans(cloudPlanBaseline);
+        const tab=document.getElementById('tab-kam');
+        if(tab && !tab.classList.contains('hidden') && typeof renderKamTab==='function')renderKamTab(currentFilterConfig,true);
+    } catch(_) {cloudPlanRevision=null;}
+    finally {isSyncingPlansWithCloud=false;}
+}
+if (typeof window !== 'undefined') setTimeout(syncKamPlansFromCloud, 200);
 
 /**
  * Updates overall plan for a KAM manager and auto-refreshes KPI/bars.
@@ -176,7 +170,7 @@ function onKamOverallPlanChange(kamName, val) {
     renderKamPlanHeader(agg.summary);
 
     if (typeof showToast === 'function') {
-        showToast(`План для «${kamName === 'all' ? 'Все КАМы' : kamName}» сохранен: ${fmtNum(num)} сделок`, 'success', 2000);
+        showToast(`План для «${kamName === 'all' ? 'Все КАМы' : kamName}» ожидает сохранения: ${fmtNum(num)} сделок`, 'success', 2000);
     }
 }
 
@@ -196,23 +190,8 @@ function onPartnerPlanChange(partnerKey, val, partnerKam = '') {
     const store = getKamPlansStore();
     store.partner_plans[partnerKey] = num;
 
-    // Multi-key redundancy so plan is resilient against filter changes, reassignment, or ID lookup
-    const m = partnerKey.match(/ID_([a-zA-Z0-9_-]+)/);
-    if (m && m[1]) {
-        const pid = m[1];
-        store.partner_plans[`ID_${pid}`] = num;
-        store.partner_plans[pid] = num;
-    }
     const safeKey = partnerKey.replace(/[^a-zA-Z0-9_-]/g, '_');
     const row = document.querySelector(`tr[onclick*="${safeKey}"]`);
-    if (row) {
-        const nameEl = row.querySelector('.font-bold.text-xs');
-        if (nameEl && nameEl.textContent) {
-            const pName = nameEl.textContent.trim();
-            store.partner_plans[pName] = num;
-            store.partner_plans[pName.toLowerCase()] = num;
-        }
-    }
     saveKamPlansStore(store);
 
     // In-place DOM update for row % and plan badge
@@ -242,7 +221,7 @@ function onPartnerPlanChange(partnerKey, val, partnerKam = '') {
     renderKamPlanHeader(agg.summary);
 
     if (typeof showToast === 'function') {
-        showToast(`План партнера сохранен: ${fmtNum(num)} сделок`, 'success', 1500);
+        showToast(`План партнера ожидает сохранения: ${fmtNum(num)} сделок`, 'success', 1500);
     }
 }
 
@@ -290,7 +269,7 @@ function importKamPlansPrompt() {
             };
             saveKamPlansStore(updated);
             renderKamTab(currentFilterConfig);
-            if (typeof showToast === 'function') showToast('Планы успешно импортированы и сохранены!', 'success', 3000);
+            if (typeof showToast === 'function') showToast('Планы отправлены на сохранение', 'success', 3000);
             else alert('Планы успешно импортированы!');
         } else {
             alert('Некорректный формат JSON: отсутствуют kam_plans или partner_plans.');

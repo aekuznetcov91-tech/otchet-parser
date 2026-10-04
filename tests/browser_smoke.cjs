@@ -15,9 +15,23 @@ const path = require('node:path');
         let cloudWrites = 0;
         page.on('pageerror', error => errors.push(error.message));
         // Exercise editing in an isolated browser profile without changing real cloud plans.
-        await page.route('**/api/kam-plans', route => {
-            if (route.request().method() !== 'GET') cloudWrites++;
-            return route.fulfill({ status: 200, contentType: 'application/json', body: '{"kam_plans":{},"partner_plans":{}}' });
+        let mockUser=null;
+        let mockPlans={revision:0,kam_plans:{},partner_plans:{}};
+        await page.route('**/api/**', async route => {
+            const pathname=new URL(route.request().url()).pathname;
+            let result={};let status=200;
+            if(pathname==='/api/login')mockUser={id:'admin',name:'Руководитель',role:'Администратор',isAdmin:true};
+            if(pathname==='/api/logout')mockUser=null;
+            if(['/api/login','/api/logout','/api/session'].includes(pathname))result={user:mockUser};
+            if(pathname==='/api/kam-plans') {
+                if(route.request().method()==='POST') {
+                    cloudWrites++;const body=route.request().postDataJSON();
+                    if(!mockUser || body.revision!==mockPlans.revision)status=409;
+                    else {for(const section of ['kam_plans','partner_plans'])Object.assign(mockPlans[section],body.changes[section]);mockPlans.revision++;}
+                }
+                result=mockPlans;
+            }
+            await route.fulfill({status,contentType:'application/json',body:JSON.stringify(result)});
         });
         await page.goto(process.env.DASHBOARD_URL || 'http://127.0.0.1:8088', { waitUntil: 'domcontentloaded', timeout: 90000 });
         await page.waitForFunction(() => window.dataPayload?.sys_db?.length > 0);
@@ -47,9 +61,9 @@ const path = require('node:path');
         assert(await page.locator('#kamTableContainer tr[class*="kam-subrow-"]:visible').count() > 0);
         await page.evaluate(() => openKamLoginModal('admin'));
         await page.selectOption('#kamLoginSelect', 'admin');
-        await page.locator('#kamLoginPin').fill(await page.evaluate(() => KAM_AUTH_ACCOUNTS.admin.pins[0]));
+        await page.locator('#kamLoginPin').fill('isolated-test-password');
         await page.locator('#kamLoginForm button[type="submit"]').click();
-        assert(await page.locator('#kamLoginModal').evaluate(el => el.classList.contains('hidden')));
+        await page.waitForFunction(() => document.getElementById('kamLoginModal').classList.contains('hidden'));
         const plan = page.locator('#kamTableContainer input[onchange^="onPartnerPlanChange"]').first();
         await plan.fill('123');
         await plan.blur();
@@ -67,6 +81,17 @@ const path = require('node:path');
         await page.locator('button[onclick="forceDataUpdate(this)"]').click();
         await page.waitForFunction(() => document.getElementById('kpiSales').innerText.trim() === '1 559');
         await page.screenshot({ path: path.join(output, 'dashboard.png') });
+        await page.waitForFunction(() => cloudPlanRevision > 0);
+        assert(cloudWrites > 0, 'API save must be exercised');
+        await page.evaluate(() => {
+            window.__xssTest=false;
+            renderManagersTable([{Manager:'<img src=x onerror="window.__xssTest=true">',SeniorManager:'<svg onload="window.__xssTest=true">',SaleQty:1}],[]);
+        });
+        assert.equal(await page.locator('#tableManagersContainer img,#tableManagersContainer svg').count(),0);
+        assert.equal(await page.evaluate(() => window.__xssTest),false);
+        assert.equal(await page.evaluate(() => safeCrmUrl('javascript:alert(1)')),'#');
+        await page.evaluate(async () => {await kamLogout();localStorage.setItem('sberauto_kam_active_account','admin');});
+        assert.equal(await page.evaluate(() => getKamActiveUser()),null);
         assert.deepEqual(errors, []);
         console.log('Browser OK: periods, 10 tabs, 5 KAMs, subrows, local plan editing, XLSX download, refresh. Intercepted cloud writes:', cloudWrites);
     } finally {

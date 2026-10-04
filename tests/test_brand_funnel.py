@@ -126,7 +126,7 @@ class TestBrandFunnelAndDataIntegrity(unittest.TestCase):
         self.assertIn('tab-details', html, "tab-details должен присутствовать в HTML")
         self.assertIn('modalDebtorsExport', html, "modalDebtorsExport должен присутствовать в HTML")
         self.assertIn('executeDebtorsExcelExport', all_code, "executeDebtorsExcelExport должен быть в JS")
-        self.assertIn('xlsx.full.min.js', html, "SheetJS библиотека должна быть подключена")
+        self.assertIn('xlsx-0.20.3.full.min.js', html, "SheetJS библиотека должна быть подключена")
 
     def test_08_no_duplicate_processing(self):
         """Проверка хэш-дедупликации входных файлов в парсере"""

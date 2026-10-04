@@ -833,7 +833,7 @@ function renderPartnersTable(filterCfg) {
  * @param {Array} pDb Prepayment data
  */
 function renderManagersTable(sDb, pDb) {
-    let mStats = {};
+    let mStats = Object.create(null);
     sDb.forEach(r => {
         let m = r.Manager || "Не указан";
         let sen = r.SeniorManager || "Без старшего";
@@ -847,7 +847,7 @@ function renderManagersTable(sDb, pDb) {
         mStats[m].p += r.PrepayQty;
     });
 
-    let groups = {};
+    let groups = Object.create(null);
     Object.entries(mStats).forEach(([mgr, data]) => {
         let sen = data.senior;
         if (!groups[sen]) groups[sen] = [];
@@ -870,14 +870,14 @@ function renderManagersTable(sDb, pDb) {
         let gP = members.reduce((s, x) => s + x.p, 0);
         grandS += gS; grandP += gP;
 
-        html += `<tr class="group-header"><td colspan="3">Группа: ${sen}</td></tr>`;
+        html += `<tr class="group-header"><td colspan="3">Группа: ${escapeHtml(sen)}</td></tr>`;
 
         members.forEach(m => {
             if (m.s === 0 && m.p === 0) return;
-            html += `<tr><td class="font-semibold pl-6">${m.name}</td><td class="font-bold text-blue-600">${fmtNum(m.s)}</td><td>${fmtNum(m.p)}</td></tr>`;
+            html += `<tr><td class="font-semibold pl-6">${escapeHtml(m.name)}</td><td class="font-bold text-blue-600">${fmtNum(m.s)}</td><td>${fmtNum(m.p)}</td></tr>`;
         });
 
-        html += `<tr class="table-subtotal"><td>ИТОГО (${sen})</td><td>${fmtNum(gS)}</td><td>${fmtNum(gP)}</td></tr>`;
+        html += `<tr class="table-subtotal"><td>ИТОГО (${escapeHtml(sen)})</td><td>${fmtNum(gS)}</td><td>${fmtNum(gP)}</td></tr>`;
     });
 
     html += `<tr class="table-total"><td>ОБЩИЙ ИТОГ</td><td>${fmtNum(grandS)}</td><td>${fmtNum(grandP)}</td></tr>`;

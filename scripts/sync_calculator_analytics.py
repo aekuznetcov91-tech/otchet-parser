@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import sys
 import urllib.request
+import urllib.parse
 import time
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.etl.calculator import SNAPSHOT, aggregate_calculator
@@ -22,8 +23,14 @@ def main():
         url = os.environ.get('CALCULATOR_ANALYTICS_URL') or settings.get('calculator_analytics_url')
         if not url:
             raise SystemExit('Set calculator_analytics_url in config.local.json or CALCULATOR_ANALYTICS_URL')
-        with urllib.request.urlopen(url + ('&' if '?' in url else '?') + 't=' + str(time.time_ns()), timeout=120) as response:
+        token = os.environ.get('CALCULATOR_ANALYTICS_READ_TOKEN') or settings.get('calculator_analytics_read_token')
+        if not token:
+            raise SystemExit('Secure Google export is not configured. Set calculator_analytics_read_token after deploying security/google-analytics.gs, or use --input.')
+        request = urllib.request.Request(url, data=urllib.parse.urlencode({'operation':'export','token':token}).encode(), method='POST')
+        with urllib.request.urlopen(request, timeout=120) as response:
             rows = json.load(response)
+        if not isinstance(rows, list):
+            raise SystemExit('Google export rejected; existing analytics snapshot was preserved')
     snapshot = aggregate_calculator(rows)
     SNAPSHOT.parent.mkdir(parents=True, exist_ok=True)
     temp = SNAPSHOT.with_suffix('.tmp')

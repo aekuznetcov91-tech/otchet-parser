@@ -86,7 +86,7 @@ def sync_and_push_git(commit_message=None):
     return revision
 
 
-def deploy(*, git_only=False, commit_message=None):
+def deploy(*, git_only=False, commit_message=None, existing_main=False):
     env, project = deployment_environment()
     if not shutil.which('node', path=env.get('PATH')):
         raise RuntimeError('Node.js is required for dashboard regression tests')
@@ -94,16 +94,26 @@ def deploy(*, git_only=False, commit_message=None):
     if not git_only and not (env['CLOUDFLARE_API_TOKEN'] and env['CLOUDFLARE_ACCOUNT_ID']):
         raise RuntimeError('Cloudflare credentials are missing')
     sync_frontend()
+    print(run(['node', 'scripts/build_security.cjs'], env=env))
+    print(run([sys.executable, 'scripts/scan_secrets.py'], env=env))
     validate_site(ROOT / 'site')
     print(run([sys.executable, '-m', 'unittest', 'discover', 'tests'], env=env))
     sync_frontend(check=True)
-    revision = sync_and_push_git(commit_message)
+    if existing_main:
+        if run(['git', 'status', '--porcelain']):
+            raise RuntimeError('Deploying existing main requires a clean working tree')
+        revision = run(['git', 'rev-parse', 'HEAD'])
+        remote = run(['git', 'ls-remote', 'origin', 'refs/heads/main']).split()
+        if not remote or remote[0] != revision:
+            raise RuntimeError('Checkout must match the reviewed origin/main commit')
+    else:
+        revision = sync_and_push_git(commit_message)
     if git_only:
         return revision
     # Only tracked files from the exact pushed commit reach Cloudflare.
     with tempfile.TemporaryDirectory(prefix='dashboard-release-') as temp:
         archive = Path(temp) / 'site.tar'
-        run(['git', 'archive', '--format=tar', '--output=' + str(archive), revision, 'site'])
+        run(['git', 'archive', '--format=tar', '--output=' + str(archive), revision, 'site', 'workers', 'wrangler.worker.jsonc'])
         with tarfile.open(archive) as tar:
             for member in tar.getmembers():
                 if member.issym() or member.islnk() or '..' in Path(member.name).parts or Path(member.name).is_absolute():
@@ -112,7 +122,8 @@ def deploy(*, git_only=False, commit_message=None):
         site = Path(temp) / 'site'
         validate_site(site)
         wrangler = shutil.which('wrangler.cmd' if sys.platform == 'win32' else 'wrangler', path=env.get('PATH'))
-        command = [wrangler] if wrangler else ['npx.cmd' if sys.platform == 'win32' else 'npx', '--yes', 'wrangler']
+        command = [wrangler] if wrangler else ['npx.cmd' if sys.platform == 'win32' else 'npx', '--yes', 'wrangler@4.86.0']
+        print(redact(run(command + ['deploy', '--config=' + str(Path(temp) / 'wrangler.worker.jsonc')], env=env, cwd=temp)))
         command += ['pages', 'deploy', str(site), '--project-name=' + project,
                     '--branch=main', '--commit-hash=' + revision]
         print(redact(run(command, env=env, cwd=temp)))
@@ -123,10 +134,11 @@ def deploy(*, git_only=False, commit_message=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--git-only', action='store_true', help='Publish the checked commit to origin/main without Cloudflare')
+    parser.add_argument('--existing-main', action='store_true', help='Deploy clean, already reviewed origin/main without a direct push')
     parser.add_argument('--message', help='Git commit message')
     args = parser.parse_args()
     try:
-        deploy(git_only=args.git_only, commit_message=args.message)
+        deploy(git_only=args.git_only, commit_message=args.message, existing_main=args.existing_main)
     except (RuntimeError, OSError, ValueError, subprocess.TimeoutExpired) as error:
         print('Release stopped: ' + redact(str(error)), file=sys.stderr)
         sys.exit(1)

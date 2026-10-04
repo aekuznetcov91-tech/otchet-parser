@@ -475,19 +475,19 @@ function renderModalClientRows(clients) {
         html += `
         <tr class="${rowBg} hover:bg-blue-50/50 transition text-xs">
             <td class="py-2 px-3 font-mono font-bold text-slate-800">
-                <a href="${c.bfs_url}" target="_blank" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold transition inline-flex items-center gap-1.5 shadow-sm" title="Открыть карточку клиента в БФС (CRM Backoffice)">
+                <a href="${escapeHtml(safeCrmUrl(c.bfs_url))}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold transition inline-flex items-center gap-1.5 shadow-sm" title="Открыть карточку клиента в БФС (CRM Backoffice)">
                     <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                    BFS #${c.id}
+                    BFS #${escapeHtml(c.id)}
                 </a>
             </td>
             <td class="py-2 px-3 font-semibold text-slate-900">
-                ${c.brand || '—'} <span class="text-slate-500 font-normal">${c.model || ''}</span>
+                ${escapeHtml(c.brand || '—')} <span class="text-slate-500 font-normal">${escapeHtml(c.model || '')}</span>
             </td>
-            <td class="py-2 px-3 text-slate-700">${c.dealer || c.dealer_name || 'Пул СберАвто'}</td>
+            <td class="py-2 px-3 text-slate-700">${escapeHtml(c.dealer || c.dealer_name || 'Пул СберАвто')}</td>
             <td class="py-2 px-3 text-center">${qualBadge}</td>
             <td class="py-2 px-3 text-center">${transBadge}</td>
             <td class="py-2 px-3 text-center">${dealBadge}</td>
-            <td class="py-2 px-3 font-mono text-[11px] text-slate-600 select-all">${c.vin || '—'}</td>
+            <td class="py-2 px-3 font-mono text-[11px] text-slate-600 select-all">${escapeHtml(c.vin || '—')}</td>
         </tr>`;
     });
 
@@ -514,7 +514,7 @@ function exportModalClientsToExcel() {
     currentModalClients.forEach(c => {
         wsData.push([
             c.id || "—",
-            c.bfs_url || `https://backoffice.x.sberauto.com/crm/manager/${c.id}`,
+            c.bfs_url || `https://backoffice.x.sberauto.com/crm/manager/${escapeHtml(c.id)}`,
             c.brand || "—",
             c.model || "—",
             c.dealer || c.dealer_name || "—",

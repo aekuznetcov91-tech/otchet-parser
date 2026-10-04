@@ -1,7 +1,5 @@
-const CLOUD_PLANS_API = (typeof window !== 'undefined' && window.location && window.location.hostname && window.location.hostname.includes('workers.dev'))
-    ? '/api/kam-plans'
-    : 'https://dashbord-partners.beckelaguas723.workers.dev/api/kam-plans';
-
+const CLOUD_PLANS_API = '/api/kam-plans';
+let kamAuthenticatedUser = null;
 let isSyncingPlansWithCloud = false;
 let planSaveDebounceTimer = null;
 
@@ -17,7 +15,6 @@ const KAM_AUTH_ACCOUNTS = {
         id: 'admin',
         name: 'Руководитель',
         role: 'Руководитель / Администратор',
-        pins: ['7777', '2026'],
         isAdmin: true,
         displayName: 'Руководитель (Все права)'
     },
@@ -25,7 +22,6 @@ const KAM_AUTH_ACCOUNTS = {
         id: 'chikharev',
         name: 'Алексей Чихарев',
         role: 'Ведущий КАМ',
-        pins: ['1001'],
         isAdmin: false,
         displayName: 'Алексей Чихарев'
     },
@@ -33,7 +29,6 @@ const KAM_AUTH_ACCOUNTS = {
         id: 'kuznetsov',
         name: 'Андрей Кузнецов',
         role: 'Ведущий КАМ',
-        pins: ['2002'],
         isAdmin: false,
         displayName: 'Андрей Кузнецов'
     },
@@ -41,7 +36,6 @@ const KAM_AUTH_ACCOUNTS = {
         id: 'darienko',
         name: 'Светлана Дариенко',
         role: 'КАМ (СЗФО / Сибирь)',
-        pins: ['3003'],
         isAdmin: false,
         displayName: 'Светлана Дариенко'
     },
@@ -49,7 +43,6 @@ const KAM_AUTH_ACCOUNTS = {
         id: 'soldatova',
         name: 'Валерия Солдатова',
         role: 'КАМ (Юг / Черноземье)',
-        pins: ['4004'],
         isAdmin: false,
         displayName: 'Валерия Солдатова'
     },
@@ -57,20 +50,27 @@ const KAM_AUTH_ACCOUNTS = {
         id: 'dobrolyubova',
         name: 'Евгения Добролюбова',
         role: 'КАМ (Регионы / Урал)',
-        pins: ['5005'],
         isAdmin: false,
         displayName: 'Евгения Добролюбова'
     }
 };
 
-function getKamActiveUser() {
+function getKamActiveUser() { return kamAuthenticatedUser; }
+
+async function refreshKamSession() {
     try {
-        const id = localStorage.getItem(KAM_AUTH_STORAGE_KEY);
-        if (id && KAM_AUTH_ACCOUNTS[id]) {
-            return KAM_AUTH_ACCOUNTS[id];
-        }
-    } catch (e) {}
-    return null;
+        const response = await fetch('/api/session', {credentials: 'same-origin', cache: 'no-store'});
+        kamAuthenticatedUser = response.ok ? (await response.json()).user : null;
+    } catch (_) { kamAuthenticatedUser = null; }
+    renderKamAuthWidget();
+}
+
+async function kamAuthRequest(path, body = {}) {
+    const response = await fetch(path, {method: 'POST', credentials: 'same-origin',
+        headers: {'Content-Type':'application/json', 'X-Dashboard-Request':'1'}, body: JSON.stringify(body)});
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || 'Не удалось выполнить запрос');
+    return result;
 }
 
 function canUserEditOverallPlan(kamName) {
@@ -99,9 +99,9 @@ function renderKamAuthWidget() {
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
                 <div class="flex flex-col text-left">
                     <span class="text-xs font-black text-emerald-950 flex items-center gap-1">
-                        ${user.isAdmin ? '👑' : '👤'} ${user.name}
+                        ${user.isAdmin ? '👑' : '👤'} ${escapeHtml(user.name)}
                     </span>
-                    <span class="text-[10px] text-emerald-700 font-semibold leading-none">${user.role}</span>
+                    <span class="text-[10px] text-emerald-700 font-semibold leading-none">${escapeHtml(user.role)}</span>
                 </div>
                 <button type="button" onclick="kamLogout()" class="ml-2 px-2 py-0.5 bg-white hover:bg-rose-50 text-rose-600 hover:text-rose-700 border border-rose-200 rounded-lg text-[10px] font-bold transition shadow-2xs cursor-pointer" title="Выйти из профиля">
                     Выйти
@@ -149,19 +149,6 @@ function closeKamLoginModal() {
     if (modal) modal.classList.add('hidden');
 }
 
-function fillKamTestPin() {
-    const select = document.getElementById('kamLoginSelect');
-    const pinInput = document.getElementById('kamLoginPin');
-    if (select && pinInput) {
-        const acc = KAM_AUTH_ACCOUNTS[select.value];
-        if (acc && acc.pins && acc.pins.length > 0) {
-            pinInput.value = acc.pins[0];
-            const errEl = document.getElementById('kamLoginError');
-            if (errEl) errEl.classList.add('hidden');
-        }
-    }
-}
-
 function onKamLoginAccountSelect(accId) {
     const pinInput = document.getElementById('kamLoginPin');
     const errEl = document.getElementById('kamLoginError');
@@ -172,51 +159,29 @@ function onKamLoginAccountSelect(accId) {
     }
 }
 
-function handleKamLoginSubmit(e) {
+async function handleKamLoginSubmit(e) {
     if (e && e.preventDefault) e.preventDefault();
     const select = document.getElementById('kamLoginSelect');
     const pinInput = document.getElementById('kamLoginPin');
     const errEl = document.getElementById('kamLoginError');
     if (!select || !pinInput) return;
-
-    const accId = select.value;
-    const acc = KAM_AUTH_ACCOUNTS[accId];
-    const enteredPin = (pinInput.value || '').trim();
-
-    if (!acc || !acc.pins.includes(enteredPin)) {
-        if (errEl) {
-            errEl.textContent = '❌ Неверный PIN-код. Проверьте код и повторите попытку.';
-            errEl.classList.remove('hidden');
-        }
-        return;
-    }
-
     try {
-        localStorage.setItem(KAM_AUTH_STORAGE_KEY, accId);
-    } catch (err) {}
-
-    closeKamLoginModal();
-
-    if (typeof showToast === 'function') {
-        showToast(`Вход выполнен: ${acc.name} (${acc.role})`, 'success', 3000);
-    }
-
-    if (!acc.isAdmin && typeof setKamManagerFilter === 'function') {
-        setKamManagerFilter(acc.name);
-    } else {
-        renderKamTab(currentFilterConfig);
+        const result = await kamAuthRequest('/api/login', {id:select.value,password:pinInput.value});
+        kamAuthenticatedUser = result.user;
+        pinInput.value = '';
+        closeKamLoginModal();
+        await syncKamPlansFromCloud();
+        if (!result.user.isAdmin && typeof setKamManagerFilter === 'function') setKamManagerFilter(result.user.name);
+        else renderKamTab(currentFilterConfig);
+    } catch(error) {
+        if(errEl) {errEl.textContent = error.message;errEl.classList.remove('hidden');}
     }
 }
 
-function kamLogout() {
-    try {
-        localStorage.removeItem(KAM_AUTH_STORAGE_KEY);
-    } catch (e) {}
-
-    if (typeof showToast === 'function') {
-        showToast('Вы вышли из учетной записи КАМ (режим просмотра)', 'info', 2000);
-    }
-
+async function kamLogout() {
+    try { await kamAuthRequest('/api/logout'); }
+    catch (_) { if(typeof showToast==='function')showToast('Не удалось завершить сеанс на сервере. Повторите выход.', 'warning');return; }
+    kamAuthenticatedUser = null;
     renderKamTab(currentFilterConfig);
 }
-
+if (typeof window !== 'undefined') setTimeout(refreshKamSession, 100);

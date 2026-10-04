@@ -307,3 +307,12 @@ async function copyBrandsPresentationText(btn) {
     }
 }
 
+
+// Use for text/HTML attributes; event-handler arguments require JSON + escaping.
+function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function safeCrmUrl(value) {
+    try { const url=new URL(value);return url.protocol==='https:' && url.hostname==='backoffice.x.sberauto.com' && !url.username && !url.password ? url.href : '#'; }
+    catch (_) { return '#'; }
+}

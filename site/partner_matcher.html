@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="js/utils.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>СберАвто | География Брендов (Охват городов) и Метчинг Партнеров</title>
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="vendor/tailwind-3.js"></script>
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="vendor/unpkg.com_lucide_0.468.0_dist_umd_lucide.min.js.js"></script>
     <!-- SheetJS for Excel export/import -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="vendor/xlsx-0.20.3.full.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
         
@@ -758,8 +759,8 @@
                 const covBadgeClass = isSel ? 'bg-black/20 text-white' : (b.city_coverage_pct >= 50 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200');
 
                 pill.innerHTML = `
-                    <span>${b.brand}</span>
-                    <span class="px-1.5 py-0.2 rounded-md text-[10px] font-bold ${covBadgeClass}">${b.connected_cities_count}/${b.total_cities_rf} гор.</span>
+                    <span>${escapeHtml(b.brand)}</span>
+                    <span class="px-1.5 py-0.2 rounded-md text-[10px] font-bold ${covBadgeClass}">${Number(b.connected_cities_count) || 0}/${Number(b.total_cities_rf) || 0} гор.</span>
                 `;
                 container.appendChild(pill);
             });
@@ -778,13 +779,13 @@
             if (!b) return;
 
             document.getElementById('heroBrandName').textContent = b.brand;
-            document.getElementById('heroCoveragePct').textContent = `${b.city_coverage_pct}%`;
-            document.getElementById('heroCoverageBar').style.width = `${b.city_coverage_pct}%`;
+            document.getElementById('heroCoveragePct').textContent = `${Number(b.city_coverage_pct) || 0}%`;
+            document.getElementById('heroCoverageBar').style.width = `${Number(b.city_coverage_pct) || 0}%`;
 
-            document.getElementById('heroTotalCities').textContent = `${b.total_cities_rf} городов`;
-            document.getElementById('heroConnCities').textContent = `${b.connected_cities_count} городов`;
-            document.getElementById('heroConnRoofs').textContent = `${b.connected_roofs} крыш (ДЦ в ОЕМ)`;
-            document.getElementById('heroMissCities').textContent = `${b.missing_cities_count} городов`;
+            document.getElementById('heroTotalCities').textContent = `${Number(b.total_cities_rf) || 0} городов`;
+            document.getElementById('heroConnCities').textContent = `${Number(b.connected_cities_count) || 0} городов`;
+            document.getElementById('heroConnRoofs').textContent = `${Number(b.connected_roofs) || 0} крыш (ДЦ в ОЕМ)`;
+            document.getElementById('heroMissCities').textContent = `${Number(b.missing_cities_count) || 0} городов`;
             
             const freeMarketPct = Math.round(100 - b.city_coverage_pct);
             document.getElementById('heroGrowthPotential').textContent = `+${freeMarketPct}%`;
@@ -838,7 +839,7 @@
             connGrid.innerHTML = '';
             const filteredConn = (b.connected_cities_list || []).filter(c => !search || c.toLowerCase().includes(search));
 
-            document.getElementById('colConnBadge').textContent = `${filteredConn.length} из ${b.connected_cities_count}`;
+            document.getElementById('colConnBadge').textContent = `${filteredConn.length} из ${Number(b.connected_cities_count) || 0}`;
 
             if (filteredConn.length === 0) {
                 connGrid.innerHTML = `<div class="col-span-3 py-6 text-center text-slate-400 text-xs">Городов не найдено</div>`;
@@ -849,7 +850,7 @@
                     card.innerHTML = `
                         <div class="flex items-center gap-1.5 truncate">
                             <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i>
-                            <span class="font-bold text-slate-800 truncate">${city}</span>
+                            <span class="font-bold text-slate-800 truncate">${escapeHtml(city)}</span>
                         </div>
                         <span class="text-[10px] text-emerald-700 font-bold bg-white px-1.5 py-0.5 rounded border border-emerald-200">В ОЕМ</span>
                     `;
@@ -862,7 +863,7 @@
             missGrid.innerHTML = '';
             const filteredMiss = (b.missing_cities_potential || []).filter(c => !search || c.toLowerCase().includes(search));
 
-            document.getElementById('colMissBadge').textContent = `${filteredMiss.length} из ${b.missing_cities_count}`;
+            document.getElementById('colMissBadge').textContent = `${filteredMiss.length} из ${Number(b.missing_cities_count) || 0}`;
 
             if (filteredMiss.length === 0) {
                 missGrid.innerHTML = `<div class="col-span-3 py-6 text-center text-slate-400 text-xs">Городов не найдено</div>`;
@@ -874,7 +875,7 @@
                     card.innerHTML = `
                         <div class="flex items-center gap-1.5 truncate">
                             <i data-lucide="plus" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i>
-                            <span class="font-bold text-slate-800 truncate">${city}</span>
+                            <span class="font-bold text-slate-800 truncate">${escapeHtml(city)}</span>
                         </div>
                         <span class="text-[10px] text-amber-800 font-bold bg-white px-1.5 py-0.5 rounded border border-amber-200">+ Подключить</span>
                     `;
@@ -904,28 +905,28 @@
                     <td class="py-3 px-3">
                         <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
                             ${isCurrent ? '<i data-lucide="chevron-right" class="w-4 h-4 text-emerald-600"></i>' : ''}
-                            ${b.brand}
+                            ${escapeHtml(b.brand)}
                         </div>
                     </td>
                     <td class="py-3 px-3 text-center font-bold text-slate-700">
-                        ${b.total_cities_rf} городов
+                        ${Number(b.total_cities_rf) || 0} городов
                     </td>
                     <td class="py-3 px-3 text-center font-black text-emerald-600">
-                        ${b.connected_cities_count} городов
+                        ${Number(b.connected_cities_count) || 0} городов
                     </td>
                     <td class="py-3 px-3 text-center ${covColor}">
                         <div class="inline-flex items-center gap-1.5">
-                            <span>${b.city_coverage_pct}%</span>
+                            <span>${Number(b.city_coverage_pct) || 0}%</span>
                             <div class="w-12 bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                                <div class="bg-emerald-500 h-full" style="width: ${b.city_coverage_pct}%"></div>
+                                <div class="bg-emerald-500 h-full" style="width: ${Number(b.city_coverage_pct) || 0}%"></div>
                             </div>
                         </div>
                     </td>
                     <td class="py-3 px-3 text-center font-bold text-purple-700">
-                        ${b.connected_roofs} крыш
+                        ${Number(b.connected_roofs) || 0} крыш
                     </td>
                     <td class="py-3 px-3 text-center font-black text-amber-600">
-                        +${b.missing_cities_count} городов
+                        +${Number(b.missing_cities_count) || 0} городов
                     </td>
                     <td class="py-3 px-3 text-right">
                         <button class="btn-secondary px-3 py-1 rounded-lg text-xs font-semibold ml-auto">
@@ -995,7 +996,7 @@
                 toast.className = 'fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-2.5 text-xs font-bold border border-emerald-500/50 transition-all duration-300 transform translate-y-10 opacity-0';
                 document.body.appendChild(toast);
             }
-            toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> <span>${msg}</span>`;
+            toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i> <span>${escapeHtml(msg)}</span>`;
             if (window.lucide) lucide.createIcons();
             toast.classList.remove('translate-y-10', 'opacity-0');
             clearTimeout(window._toastTimer);
@@ -1063,11 +1064,11 @@
                 card.className = `sber-card p-3.5 border-slate-200 cursor-pointer transition ${isSel ? 'border-purple-400 bg-purple-50 ring-2 ring-purple-500 shadow-md' : ''}`;
                 card.onclick = () => { selectOemBrandFilter(bs.brand); };
                 card.innerHTML = `
-                    <div class="text-slate-700 font-bold text-xs truncate">${bs.brand}</div>
+                    <div class="text-slate-700 font-bold text-xs truncate">${escapeHtml(bs.brand)}</div>
                     <div class="text-xl font-black text-emerald-600 mt-0.5">${bs.count} <span class="text-xs font-normal text-slate-500">крыш</span></div>
                     <div class="text-[11px] text-blue-700 mt-1.5 flex items-center gap-1 font-semibold group cursor-pointer hover:text-blue-950 transition" 
-                         onclick="copyCitiesToClipboard('${bs.brand.replace(/'/g, "\'")}', '${bs.brand.replace(/'/g, "\'")}', event)" 
-                         title="Кликните, чтобы скопировать список ${bs.cities.size} городов (${bs.brand}) в алфавитном порядке">
+                         onclick="copyCitiesToClipboard(${escapeHtml(JSON.stringify(bs.brand))}, ${escapeHtml(JSON.stringify(bs.brand))}, event)"
+                         title="Кликните, чтобы скопировать список ${bs.cities.size} городов (${escapeHtml(bs.brand)}) в алфавитном порядке">
                         <i data-lucide="copy" class="w-3 h-3 text-blue-500 group-hover:scale-125 transition shrink-0"></i>
                         <span class="underline decoration-dotted underline-offset-2">${bs.cities.size} уникальных городов</span>
                     </div>
@@ -1104,18 +1105,18 @@
 
                 tr.innerHTML = `
                     <td class="py-3 px-3">
-                        <span class="badge-purple px-2 py-0.5 rounded-md text-[10px] font-bold">${o.brand}</span>
+                        <span class="badge-purple px-2 py-0.5 rounded-md text-[10px] font-bold">${escapeHtml(o.brand)}</span>
                     </td>
                     <td class="py-3 px-3">
-                        <span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md font-semibold text-xs">${o.city || '—'}</span>
+                        <span class="px-2 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-md font-semibold text-xs">${escapeHtml(o.city || '—')}</span>
                     </td>
-                    <td class="py-3 px-3 font-bold text-slate-900">${o.name || '—'}</td>
-                    <td class="py-3 px-3 text-slate-700 font-mono text-[11px]">${o.legal_entity || '—'}<br><span class="text-slate-400">ИНН: ${o.inn || '—'}</span></td>
-                    <td class="py-3 px-3 text-emerald-700 font-mono font-bold">${o.fdc_code || '—'}</td>
-                    <td class="py-3 px-3 text-slate-700">${o.back_name || '—'}</td>
+                    <td class="py-3 px-3 font-bold text-slate-900">${escapeHtml(o.name || '—')}</td>
+                    <td class="py-3 px-3 text-slate-700 font-mono text-[11px]">${escapeHtml(o.legal_entity || '—')}<br><span class="text-slate-400">ИНН: ${escapeHtml(o.inn || '—')}</span></td>
+                    <td class="py-3 px-3 text-emerald-700 font-mono font-bold">${escapeHtml(o.fdc_code || '—')}</td>
+                    <td class="py-3 px-3 text-slate-700">${escapeHtml(o.back_name || '—')}</td>
                     <td class="py-3 px-3">
-                        <span class="badge-green px-2 py-0.5 rounded-md text-xs font-black">ID: ${o.partner_id}</span>
-                        <div class="text-[10px] text-slate-500 mt-0.5">${o.canonical_name}</div>
+                        <span class="badge-green px-2 py-0.5 rounded-md text-xs font-black">ID: ${Number(o.partner_id) || 0}</span>
+                        <div class="text-[10px] text-slate-500 mt-0.5">${escapeHtml(o.canonical_name)}</div>
                     </td>
                     <td class="py-3 px-3 text-right">
                         <span class="text-emerald-600 text-xs font-bold flex items-center justify-end gap-1"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Привязан</span>
@@ -1155,20 +1156,20 @@
 
                 tr.innerHTML = `
                     <td class="py-3 px-3">
-                        <span class="${srcBadge} px-2 py-0.5 rounded-md text-[10px] font-bold">${item.source}</span>
+                        <span class="${srcBadge} px-2 py-0.5 rounded-md text-[10px] font-bold">${escapeHtml(item.source)}</span>
                     </td>
                     <td class="py-3 px-3 font-semibold text-slate-900">
-                        ${item.raw_name}
+                        ${escapeHtml(item.raw_name)}
                     </td>
                     <td class="py-3 px-3 text-center font-bold text-emerald-600">
-                        ${item.count} шт
+                        ${Number(item.count) || 0} шт
                     </td>
                     <td class="py-3 px-3">
                         ${hasSugg ? `
                             <div class="flex items-center gap-1.5">
-                                <span class="badge-green px-2 py-0.5 rounded-md text-[11px] font-bold">ID: ${item.suggested_id}</span>
-                                <span class="text-slate-800 font-semibold">${item.suggested_name}</span>
-                                <span class="text-[10px] text-emerald-700 font-bold">(${item.confidence}%)</span>
+                                <span class="badge-green px-2 py-0.5 rounded-md text-[11px] font-bold">ID: ${Number(item.suggested_id) || 0}</span>
+                                <span class="text-slate-800 font-semibold">${escapeHtml(item.suggested_name)}</span>
+                                <span class="text-[10px] text-emerald-700 font-bold">(${Number(item.confidence) || 0}%)</span>
                             </div>
                         ` : `<span class="text-slate-400 italic text-[11px]">Нет очевидного совпадения</span>`}
                     </td>
@@ -1212,7 +1213,7 @@
             const item = currentBindingItem.item;
 
             document.getElementById('bindRawName').textContent = item.raw_name;
-            document.getElementById('bindSource').textContent = `Источник: ${item.source} (${item.count} операций)`;
+            document.getElementById('bindSource').textContent = `Источник: ${item.source} (${Number(item.count) || 0} операций)`;
 
             selectedBindTargetId = item.suggested_id || null;
             document.getElementById('bindSearchInput').value = '';
@@ -1246,7 +1247,7 @@
             if (filtered.length === 0) {
                 listContainer.innerHTML = `
                     <div class="p-4 text-center text-slate-500">
-                        <p>Партнеров по запросу "${query}" не найдено.</p>
+                        <p>Партнеров по запросу "${escapeHtml(query)}" не найдено.</p>
                         <button onclick="createNewFromUnmatched()" class="mt-2 text-xs text-purple-600 font-bold underline">
                             + Создать нового партнера с таким именем
                         </button>
@@ -1263,10 +1264,10 @@
 
                 itemDiv.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <span class="badge-green px-1.5 py-0.5 rounded text-[11px] font-bold">ID: ${p.partner_id}</span>
+                        <span class="badge-green px-1.5 py-0.5 rounded text-[11px] font-bold">ID: ${Number(p.partner_id) || 0}</span>
                         <div>
-                            <span class="font-bold text-slate-900 text-xs">${p.canonical_name}</span>
-                            <span class="text-[10px] text-slate-500 ml-1.5">КАМ: ${p.kam || '—'}</span>
+                            <span class="font-bold text-slate-900 text-xs">${escapeHtml(p.canonical_name)}</span>
+                            <span class="text-[10px] text-slate-500 ml-1.5">КАМ: ${escapeHtml(p.kam || '—')}</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5">
@@ -1292,7 +1293,7 @@
             }
             const p = registryData.partners.find(x => x.partner_id === selectedBindTargetId);
             if (p) {
-                document.getElementById('selectedPartnerBadge').textContent = `ID: ${p.partner_id}`;
+                document.getElementById('selectedPartnerBadge').textContent = `ID: ${Number(p.partner_id) || 0}`;
                 document.getElementById('selectedPartnerName').textContent = p.canonical_name;
                 document.getElementById('selectedPartnerKam').textContent = `(КАМ: ${p.kam || 'Не назначен'})`;
                 display.classList.remove('hidden');
@@ -1365,30 +1366,30 @@
 
                 tr.innerHTML = `
                     <td class="py-3 px-3">
-                        <span class="badge-green px-2 py-0.5 rounded-md text-xs font-black">${p.partner_id}</span>
+                        <span class="badge-green px-2 py-0.5 rounded-md text-xs font-black">${Number(p.partner_id) || 0}</span>
                     </td>
                     <td class="py-3 px-3">
-                        <div class="font-bold text-slate-900 text-sm">${p.canonical_name}</div>
-                        <div class="text-[11px] text-slate-500">Холдинг: ${p.holding || '—'}</div>
+                        <div class="font-bold text-slate-900 text-sm">${escapeHtml(p.canonical_name)}</div>
+                        <div class="text-[11px] text-slate-500">Холдинг: ${escapeHtml(p.holding || '—')}</div>
                     </td>
                     <td class="py-3 px-3 font-semibold text-slate-700">
-                        ${p.kam || '—'}
+                        ${escapeHtml(p.kam || '—')}
                     </td>
                     <td class="py-3 px-3 max-w-xs">
                         <div class="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
-                            ${p.bitrix_aliases.map(a => `<span class="px-1.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded text-[11px] font-semibold">${a}</span>`).join('')}
+                            ${p.bitrix_aliases.map(a => `<span class="px-1.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 rounded text-[11px] font-semibold">${escapeHtml(a)}</span>`).join('')}
                         </div>
                     </td>
                     <td class="py-3 px-3 max-w-xs">
                         <div class="flex flex-wrap gap-1 max-h-20 overflow-y-auto">
-                            ${p.bi_aliases.map(a => `<span class="px-1.5 py-0.5 bg-purple-50 text-purple-700 border border-purple-200 rounded text-[11px] font-semibold">${a}</span>`).join('')}
+                            ${p.bi_aliases.map(a => `<span class="px-1.5 py-0.5 bg-purple-50 text-purple-700 border border-purple-200 rounded text-[11px] font-semibold">${escapeHtml(a)}</span>`).join('')}
                         </div>
                     </td>
                     <td class="py-3 px-3">
                         ${oemBadge}
                     </td>
                     <td class="py-3 px-3 text-right">
-                        <button onclick="openEditModal(${p.partner_id})" class="btn-secondary px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 ml-auto">
+                        <button onclick="openEditModal(${Number(p.partner_id) || 0})" class="btn-secondary px-2.5 py-1 rounded-lg text-xs font-semibold flex items-center gap-1 ml-auto">
                             <i data-lucide="edit-3" class="w-3.5 h-3.5 text-emerald-600"></i> Править
                         </button>
                     </td>
@@ -1405,7 +1406,7 @@
             const p = registryData.partners.find(x => String(x.partner_id) === String(pid));
             if (!p) return;
 
-            document.getElementById('modalPartnerId').textContent = `ID: ${p.partner_id}`;
+            document.getElementById('modalPartnerId').textContent = `ID: ${Number(p.partner_id) || 0}`;
             document.getElementById('modalCanonicalName').value = p.canonical_name || '';
             document.getElementById('modalHolding').value = p.holding || '';
             document.getElementById('modalKam').value = p.kam || 'Не назначен';

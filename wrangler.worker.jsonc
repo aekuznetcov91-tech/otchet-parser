@@ -1,0 +1,33 @@
+{
+  "name": "dashbord-partners",
+  "main": "workers/dashboard.mjs",
+  "compatibility_date": "2026-07-20",
+  "workers_dev": true,
+  "kv_namespaces": [
+    {
+      "binding": "SBERAUTO_DB",
+      "id": "707583aed18d42a2ab3b6af431795a42"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "PLANS",
+        "class_name": "PlanStore"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "secure-plans-v1",
+      "new_sqlite_classes": [
+        "PlanStore"
+      ]
+    }
+  ],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "preview_urls": false
+}

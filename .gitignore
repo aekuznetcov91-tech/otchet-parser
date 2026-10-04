@@ -11,3 +11,6 @@ raw_data/archive/
 .backups/
 .agents/
 reports/*.xlsx
+.dev.vars*
+.env.*
+security.local.json

@@ -1,9 +1,9 @@
 # ТЕХНИЧЕСКИЙ КОНТЕКСТ ПРОЕКТА: B2C ANALYTICS DASHBOARD & PARTNERS
 
-> 💡 **Для новых разработчиков и ИИ-агентов:** Полная передаточная инструкция, токены, архитектура, пароли и пошаговые сценарии работы собраны в файле **`AI_HANDOVER.md`**.
+> 💡 **Для новых разработчиков и ИИ-агентов:** Полная передаточная инструкция, архитектура и пошаговые сценарии работы собраны в файле **`AI_HANDOVER.md`**.
 
 **Дата актуализации:** 03.10.2026
-**Хостинг/Деплой:** Cloudflare Pages (`dashbord-partners1.pages.dev`) и прокси Worker (`dashbord-partners.beckelaguas723.workers.dev`). Доступ к контуру защищён авторизацией (учетные данные зафиксированы в `config.local.json` и `AI_HANDOVER.md`).  
+**Хостинг/Деплой:** Cloudflare Pages (`dashbord-partners1.pages.dev`) и прокси Worker (`dashbord-partners.beckelaguas723.workers.dev`). Доступ к контуру защищён авторизацией (учетные данные зафиксированы в `config.local.json`).
 **Репозиторий:** `https://github.com/beckelaguas723-gif/otchet-parser.git` (ветка `main`).
 
 ---
@@ -279,3 +279,8 @@ python3 deploy_to_cloudflare.py
 и отвалов между ними не показываются. Розница: Передача лида, ФДЦ + ФДЦ+ГП, Online;
 МП1/2/3 и сделки без канала исключены. PostHog сохранён как отдельный источник.
 Проверки: unit-тесты и `tests/funnel_browser.cjs` (тот же Playwright, что browser_smoke.cjs).
+
+## Защита и выпуск
+
+Схема серверного доступа, аудит планов, безопасный выпуск и оставшиеся шаги владельца —
+[SECURITY.md](SECURITY.md). После слияния PR: `python3 deploy_to_cloudflare.py --existing-main`.

@@ -97,7 +97,7 @@ class TestRelease(unittest.TestCase):
         def fake_run(args, **kwargs):
             calls.append(args)
             if args[:2] == ['git', 'archive']:
-                self.assertEqual(args[-2:], [revision, 'site'])
+                self.assertEqual(args[-4:], [revision, 'site', 'workers', 'wrangler.worker.jsonc'])
                 archive = next(arg.split('=', 1)[1] for arg in args if arg.startswith('--output='))
                 with tarfile.open(archive, 'w') as tar:
                     info = tarfile.TarInfo('site/index.html')
@@ -122,7 +122,7 @@ class TestRelease(unittest.TestCase):
              patch.object(release, 'run', return_value='OK') as run, \
              patch.object(release, 'sync_and_push_git', side_effect=RuntimeError('push failed')):
             with self.assertRaises(RuntimeError): release.deploy()
-            self.assertEqual(run.call_count, 1)
+            self.assertFalse(any('pages' in c.args[0] or 'deploy' in c.args[0] for c in run.call_args_list))
 
     def test_staged_secrets_block_commit(self):
         with patch.object(release, 'run', return_value='config.local.json'):

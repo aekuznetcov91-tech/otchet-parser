@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B2C Analytics Dashboard</title>
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="vendor/tailwind-3.js"></script>
     <!-- Chart.js and DataLabels -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script src="vendor/cdn.jsdelivr.net_npm_chart.js_4.4.0_dist_chart.umd.min.js.js"></script>
+    <script src="vendor/cdn.jsdelivr.net_npm_chartjs-plugin-datalabels_2.2.0_dist_chartjs-plugin-datalabels.min.js.js"></script>
     <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="vendor/unpkg.com_lucide_0.468.0_dist_umd_lucide.min.js.js"></script>
     <!-- Custom Dashboard Styles -->
     <link rel="stylesheet" href="css/dashboard.css?v=d285776f2e7f">
     <link rel="stylesheet" href="css/banking-dashboard.css?v=504a2bd7b036">
@@ -1221,10 +1221,9 @@
                 
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
-                        <label class="block text-xs font-bold text-gray-700 uppercase">PIN-код / Пароль</label>
-                        <span id="kamPinHint" class="text-[11px] text-blue-600 font-semibold cursor-pointer hover:underline" onclick="fillKamTestPin()">Подставить тестовый PIN</span>
+                        <label class="block text-xs font-bold text-gray-700 uppercase">Личный пароль</label>
                     </div>
-                    <input type="password" id="kamLoginPin" maxlength="8" placeholder="••••" autocomplete="current-password" required
+                    <input type="password" id="kamLoginPin" maxlength="128" placeholder="••••" autocomplete="current-password" required
                         class="w-full text-center text-lg tracking-widest font-black bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-2.5 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
                     <div id="kamLoginError" class="text-xs text-rose-600 font-semibold mt-1.5 hidden"></div>
                 </div>
@@ -1301,19 +1300,19 @@
     </div>
 
     <!-- Deferred: loaded after initial render, only needed for export actions -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+    <script src="vendor/cdnjs.cloudflare.com_ajax_libs_html2canvas_1.4.1_html2canvas.min.js.js" defer></script>
+    <script src="vendor/xlsx-0.20.3.full.min.js" defer></script>
 
     <!-- ==================== MODULAR JAVASCRIPT BUNDLE ==================== -->
-    <script src="js/utils.js?v=ebf5d6750cfb"></script>
+    <script src="js/utils.js?v=e672aa13d501"></script>
     <script src="js/data-loader.js?v=83815643bbf1"></script>
     <script src="js/charts.js?v=991cc2ac113e"></script>
-    <script src="js/tables.js?v=78b38c6539dc"></script>
+    <script src="js/tables.js?v=033beecf2176"></script>
     <script src="js/debtors.js?v=d6e43c2e5ab2"></script>
     <script src="js/funnel.js?v=a524d561a984"></script>
     <script src="js/heatmap.js?v=517382dfbdf8"></script>
-    <script src="js/lead-geo.js?v=877f1f5e7c31"></script>
-    <script src="js/kam-dashboard.js?v=5b65420926db"></script>
+    <script src="js/lead-geo.js?v=62f7922e19d5"></script>
+    <script src="js/kam-dashboard.js?v=be70772a624a"></script>
     <script src="js/banking-dashboard.js?v=36f1da1aaddd"></script>
     <script src="js/executive-dashboard.js?v=83cc9205f8d9"></script>
 

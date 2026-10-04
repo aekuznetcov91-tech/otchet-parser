@@ -1,0 +1,64 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {webcrypto} from 'node:crypto';
+import {pathToFileURL} from 'node:url';
+import {digest,COOKIE} from '../workers/security.mjs';
+if (!globalThis.crypto) Object.defineProperty(globalThis,"crypto",{value:webcrypto});
+let source=fs.readFileSync('workers/dashboard.mjs','utf8').replace("'./security.mjs'",JSON.stringify(pathToFileURL(process.cwd()+'/workers/security.mjs').href)).replace("import permissions from './permissions.json';",'const permissions='+fs.readFileSync('workers/permissions.json','utf8')+';');
+const {default:worker,PlanStore}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+const values=new Map();let queue=Promise.resolve();
+const storage={get:async k=>structuredClone(values.get(k)),put:async(k,v)=>{values.set(k,structuredClone(v));},delete:async k=>values.delete(k),list:async({prefix,reverse,limit})=>new Map([...values].filter(([k])=>k.startsWith(prefix)).sort(([a],[b])=>reverse?b.localeCompare(a):a.localeCompare(b)).slice(0,limit)),setAlarm:async()=>{},transaction(fn){const run=queue.then(()=>fn(this));queue=run.catch(()=>{});return run;}};
+const auth='Basic '+btoa('viewer:test-only-random-value');
+const env={AUTH_DIGEST:await digest(auth),KAM_PASSWORD_HASHES:JSON.stringify({admin:await digest('test-admin'),chikharev:await digest('test-kam')}),SBERAUTO_DB:{get:async()=>JSON.stringify({kam_plans:{'Алексей Чихарев':550},partner_plans:{}})}};
+const state={storage,blockConcurrencyWhile:fn=>fn()};const object=new PlanStore(state,env);env.PLANS={idFromName:()=>1,get:()=>object};
+let checks=0;function check(value,expected,label){assert.deepEqual(value,expected,label);checks++;}
+async function call(path='/api/kam-plans',{method='GET',body,headers={},cookie,authHeader=auth}={}) {
+ return worker.fetch(new Request('https://dashbord-partners.beckelaguas723.workers.dev'+path,{method,headers:{...(authHeader?{Authorization:authHeader}:{}),...(body!==undefined?{'Content-Type':'application/json','Origin':'https://dashbord-partners1.pages.dev','X-Dashboard-Request':'1'}:{}),...(cookie?{Cookie:cookie}:{}),...headers},...(body!==undefined?{body:typeof body==='string'?body:JSON.stringify(body)}:{})}),env);
+}
+check((await call('/data.json',{authHeader:null})).status,401,'data anonymous blocked');
+check((await call(undefined,{authHeader:null})).status,401,'plans anonymous blocked');
+check((await call(undefined,{method:'POST',authHeader:null,body:'not json'})).status,401,'unauthenticated write blocked before parse');
+check((await call(undefined,{method:'POST',body:{}})).status,401,'viewer cannot write');
+check((await call('/api/login',{method:'POST',body:{id:'admin',password:'7777'}})).status,401,'old PIN not accepted');
+check((await call('/api/login',{method:'POST',body:{id:'admin',password:'test-admin'},headers:{Origin:'https://evil.invalid'}})).status,403,'CSRF origin');
+check((await call('/api/login',{method:'POST',body:{id:'admin',password:'test-admin'},headers:{'X-Dashboard-Request':''}})).status,403,'CSRF header');
+const logged=await call('/api/login',{method:'POST',body:{id:'admin',password:'test-admin'}});check(logged.status,200,'admin login');const cookie=logged.headers.get('Set-Cookie').split(';')[0];assert(logged.headers.get('Set-Cookie').includes('HttpOnly'));checks++;
+const kamLogin=await call('/api/login',{method:'POST',body:{id:'chikharev',password:'test-kam'}});const kamCookie=kamLogin.headers.get('Set-Cookie').split(';')[0];
+check((await (await call('/api/session',{cookie})).json()).user.isAdmin,true,'server session');
+check((await (await call('/api/session',{cookie:COOKIE+'=admin'})).json()).user,null,'forged session rejected');
+for(const [body,status,label] of [['invalid',400,'invalid JSON'],['x'.repeat(70000),413,'oversize'],[{revision:0,changes:{kam_plans:{all:-1}}},400,'negative plan'],[{revision:0,changes:{kam_plans:{all:1.5}}},400,'fractional plan'],[{revision:0,changes:{unknown:{x:1}}},400,'unknown schema'],['{"revision":0,"changes":{"partner_plans":{"__proto__":2}}}',400,'prototype key']])check((await call(undefined,{method:'POST',body,cookie})).status,status,label);
+check((await call(undefined,{method:'POST',cookie:kamCookie,body:{revision:0,changes:{kam_plans:{'Андрей Кузнецов':1}}}})).status,403,'foreign KAM denied');
+const permissions=JSON.parse(fs.readFileSync('workers/permissions.json','utf8'));const foreign=Object.keys(permissions).find(k=>permissions[k]==='kuznetsov');const own=Object.keys(permissions).find(k=>permissions[k]==='chikharev');
+check((await call(undefined,{method:'POST',cookie:kamCookie,body:{revision:0,changes:{partner_plans:{[foreign]:1}}}})).status,403,'foreign partner denied');
+check((await call(undefined,{method:'POST',cookie:kamCookie,body:{revision:0,changes:{partner_plans:{['ID_fake__Алексей Чихарев']:1}}}})).status,403,'fabricated owner suffix denied');
+check((await call(undefined,{method:'POST',cookie:kamCookie,body:{revision:0,changes:{partner_plans:{[own]:12}}}})).status,200,'own partner allowed');
+check((await call(undefined,{method:'POST',cookie,body:{revision:0,changes:{kam_plans:{all:4}}}})).status,409,'stale revision rejected');
+const concurrency=await Promise.all([5,6].map(value=>call(undefined,{method:'POST',cookie,body:{revision:1,changes:{kam_plans:{all:value}}}})));
+check(concurrency.map(r=>r.status).sort(),[200,409],'atomic compare and update');
+check(values.get('snapshot:0000000000').kam_plans['Алексей Чихарев'],550,'backup preserved');
+check(values.get('audit:0000000001').actor,'chikharev','actor audited');
+check((await call('/api/kam-plans/audit',{cookie:kamCookie})).status,404,'audit admin only');
+check((await call('/api/kam-plans/restore',{method:'POST',cookie:kamCookie,body:{revision:2,snapshot:0}})).status,404,'restore admin only');
+check((await call('/api/kam-plans/restore',{method:'POST',cookie,body:{revision:2,snapshot:0}})).status,200,'restore version');
+check((await (await call()).json()).kam_plans['Алексей Чихарев'],550,'restored plan preserved');
+check((await call('/api/logout',{method:'POST',body:{},cookie})).status,200,'logout');
+check((await (await call('/api/session',{cookie})).json()).user,null,'session revoked');
+check((await call()).headers.get('Access-Control-Allow-Origin'),null,'no wildcard CORS');
+check((await call()).headers.get('Cache-Control'),'private, no-store, max-age=0','no caching');
+// Pages also fails closed for absent configuration and runtime errors.
+let pagesSource=fs.readFileSync('site/_worker.js','utf8');const pages=(await import('data:text/javascript;base64,'+Buffer.from(pagesSource).toString('base64'))).default;
+check((await pages.fetch(new Request('https://dashbord-partners1.pages.dev/data.json'),{})).status,503,'Pages missing secret fails closed');
+check((await pages.fetch(new Request('https://dashbord-partners1.pages.dev/data.json'),env)).status,401,'Pages anonymous blocked');
+check((await pages.fetch(new Request('https://dashbord-partners1.pages.dev/data.json',{headers:{Authorization:auth}}),{...env,ASSETS:{fetch:async()=>{throw new Error('failure');}}})).status,503,'Pages assets exception fails closed');
+for(let i=0;i<11;i++)await call('/api/login',{method:'POST',body:{id:'admin',password:'bad'}});
+check((await call('/api/login',{method:'POST',body:{id:'admin',password:'bad'}})).status,429,'login throttling');
+console.log('Security scenarios passed:',checks);
+// The staged Google handler must deny reads/writes before touching spreadsheets.
+const vm=await import('node:vm');let googleSheetTouches=0;
+const google=vm.createContext({PropertiesService:{getScriptProperties:()=>({getProperty:()=>null})},ContentService:{MimeType:{JSON:'json'},createTextOutput:value=>({value,setMimeType(){return this;}})},SpreadsheetApp:{getActiveSpreadsheet(){googleSheetTouches++;throw new Error('must not read');}}});
+vm.runInContext(fs.readFileSync('security/google-analytics.gs','utf8'),google);
+check(JSON.parse(google.doGet({}).value).error,'unauthorized','Google anonymous read denied');
+check(JSON.parse(google.doPost({parameter:{operation:'export',token:'bad'}}).value).error,'unauthorized','Google bad export token denied');
+check(JSON.parse(google.doPost({parameter:{action:'CALC'}}).value).error,'unauthorized','Google anonymous write denied');
+check(googleSheetTouches,0,'unauthorized Google requests never access sheet');
+console.log('Total security scenarios including staged Google handler:',checks);
