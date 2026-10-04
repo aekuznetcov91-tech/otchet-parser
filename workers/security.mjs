@@ -51,3 +51,8 @@ export async function readJson(request,limit=65536) {
   const bytes=new Uint8Array(size);let offset=0;for(const p of parts){bytes.set(p,offset);offset+=p.length;}
   try {return JSON.parse(new TextDecoder().decode(bytes));} catch {throw Object.assign(new Error('Некорректный JSON'),{status:400});}
 }
+
+export function fixedUpstream(url, origin) {
+  // Assign path/search separately: a path starting // must never select a host.
+  const target=new URL(origin);target.pathname=url.pathname;target.search=url.search;return target;
+}

@@ -62,3 +62,12 @@ check(JSON.parse(google.doPost({parameter:{operation:'export',token:'bad'}}).val
 check(JSON.parse(google.doPost({parameter:{action:'CALC'}}).value).error,'unauthorized','Google anonymous write denied');
 check(googleSheetTouches,0,'unauthorized Google requests never access sheet');
 console.log('Total security scenarios including staged Google handler:',checks);
+
+const originalFetch=globalThis.fetch;let forwardedUrl;
+globalThis.fetch=async request=>{forwardedUrl=request.url;return new Response('ok');};
+try {
+  check((await call('//attacker.invalid/data.json')).status,200,'proxy path request handled');
+  check(new URL(forwardedUrl).origin,'https://dashbord-partners1.pages.dev','double slash cannot exfiltrate Authorization');
+  check(new URL(forwardedUrl).pathname,'//attacker.invalid/data.json','untrusted input remains a path');
+} finally {globalThis.fetch=originalFetch;}
+console.log('Total security scenarios:',checks);

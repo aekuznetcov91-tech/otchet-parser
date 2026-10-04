@@ -5,7 +5,7 @@ export default {
       const url=new URL(request.url);
       if(url.pathname.startsWith('/api/')) {
         // Same-origin browser API, no permissive CORS and no API secrets in JS.
-        const target=new URL(url.pathname+url.search,'https://dashbord-partners.beckelaguas723.workers.dev');
+        const target=fixedUpstream(url,'https://dashbord-partners.beckelaguas723.workers.dev');
         return harden(await fetch(new Request(target,request),{redirect:'manual'}));
       }
       if(!['GET','HEAD'].includes(request.method))return harden(json({error:'Метод запрещён'},405));

@@ -1,4 +1,4 @@
-import {COOKIE,PROFILES,digest,equal,json,harden,gate,validOrigin,readJson} from './security.mjs';
+import {COOKIE,PROFILES,digest,equal,json,harden,gate,validOrigin,readJson,fixedUpstream} from './security.mjs';
 import permissions from './permissions.json';
 
 export default {
@@ -12,7 +12,7 @@ export default {
         return harden(await env.PLANS.get(env.PLANS.idFromName('dashboard-plans-v1')).fetch(request));
       }
       if(!['GET','HEAD'].includes(request.method))return harden(json({error:'Метод запрещён'},405));
-      const target=new URL(url.pathname+url.search,'https://dashbord-partners1.pages.dev');
+      const target=fixedUpstream(url,'https://dashbord-partners1.pages.dev');
       return harden(await fetch(new Request(target,request),{redirect:'manual',cf:{cacheTtl:0,cacheEverything:false}}));
     } catch {return harden(json({error:'Сервис временно недоступен'},503));}
   }
