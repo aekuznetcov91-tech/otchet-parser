@@ -12,10 +12,10 @@ NODE = ROOT / 'scratch/tools/node-v20.18.0-darwin-arm64/bin/node'
 class TestBusinessContracts(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.payload = json.loads((ROOT / 'site/data.json').read_text())
+        cls.payload = json.loads((ROOT / 'site/data.json').read_text(encoding='utf-8'))
 
     def test_closed_months_preserve_exact_row_contents(self):
-        fixtures = json.loads((ROOT / 'tests/fixtures/closed_months.json').read_text())
+        fixtures = json.loads((ROOT / 'tests/fixtures/closed_months.json').read_text(encoding='utf-8'))
         for month, expected in fixtures.items():
             with self.subTest(month=month):
                 rows = [r for r in self.payload['sys_db'] if month in (r.get('SaleMonth'), r.get('PrepayMonth'))]

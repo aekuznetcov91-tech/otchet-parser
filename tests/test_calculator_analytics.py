@@ -103,8 +103,8 @@ class CalculatorAnalyticsTests(unittest.TestCase):
 
     def test_deployed_payload_matches_snapshot(self):
         root = Path(__file__).resolve().parents[1]
-        snapshot = json.loads((root/'data/calculator_analytics.json').read_text())
-        payload = json.loads((root/'site/data.json').read_text())
+        snapshot = json.loads((root/'data/calculator_analytics.json').read_text(encoding='utf-8'))
+        payload = json.loads((root/'site/data.json').read_text(encoding='utf-8'))
         funnel = payload['brand_funnel']
         for month, expected in snapshot['by_month'].items():
             self.assertEqual(funnel['by_month'][month]['calculator'], expected['ALL'])
