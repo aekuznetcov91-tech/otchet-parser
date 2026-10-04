@@ -62,13 +62,14 @@ export class PlanStore {
   async login(request) {
     const body=await readJson(request,2048);
     const ip=request.headers.get('CF-Connecting-IP')||'unknown';
-    const bucket='rate:'+await digest(ip+':'+String(body?.id||'unknown').slice(0,128));
+    const account=typeof body?.id==='string' && Object.hasOwn(PROFILES,body.id)?body.id:'unknown';
+    const bucket='rate:'+await digest(ip+':'+account);
     const blocked=await this.state.storage.transaction(async tx=>{
       const now=Date.now();let v=await tx.get(bucket);
       if(!v||v.expires<=now)v={count:0,expires:now+15*60*1000};
       v.count++;await tx.put(bucket,v);return v.count>10;
     });
-    await this.state.storage.setAlarm(Date.now()+24*60*60*1000);
+    if(await this.state.storage.getAlarm()===null)await this.state.storage.setAlarm(Date.now()+24*60*60*1000);
     if(blocked)return json({error:'Слишком много попыток. Повторите через 15 минут.'},429,{'Retry-After':'900'});
     const credentials=JSON.parse(this.env.KAM_PASSWORD_HASHES||'{}');
     if(!body || typeof body.id!=='string' || typeof body.password!=='string' || !Object.hasOwn(PROFILES,body.id) || !equal(await digest(body.password),credentials[body.id]))return json({error:'Неверная учётная запись или пароль'},401);

@@ -20,6 +20,9 @@ def expected_assets(root=ROOT):
         for source in sorted((site / folder).glob('*.' + folder)):
             content = assets.get(source, source.read_bytes())
             assets[root / folder / source.name] = content
+    for source in sorted((site / 'vendor').glob('*')):
+        if source.is_file():
+            assets[root / 'vendor' / source.name] = source.read_bytes()
     html = (site / 'index.html').read_text(encoding='utf-8')
 
     def version(match):

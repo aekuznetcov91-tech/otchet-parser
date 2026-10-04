@@ -1,0 +1,62 @@
+[
+  {
+    "file": "cdn.jsdelivr.net_npm_chart.js_4.4.0_dist_chart.umd.min.js.js",
+    "source": "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js",
+    "sha256": "0e2326c6868072bec1592760c6729043caeea2960a2b46cee6a2192aac6abff0",
+    "bytes": 205222
+  },
+  {
+    "file": "cdn.jsdelivr.net_npm_chart.js_4.4.1_dist_chart.umd.min.js.js",
+    "source": "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js",
+    "sha256": "d2af8974e95271638772e9e9524db5b9a6f58d6ec2d5d781400447b4a31c681e",
+    "bytes": 205399
+  },
+  {
+    "file": "cdn.jsdelivr.net_npm_chartjs-plugin-datalabels_2.2.0_dist_chartjs-plugin-datalabels.min.js.js",
+    "source": "https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js",
+    "sha256": "20c08f3d9c6d2ef76df6d6a6f1127c0013339fe32add24222276c398c6308c38",
+    "bytes": 12937
+  },
+  {
+    "file": "cdn.jsdelivr.net_npm_mermaid_10.9.3_dist_mermaid.min.js.js",
+    "source": "https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.min.js",
+    "sha256": "5a8ec91820bd55afef049068489369910e5d6ce70c8103952f27e29d3e76e8bc",
+    "bytes": 3336760
+  },
+  {
+    "file": "xlsx-0.20.3.full.min.js",
+    "source": "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js",
+    "sha256": "cc015130aa8521e7f088f88898eba949ccdcbfb38df0bd129b44b7273c3a6f41",
+    "bytes": 951904
+  },
+  {
+    "file": "xlsx-0.20.3.full.min.js",
+    "source": "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js",
+    "sha256": "cc015130aa8521e7f088f88898eba949ccdcbfb38df0bd129b44b7273c3a6f41",
+    "bytes": 951904
+  },
+  {
+    "file": "tailwind-3.js",
+    "source": "https://cdn.tailwindcss.com/3.4.17",
+    "sha256": "176e894661aa9cdc9a5cba6c720044cbbf7b8bd80d1c9a142a7c24b1b6c50d15",
+    "bytes": 407279
+  },
+  {
+    "file": "cdnjs.cloudflare.com_ajax_libs_html2canvas_1.4.1_html2canvas.min.js.js",
+    "source": "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
+    "sha256": "e87e550794322e574a1fda0c1549a3c70dae5a93d9113417a429016838eab8cb",
+    "bytes": 198689
+  },
+  {
+    "file": "xlsx-0.20.3.full.min.js",
+    "source": "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js",
+    "sha256": "cc015130aa8521e7f088f88898eba949ccdcbfb38df0bd129b44b7273c3a6f41",
+    "bytes": 951904
+  },
+  {
+    "file": "unpkg.com_lucide_0.468.0_dist_umd_lucide.min.js.js",
+    "source": "https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js",
+    "sha256": "3411692820cb8d47543f69496aa25fd603a358f4498046f41c508a5a3342210e",
+    "bytes": 357796
+  }
+]
