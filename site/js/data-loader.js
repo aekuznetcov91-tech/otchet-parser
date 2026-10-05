@@ -544,6 +544,7 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
     const salesPct = targetSales > 0 ? (tS / targetSales * 100) : 0;
     const salesColor = salesPct >= 90 ? '#22c55e' : (salesPct >= 60 ? '#3b82f6' : '#f59e0b');
     const yearSalesPct = (yearDeals / ANNUAL_TARGETS_2026.deals * 100);
+    const yearSalesColor = yearSalesPct >= 90 ? '#22c55e' : (yearSalesPct >= 60 ? '#3b82f6' : '#f59e0b');
     const elSalesPlan = document.getElementById('kpiSalesPlan');
     if (elSalesPlan) {
         elSalesPlan.innerHTML = `
@@ -554,9 +555,14 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
                 <span>План квартала: <b class="text-gray-600">${fmtNum(targetSales)}</b></span>
                 <span class="font-bold" style="color: ${salesColor}">${salesPct.toFixed(1)}%</span>
             </div>
-            <div class="flex justify-between items-center text-[10px] mt-0.5 pt-0.5 border-t border-gray-100 text-gray-400">
-                <span>Годовой план (стр 14): <b class="text-gray-700">${fmtNum(ANNUAL_TARGETS_2026.deals)}</b></span>
-                <span class="font-bold text-blue-600">${yearSalesPct.toFixed(1)}%</span>
+            <div class="mt-1.5 pt-1 border-t border-gray-100">
+                <div class="flex justify-between items-center text-[10px] text-gray-400">
+                    <span>Годовой план (стр 14): <b class="text-gray-700">${fmtNum(ANNUAL_TARGETS_2026.deals)}</b></span>
+                    <span class="font-bold" style="color: ${yearSalesColor}">${fmtNum(yearDeals)} шт. (${yearSalesPct.toFixed(1)}%)</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-1 mt-1">
+                    <div class="h-1 rounded-full transition-all duration-500" style="width: ${Math.min(100, yearSalesPct)}%; background: ${yearSalesColor}"></div>
+                </div>
             </div>
         `;
     }
@@ -581,6 +587,7 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
     const checkPct = targetCheck > 0 ? (curAvgCheck / targetCheck * 100) : 0;
     const checkColor = checkPct >= 100 ? '#22c55e' : (checkPct >= 90 ? '#8b5cf6' : '#f59e0b');
     const yearCheckPct = (yearAvgCheck / ANNUAL_TARGETS_2026.avgCheck * 100);
+    const yearCheckColor = yearCheckPct >= 100 ? '#22c55e' : (yearCheckPct >= 90 ? '#8b5cf6' : '#f59e0b');
     const elCheckPlan = document.getElementById('kpiCheckPlan');
     if (elCheckPlan) {
         elCheckPlan.innerHTML = `
@@ -591,9 +598,14 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
                 <span>План квартала: <b class="text-gray-600">${fmtMln(targetCheck)}</b></span>
                 <span class="font-bold" style="color: ${checkColor}">${checkPct.toFixed(1)}%</span>
             </div>
-            <div class="flex justify-between items-center text-[10px] mt-0.5 pt-0.5 border-t border-gray-100 text-gray-400">
-                <span>Годовой план (стр 27): <b class="text-gray-700">${fmtMln(ANNUAL_TARGETS_2026.avgCheck)}</b></span>
-                <span class="font-bold text-purple-600">${yearCheckPct.toFixed(1)}%</span>
+            <div class="mt-1.5 pt-1 border-t border-gray-100">
+                <div class="flex justify-between items-center text-[10px] text-gray-400">
+                    <span>Годовой план (стр 27): <b class="text-gray-700">${fmtMln(ANNUAL_TARGETS_2026.avgCheck)}</b></span>
+                    <span class="font-bold" style="color: ${yearCheckColor}">${fmtMln(yearAvgCheck)} (${yearCheckPct.toFixed(1)}%)</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-1 mt-1">
+                    <div class="h-1 rounded-full transition-all duration-500" style="width: ${Math.min(100, yearCheckPct)}%; background: ${yearCheckColor}"></div>
+                </div>
             </div>
         `;
     }
@@ -618,6 +630,7 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
     const revPct = targetRev > 0 ? (revTotal / targetRev * 100) : 0;
     const revColor = revPct >= 90 ? '#22c55e' : (revPct >= 60 ? '#10b981' : '#f59e0b');
     const yearRevPct = (yearRev / ANNUAL_TARGETS_2026.revenue * 100);
+    const yearRevColor = yearRevPct >= 90 ? '#22c55e' : (yearRevPct >= 60 ? '#10b981' : '#f59e0b');
     const elRevPlan = document.getElementById('kpiRevPlan');
     if (elRevPlan) {
         elRevPlan.innerHTML = `
@@ -628,9 +641,14 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
                 <span>План квартала: <b class="text-gray-600">${fmtMln(targetRev)}</b></span>
                 <span class="font-bold" style="color: ${revColor}">${revPct.toFixed(1)}%</span>
             </div>
-            <div class="flex justify-between items-center text-[10px] mt-0.5 pt-0.5 border-t border-gray-100 text-gray-400">
-                <span>Годовой план (стр 48-52): <b class="text-gray-700">${fmtMln(ANNUAL_TARGETS_2026.revenue)}</b></span>
-                <span class="font-bold text-emerald-600">${yearRevPct.toFixed(1)}%</span>
+            <div class="mt-1.5 pt-1 border-t border-gray-100">
+                <div class="flex justify-between items-center text-[10px] text-gray-400">
+                    <span>Годовой план (стр 48-52): <b class="text-gray-700">${fmtMln(ANNUAL_TARGETS_2026.revenue)}</b></span>
+                    <span class="font-bold" style="color: ${yearRevColor}">${fmtMln(yearRev)} (${yearRevPct.toFixed(1)}%)</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-1 mt-1">
+                    <div class="h-1 rounded-full transition-all duration-500" style="width: ${Math.min(100, yearRevPct)}%; background: ${yearRevColor}"></div>
+                </div>
             </div>
         `;
     }
