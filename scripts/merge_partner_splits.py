@@ -633,12 +633,29 @@ def apply_merges_to_file(filepath):
     p1040['bi_aliases'] = ['Авто Премиум Тверь']
     
     p632032 = partners_by_id.get(632032)
-    if p632032:
-        p632032['canonical_name'] = 'Премиум Авто ONLINE'
-        p632032['holding'] = 'Премиум Авто'
-        p632032['kam'] = 'Светлана Дариенко'
-        p632032['bitrix_aliases'] = ['Премиум Авто ONLINE', 'Премиум Авто']
-        p632032['bi_aliases'] = ['Премиум Авто ONLINE', 'Премиум Авто']
+    if not p632032:
+        p632032 = {
+            'partner_id': 632032,
+            'canonical_name': 'Премиум Авто ONLINE',
+            'holding': 'Премиум Авто',
+            'kam': 'Светлана Дариенко',
+            'bitrix_aliases': [],
+            'bi_aliases': [],
+            'pochta_aliases': [],
+            'oem_data': [],
+            'status': 'verified'
+        }
+        partners.append(p632032)
+        partners_by_id[632032] = p632032
+    p632032['canonical_name'] = 'Премиум Авто ONLINE'
+    p632032['holding'] = 'Премиум Авто'
+    p632032['kam'] = 'Светлана Дариенко'
+    p632032['bitrix_aliases'] = clean_list((p632032.get('bitrix_aliases', []) or []) + [
+        'Премиум Авто ONLINE', 'Премиум Авто', 'Online Авто Премиум / ООО Лидер Сервис', 'Лидер Сервис', 'ООО Лидер Сервис'
+    ])
+    p632032['bi_aliases'] = clean_list((p632032.get('bi_aliases', []) or []) + [
+        'Премиум Авто ONLINE', 'Премиум Авто', 'Online Jetour Авто Премиум'
+    ])
 
     # Wagner / Avtoretail M (1285) oem_data for Krasnodar (Soldatova) and SPb (Darienko)
     p1285 = partners_by_id.get(1285)
@@ -1125,6 +1142,122 @@ def apply_merges_to_file(filepath):
         p1291['kam'] = 'Валерия Солдатова'
         if aaa_oem and not p1291.get('oem_data'):
             p1291['oem_data'] = aaa_oem
+
+    # 25. АлексМоторс vs Темп Авто Краснодар (1292)
+    p1257 = partners_by_id.get(1257)
+    temp_avto_oems = []
+    if p1257:
+        p1257['canonical_name'] = 'АлексМоторс'
+        p1257['kam'] = 'Светлана Дариенко'
+        p1257['bitrix_aliases'] = [a for a in p1257.get('bitrix_aliases', []) if 'темп авто' not in a.lower() and 'олимп' not in a.lower()]
+        p1257['bi_aliases'] = [a for a in p1257.get('bi_aliases', []) if 'темп авто' not in a.lower() and 'олимп' not in a.lower()]
+        kept_oems = []
+        for oem in p1257.get('oem_data', []):
+            if any(k in (oem.get('city') or '').lower() for k in ['сыктывкар', 'коми']) or '1101126185' in str(oem.get('inn') or ''):
+                kept_oems.append(oem)
+            else:
+                oem['responsible'] = 'Валерия Солдатова'
+                temp_avto_oems.append(oem)
+        p1257['oem_data'] = kept_oems
+
+    p1292 = partners_by_id.get(1292)
+    if not p1292:
+        p1292 = {
+            'partner_id': 1292,
+            'canonical_name': 'Темп Авто (Краснодар)',
+            'holding': 'Темп Авто',
+            'kam': 'Валерия Солдатова',
+            'bitrix_aliases': clean_list(['ONLINE ООО "ТЕМП АВТО К"', 'Темп Авто', 'ООО "Темп Авто К"', 'ООО Темп Авто К']),
+            'bi_aliases': ['Темп Авто', 'Темп Авто (Краснодар)'],
+            'pochta_aliases': [],
+            'oem_data': temp_avto_oems,
+            'status': 'verified'
+        }
+        partners.append(p1292)
+        partners_by_id[1292] = p1292
+    else:
+        p1292['canonical_name'] = 'Темп Авто (Краснодар)'
+        p1292['kam'] = 'Валерия Солдатова'
+        if temp_avto_oems and not p1292.get('oem_data'):
+            p1292['oem_data'] = temp_avto_oems
+
+    # 26. Сармат vs РВ Сервис Краснодар (1293)
+    p1068 = partners_by_id.get(1068)
+    rv_service_oems = []
+    if p1068:
+        p1068['canonical_name'] = 'Сармат'
+        p1068['kam'] = 'Светлана Дариенко'
+        p1068['bitrix_aliases'] = [a for a in p1068.get('bitrix_aliases', []) if 'рв сервис' not in a.lower()]
+        p1068['bi_aliases'] = [a for a in p1068.get('bi_aliases', []) if 'рв сервис' not in a.lower()]
+        kept_sarmat_oems = []
+        for oem in p1068.get('oem_data', []):
+            if any(k in (oem.get('city') or '').lower() for k in ['новосибирск', 'нск']) or '5410002040' in str(oem.get('inn') or ''):
+                kept_sarmat_oems.append(oem)
+            else:
+                oem['responsible'] = 'Валерия Солдатова'
+                rv_service_oems.append(oem)
+        p1068['oem_data'] = kept_sarmat_oems
+
+    p1293 = partners_by_id.get(1293)
+    if not p1293:
+        p1293 = {
+            'partner_id': 1293,
+            'canonical_name': 'РВ Сервис',
+            'holding': 'РВ Сервис',
+            'kam': 'Валерия Солдатова',
+            'bitrix_aliases': clean_list(['ООО "РВ СЕРВИС" ONLINE', 'РВ Сервис', 'ООО "РВ Сервис"', 'ООО РВ Сервис']),
+            'bi_aliases': ['РВ Сервис'],
+            'pochta_aliases': [],
+            'oem_data': rv_service_oems,
+            'status': 'verified'
+        }
+        partners.append(p1293)
+        partners_by_id[1293] = p1293
+    else:
+        p1293['canonical_name'] = 'РВ Сервис'
+        p1293['kam'] = 'Валерия Солдатова'
+        if rv_service_oems and not p1293.get('oem_data'):
+            p1293['oem_data'] = rv_service_oems
+
+    # 27. АБМ Авто Брокер (Мурманск): 1294 -> Светлана Дариенко
+    p1294 = partners_by_id.get(1294)
+    if not p1294:
+        p1294 = {
+            'partner_id': 1294,
+            'canonical_name': 'АБМ Авто Брокер',
+            'holding': 'АБМ',
+            'kam': 'Светлана Дариенко',
+            'bitrix_aliases': clean_list(['Online ООО "АБМ" Авто Брокер', 'АБМ', 'Авто Брокер Мурманск', 'ООО "АБМ"']),
+            'bi_aliases': ['АБМ', 'АБМ Авто Брокер', 'Авто Брокер Мурманск'],
+            'pochta_aliases': [],
+            'oem_data': [],
+            'status': 'verified'
+        }
+        partners.append(p1294)
+        partners_by_id[1294] = p1294
+    else:
+        p1294['canonical_name'] = 'АБМ Авто Брокер'
+        p1294['kam'] = 'Светлана Дариенко'
+
+    # 28. РГС (Котлас): 1295 -> Светлана Дариенко
+    p1295 = partners_by_id.get(1295)
+    if not p1295:
+        p1295 = {
+            'partner_id': 1295,
+            'canonical_name': 'РГС (Котлас)',
+            'holding': 'РГС',
+            'kam': 'Светлана Дариенко',
+            'bitrix_aliases': clean_list(['ООО "РГС" ONLINE', 'РГС', 'ООО РГС']),
+            'bi_aliases': ['РГС', 'РГС (Котлас)'],
+            'pochta_aliases': [],
+            'oem_data': [],
+            'status': 'verified'
+        }
+        partners.append(p1295)
+        partners_by_id[1295] = p1295
+    else:
+        p1295['canonical_name'] = 'РГС (Котлас)'
+        p1295['kam'] = 'Светлана Дариенко'
 
 
     # Filter out removed donor partners
