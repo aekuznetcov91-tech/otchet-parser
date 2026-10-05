@@ -87,9 +87,13 @@ def apply_canonical_kam_mapping(pid, cname, partner_raw, kam, deal_city="", deal
     if 'измайлово' in p_text or inn_str == '7719652251':
         return 1059, 'Online ООО МБ-Измайлово', 'Алексей Чихарев'
 
-    # 3. БорисХоф (Чихарев) - 20 deals
-    if any(k in p_text for k in ['борисхоф', 'борис хоф', 'квазар']) or inn_str in ('7736208620', '7736262947'):
+    # 3. БорисХоф (Чихарев) - 13 deals in September
+    if any(k in p_text for k in ['борисхоф', 'борис хоф']) or inn_str in ('7736208620', '7714700709'):
         return 1070, 'БорисХоф', 'Алексей Чихарев'
+
+    # 3b. КВАЗАР (Чихарев) - 7 deals in September
+    if 'квазар' in p_text or inn_str in ('7736262947', '7720878779'):
+        return 1052, 'КВАЗАР', 'Алексей Чихарев'
 
     # 4. АвтоСпецЦентр / КАР АЦ (Чихарев) - 49 deals
     if any(k in p_text for k in ['автоспеццентр', 'кар ац']) or pid == 1130 or inn_str in ('5047120718', '7724795328'):
