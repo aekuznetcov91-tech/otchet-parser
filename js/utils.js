@@ -18,6 +18,16 @@ const Q3_TARGETS = {
     q3End: new Date(2026, 8, 30)    // Sep 30
 };
 
+// 2026 Annual Budget Targets (from PAD PGK Model)
+const ANNUAL_TARGETS_2026 = {
+    deals: 13643,            // Row 14: Всего продуктов (13 642.58)
+    avgCheck: 2161846,       // Row 27: Средний чек (2.1618M)
+    trPercent: 1.76,         // Row 38: TR Новые авто (1.757%)
+    revenue: 489060505,      // Row 48 - Row 52: Выручка без доп. продуктов (508.06M - 19.00M = 489.06M)
+    yearStart: new Date(2026, 0, 1),
+    yearEnd: new Date(2026, 11, 31)
+};
+
 const MONTH_NAMES_RU = {
     '01': 'Январь', '02': 'Февраль', '03': 'Март', '04': 'Апрель',
     '05': 'Май', '06': 'Июнь', '07': 'Июль', '08': 'Август',

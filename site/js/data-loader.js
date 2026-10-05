@@ -388,6 +388,19 @@ function updatePlanVsFact(totalDeals, totalRevenue, totalPrice) {
     // TR (Take Rate) = КВ / Стоимость авто без НДС
     const q3TR = q3PriceNoVat > 0 ? (q3Comm / q3PriceNoVat * 100) : 0;
 
+    // Full 2026 cumulative data for Annual Target
+    const all2026Sales = db.filter(r => {
+        if (r.SaleQty <= 0) return false;
+        const sm = r.SaleMonth || '';
+        return sm.startsWith('2026');
+    });
+    const yearDeals = all2026Sales.length;
+    const yearRevenue = all2026Sales.reduce((s, r) => s + (r.Revenue || 0), 0);
+    const yearPrice = all2026Sales.reduce((s, r) => s + (r.Price || 0), 0);
+    const yearComm = all2026Sales.reduce((s, r) => s + (r.Comm || 0), 0);
+    const yearPriceNoVat = yearPrice / 1.20;
+    const yearTR = yearPriceNoVat > 0 ? (yearComm / yearPriceNoVat * 100) : 0;
+
     // Filtered period TR
     const curSales = (typeof window !== 'undefined' && window.currentFilteredSales) ? window.currentFilteredSales : [];
     const curComm = curSales.reduce((s, r) => s + (r.Comm || 0), 0);
@@ -398,49 +411,85 @@ function updatePlanVsFact(totalDeals, totalRevenue, totalPrice) {
     const revPct = Math.min(100, (q3Revenue / Q3_TARGETS.revenue * 100));
     const trPct = Math.min(100, (q3TR / Q3_TARGETS.trPercent * 100));
 
+    const yearDealsPct = (yearDeals / ANNUAL_TARGETS_2026.deals * 100);
+    const yearRevPct = (yearRevenue / ANNUAL_TARGETS_2026.revenue * 100);
+    const yearTrPct = (yearTR / ANNUAL_TARGETS_2026.trPercent * 100);
+
     const dealsPerDay = q3DaysPassed > 0 ? (q3Deals / q3DaysPassed) : 0;
     const revPerDay = q3DaysPassed > 0 ? (q3Revenue / q3DaysPassed) : 0;
-    const dealsNeeded = Q3_TARGETS.deals - q3Deals;
-    const revNeeded = Q3_TARGETS.revenue - q3Revenue;
 
     const dealsColor = dealsPct >= 90 ? '#22c55e' : (dealsPct >= 60 ? '#f59e0b' : '#ef4444');
     const revColor = revPct >= 90 ? '#22c55e' : (revPct >= 60 ? '#f59e0b' : '#ef4444');
     const trColor = trPct >= 95 ? '#22c55e' : (trPct >= 80 ? '#f59e0b' : '#ef4444');
 
+    const yearDealsColor = yearDealsPct >= 90 ? '#22c55e' : (yearDealsPct >= 60 ? '#3b82f6' : '#f59e0b');
+    const yearRevColor = yearRevPct >= 90 ? '#22c55e' : (yearRevPct >= 60 ? '#10b981' : '#f59e0b');
+    const yearTrColor = yearTrPct >= 95 ? '#22c55e' : (yearTrPct >= 80 ? '#10b981' : '#f59e0b');
+
     container.innerHTML = `
         <div class="kpi-card border-l-4 bg-white !mb-0" style="border-color: ${dealsColor}">
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Сделки Q3 (Факт / План)</p>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Сделки Q3 (План квартала: факт / цель)</p>
             <p class="text-xl font-black text-gray-800 mt-0.5">${fmtNum(q3Deals)} <span class="text-sm font-semibold text-gray-400">/ ${fmtNum(Q3_TARGETS.deals)}</span></p>
-            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                <div class="h-2.5 rounded-full transition-all duration-500" style="width: ${dealsPct}%; background: ${dealsColor}"></div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mt-1.5">
+                <div class="h-2 rounded-full transition-all duration-500" style="width: ${dealsPct}%; background: ${dealsColor}"></div>
             </div>
-            <div class="flex justify-between items-center mt-1.5">
+            <div class="flex justify-between items-center mt-1">
                 <span class="text-[10px] font-bold" style="color: ${dealsColor}">${dealsPct.toFixed(1)}%</span>
                 <span class="text-[10px] text-gray-400">🏁 ${daysLeft} дн. | ${dealsPerDay.toFixed(0)}/день</span>
+            </div>
+            <!-- Годовой план по продажам (строка 14 PAD) -->
+            <div class="mt-2.5 pt-2 border-t border-gray-100">
+                <div class="flex justify-between items-center text-[10px]">
+                    <span class="text-gray-500 font-bold">Годовой план: <b class="text-gray-700">${fmtNum(ANNUAL_TARGETS_2026.deals)} шт.</b></span>
+                    <span class="font-bold" style="color: ${yearDealsColor}">${fmtNum(yearDeals)} шт. (${yearDealsPct.toFixed(1)}%)</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1">
+                    <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, yearDealsPct)}%; background: ${yearDealsColor}"></div>
+                </div>
             </div>
         </div>
 
         <div class="kpi-card border-l-4 bg-white !mb-0" style="border-color: ${revColor}">
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Выручка Q3 (Факт / План)</p>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Выручка Q3 (План квартала: факт / цель)</p>
             <p class="text-xl font-black text-gray-800 mt-0.5">${fmtMln(q3Revenue)} <span class="text-sm font-semibold text-gray-400">/ ${fmtMln(Q3_TARGETS.revenue)}</span></p>
-            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                <div class="h-2.5 rounded-full transition-all duration-500" style="width: ${revPct}%; background: ${revColor}"></div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mt-1.5">
+                <div class="h-2 rounded-full transition-all duration-500" style="width: ${revPct}%; background: ${revColor}"></div>
             </div>
-            <div class="flex justify-between items-center mt-1.5">
+            <div class="flex justify-between items-center mt-1">
                 <span class="text-[10px] font-bold" style="color: ${revColor}">${revPct.toFixed(1)}%</span>
                 <span class="text-[10px] text-gray-400">🎯 +${fmtMln(revPerDay)}/день</span>
+            </div>
+            <!-- Годовой план по выручке (строка 48 - 52 PAD) -->
+            <div class="mt-2.5 pt-2 border-t border-gray-100">
+                <div class="flex justify-between items-center text-[10px]">
+                    <span class="text-gray-500 font-bold">Годовой план: <b class="text-gray-700">${fmtMln(ANNUAL_TARGETS_2026.revenue)}</b></span>
+                    <span class="font-bold" style="color: ${yearRevColor}">${fmtMln(yearRevenue)} (${yearRevPct.toFixed(1)}%)</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1">
+                    <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, yearRevPct)}%; background: ${yearRevColor}"></div>
+                </div>
             </div>
         </div>
 
         <div class="kpi-card border-l-4 bg-white !mb-0" style="border-color: ${trColor}">
-            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Take Rate Q3 (Факт / Цель)</p>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Take Rate Q3 (План квартала: факт / цель)</p>
             <p class="text-xl font-black text-gray-800 mt-0.5">${q3TR.toFixed(2)}% <span class="text-sm font-semibold text-gray-400">/ ${Q3_TARGETS.trPercent}%</span></p>
-            <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                <div class="h-2.5 rounded-full transition-all duration-500" style="width: ${trPct}%; background: ${trColor}"></div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mt-1.5">
+                <div class="h-2 rounded-full transition-all duration-500" style="width: ${trPct}%; background: ${trColor}"></div>
             </div>
-            <div class="flex justify-between items-center mt-1.5">
+            <div class="flex justify-between items-center mt-1">
                 <span class="text-[10px] font-bold" style="color: ${trColor}">${trPct.toFixed(1)}%</span>
                 <span class="text-[10px] text-gray-400">${q3TR >= Q3_TARGETS.trPercent ? '✅ В целевом коридоре' : '⚠️ Ниже цели'}${currentFilterConfig.mode === 'month' ? ` | Период: <b>${curTR.toFixed(2)}%</b>` : ''}</span>
+            </div>
+            <!-- Годовой план по TR (строка 38 PAD) -->
+            <div class="mt-2.5 pt-2 border-t border-gray-100">
+                <div class="flex justify-between items-center text-[10px]">
+                    <span class="text-gray-500 font-bold">Годовой план: <b class="text-gray-700">${ANNUAL_TARGETS_2026.trPercent}%</b></span>
+                    <span class="font-bold" style="color: ${yearTrColor}">${yearTR.toFixed(2)}% (${yearTrPct.toFixed(1)}%)</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1">
+                    <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, yearTrPct)}%; background: ${yearTrColor}"></div>
+                </div>
             </div>
         </div>
     `;
@@ -484,9 +533,17 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
         targetRev = Q3_TARGETS.revenue; // 170M
     }
 
+    // Full 2026 cumulative data for annual metrics
+    const all2026Sales = db.filter(r => r.SaleQty > 0 && (r.SaleMonth || '').startsWith('2026'));
+    const yearDeals = all2026Sales.length;
+    const yearRev = all2026Sales.reduce((s, r) => s + (r.Revenue || 0), 0);
+    const yearPrice = all2026Sales.reduce((s, r) => s + (r.Price || 0), 0);
+    const yearAvgCheck = yearDeals > 0 ? (yearPrice / yearDeals) : 0;
+
     // 1. Sales
     const salesPct = targetSales > 0 ? (tS / targetSales * 100) : 0;
     const salesColor = salesPct >= 90 ? '#22c55e' : (salesPct >= 60 ? '#3b82f6' : '#f59e0b');
+    const yearSalesPct = (yearDeals / ANNUAL_TARGETS_2026.deals * 100);
     const elSalesPlan = document.getElementById('kpiSalesPlan');
     if (elSalesPlan) {
         elSalesPlan.innerHTML = `
@@ -494,8 +551,12 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
                 <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, salesPct)}%; background: ${salesColor}"></div>
             </div>
             <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
-                <span>План: <b class="text-gray-600">${fmtNum(targetSales)}</b></span>
+                <span>План квартала: <b class="text-gray-600">${fmtNum(targetSales)}</b></span>
                 <span class="font-bold" style="color: ${salesColor}">${salesPct.toFixed(1)}%</span>
+            </div>
+            <div class="flex justify-between items-center text-[10px] mt-0.5 pt-0.5 border-t border-gray-100 text-gray-400">
+                <span>Годовой план (стр 14): <b class="text-gray-700">${fmtNum(ANNUAL_TARGETS_2026.deals)}</b></span>
+                <span class="font-bold text-blue-600">${yearSalesPct.toFixed(1)}%</span>
             </div>
         `;
     }
@@ -510,7 +571,7 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
                 <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, prepaysPct)}%; background: ${prepaysColor}"></div>
             </div>
             <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
-                <span>План: <b class="text-gray-600">${fmtNum(targetPrepays)}</b></span>
+                <span>План квартала: <b class="text-gray-600">${fmtNum(targetPrepays)}</b></span>
                 <span class="font-bold" style="color: ${prepaysColor}">${prepaysPct.toFixed(1)}%</span>
             </div>
         `;
@@ -519,6 +580,7 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
     // 3. Avg Check
     const checkPct = targetCheck > 0 ? (curAvgCheck / targetCheck * 100) : 0;
     const checkColor = checkPct >= 100 ? '#22c55e' : (checkPct >= 90 ? '#8b5cf6' : '#f59e0b');
+    const yearCheckPct = (yearAvgCheck / ANNUAL_TARGETS_2026.avgCheck * 100);
     const elCheckPlan = document.getElementById('kpiCheckPlan');
     if (elCheckPlan) {
         elCheckPlan.innerHTML = `
@@ -526,8 +588,12 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
                 <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, checkPct)}%; background: ${checkColor}"></div>
             </div>
             <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
-                <span>План: <b class="text-gray-600">${fmtMln(targetCheck)}</b></span>
+                <span>План квартала: <b class="text-gray-600">${fmtMln(targetCheck)}</b></span>
                 <span class="font-bold" style="color: ${checkColor}">${checkPct.toFixed(1)}%</span>
+            </div>
+            <div class="flex justify-between items-center text-[10px] mt-0.5 pt-0.5 border-t border-gray-100 text-gray-400">
+                <span>Годовой план (стр 27): <b class="text-gray-700">${fmtMln(ANNUAL_TARGETS_2026.avgCheck)}</b></span>
+                <span class="font-bold text-purple-600">${yearCheckPct.toFixed(1)}%</span>
             </div>
         `;
     }
@@ -542,7 +608,7 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
                 <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, arpuPct)}%; background: ${arpuColor}"></div>
             </div>
             <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
-                <span>План: <b class="text-gray-600">${fmtNum(targetArpu)} ₽</b></span>
+                <span>План квартала: <b class="text-gray-600">${fmtNum(targetArpu)} ₽</b></span>
                 <span class="font-bold" style="color: ${arpuColor}">${arpuPct.toFixed(1)}%</span>
             </div>
         `;
@@ -551,6 +617,7 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
     // 5. Total Revenue
     const revPct = targetRev > 0 ? (revTotal / targetRev * 100) : 0;
     const revColor = revPct >= 90 ? '#22c55e' : (revPct >= 60 ? '#10b981' : '#f59e0b');
+    const yearRevPct = (yearRev / ANNUAL_TARGETS_2026.revenue * 100);
     const elRevPlan = document.getElementById('kpiRevPlan');
     if (elRevPlan) {
         elRevPlan.innerHTML = `
@@ -558,8 +625,12 @@ function updateTopKpiPlans(tS, tP, curAvgCheck, curArpu, revTotal) {
                 <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${Math.min(100, revPct)}%; background: ${revColor}"></div>
             </div>
             <div class="flex justify-between items-center text-[10px] mt-1 text-gray-400">
-                <span>План: <b class="text-gray-600">${fmtMln(targetRev)}</b></span>
+                <span>План квартала: <b class="text-gray-600">${fmtMln(targetRev)}</b></span>
                 <span class="font-bold" style="color: ${revColor}">${revPct.toFixed(1)}%</span>
+            </div>
+            <div class="flex justify-between items-center text-[10px] mt-0.5 pt-0.5 border-t border-gray-100 text-gray-400">
+                <span>Годовой план (стр 48-52): <b class="text-gray-700">${fmtMln(ANNUAL_TARGETS_2026.revenue)}</b></span>
+                <span class="font-bold text-emerald-600">${yearRevPct.toFixed(1)}%</span>
             </div>
         `;
     }
