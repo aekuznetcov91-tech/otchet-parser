@@ -111,7 +111,7 @@ def aggregate_calculator(rows, fetched_at=None):
 def load_calculator_snapshot():
     if not SNAPSHOT.exists():
         return None
-    data = json.loads(SNAPSHOT.read_text())
+    data = json.loads(SNAPSHOT.read_text(encoding='utf-8'))
     if data.get('schema_version') != 1 or not isinstance(data.get('by_month'), dict):
         raise ValueError('Invalid calculator snapshot; refresh it before running ETL')
     return data

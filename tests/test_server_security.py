@@ -11,7 +11,7 @@ class TestServerSecurity(unittest.TestCase):
         r=subprocess.run([shutil.which('node'),'scripts/build_security.cjs','--check'],cwd=ROOT,capture_output=True,text=True)
         self.assertEqual(r.returncode,0,r.stdout+r.stderr)
     def test_no_browser_pins_or_auth_storage(self):
-        s=(ROOT/'site/js/kam/access.js').read_text()
+        s=(ROOT/'site/js/kam/access.js').read_text(encoding='utf-8')
         self.assertNotIn('pins:',s)
         self.assertNotIn('localStorage.getItem',s)
-        self.assertNotIn('fillKamTestPin',(ROOT/'site/index.html').read_text())
+        self.assertNotIn('fillKamTestPin',(ROOT/'site/index.html').read_text(encoding='utf-8'))
