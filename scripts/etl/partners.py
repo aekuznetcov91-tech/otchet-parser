@@ -247,5 +247,13 @@ def apply_canonical_kam_mapping(pid, cname, partner_raw, kam, deal_city="", deal
     if 'ргс' in p_text or inn_str == '2904030348':
         return 1295, 'РГС (Котлас)', 'Светлана Дариенко'
 
+    # 41. Lucky Motors Екатеринбург (Добролюбова) - 6 deals in September
+    if ('lucky motors' in p_text or 'лаки моторс' in p_text or 'лаки-моторс' in p_text) or inn_str == '6664044905':
+        return 1296, 'Lucky Motors (Екатеринбург)', 'Евгения Добролюбова'
+
+    # 42. Дактор Уфа (Добролюбова) - 2 deals in September
+    if ('дактор' in p_text and any(k in p_text or k in city_low for k in ['уфа', 'башкортостан', 'сельская'])) or inn_str in ('0276971419', '276971419'):
+        return 1297, 'Дактор (Уфа)', 'Евгения Добролюбова'
+
     return pid, cname, kam
 

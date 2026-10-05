@@ -1,6 +1,6 @@
 {
   "updated_at": "2026-08-26 14:15:00",
-  "total_master_partners": 2242,
+  "total_master_partners": 2258,
   "partners": [
     {
       "partner_id": 1001,
@@ -268,14 +268,6 @@
           "brand": "SOLARIS"
         },
         {
-          "sheet": "SOLARIS",
-          "city": "Санкт-Петербург",
-          "name": "Аларм Моторс",
-          "legal_entity": "ООО Аларм Авто Юго-Запад",
-          "inn": "7807166046",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Санкт-Петербург",
           "name": "Аларм",
@@ -321,6 +313,14 @@
           "name": "Аларм-Моторс Сити Савушкина",
           "legal_entity": "ООО Аларм-моторс Юго-Запад",
           "inn": "7802383738",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Санкт-Петербург",
+          "name": "Аларм Моторс",
+          "legal_entity": "ООО Аларм Авто Юго-Запад",
+          "inn": "7807166046",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -552,14 +552,6 @@
           "brand": "GAC"
         },
         {
-          "sheet": "GAC",
-          "city": "Санкт-Петебург",
-          "name": "Сигма Моторс ГМБх",
-          "legal_entity": "ООО Сигма Моторс ГМБх",
-          "inn": "7825507813",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Санкт-Петербург",
           "name": "ЧЕРИ ЦЕНТР СИГМА ОНЛАЙН",
@@ -574,6 +566,14 @@
           "legal_entity": "ООО Сигма Авто",
           "inn": "7813649997",
           "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Санкт-Петебург",
+          "name": "Сигма Моторс ГМБх",
+          "legal_entity": "ООО Сигма Моторс ГМБх",
+          "inn": "7825507813",
+          "responsible": "Светлана Дариенко"
         }
       ],
       "status": "verified"
@@ -582,7 +582,7 @@
       "partner_id": 1012,
       "canonical_name": "Jetour Авто Премиум",
       "holding": "Jetour",
-      "kam": "Светлана Дариенко",
+      "kam": "Алексей Чихарев",
       "bitrix_aliases": [
         "Online Авто Премиум / ООО Лидер Сервис",
         "Jetour Авто Премиум",
@@ -647,20 +647,12 @@
           "brand": "Soueast"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Тверь",
-          "name": "Авто Премиум",
-          "legal_entity": "ООО Союз-T",
-          "inn": "6950061531",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "JETOUR",
-          "city": "Тверь",
+          "city": "Санкт-Петербург",
           "name": "Авто Премиум",
-          "legal_entity": "ООО Союз-T",
-          "inn": "6950061531",
-          "responsible": "Алексей Чихарев"
+          "legal_entity": "ООО Лидер Сервис",
+          "inn": "7802455157",
+          "responsible": "Светлана Дариенко"
         },
         {
           "sheet": "Soueast",
@@ -669,6 +661,14 @@
           "legal_entity": "ООО Лидер Сервис",
           "inn": "7802455157",
           "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Тверь",
+          "name": "Авто Премиум",
+          "legal_entity": "ООО Союз-T",
+          "inn": "6950061531",
+          "responsible": "Алексей Чихарев"
         }
       ],
       "status": "verified"
@@ -763,14 +763,6 @@
           "brand": "GAC"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Тамбов",
-          "name": "Глобус",
-          "legal_entity": "ООО Автосалон Глобус",
-          "inn": "6829083521",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Тамбов",
           "name": "Глобус",
@@ -784,6 +776,14 @@
           "name": "Глобус",
           "legal_entity": "ООО Автосфера",
           "inn": "6829089019",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Тамбов",
+          "name": "Глобус",
+          "legal_entity": "ООО Автосалон Глобус",
+          "inn": "6829083521",
           "responsible": "Валерия Солдатова"
         },
         {
@@ -984,6 +984,14 @@
           "brand": "GAC"
         },
         {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "name": "Автопродикс",
+          "legal_entity": "ООО Продикс ЮГ",
+          "inn": "7810862011",
+          "responsible": "Светлана Дариенко"
+        },
+        {
           "sheet": "CHANGAN",
           "city": "Санкт-Петербург",
           "name": "Автопродикс",
@@ -998,14 +1006,6 @@
           "legal_entity": "ООО Автомодус",
           "inn": "7804542648",
           "responsible": "Не назначен"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Автопродикс",
-          "legal_entity": "ООО АВТОТРИУМФ СЕВЕР",
-          "inn": "7814540061",
-          "responsible": "Светлана Дариенко"
         }
       ],
       "status": "verified"
@@ -1348,19 +1348,19 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Новороссийск",
-          "name": "Р-Моторс",
-          "legal_entity": "ООО Р-Моторс",
-          "inn": "2315166123",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "LADA",
           "city": "Барнаул",
           "name": "Р-моторс Лада Барнаул",
           "legal_entity": "ООО Р-Моторс ЛАДА",
           "inn": "7807073673",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Новороссийск",
+          "name": "Р-Моторс",
+          "legal_entity": "ООО Р-Моторс",
+          "inn": "2315166123",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -2724,30 +2724,6 @@
           "brand": "DEEPAL"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Анапа",
-          "name": "О2",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Симферополь",
-          "name": "Оптима",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Симферополь",
-          "name": "Оптима",
-          "legal_entity": "ООО Оптима Салгир",
-          "inn": "2311322830",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Анапа",
           "name": "О2",
@@ -2834,6 +2810,30 @@
           "legal_entity": "ООО Оптима Кубань",
           "inn": "2312205455",
           "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Анапа",
+          "name": "О2",
+          "legal_entity": "ООО Оптима Салгир",
+          "inn": "2311322830",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Симферополь",
+          "name": "Оптима",
+          "legal_entity": "ООО Оптима Салгир",
+          "inn": "2311322830",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Симферополь",
+          "name": "Оптима",
+          "legal_entity": "ООО Оптима Салгир",
+          "inn": "2311322830",
+          "responsible": "Валерия Солдатова"
         }
       ],
       "status": "verified"
@@ -2913,18 +2913,18 @@
         },
         {
           "sheet": "CHERY&TENET",
-          "city": "Архангельск",
-          "name": "ЧЕРИ ЦЕНТР ДИНАМИКА АРХАНГЕЛЬСК ОНЛАЙН",
-          "legal_entity": "ООО Динамика Архангельск РР",
-          "inn": "1101096766",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "CHERY&TENET",
           "city": "Новосибирск",
           "name": "ЧЕРИ ЦЕНТР ЛУНААВТО НА СТАНЦИОННОЙ ОНЛАЙН",
           "legal_entity": "ООО ЛунаАвто",
           "inn": "5410065297",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Архангельск",
+          "name": "ЧЕРИ ЦЕНТР ДИНАМИКА АРХАНГЕЛЬСК ОНЛАЙН",
+          "legal_entity": "ООО Динамика Архангельск РР",
+          "inn": "1101096766",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -2992,14 +2992,6 @@
           "brand": "GAC"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Форсаж",
-          "legal_entity": "ООО Вираж",
-          "inn": "7816289598",
-          "responsible": "Светлана Дариенко"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Санкт-Петербург",
           "name": "Форсаж",
@@ -3013,6 +3005,14 @@
           "name": "Форсаж",
           "legal_entity": "ООО Форсаж",
           "inn": "7810368525",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Санкт-Петербург",
+          "name": "Форсаж",
+          "legal_entity": "ООО Вираж",
+          "inn": "7816289598",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -3131,6 +3131,14 @@
           "brand": "CHANGAN"
         },
         {
+          "sheet": "OMODA&JAECOO",
+          "city": "Новосибирск",
+          "name": "ЭКСПЕРТ АВТО",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО НСК",
+          "inn": "5410097027",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
           "sheet": "Geely&Belgee",
           "city": "Новосибирск",
           "name": "Эксперт Авто",
@@ -3144,14 +3152,6 @@
           "name": "Эксперт Авто",
           "legal_entity": "ООО Эксперт Авто",
           "inn": "5410052266",
-          "responsible": "Евгения Добролюбова"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Новосибирск",
-          "name": "ЭКСПЕРТ АВТО",
-          "legal_entity": "ООО ЭКСПЕРТ АВТО НСК",
-          "inn": "5410097027",
           "responsible": "Евгения Добролюбова"
         }
       ],
@@ -3358,22 +3358,6 @@
           "brand": "DEEPAL"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Воронеж",
-          "name": "Ринг Авто",
-          "legal_entity": "ООО Ринг Авто",
-          "inn": "3661048575",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "DEEPAL",
-          "city": "Воронеж",
-          "name": "Ринг Авто",
-          "legal_entity": "ООО Ринг Авто",
-          "inn": "3661048575",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Воронеж",
           "name": "Ринг",
@@ -3395,6 +3379,22 @@
           "name": "Ринг Авто",
           "legal_entity": "ООО Ринг Сервис",
           "inn": "3664048710",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Воронеж",
+          "name": "Ринг Авто",
+          "legal_entity": "ООО Ринг Авто",
+          "inn": "3661048575",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "DEEPAL",
+          "city": "Воронеж",
+          "name": "Ринг Авто",
+          "legal_entity": "ООО Ринг Авто",
+          "inn": "3661048575",
           "responsible": "Валерия Солдатова"
         },
         {
@@ -3505,22 +3505,6 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Воронеж",
-          "name": "Фрэш Авто",
-          "legal_entity": "ООО ФРЕШ АВТО ГАЗ",
-          "inn": "7724423589",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Воронеж",
-          "name": "Фреш",
-          "legal_entity": "ООО Фреш К",
-          "inn": "9723038901",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
           "sheet": "HAVAL",
           "city": "Минеральные Воды",
           "name": "Fresh Haval мин воды",
@@ -3534,6 +3518,22 @@
           "name": "Fresh Haval Ростов",
           "legal_entity": "ООО Фреш МБ",
           "inn": "3443137377",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Воронеж",
+          "name": "Фрэш Авто",
+          "legal_entity": "ООО ФРЕШ АВТО ГАЗ",
+          "inn": "7724423589",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Воронеж",
+          "name": "Фреш",
+          "legal_entity": "ООО Фреш К",
+          "inn": "9723038901",
           "responsible": "Андрей Кузнецов"
         }
       ],
@@ -3641,6 +3641,14 @@
           "responsible": "Алексей Чихарев"
         },
         {
+          "sheet": "CHANGAN",
+          "city": "Иваново",
+          "name": "Радар-Авто",
+          "legal_entity": "ООО Радар-Северный",
+          "inn": "3702235947",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "Geely&Belgee",
           "city": "Иваново",
           "name": "Радар-авто",
@@ -3654,14 +3662,6 @@
           "name": "Радар-Авто",
           "legal_entity": "ООО Радар-Запад",
           "inn": "3702248424",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Иваново",
-          "name": "Радар-Авто",
-          "legal_entity": "ООО Радар-Северный",
-          "inn": "3702235947",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -4258,14 +4258,6 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "name": "ГК Major",
-          "legal_entity": "ООО Мэйджор Автомобили",
-          "inn": "7734504981",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Москва",
           "name": "Major",
@@ -4287,6 +4279,14 @@
           "name": "Major",
           "legal_entity": "Мэйджор Авто Комплекс",
           "inn": "7733622365",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "name": "ГК Major",
+          "legal_entity": "ООО Мэйджор Автомобили",
+          "inn": "7734504981",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -4668,22 +4668,6 @@
           "brand": "Soueast"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Нижний Новгород",
-          "name": "АГАТ",
-          "legal_entity": "ООО Платинум",
-          "inn": "5257100888",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Казань",
-          "name": "Апельсин КАЗАНЬ",
-          "legal_entity": "ООО Спектр",
-          "inn": "1657225323",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Иркутск",
           "name": "ЧЕРИ ЦЕНТР АГАТ-АВТО Онлайн Иркутск",
@@ -4714,6 +4698,22 @@
           "legal_entity": "ООО Аркада",
           "inn": "5257208916",
           "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Нижний Новгород",
+          "name": "АГАТ",
+          "legal_entity": "ООО Платинум",
+          "inn": "5257100888",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Казань",
+          "name": "Апельсин КАЗАНЬ",
+          "legal_entity": "ООО Спектр",
+          "inn": "1657225323",
+          "responsible": "Алексей Чихарев"
         },
         {
           "sheet": "JETOUR",
@@ -4995,14 +4995,6 @@
           "brand": "SOLARIS"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Набережные Челны",
-          "name": "Чери Центр Апельсин",
-          "legal_entity": "ООО ЧЕЛНЫ-АВТО",
-          "inn": "1650402781",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Набережные Челны",
           "name": "Апельсин",
@@ -5016,6 +5008,14 @@
           "name": "Апельсин",
           "legal_entity": "ООО Армада-Авто",
           "inn": "1615009225",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Набережные Челны",
+          "name": "Чери Центр Апельсин",
+          "legal_entity": "ООО ЧЕЛНЫ-АВТО",
+          "inn": "1650402781",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -5239,14 +5239,6 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Челябинск",
-          "name": "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
-          "legal_entity": "ООО Автогарантия",
-          "inn": "7447124619",
-          "responsible": "Евгения Добролюбова"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Челябинск",
           "name": "Планета Авто",
@@ -5268,6 +5260,14 @@
           "name": "Jetour Планета Авто",
           "legal_entity": "ООО Автоцентр Гольфстрим",
           "inn": "7452048272",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Челябинск",
+          "name": "ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК",
+          "legal_entity": "ООО Автогарантия",
+          "inn": "7447124619",
           "responsible": "Евгения Добролюбова"
         }
       ],
@@ -5441,19 +5441,19 @@
           "brand": "OMODA & JAECOO"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Пятигорск",
-          "name": "ЧЕРИ ЦЕНТР АВТОЛЮКС ОНЛАЙН",
-          "legal_entity": "ООО АВТОЛЮКС",
-          "inn": "2630048453",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "OMODA&JAECOO",
           "city": "Махачкала",
           "name": "Автолюкс",
           "legal_entity": "ООО Автолюкс",
           "inn": "0546024330",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Пятигорск",
+          "name": "ЧЕРИ ЦЕНТР АВТОЛЮКС ОНЛАЙН",
+          "legal_entity": "ООО АВТОЛЮКС",
+          "inn": "2630048453",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -5630,22 +5630,6 @@
           "brand": "GAC"
         },
         {
-          "sheet": "SOLARIS",
-          "city": "Ростов-на-Дону",
-          "name": "Артекс",
-          "legal_entity": "ООО РедКар",
-          "inn": "6168719460",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Ростов-на-Дону",
-          "name": "Артекс",
-          "legal_entity": "ООО РедКар",
-          "inn": "6168719460",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Ростов-на-Дону",
           "name": "Артекс",
@@ -5659,6 +5643,22 @@
           "name": "Артекс",
           "legal_entity": "ООО Арт-Моторс",
           "inn": "6168057294",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Ростов-на-Дону",
+          "name": "Артекс",
+          "legal_entity": "ООО РедКар",
+          "inn": "6168719460",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Ростов-на-Дону",
+          "name": "Артекс",
+          "legal_entity": "ООО РедКар",
+          "inn": "6168719460",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -6382,11 +6382,27 @@
           "brand": "DEEPAL"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Калуга",
+          "sheet": "JETOUR",
+          "city": "Пермь",
           "name": "Автопрестиж",
-          "legal_entity": "ООО Автосалон Престиж",
-          "inn": "4030000000",
+          "legal_entity": "ООО Авто-СМР",
+          "inn": "6313562489",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Волгоград",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО А-моторс",
+          "inn": "3443088070",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Ставрополь",
+          "name": "Автопрестиж",
+          "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
+          "inn": "5640000000",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -6395,22 +6411,6 @@
           "name": "Автопрестиж",
           "legal_entity": "ООО ЭКСПЕРТ АВТО ОРЕНБУРГ",
           "inn": "5640000000",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Пермь",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО Автопрестиж-Полюс",
-          "inn": "5908048045",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Тольятти",
-          "name": "Автопрестиж",
-          "legal_entity": "ООО Авто-СТВ",
-          "inn": "2635258750",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -6430,11 +6430,11 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "Geely&Belgee",
-          "city": "Волгоград",
+          "sheet": "GAC",
+          "city": "Москва",
           "name": "Автопрестиж",
-          "legal_entity": "ООО А-моторс",
-          "inn": "3443088070",
+          "legal_entity": "ООО Эксперт авто оренбург",
+          "inn": "5638070618",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -6805,35 +6805,11 @@
           "brand": "GAC"
         },
         {
-          "sheet": "OMODA&JAECOO",
-          "city": "Казань",
-          "name": "Диалог",
-          "legal_entity": "ООО Управляющая компания Диалог",
-          "inn": "1650207558",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Набережные Челны",
-          "name": "Диалог Авто",
-          "legal_entity": "ООО Управляющая компания Диалог",
-          "inn": "1650207558",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "Geely&Belgee",
-          "city": "Набережные Челны",
+          "city": "Альметьевск",
           "name": "Диалог",
-          "legal_entity": "ООО УК Диалог",
-          "inn": "1650207558",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Набережные Челны",
-          "name": "Диалог",
-          "legal_entity": "ООО УК Диалог",
-          "inn": "1650207558",
+          "legal_entity": "ООО Диалог Авто",
+          "inn": "1644062657",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -6866,6 +6842,30 @@
           "name": "Диалог",
           "legal_entity": "ООО УК Диалог",
           "inn": "1650207557",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Казань",
+          "name": "Диалог",
+          "legal_entity": "ООО Управляющая компания Диалог",
+          "inn": "1650207558",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Набережные Челны",
+          "name": "Диалог Авто",
+          "legal_entity": "ООО Управляющая компания Диалог",
+          "inn": "1650207558",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Набережные Челны",
+          "name": "Диалог",
+          "legal_entity": "ООО УК Диалог",
+          "inn": "1650207558",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -7001,20 +7001,20 @@
           "responsible": "Светлана Дариенко"
         },
         {
-          "sheet": "CHANGAN",
-          "city": "Санкт-Петербург",
-          "name": "Автопортрет",
-          "legal_entity": "ООО Автопорттрет Лахта",
-          "inn": "7814693364",
-          "responsible": "Не назначен"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Санкт-Петербург",
           "name": "Автопортрет",
           "legal_entity": "ООО НеваАвто",
           "inn": "7816740073",
           "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Санкт-Петербург",
+          "name": "Автопортрет",
+          "legal_entity": "ООО Автопорттрет Лахта",
+          "inn": "7814693364",
+          "responsible": "Не назначен"
         }
       ],
       "status": "verified"
@@ -7142,19 +7142,19 @@
           "brand": "SOLARIS"
         },
         {
+          "sheet": "SOLARIS",
+          "city": "Рязань",
+          "name": "Автоимпорт",
+          "legal_entity": "ООО Компания Автоимпорт",
+          "inn": "6234062209",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "JETOUR",
           "city": "Рязань",
           "name": "Автоимпорт",
           "legal_entity": "ООО Автоимпорт Центр",
           "inn": "6234042906",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Рязань",
-          "name": "Автоимпорт",
-          "legal_entity": "ООО Ле-Ман",
-          "inn": "6234059829",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -7590,6 +7590,38 @@
           "responsible": "Алексей Чихарев"
         },
         {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "name": "Кунцево (City)",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Не назначен"
+        },
+        {
+          "sheet": "HAVAL",
+          "city": "Москва",
+          "name": "Кунцево (PRO)",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Не назначен"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Москва",
+          "name": "Кунцево",
+          "legal_entity": "ООО ТЦ Кунцево Лимитед",
+          "inn": "5032272711",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "OMODA&JAECOO",
           "city": "Москва",
           "name": "ГК Рольф",
@@ -7708,38 +7740,6 @@
           "legal_entity": "АО Рольф",
           "inn": "5047254063",
           "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "name": "Кунцево (City)",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Не назначен"
-        },
-        {
-          "sheet": "HAVAL",
-          "city": "Москва",
-          "name": "Кунцево (PRO)",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Не назначен"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "name": "Кунцево",
-          "legal_entity": "ООО ТЦ Кунцево Лимитед",
-          "inn": "5032272711",
-          "responsible": "Алексей Чихарев"
         }
       ],
       "status": "verified"
@@ -8347,19 +8347,19 @@
           "brand": "SOLARIS"
         },
         {
+          "sheet": "JETOUR",
+          "city": "Тула",
+          "name": "Автокласс",
+          "legal_entity": "ООО Автокласс сп",
+          "inn": "7103503753",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Тула",
           "name": "Чери Центр Автокласс на Оборонной",
           "legal_entity": "ООО М-АВТО",
           "inn": "7106511456",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Новомосковск (Тульская область)",
-          "name": "Автоклас",
-          "legal_entity": "ООО Автокласс РДС",
-          "inn": "7116158430",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -8371,11 +8371,11 @@
           "responsible": "Алексей Чихарев"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Тула",
-          "name": "Автокласс",
-          "legal_entity": "ООО Автокласс сп",
-          "inn": "7103503753",
+          "sheet": "CHANGAN",
+          "city": "Новомосковск (Тульская область)",
+          "name": "Автоклас",
+          "legal_entity": "ООО Автокласс РДС",
+          "inn": "7116158430",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -8630,19 +8630,19 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Волгоград",
-          "name": "Чери Арконт",
-          "legal_entity": "ООО Арконт ЯЛР Филиал №1",
-          "inn": "3443089821",
-          "responsible": "Евгения Добролюбова"
-        },
-        {
           "sheet": "JETOUR",
           "city": "Волгоград",
           "name": "ГК Арконт",
           "legal_entity": "ООО Арконт В",
           "inn": "3443113810",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Волгоград",
+          "name": "Чери Арконт",
+          "legal_entity": "ООО Арконт ЯЛР Филиал №1",
+          "inn": "3443089821",
           "responsible": "Евгения Добролюбова"
         }
       ],
@@ -10022,24 +10022,8 @@
           "sheet": "OMODA&JAECOO",
           "city": "Москва",
           "name": "Автодом",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHANGAN",
-          "city": "Москва",
-          "name": "Автодом",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Москва",
-          "name": "АВТОДОМ",
-          "legal_entity": "ООО ДЦА",
-          "inn": "5029236551",
+          "legal_entity": "АО АВТОДОМ",
+          "inn": "7714709349",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -10048,6 +10032,22 @@
           "name": "Автодом",
           "legal_entity": "ООО АВТОДОМ",
           "inn": "7714709349",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "GAC",
+          "city": "Москва",
+          "name": "АВТОДОМ",
+          "legal_entity": "ООО Автодом",
+          "inn": "7714709349",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHANGAN",
+          "city": "Москва",
+          "name": "Автодом",
+          "legal_entity": "ООО ДЦА",
+          "inn": "5029236551",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -10268,6 +10268,14 @@
           "brand": "Soueast"
         },
         {
+          "sheet": "JETOUR",
+          "city": "Екатеринбург",
+          "name": "ГК Лаки Моторс Джетур",
+          "legal_entity": "ЗАО Автохолдинг",
+          "inn": "6664044905",
+          "responsible": "Евгения Добролюбова"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Санкт-Петербург",
           "name": "Максимум",
@@ -10306,14 +10314,6 @@
           "legal_entity": "ООО Максимум Кредит",
           "inn": "7804540104",
           "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Екатеринбург",
-          "name": "ГК Лаки Моторс Джетур",
-          "legal_entity": "ЗАО Автохолдинг",
-          "inn": "6664044905",
-          "responsible": "Евгения Добролюбова"
         }
       ],
       "status": "verified"
@@ -10688,22 +10688,6 @@
           "brand": "Soueast"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Брянск",
-          "name": "Дебрянск Авто",
-          "legal_entity": "ООО Дебрянск Авто",
-          "inn": "3250521481",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Брянск",
-          "name": "Дебрянск Авто",
-          "legal_entity": "ООО БНМ-1",
-          "inn": "3257002460",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "HAVAL",
           "city": "Брянск",
           "name": "Дебрянск Авто (Pro)",
@@ -10733,6 +10717,22 @@
           "name": "Дебрянск Авто",
           "legal_entity": "ООО МБ-Брянск",
           "inn": "3257014272",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Брянск",
+          "name": "Дебрянск Авто",
+          "legal_entity": "ООО Дебрянск Авто",
+          "inn": "3250521481",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Брянск",
+          "name": "Дебрянск Авто",
+          "legal_entity": "ООО БНМ-1",
+          "inn": "3257002460",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -11322,6 +11322,38 @@
           "brand": "Voyah"
         },
         {
+          "sheet": "Москвич",
+          "city": "Казань",
+          "name": "КАН АВТО",
+          "legal_entity": "ООО КАН АВТО - 6",
+          "inn": "1657126393",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Казань",
+          "name": "КАН АВТО",
+          "legal_entity": "ООО КАН АВТО - 4",
+          "inn": "1657120962",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "Geely&Belgee",
+          "city": "Казань",
+          "name": "КАН АВТО",
+          "legal_entity": "ООО КАН АВТО - 4",
+          "inn": "1657120962",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "OMODA&JAECOO",
+          "city": "Казань",
+          "name": "КАН Авто",
+          "legal_entity": "ООО КАН АВТО - 7",
+          "inn": "1657196270",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "CHANGAN",
           "city": "Казань",
           "name": "Кан Авто",
@@ -11335,38 +11367,6 @@
           "name": "КАН АВТО",
           "legal_entity": "ООО КАН АВТО - 5",
           "inn": "1657190695",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "OMODA&JAECOO",
-          "city": "Казань",
-          "name": "КАН Авто",
-          "legal_entity": "ООО КАН АВТО - 7",
-          "inn": "1657196270",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "Москвич",
-          "city": "Казань",
-          "name": "КАН АВТО",
-          "legal_entity": "ООО КАН АВТО - 6",
-          "inn": "1657126393",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "Geely&Belgee",
-          "city": "Казань",
-          "name": "КАН АВТО",
-          "legal_entity": "ООО КАН АВТО - 14",
-          "inn": "1657244365",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Казань",
-          "name": "КАН АВТО",
-          "legal_entity": "ООО КАН АВТО - 4",
-          "inn": "1657120962",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -11850,6 +11850,14 @@
           "brand": "GAC"
         },
         {
+          "sheet": "GAC",
+          "city": "Владимир",
+          "name": "АВТОТРАКТ",
+          "legal_entity": "ООО Автотракт-Владимир",
+          "inn": "3328445119",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "CHERY&TENET",
           "city": "Владимир",
           "name": "АВТОТРАКТ",
@@ -11871,14 +11879,6 @@
           "name": "АВТОТРАКТ",
           "legal_entity": "ООО ТФК",
           "inn": "3328437679",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "GAC",
-          "city": "Владимир",
-          "name": "АВТОТРАКТ",
-          "legal_entity": "ООО Автотракт-Владимир",
-          "inn": "3328445119",
           "responsible": "Алексей Чихарев"
         },
         {
@@ -12155,16 +12155,16 @@
           "brand": "CHANGAN"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Донецк",
+          "sheet": "Geely&Belgee",
+          "city": "Краснодар",
           "name": "Бакра",
-          "legal_entity": "ООО Бакра 2.0",
-          "inn": "2312330449",
+          "legal_entity": "ООО Бакра",
+          "inn": "2310041882",
           "responsible": "Валерия Солдатова"
         },
         {
-          "sheet": "Geely&Belgee",
-          "city": "Краснодар",
+          "sheet": "CHERY&TENET",
+          "city": "Донецк",
           "name": "Бакра",
           "legal_entity": "ООО Бакра 2.0",
           "inn": "2312330449",
@@ -12487,6 +12487,22 @@
           "brand": "GAC"
         },
         {
+          "sheet": "JETOUR",
+          "city": "Ставрополь",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО АвтоЮг Ставрополь",
+          "inn": "2635255012",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Ставрополь",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО АвтоЮг Ставрополь",
+          "inn": "2635255012",
+          "responsible": "Валерия Солдатова"
+        },
+        {
           "sheet": "OMODA&JAECOO",
           "city": "Пятигорск",
           "name": "АвтоЮг",
@@ -12503,30 +12519,6 @@
           "responsible": "Валерия Солдатова"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Пятигорск",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО АвтоЮг-Пятигорск",
-          "inn": "2635255478",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Пятигорск",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО АвтоЮг-Пятигорск",
-          "inn": "2635255478",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Ставрополь",
-          "name": "АвтоЮг",
-          "legal_entity": "ООО АвтоЮг Ставрополь",
-          "inn": "2635255012",
-          "responsible": "Валерия Солдатова"
-        },
-        {
           "sheet": "CHERY&TENET",
           "city": "Ставрополь",
           "name": "АвтоЮг",
@@ -12540,6 +12532,14 @@
           "name": "АвтоЮг",
           "legal_entity": "ООО Ставрополь Автоюг",
           "inn": "2635233876",
+          "responsible": "Валерия Солдатова"
+        },
+        {
+          "sheet": "Soueast",
+          "city": "Пятигорск",
+          "name": "АвтоЮг",
+          "legal_entity": "ООО АвтоЮг-Пятигорск",
+          "inn": "2635255478",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -12781,19 +12781,19 @@
           "brand": "JETOUR"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Казань",
-          "name": "Барс Авто",
-          "legal_entity": "АО Барс Авто",
-          "inn": "1660075318",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "Geely&Belgee",
           "city": "Казань",
           "name": "Барс Авто",
           "legal_entity": "ООО Дат Р",
           "inn": "1660106816",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Казань",
+          "name": "Барс Авто",
+          "legal_entity": "АО Барс Авто",
+          "inn": "1660075318",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -13015,6 +13015,14 @@
           "brand": "Soueast"
         },
         {
+          "sheet": "Soueast",
+          "city": "Ярославль",
+          "name": "АВТО БИЗНЕС",
+          "legal_entity": "ООО АБЦ групп",
+          "inn": "7602033373",
+          "responsible": "Алексей Чихарев"
+        },
+        {
           "sheet": "CHANGAN",
           "city": "Рыбинск",
           "name": "Авто Бизнес",
@@ -13028,14 +13036,6 @@
           "name": "Авто Бизнес",
           "legal_entity": "ООО АВТО БИЗНЕС",
           "inn": "7606128876",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "Soueast",
-          "city": "Ярославль",
-          "name": "АВТО БИЗНЕС",
-          "legal_entity": "ООО АБЦ групп",
-          "inn": "7602033373",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -13311,18 +13311,18 @@
         },
         {
           "sheet": "JETOUR",
-          "city": "Новокузнецк",
-          "name": "Картель-Авто",
-          "legal_entity": "ООО Картель АВТО",
-          "inn": "4205236413",
-          "responsible": "Светлана Дариенко"
-        },
-        {
-          "sheet": "JETOUR",
           "city": "Кемерово",
           "name": "Картель",
           "legal_entity": "ООО КАРТЕЛЬ",
           "inn": "4205155965",
+          "responsible": "Светлана Дариенко"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Новокузнецк",
+          "name": "Картель-Авто",
+          "legal_entity": "ООО Картель АВТО",
+          "inn": "4205236413",
           "responsible": "Светлана Дариенко"
         }
       ],
@@ -13967,19 +13967,19 @@
           "brand": "SOLARIS"
         },
         {
-          "sheet": "JETOUR",
-          "city": "Тверь",
-          "name": "Важная персона",
-          "legal_entity": "ООО ВАЖНАЯ ПЕРСОНА-АВТО",
-          "inn": "6901084230",
-          "responsible": "Алексей Чихарев"
-        },
-        {
           "sheet": "SOLARIS",
           "city": "Тверь",
           "name": "Важная персона Тверь",
           "legal_entity": "ООО Важная персона – Авто М",
           "inn": "6950108660",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "JETOUR",
+          "city": "Тверь",
+          "name": "Важная персона",
+          "legal_entity": "ООО ВАЖНАЯ ПЕРСОНА-АВТО",
+          "inn": "6901084230",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -14296,18 +14296,18 @@
         },
         {
           "sheet": "SOLARIS",
-          "city": "Казань",
-          "name": "Апельсин Казань",
-          "legal_entity": "ООО Вегас",
-          "inn": "1648043408",
-          "responsible": "Алексей Чихарев"
-        },
-        {
-          "sheet": "SOLARIS",
           "city": "Уфа",
           "name": "Апельсин КАЗАНЬ Online",
           "legal_entity": "ООО АВТОСЕТЬ УРАЛ",
           "inn": "1683008149",
+          "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "SOLARIS",
+          "city": "Казань",
+          "name": "Апельсин Казань",
+          "legal_entity": "ООО Вегас",
+          "inn": "1648043408",
           "responsible": "Алексей Чихарев"
         }
       ],
@@ -15221,29 +15221,7 @@
         "Сократ (Моторленд СПб)"
       ],
       "pochta_aliases": [],
-      "oem_data": [
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "group_link": "https://max.ru/join/UYyazrw2aZgYM4mIwE1iyLcHOGg_2faU78aEX48aSAY",
-          "name": "Моторленд",
-          "legal_entity": "ООО Сократ СПБ",
-          "inn": "3662259794",
-          "address": "Ириновский пр. 10",
-          "back_name": "Online Моторленд",
-          "email": "d.ionova@belgee-motorland78.ru hostes@belgee-motorland78.ru hostes@jetour-motorland78.ru",
-          "responsible": "Светлана Дариенко",
-          "brand": "JETOUR"
-        },
-        {
-          "sheet": "JETOUR",
-          "city": "Санкт-Петербург",
-          "name": "Моторленд",
-          "legal_entity": "ООО Сократ СПБ",
-          "inn": "3662259794",
-          "responsible": "Светлана Дариенко"
-        }
-      ],
+      "oem_data": [],
       "holding": "Моторленд"
     },
     {
@@ -25851,20 +25829,20 @@
           "brand": "HAVAL"
         },
         {
-          "sheet": "CHERY&TENET",
-          "city": "Уфа",
-          "name": "Tenet Уфа Автопремьер М",
-          "legal_entity": "ООО Автопремьер М",
-          "inn": "0273959765",
-          "responsible": "Не назначен"
-        },
-        {
           "sheet": "HAVAL",
           "city": "Уфа",
           "name": "Уфа Haval Автопремьер М",
           "legal_entity": "ООО Автопремьер М\"",
           "inn": "0273059765",
           "responsible": "Евгения Добролюбова"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Уфа",
+          "name": "Tenet Уфа Автопремьер М",
+          "legal_entity": "ООО Автопремьер М",
+          "inn": "0273959765",
+          "responsible": "Не назначен"
         }
       ],
       "city": "Уфа"
@@ -30052,22 +30030,6 @@
         },
         {
           "sheet": "CHERY&TENET",
-          "city": "Орск",
-          "name": "Tenet Центр Ника Авто",
-          "legal_entity": "ООО Велес Авто",
-          "inn": "5638074027",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "CHERY&TENET",
-          "city": "Саратов",
-          "name": "Чери Центр Автофорум",
-          "legal_entity": "ООО Автофорум Центр",
-          "inn": "6452947574",
-          "responsible": "Андрей Кузнецов"
-        },
-        {
-          "sheet": "CHERY&TENET",
           "city": "Таганрог",
           "name": "Гедон-Юг",
           "legal_entity": "ООО Гедон-Юг",
@@ -30081,6 +30043,22 @@
           "legal_entity": "ООО ИЗМАЙЛОВО-СЕРВИС",
           "inn": "5001070659",
           "responsible": "Алексей Чихарев"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Орск",
+          "name": "Tenet Центр Ника Авто",
+          "legal_entity": "ООО Велес Авто",
+          "inn": "5638074027",
+          "responsible": "Андрей Кузнецов"
+        },
+        {
+          "sheet": "CHERY&TENET",
+          "city": "Саратов",
+          "name": "Чери Центр Автофорум",
+          "legal_entity": "ООО Автофорум Центр",
+          "inn": "6452947574",
+          "responsible": "Андрей Кузнецов"
         }
       ],
       "status": "verified"
@@ -30563,6 +30541,14 @@
           "brand": "SOLARIS"
         },
         {
+          "sheet": "SOLARIS",
+          "city": "Краснодар",
+          "name": "Юг-Авто",
+          "legal_entity": "ООО ДЦ Юг-Авто",
+          "inn": "2311120713",
+          "responsible": "Валерия Солдатова"
+        },
+        {
           "sheet": "JETOUR",
           "city": "Краснодар",
           "name": "Юг-Авто",
@@ -30576,14 +30562,6 @@
           "name": "Юг-Авто",
           "legal_entity": "ООО АК Юг-Авто",
           "inn": "2310079830",
-          "responsible": "Валерия Солдатова"
-        },
-        {
-          "sheet": "SOLARIS",
-          "city": "Краснодар",
-          "name": "Юг-Авто",
-          "legal_entity": "ООО ДЦ Юг-Авто",
-          "inn": "2311120713",
           "responsible": "Валерия Солдатова"
         }
       ],
@@ -33975,6 +33953,150 @@
       "pochta_aliases": [],
       "oem_data": [],
       "status": "verified"
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
+    },
+    {
+      "partner_id": "P_OEM_621324b8",
+      "canonical_name": "OEM Партнер",
+      "kam": "Не назначен",
+      "bitrix_aliases": [],
+      "bi_aliases": [],
+      "pochta_aliases": [],
+      "oem_data": []
     },
     {
       "partner_id": "P_OEM_621324b8",
