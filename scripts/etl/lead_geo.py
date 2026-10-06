@@ -536,33 +536,22 @@ def calculate_lead_geo_dealers_analytics(leads_data, deals_data=None):
     clients_all_sorted = sorted(clients_all, key=lambda c: str(c.get('date') or ''), reverse=True)
     all_tree = build_tree_for_clients(clients_all_sorted, include_clients=True, max_clients_per_dealer=150)
     all_tree_no_clients = build_tree_for_clients(clients_all, include_clients=False)
-    aug_clients = [c for c in clients_all_sorted if c.get('month') == '2026-08']
-    jul_clients = [c for c in clients_all_sorted if c.get('month') == '2026-07']
-    sep_clients = [c for c in clients_all_sorted if c.get('month') == '2026-09']
-    aug_tree = build_tree_for_clients(aug_clients, include_clients=False)
-    jul_tree = build_tree_for_clients(jul_clients, include_clients=False)
-    sep_tree = build_tree_for_clients(sep_clients, include_clients=False)
+    by_month_trees = {'all': all_tree_no_clients}
+    distinct_months = sorted(list({c.get('month') for c in clients_all_sorted if c.get('month')}), reverse=True)
+    for m in distinct_months:
+        m_clients = [c for c in clients_all_sorted if c.get('month') == m]
+        by_month_trees[m] = build_tree_for_clients(m_clients, include_clients=False)
 
     # Performance split: return two versions — lightweight (for data.json) and full (for geo_clients.json)
     lightweight_result = {
         'summary': all_tree['summary'],
         'regions': all_tree_no_clients['regions'],   # aggregate stats only, NO client-level data
-        'by_month': {
-            'all': all_tree_no_clients,
-            '2026-09': sep_tree,
-            '2026-08': aug_tree,
-            '2026-07': jul_tree
-        }
+        'by_month': by_month_trees
     }
     full_result = {
         'summary': all_tree['summary'],
         'regions': all_tree['regions'],   # full tree with clients arrays (for lazy-loaded geo_clients.json)
-        'by_month': {
-            'all': all_tree_no_clients,
-            '2026-09': sep_tree,
-            '2026-08': aug_tree,
-            '2026-07': jul_tree
-        }
+        'by_month': by_month_trees
     }
     return lightweight_result, full_result
 

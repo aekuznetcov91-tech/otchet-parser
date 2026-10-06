@@ -61,20 +61,26 @@ def merge_deal_history(deals_candidates):
     latest_deal_file = deals_candidates[-1][0] if deals_candidates else 'historical_cache'
     print(f"[*] Сформирован объединенный массив сделок: {len(deals_data)} записей (свежий файл: {latest_deal_file})")
 
-    # 3. Save/update persistent historical deals cache for all closed past months (< 2026-09)
-    current_month_str = '2026-09'
+    # 3. Save/update persistent historical deals cache for all closed past months (< active_month)
+    all_deal_months = set()
+    for r in deals_data:
+        dt = parse_custom_date(get_exact_val(r, 'ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ'))
+        if dt:
+            all_deal_months.add(dt.strftime('%Y-%m'))
+    active_month = max(all_deal_months) if all_deal_months else '2026-10'
+
     hist_to_cache = []
     for r in deals_data:
         dt = parse_custom_date(get_exact_val(r, 'ПРЕДПОЛАГАЕМАЯДАТАЗАКРЫТИЯ'))
         m_str = dt.strftime('%Y-%m') if dt else ''
-        if m_str and m_str < current_month_str:
+        if m_str and m_str < active_month:
             hist_to_cache.append(r)
 
     if hist_to_cache:
         try:
             with open(HISTORICAL_DEALS_CACHE_PATH, 'w', encoding='utf-8') as f:
                 json.dump(hist_to_cache, f, ensure_ascii=False)
-            print(f"[*] Сохранен кэш историчности закрытых месяцев (< {current_month_str}): {len(hist_to_cache)} сделок")
+            print(f"[*] Сохранен кэш историчности закрытых месяцев (< {active_month}): {len(hist_to_cache)} сделок")
         except Exception as e:
             print(f"[!] Ошибка сохранения historical_deals_cache: {e}")
 

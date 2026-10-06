@@ -138,32 +138,37 @@ def load_sources(sync_catalogs=True, leads_only=False):
     crm_lead_files.sort(key=lambda x: x[0], reverse=True)     # newest lead_num first
 
     # 1. Build Merged Partner Transfers Dataset (leads_data)
-    # If the newest file only covers the current month (e.g. September), backfill August & earlier from historical files
+    # If the newest file only covers the current month (e.g. October/September), backfill earlier months from historical files
     if partner_lead_files:
         latest_partner_num, latest_partner_name, latest_partner_rows = partner_lead_files[0]
-        # Check months in the newest partner file
+        # Check months present in the newest partner file
         p_months = set()
-        for r in latest_partner_rows[:200]:
+        for r in latest_partner_rows[:500]:
             p_dt = parse_custom_date(get_exact_val(r, 'ДАТА', 'ДАТАСОБЫТИЯ'))
             if p_dt:
                 p_months.add(p_dt.strftime('%Y-%m'))
 
-        # If latest partner file is only current month (e.g. '2026-09') and lacks previous months, merge with historical files
-        if len(p_months) == 1 and '2026-09' in p_months and len(partner_lead_files) > 1:
-            print(f"[*] Файл партнерских лидов {latest_partner_name} содержит только 2026-09. Дополняем историей (август и ранее)...")
-            historical_rows = []
-            added_sources = []
+        historical_rows = []
+        added_sources = []
+        seen_months = set(p_months)
+
+        if len(partner_lead_files) > 1:
             for _, prev_name, prev_rows in partner_lead_files[1:]:
                 added_from_file = 0
+                file_months = set()
                 for r in prev_rows:
                     dt = parse_custom_date(get_exact_val(r, 'ДАТА', 'ДАТАСОБЫТИЯ'))
                     m_str = dt.strftime('%Y-%m') if dt else '2026-08'
-                    if m_str != '2026-09':
+                    if m_str not in seen_months:
                         historical_rows.append(r)
                         added_from_file += 1
+                        file_months.add(m_str)
                 if added_from_file > 0:
+                    seen_months.update(file_months)
                     added_sources.append(prev_name)
-                    print(f"[*] Добавлено {added_from_file} исторических записей из {prev_name}")
+                    print(f"[*] Добавлено {added_from_file} исторических записей из {prev_name} (месяцы: {file_months})")
+
+        if historical_rows:
             leads_data = historical_rows + latest_partner_rows
             leads_file_name = f"{latest_partner_name} + {' + '.join(added_sources)} (merged multi-month)"
         else:
@@ -178,42 +183,44 @@ def load_sources(sync_catalogs=True, leads_only=False):
     if crm_lead_files:
         latest_crm_num, latest_crm_name, latest_crm_rows = crm_lead_files[0]
         c_months = set()
-        for r in latest_crm_rows[:200]:
+        for r in latest_crm_rows[:500]:
             c_dt = parse_custom_date(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА'))
             if c_dt:
                 c_months.add(c_dt.strftime('%Y-%m'))
 
-        if len(c_months) == 1 and '2026-09' in c_months:
-            print(f"[*] Файл общих лидов CRM {latest_crm_name} содержит только 2026-09. Дополняем историей (август и ранее)...")
-            historical_crm_rows = []
-            for _, prev_crm_name, prev_crm_rows in crm_lead_files[1:]:
-                added_now = 0
-                for r in prev_crm_rows:
-                    dt = parse_custom_date(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА'))
-                    m_str = dt.strftime('%Y-%m') if dt else '2026-08'
-                    if m_str != '2026-09':
-                        historical_crm_rows.append(r)
-                        added_now += 1
-                if added_now > 0:
-                    print(f"[*] Добавлено {added_now} исторических записей CRM из {prev_crm_name}")
-                    break
+        crm_seen_months = set(c_months)
+        historical_crm_rows = []
 
-            # If previous CRM files lacked older months, check partner_lead_files (e.g. data (39).xlsx)
-            if not historical_crm_rows and partner_lead_files:
+        for _, prev_crm_name, prev_crm_rows in crm_lead_files[1:]:
+            added_now = 0
+            file_c_months = set()
+            for r in prev_crm_rows:
+                dt = parse_custom_date(get_exact_val(r, 'ДАТАСОБЫТИЯ', 'ДАТАПЕРВОГОСОБЫТИЯ', 'ДАТА'))
+                m_str = dt.strftime('%Y-%m') if dt else '2026-08'
+                if m_str not in crm_seen_months:
+                    historical_crm_rows.append(r)
+                    added_now += 1
+                    file_c_months.add(m_str)
+            if added_now > 0:
+                crm_seen_months.update(file_c_months)
+                print(f"[*] Добавлено {added_now} исторических записей CRM из {prev_crm_name} (месяцы: {file_c_months})")
+
+        # If older CRM files lacked months before September, check partner_lead_files (e.g. data (39).xlsx)
+        if any(m < '2026-09' for m in ['2026-01', '2026-08']) and not any(m < '2026-09' for m in crm_seen_months):
+            if partner_lead_files:
                 for _, p_name, p_rows in partner_lead_files:
                     added_p = 0
                     for r in p_rows:
                         dt = parse_custom_date(get_exact_val(r, 'ДАТА', 'ДАТАСОБЫТИЯ'))
                         m_str = dt.strftime('%Y-%m') if dt else '2026-08'
-                        if m_str != '2026-09':
+                        if m_str not in crm_seen_months and m_str < '2026-09':
                             historical_crm_rows.append(r)
                             added_p += 1
                     if added_p > 0:
                         print(f"[*] Добавлено {added_p} исторических записей лидов из {p_name}")
                         break
-            crm_leads_data = historical_crm_rows + latest_crm_rows
-        else:
-            crm_leads_data = latest_crm_rows
+
+        crm_leads_data = historical_crm_rows + latest_crm_rows
         print(f"[*] Сформирован датасет CRM лидов: {len(crm_leads_data)} записей")
     else:
         crm_leads_data = []
