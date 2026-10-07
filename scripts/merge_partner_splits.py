@@ -852,6 +852,13 @@ def apply_merges_to_file(filepath):
         p1002['holding'] = 'Аларм-Моторс'
         p1002['kam'] = 'Светлана Дариенко'
 
+    # 13.1. Никко (Оренбург, Jetour, P_OEM_8b5da652): передача Добролюбова -> Дариенко
+    p_nikko = partners_by_id.get('P_OEM_8b5da652')
+    if p_nikko:
+        p_nikko['kam'] = 'Светлана Дариенко'
+        for oem in p_nikko.get('oem_data', []):
+            oem['responsible'] = 'Светлана Дариенко'
+
     # 14. ЧЕРИ ЦЕНТР ПЛАНЕТА АВТО ВОСТОК: 1058 -> Евгения Добролюбова (все города, кроме Махачкалы, Таганрога и Москвы относятся к Добролюбовой)
     p1058 = partners_by_id.get(1058)
     if p1058:

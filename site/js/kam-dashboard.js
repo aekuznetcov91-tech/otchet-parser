@@ -131,7 +131,9 @@ const DARIENKO_OFFICIAL_PLANS = {
     // Zero out old non-planned partners under Darienko
     "ID_1036__Светлана Дариенко": 0, "1036": 0,
     "ID_1064__Светлана Дариенко": 0, "1064": 0,
-    "ID_1138__Светлана Дариенко": 0, "1138": 0
+    "ID_1138__Светлана Дариенко": 0, "1138": 0,
+    "ID_P_OEM_8b5da652__Светлана Дариенко": 0,
+    "P_OEM_8b5da652__Светлана Дариенко": 0
 };
 
 // Default fallback plans if localStorage is empty
@@ -389,6 +391,7 @@ const DEFAULT_KAM_PLANS = {
         "ID_P_OEM_36ccbd70__Валерия Солдатова": 2,
         "ID_P_OEM_8b5da652": 3,
         "ID_P_OEM_8b5da652__Евгения Добролюбова": 3,
+        "ID_P_OEM_8b5da652__Светлана Дариенко": 0,
         "ID_P_OEM_8dfa757a": 2,
         "ID_P_OEM_8dfa757a__Валерия Солдатова": 2,
         "ID_P_OEM_a34f7047": 10,

@@ -425,6 +425,9 @@ def build_transactions(deals_data, leads_data, all_leads_data, directory_data):
                     elif any(k in p_lower for k in ['альфа-сервис', 'альфа сервис']):
                         cname = 'Альфа-Сервис'
                         kam_partner = 'Евгения Добролюбова'
+                    # Никко (Оренбург, Jetour, P_OEM_8b5da652) -> Дариенко
+                    elif 'никко' in p_lower or 'гермес-авто' in p_lower or deal_inn == '5638061236' or pid == 'P_OEM_8b5da652':
+                        pid, cname, kam_partner = ('P_OEM_8b5da652', 'Никко', 'Светлана Дариенко')
                     # Tenet центр Ника авто -> Добролюбова
                     elif any(k in p_lower for k in ['ника', 'велес авто']) or deal_inn == '5638074027':
                         cname = 'Tenet Центр Ника Авто'
@@ -728,6 +731,9 @@ def build_transactions(deals_data, leads_data, all_leads_data, directory_data):
                             kam_prepay = 'Алексей Чихарев'
                         else:
                             kam_prepay = 'Евгения Добролюбова'
+                    # Никко (Оренбург, Jetour, P_OEM_8b5da652) -> Дариенко
+                    elif 'никко' in p_lower or 'гермес-авто' in p_lower or deal_inn == '5638061236' or pid == 'P_OEM_8b5da652':
+                        kam_prepay = 'Светлана Дариенко'
                     # Р-Моторс -> Дариенко (во всех городах)
                     elif 'р-моторс' in p_lower or 'р моторс' in p_lower or pid == 1025:
                         kam_prepay = 'Светлана Дариенко'
@@ -1146,6 +1152,9 @@ def build_transactions(deals_data, leads_data, all_leads_data, directory_data):
                 elif 'вилледж' in p_lower or 'аутлет' in p_lower:
                     cname = 'Аутлет Авто Вилледж'
                     kam = 'Светлана Дариенко'
+                # Никко (Оренбург, Jetour, P_OEM_8b5da652) -> Дариенко
+                elif 'никко' in p_lower or 'гермес-авто' in p_lower or pid == 'P_OEM_8b5da652':
+                    pid, cname, kam = ('P_OEM_8b5da652', 'Никко', 'Светлана Дариенко')
                 elif 'автомобилия' in p_lower:
                     cname = 'Автомобилия (Ярославль)'
                     kam = 'Алексей Чихарев'
