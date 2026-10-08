@@ -1223,5 +1223,24 @@ def build_transactions(deals_data, leads_data, all_leads_data, directory_data):
                 "HasPrepay": has_client_prepay
             })
 
+    # Enforce historical immutability for closed months (months in fixtures/closed_months.json)
+    closed_months_file = os.path.join(DATA_DIR, 'closed_months_sys_db.json')
+    if os.path.exists(closed_months_file):
+        try:
+            with open(closed_months_file, 'r', encoding='utf-8') as f:
+                closed_sys_db = json.load(f)
+            fixtures_path = os.path.join(PROJECT_ROOT, 'tests', 'fixtures', 'closed_months.json')
+            closed_months = set()
+            if os.path.exists(fixtures_path):
+                with open(fixtures_path, 'r', encoding='utf-8') as ff:
+                    closed_months = set(json.load(ff).keys())
+            if not closed_months:
+                closed_months = {'2026-01', '2026-02', '2026-03', '2026-04', '2026-05', '2026-06', '2026-07', '2026-08'}
+
+            active_sys_db = [r for r in sys_db if (r.get('SaleMonth') not in closed_months and r.get('PrepayMonth') not in closed_months)]
+            sys_db = closed_sys_db + active_sys_db
+            print(f"[*] Применена историческая фиксация закрытых месяцев: {len(closed_sys_db)} закрытых записей + {len(active_sys_db)} активных")
+        except Exception as e:
+            print(f"[!] Предупреждение при фиксации закрытых месяцев sys_db: {e}")
 
     return sys_db, sys_db_partners, debtors, reg_data
