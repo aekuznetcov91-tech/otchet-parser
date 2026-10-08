@@ -113,7 +113,8 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig, de
     const paceData = calculatePaceMetrics(sDb, allDb, filterConfig);
 
     // 2. Calculate Alerts Radar
-    const alertData = calculateAlertsRadar(allDb, pDb, allPartners || [], filterConfig, actualDebtors);
+    const alertData = calculateRadarComparison(allDb, allPartners || [], filterConfig, window.dataPayload?.metadata,
+        calculateAlertsRadar(allDb, pDb, allPartners || [], filterConfig, actualDebtors));
 
     // 3. Calculate Margin & ARPU by Channel
     const marginData = calculateChannelUnitEconomics(sDb);
@@ -159,7 +160,7 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig, de
                 ${renderPaceCardHTML(paceData)}
 
                 <!-- Block 2: Alerts Radar -->
-                ${renderAlertsRadarCardHTML(alertData)}
+                ${renderRadarComparisonHTML(alertData)}
 
                 <!-- Block 3: Margin & ARPU Unit Economics -->
                 ${renderMarginCardHTML(marginData)}
@@ -171,6 +172,7 @@ function renderExecutiveDashboard(sDb, pDb, allDb, allPartners, filterConfig, de
     `;
 
     // Ensure Health Matrix modal exists in the DOM
+    bindRadarComparison(alertData);
     ensureHealthModalExists();
 
     // Initialize Lucide icons if available

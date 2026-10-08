@@ -1,0 +1,24 @@
+const assert=require('assert/strict'),fs=require('fs'),vm=require('vm');
+const c=vm.createContext({window:{},document:{addEventListener(){}},console});
+for(const f of ['utils','executive-dashboard','radar-comparison'])vm.runInContext(fs.readFileSync(`site/js/${f}.js`,'utf8'),c);
+const serial=d=>(Date.parse(d+'T00:00:00Z')-Date.UTC(1899,11,30))/864e5;
+const sale=(d,q,b='JETOUR',channel='B2C')=>({SaleMonth:d.slice(0,7),DealDate:serial(d),SaleQty:q,Brand:b,B2C:channel});
+const calc=(rows,month='2026-10',updated='08.10.2026 10:29',filter)=>c.calculateRadarComparison(rows,[],filter||{mode:'month',month},{updated_at:updated},{});
+let rows=[sale('2026-07-01',85),sale('2026-08-01',176),sale('2026-09-01',52),sale('2026-10-07',61),sale('2026-10-08',900),sale('2026-07-31',999)];
+let d=calc(rows),r=d.channels.all.brands[0];assert.deepEqual(Array.from(r.values),[85,176,52,61]);assert.equal(r.best,176);assert.equal(r.incomplete,false);
+assert.deepEqual(Array.from(calc(rows,'2026-09').channels.all.brands[0].values),[0,85,176,52]);
+assert(calc(rows,'2026-11').error);assert(calc(rows,'2026-10','01.10.2026 09:00').error);
+d=calc([sale('2026-10-01',3),sale('2026-11-01',4),sale('2026-12-01',5),sale('2027-01-01',6)],'2027-01','08.01.2027');assert.deepEqual(Array.from(d.months),['2026-10','2026-11','2026-12','2027-01']);assert.equal(d.channels.all.brands[0].best,5);
+d=calc(rows,'2026-10',undefined,{mode:'custom',from:new Date(2026,9,7),to:new Date(2026,9,8)});assert.deepEqual(Array.from(d.channels.all.brands[0].values),[0,0,0,61]);
+assert(calc(rows,'2026-10',undefined,{mode:'custom',from:new Date(2026,8,7),to:new Date(2026,9,8)}).error);
+r=calc([sale('2026-09-01',2),sale('2026-10-01',4)]).channels.all.brands[0];assert(r.incomplete);
+d=calc([sale('2026-07-01',2,'OMODA'),sale('2026-08-01',3,'JAECOO'),sale('2026-09-01',4,'JELAND','МП2'),sale('2026-10-01',5,'JELAND')]);assert.equal(d.channels.all.brands.length,1);assert.equal(d.channels.all.brands[0].name,'JELAND');assert.equal(d.channels.opt.brands[0].values[2],4);assert.equal(d.channels.retail.brands[0].values[2],0);
+assert.equal(c.radarEscape('<img onerror="bad">'),'&lt;img onerror=&quot;bad&quot;&gt;');
+const p=JSON.parse(fs.readFileSync('site/data.json'));
+const legacy=c.calculateAlertsRadar(p.sys_db,[],p.sys_db_partners,{mode:'month',month:'2026-10'},p.debtors);
+d=c.calculateRadarComparison(p.sys_db,p.sys_db_partners,{mode:'month',month:'2026-10'},p.metadata,legacy);
+for(const ch of ['all','opt','retail'])assert.equal(d.channels[ch].advances.reduce((s,r)=>s+r.count,0),legacy.channelsData[ch].stuckPrepays.length);
+console.log('PASS: comparable days, refresh-day exclusion, closed months, future/empty periods, year boundary, custom ranges, incomplete history, brand aliases, channels, escaping and unchanged advances');
+
+for(const [cur,prev,best,status] of [[61,52,176,"recovery"],[177,52,176,"record"],[176,52,176,"equal"],[40,52,176,"loss"],[2,0,0,"record"]])assert.equal(c.radarCategory({values:[0,best,prev,cur],best,incomplete:false}),status);
+assert.equal(c.radarCategory({values:[0,0,0,1],best:0,incomplete:true}),"new");
