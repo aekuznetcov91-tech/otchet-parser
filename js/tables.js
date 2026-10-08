@@ -102,10 +102,6 @@ function renderDynamicsTab(sDb, pDb, isAll) {
         return b;
     };
 
-    let brands = Array.from(new Set(sDb.map(r => getNormalizedBrand(r)))).filter(b => b && b !== "ВНЕСЕНИЕ").sort();
-    let b2cTypes = new Set(sDb.map(r => r.B2C || "(пусто)"));
-    let b2cArr = Array.from(b2cTypes).sort();
-
     // Determine current and previous month for dynamics comparison
     let curMonthStr = (typeof currentFilterConfig !== 'undefined' && currentFilterConfig && currentFilterConfig.mode === 'month')
         ? currentFilterConfig.month
@@ -158,6 +154,19 @@ function renderDynamicsTab(sDb, pDb, isAll) {
     }
     const hasPrev = prevMonthStr && prevSalesDb.length > 0;
     const prevGrandTotal = prevSalesDb.length;
+
+    let brandSet = new Set(sDb.map(r => getNormalizedBrand(r)));
+    let b2cTypes = new Set(sDb.map(r => r.B2C || "(пусто)"));
+    if (hasPrev) {
+        prevSalesDb.forEach(r => {
+            let b = getNormalizedBrand(r);
+            if (b && b !== "ВНЕСЕНИЕ") brandSet.add(b);
+            b2cTypes.add(r.B2C || "(пусто)");
+        });
+    }
+    let brands = Array.from(brandSet).filter(b => b && b !== "ВНЕСЕНИЕ").sort();
+    let b2cArr = Array.from(b2cTypes).sort();
+
     const prevBrandTotals = {};
     brands.forEach(b => prevBrandTotals[b] = prevSalesDb.filter(r => getNormalizedBrand(r) === b).length);
 
