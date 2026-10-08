@@ -72,30 +72,73 @@ function calculateRadarComparison(allDb, partners, filter, metadata, legacy) {
     return D;
 }
 function renderRadarComparisonHTML(D) {
- const esc=radarEscape;
- return `<section id="radarComparison" class="radar"><div class="head"><div class="title"><span class="icon" aria-hidden="true">📡</span><div><h3>Радар динамики & отклонений</h3><div class="subtitle">${esc(D.periodLabel)}</div></div></div><div class="headbadge">Исторический ориентир ≠ план</div></div>
-<div class="benchmark"><div><div class="benchmark-label">ОСНОВНОЕ СРАВНЕНИЕ</div><strong id="radar-baseLabel">${esc(D.bestLabel)}</strong></div><div class="seg" id="radar-base"><button data-value="best" aria-pressed="true">Лучший из 3 месяцев</button><button data-value="previous" aria-pressed="false">${esc(D.monthNames[2])}</button></div></div>
-<div class="seg channels" id="radar-channel"><button data-value="all" aria-pressed="true">Все каналы</button><button data-value="opt" aria-pressed="false">Опт МП2</button><button data-value="retail" aria-pressed="false">Розница и прочие</button></div>
-<div class="seg tabs" id="radar-tab"><button data-value="brands" aria-pressed="true">Марки</button><button data-value="dealers" aria-pressed="false">Дилеры</button><button data-value="advances" aria-pressed="false">⏳ Авансы</button></div>
-<div class="summaryline" id="radar-summary"></div><div class="tools"><span class="hint" id="radar-hint">Сортировка по отклонению от лучшего MTD, шт.</span><label id="radar-filterLabel">Показать<select id="radar-status"><option value="all">Все состояния</option><option value="record">Новый максимум</option><option value="recovery">Восстановление</option><option value="loss">Ниже максимума</option><option value="equal">На максимуме</option><option value="new">Недостаточно истории</option><option value="zero">Без продаж сейчас</option></select></label></div>
-<div class="list" id="radar-list" aria-live="polite"></div><div class="footer"><span id="radar-footer"></span><button class="more" id="radar-more">Показать все</button></div><div class="plan">Планы по брендам и дилерам не заданы в радаре. Статус «Выше плана» появится только при наличии их утверждённых целей.</div>
-<details><summary>Как считается сравнение</summary><ul><li>${esc(D.method)}</li><li>Лучший результат определяется отдельно для каждой марки и дилера. Максимумы разных компаний не суммируются. Цвет показывает динамику к истории, а не выполнение плана.</li><li>Восстановление: результат выше предыдущего месяца, но ниже максимума. Нулевая база не превращается в +100%. При неполной истории рекорд не объявляется; дата подключения дилера неизвестна.</li><li>Сохранены группы каналов радара: МП2 и остальные (включая МП1/МП3 и сделки без канала). OMODA/JAECOO/JELAND объединены для сопоставимости.</li><li>Авансы — текущий реестр по прежнему алгоритму, а не исторический снимок. Показано количество автомобилей по дилерам и максимальный срок ожидания.</li></ul></details></section>`;
+    const esc = radarEscape;
+    return `<section id="radarComparison" aria-label="Радар динамики и отклонений">
+        <header class="head"><span class="icon" aria-hidden="true">📡</span><h3>Радар динамики & отклонений</h3></header>
+        <div class="period"><span title="${esc(D.periodLabel)}">${esc(D.error || D.windowLabels[3])}</span>
+            <select id="radar-base" aria-label="Ориентир сравнения"><option value="best">Лучший из 3 мес.</option><option value="previous">${esc(D.monthNames[2])}</option></select></div>
+        <div class="seg channels" id="radar-channel" aria-label="Каналы"><button data-value="all">Все каналы</button><button data-value="opt">Опт МП2</button><button data-value="retail">Розница и прочие</button></div>
+        <div class="seg tabs" id="radar-tab" aria-label="Объекты сравнения"><button data-value="brands">Марки</button><button data-value="dealers">Дилеры</button><button data-value="advances">⏳ Авансы</button></div>
+        <div class="tools"><div id="radar-summary" class="summaryline"></div><select id="radar-status" aria-label="Состояние">
+            <option value="all">Все состояния</option><option value="record">Новый максимум</option><option value="recovery">Восстановление</option><option value="loss">Ниже максимума</option><option value="equal">На максимуме</option><option value="new">Недостаточно истории</option><option value="zero">Без продаж сейчас</option></select></div>
+        <div class="list" id="radar-list" tabindex="0" aria-label="Результаты сравнения"></div>
+        <footer class="footer"><span id="radar-footer" role="status"></span><button id="radar-help" aria-expanded="false" aria-controls="radar-method">ⓘ Как считаем</button></footer>
+        <section id="radar-method" class="method" hidden aria-label="Методика сравнения"><button id="radar-close" aria-label="Закрыть методику">×</button><h4>Как считаем</h4>
+            <p>${esc(D.method)}</p><p>Лучший результат определяется отдельно для каждой марки и дилера. Максимумы не суммируются. Исторический ориентир — не план; планы по брендам и дилерам в радаре не заданы.</p>
+            <p>Восстановление: выше предыдущего месяца, но ниже максимума. Нулевая база не превращается в +100%. При неполной истории рекорд не объявляется.</p>
+            <p>Цвет и состояние всегда относятся к лучшему периоду. Число справа — отклонение от выбранного ориентира. Сортировка — по величине отклонения в штуках.</p>
+            <p>Группы каналов сохранены: МП2 и остальные (включая МП1/МП3 и сделки без канала). OMODA/JAECOO/JELAND объединены.</p>
+            <p>Авансы — текущий реестр по прежнему алгоритму, без исторического сравнения. Нажмите на строку, чтобы увидеть историю и КАМов.</p></section>
+    </section>`;
 }
 function bindRadarComparison(D) {
-const root=document.getElementById("radarComparison");if(!root)return;
-const $=id=>root.querySelector('#radar-'+id),esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),n=x=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:0}).format(x),signed=x=>(x>0?'+':'')+n(x),months=D.monthNames.slice(0,3);const state=radarState;
-
-function render(){for(const id of ['base','channel','tab'])$(id).querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===state[id])));$('status').value=state.status;const data=D.channels[state.channel],rows=data[state.tab];$('baseLabel').textContent=state.base==='best'?D.bestLabel:D.windowLabels[2];
- for(const key of ['brands','dealers','advances'])root.querySelector(`#radar-tab [data-value="${key}"]`).textContent=({brands:'Марки',dealers:'Дилеры',advances:'⏳ Авансы'})[key]+' ('+(key==='advances'?data[key].reduce((s,r)=>s+r.count,0):data[key].length)+')';
- const advance=state.tab==='advances';$('filterLabel').hidden=advance;$('base').querySelectorAll('button').forEach(b=>b.disabled=advance);$('hint').textContent=advance?'Текущий реестр · алгоритм авансов сохранён':state.base==='best'?'Самые большие отклонения от максимума — первыми':'Самые большие изменения к предыдущему месяцу — первыми';
- if(advance){$('summary').textContent='Авансы показаны по текущему реестру, без сравнения с историческим максимумом.';}else{const counts={};for(const r of rows)counts[radarCategory(r)]=(counts[radarCategory(r)]||0)+1;$('summary').textContent=`${counts.record||0} новых максимумов · ${counts.recovery||0} восстановлений · ${counts.loss||0} ниже максимума · ${counts.equal||0} на максимуме · ${counts.new||0} с неполной историей`;}
- let filtered=advance?rows:[...rows].filter(r=>state.status==='all'||(state.status==='zero'?r.values[3]===0:radarCategory(r)===state.status)).sort((a,b)=>Math.abs(b.values[3]-(state.base==='best'?b.best:b.values[2]))-Math.abs(a.values[3]-(state.base==='best'?a.best:a.values[2]))||a.name.localeCompare(b.name,'ru'));
- const shown=state.expanded?filtered:filtered.slice(0,6);
- $('list').innerHTML=shown.map(r=>{if(advance)return `<article class="item recovery advances"><div class="item-top"><div><div class="item-name">${esc(r.name)}</div><p>Максимальный возраст по реестру: ${n(r.days)} дн.</p></div><div class="delta"><strong>${n(r.count)} авто</strong></div></div></article>`;
- const cur=r.values[3],prev=r.values[2],cat=radarCategory(r),ref=state.base==='best'?r.best:prev,diff=cur-ref,deltaPrev=cur-prev,bestMonths=months.filter((_,i)=>r.values[i]===r.best).join(', '),pct=ref?' ('+signed(diff/ref*100)+'%)':'',label=cat==='record'?'🚀 Новый максимум':cat==='recovery'?'↗ Восстановление':cat==='equal'?'● На уровне максимума':cat==='new'?'◷ Недостаточно истории':cur<prev?'↓ Ниже обоих ориентиров':'↓ Ниже максимума';
- return `<article class="item ${cat==='record'?'':cat}"><div class="item-top"><div><div class="item-name">${esc(r.name)}</div><div class="tag">${label}</div></div><div class="delta"><strong>${signed(diff)} шт.${pct}</strong><small>${state.base==='best'?'к лучшему MTD':'к предыдущему месяцу'}${ref?'':' · нулевая база'}</small></div></div><div class="rowstats"><span class="fact">${cur} <small>сделок сейчас</small></span><span class="ref">${r.available.slice(0,3).every(Boolean)?'Лучший MTD':'Максимум известных периодов'}: <b>${r.best}</b> · ${esc(bestMonths)}</span></div><div class="prev">К ${esc(months[2])}: <span class="${deltaPrev>=0?'up':'down'}">${signed(deltaPrev)} шт.${prev?' ('+signed(deltaPrev/prev*100)+'%)':' · нулевая база'}</span> · было ${prev}${state.tab==='dealers'?' · КАМ: '+esc(r.kams.join(', ')):''}</div><div class="trail">${r.values.slice(0,3).map((v,i)=>`<span class="${v===r.best?'best':''}">${esc(D.windowLabels[i])}: ${r.available[i]?v:'нет данных'}</span>`).join('')}</div></article>`;}).join('')||`<div class="empty">${esc(D.error||'В этом срезе нет записей с выбранным состоянием.')}</div>`;
- $('footer').textContent=`Показано ${shown.length} из ${filtered.length} · ${advance?'дилеров в реестре':state.tab==='brands'?'брендов':'дилеров'}`;$('more').hidden=filtered.length<=6;$('more').textContent=state.expanded?'Свернуть':'Показать все';
-}
-for(const id of ['base','channel','tab'])$(id).querySelectorAll('button').forEach(b=>b.onclick=()=>{state[id]=b.dataset.value;state.expanded=false;if(id==='tab'){state.status='all';$('status').value='all';}$(id).querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));render();});$('status').onchange=e=>{state.status=e.target.value;state.expanded=false;render();};$('more').onclick=()=>{state.expanded=!state.expanded;render();};render();
-
+    const root = document.getElementById('radarComparison');
+    if (!root) return;
+    const $ = id => root.querySelector('#radar-' + id);
+    const esc = radarEscape, state = radarState;
+    const n = x => new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0}).format(x);
+    const signed = x => (x > 0 ? '+' : '') + n(x);
+    const delta = (cur, base) => signed(cur - base) + (base ? ' / ' + signed((cur - base) / base * 100) + '%' : ' · база 0');
+    const labels = {record:'🚀 Новый максимум', recovery:'↗ Восстановление', loss:'↓ Ниже максимума', equal:'● На максимуме', new:'◷ Мало истории'};
+    function render() {
+        const data = D.channels[state.channel], advance = state.tab === 'advances';
+        for (const id of ['channel','tab']) $(id).querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.value === state[id])));
+        $('base').value = state.base;
+        $('base').disabled = advance;
+        $('base').title = state.base === 'best' ? D.bestLabel : D.windowLabels[2];
+        $('status').value = state.status;
+        $('status').hidden = advance;
+        for (const key of ['brands','dealers','advances']) {
+            const count = key === 'advances' ? data[key].reduce((s,r) => s+r.count,0) : data[key].length;
+            $('tab').querySelector(`[data-value="${key}"]`).textContent = {brands:'Марки',dealers:'Дилеры',advances:'⏳ Авансы'}[key] + ` (${count})`;
+        }
+        const rows = data[state.tab], counts = {};
+        for (const r of advance ? [] : rows) counts[radarCategory(r)] = (counts[radarCategory(r)] || 0) + 1;
+        $('summary').textContent = advance ? 'Текущий реестр · ожидание от 7 дней' : `🟢 ${counts.record||0} рек. · 🟡 ${counts.recovery||0} восст. · 🔴 ${counts.loss||0} ниже`;
+        $('summary').title = advance ? 'Количество автомобилей и максимальный возраст аванса по дилеру' : `Новые максимумы: ${counts.record||0}; восстановление: ${counts.recovery||0}; ниже максимума: ${counts.loss||0}; на максимуме: ${counts.equal||0}; мало истории: ${counts.new||0}`;
+        const filtered = advance ? rows : [...rows].filter(r => state.status === 'all' || (state.status === 'zero' ? r.values[3] === 0 : radarCategory(r) === state.status)).sort((a,b) => Math.abs(b.values[3]-(state.base==='best'?b.best:b.values[2]))-Math.abs(a.values[3]-(state.base==='best'?a.best:a.values[2])) || a.name.localeCompare(b.name,'ru'));
+        $('list').innerHTML = filtered.map(r => {
+            if (advance) return `<article class="item recovery advance"><div class="row-top"><strong class="name">${esc(r.name)}</strong><span class="delta">${n(r.count)} авто</span></div><div class="stats">Максимальное ожидание: <b>${n(r.days)} дн.</b></div></article>`;
+            const cur=r.values[3], prev=r.values[2], cat=radarCategory(r), ref=state.base==='best'?r.best:prev;
+            const bestMonths=D.monthNames.slice(0,3).filter((_,i)=>r.values[i]===r.best).join(', ');
+            return `<details class="item ${cat}"><summary><div class="row-top"><strong class="name">${esc(r.name)}</strong><span class="tag">${labels[cat]}</span><span class="delta" title="${state.base==='best'?'К лучшему периоду':'К предыдущему месяцу'}">${delta(cur,ref)}</span><span class="chevron" aria-hidden="true">⌄</span></div>
+                <div class="stats"><span>Факт <b>${n(cur)}</b></span><span>Лучший <b>${n(r.best)}</b>, ${esc(bestMonths)}</span><span>К ${esc(D.monthNames[2])}: <b class="${cur>=prev?'up':'down'}">${delta(cur,prev)}</b></span></div></summary>
+                <div class="detail-body"><div class="trail">${r.values.slice(0,3).map((v,i)=>`<span class="${v===r.best?'best':''}">${esc(D.windowLabels[i])}: <b>${r.available[i]?n(v):'нет данных'}</b></span>`).join('')}</div>
+                ${state.tab==='dealers'?`<p>КАМ: ${esc(r.kams.join(', ')||'Не указан')}</p>`:''}<p>${labels[cat]} · справа — ${state.base==='best'?'к лучшему сопоставимому периоду':'к предыдущему месяцу'}. ${r.incomplete?'История неполная; дата подключения неизвестна.':''}</p></div></details>`;
+        }).join('') || `<div class="empty">${esc(D.error||'Нет записей с выбранным состоянием.')}</div>`;
+        $('list').scrollTop = 0;
+        $('footer').textContent = `${filtered.length} ${advance||state.tab==='dealers'?'дилеров':'брендов'} · листайте список`;
+    }
+    for (const id of ['channel','tab']) $(id).querySelectorAll('button').forEach(b => b.onclick = () => {
+        state[id] = b.dataset.value;
+        if (id === 'tab') state.status = 'all';
+        render();
+    });
+    $('base').onchange = e => {state.base=e.target.value;render();};
+    $('status').onchange = e => {state.status=e.target.value;render();};
+    const help = open => { $('method').hidden=!open; $('help').setAttribute('aria-expanded',String(open)); (open?$('close'):$('help')).focus(); };
+    $('help').onclick = () => help($('method').hidden);
+    $('close').onclick = () => help(false);
+    root.addEventListener('keydown',e => {if(e.key==='Escape'&&!$('method').hidden)help(false);});
+    render();
 }
