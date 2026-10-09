@@ -79,7 +79,7 @@ function renderRadarComparisonHTML(D) {
             <select id="radar-base" aria-label="Ориентир сравнения"><option value="best">Лучший из 3 мес.</option><option value="previous">${esc(D.monthNames[2])}</option></select></div>
         <div class="seg channels" id="radar-channel" aria-label="Каналы"><button data-value="all">Все каналы</button><button data-value="opt">Опт МП2</button><button data-value="retail">Розница и прочие</button></div>
         <div class="seg tabs" id="radar-tab" aria-label="Объекты сравнения"><button data-value="brands">Марки</button><button data-value="dealers">Дилеры</button><button data-value="advances">⏳ Авансы</button></div>
-        <div class="tools"><div id="radar-summary" class="summaryline"></div><select id="radar-status" aria-label="Состояние">
+        <div class="tools"><div id="radar-summary" class="summaryline" role="group" aria-label="Фильтр по динамике к максимуму трёх месяцев"></div><select id="radar-status" aria-label="Состояние">
             <option value="all">Все состояния</option><option value="record">Новый максимум</option><option value="recovery">Восстановление</option><option value="loss">Ниже максимума</option><option value="equal">На максимуме</option><option value="new">Недостаточно истории</option><option value="zero">Без продаж сейчас</option></select></div>
         <div class="list" id="radar-list" tabindex="0" aria-label="Результаты сравнения"></div>
         <footer class="footer"><span id="radar-footer" role="status"></span><button id="radar-help" aria-expanded="false" aria-controls="radar-method">ⓘ Как считаем</button></footer>
@@ -114,8 +114,16 @@ function bindRadarComparison(D) {
         }
         const rows = data[state.tab], counts = {};
         for (const r of advance ? [] : rows) counts[radarCategory(r)] = (counts[radarCategory(r)] || 0) + 1;
-        $('summary').textContent = advance ? 'Текущий реестр · ожидание от 7 дней' : `🟢 ${counts.record||0} рек. · 🟡 ${counts.recovery||0} восст. · 🔴 ${counts.loss||0} ниже`;
-        $('summary').title = advance ? 'Количество автомобилей и максимальный возраст аванса по дилеру' : `Новые максимумы: ${counts.record||0}; восстановление: ${counts.recovery||0}; ниже максимума: ${counts.loss||0}; на максимуме: ${counts.equal||0}; мало истории: ${counts.new||0}`;
+        if (advance) {
+            $('summary').textContent = 'Текущий реестр · ожидание от 7 дней';
+        } else {
+            $('summary').innerHTML = [
+                ['record', '🟢', 'рек.', 'Новый максимум'],
+                ['recovery', '🟡', 'восст.', 'Восстановление'],
+                ['loss', '🔴', 'ниже', 'Ниже максимума']
+            ].map(([key, icon, short, label]) => `<button type="button" class="signal ${key}" data-status="${key}" aria-controls="radar-list" aria-pressed="${state.status === key}" aria-label="${label}: ${counts[key] || 0}" title="${label} — относительно лучшего периода трёх месяцев. Повторное нажатие сбросит фильтр."><span aria-hidden="true">${icon}</span> ${counts[key] || 0} ${short}</button>`).join('');
+        }
+        $('summary').title = advance ? 'Количество автомобилей и максимальный возраст аванса по дилеру' : 'Цвета — к максимуму трёх месяцев, независимо от выбранного числового сравнения';
         const filtered = advance ? rows : [...rows].filter(r => state.status === 'all' || (state.status === 'zero' ? r.values[3] === 0 : radarCategory(r) === state.status)).sort((a,b) => Math.abs(b.values[3]-(state.base==='best'?b.best:b.values[2]))-Math.abs(a.values[3]-(state.base==='best'?a.best:a.values[2])) || a.name.localeCompare(b.name,'ru'));
         $('list').innerHTML = filtered.map(r => {
             if (advance) return `<article class="item recovery advance"><div class="row-top"><strong class="name">${esc(r.name)}</strong><span class="delta">${n(r.count)} авто</span></div><div class="stats">Максимальное ожидание: <b>${n(r.days)} дн.</b></div></article>`;
@@ -134,6 +142,14 @@ function bindRadarComparison(D) {
         if (id === 'tab') state.status = 'all';
         render();
     });
+    $('summary').onclick = e => {
+        const button = e.target.closest('button[data-status]');
+        if (!button || !$('summary').contains(button)) return;
+        const key = button.dataset.status;
+        state.status = state.status === key ? 'all' : key;
+        render();
+        $('summary').querySelector(`[data-status="${key}"]`).focus();
+    };
     $('base').onchange = e => {state.base=e.target.value;render();};
     $('status').onchange = e => {state.status=e.target.value;render();};
     const help = open => { $('method').hidden=!open; $('help').setAttribute('aria-expanded',String(open)); (open?$('close'):$('help')).focus(); };

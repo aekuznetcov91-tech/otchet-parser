@@ -50,3 +50,9 @@
 #radarComparison :is(button,select,summary,[tabindex]):focus-visible{outline:2px solid #6b98db;outline-offset:2px}
 @container(max-width:530px){#radarComparison .tag{display:none}#radarComparison .stats{gap:3px 8px}#radarComparison .seg button{padding:6px 9px}#radarComparison .period{font-size:11px}}
 @media(max-width:700px){#radarComparison{padding:15px;gap:9px;height:600px}#radarComparison h3{font-size:16px}#radarComparison .period{align-items:flex-start}#radarComparison .period>span{max-width:48%}#radarComparison .name{font-size:12px}#radarComparison .delta{font-size:11px}#radarComparison .seg button{font-size:11px}}
+
+#radarComparison .summaryline{display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+#radarComparison .signal{border:1px solid transparent;border-radius:9px;background:transparent;color:#65758e;font-size:11px;line-height:1.5;padding:5px 4px;white-space:nowrap}
+#radarComparison .signal:hover{background:var(--bg,#f0fcf7)}
+#radarComparison .signal[aria-pressed=true]{background:var(--pill,#c8f2df);border-color:var(--ink,#08734f);color:var(--ink,#08734f);font-weight:750}
+@container(max-width:530px){#radarComparison .tools{flex-wrap:wrap}#radarComparison .tools select{margin-left:auto}}
